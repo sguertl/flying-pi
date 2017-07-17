@@ -12,6 +12,7 @@ using System.Linq;
 using Android.Net.Wifi.P2p;
 using System.Collections;
 using Android.Util;
+using Java.Net;
 
 namespace Android_Wifi_Test
 {
@@ -126,6 +127,13 @@ namespace Android_Wifi_Test
             foreach(var network in wifiManager.ConfiguredNetworks.Where(n => n.Ssid.Contains(mSelectedSsid)))
             {
                 Log.Debug("!!!", network.PeerReference.ToString());
+                // mit socket ersetzen
+                // 172.24.1.1
+                Java.Lang.String ipaddress = new Java.Lang.String("172.24.1.1");
+                InetAddress duke = InetAddress.GetByAddress(ipaddress.GetBytes());
+
+                Socket socket = new Socket(duke, 8888);
+
                 wifiManager.Disconnect();
                 wifiManager.EnableNetwork(network.NetworkId, true);
                 wifiManager.Reconnect();
