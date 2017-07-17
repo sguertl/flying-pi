@@ -129,15 +129,34 @@ namespace Android_Wifi_Test
                 Log.Debug("!!!", network.PeerReference.ToString());
                 // mit socket ersetzen
                 // 172.24.1.1
-                Java.Lang.String ipaddress = new Java.Lang.String("172.24.1.1");
-                InetAddress duke = InetAddress.GetByAddress(ipaddress.GetBytes());
+                String ipaddress = "172.24.1.1";
+                Byte[] array = IpToByteArray(ipaddress);
+                InetAddress duke = InetAddress.GetByAddress(array);
 
-                Socket socket = new Socket(duke, 8888);
+                // Eigene Klasse dazu schreiben - Thread abgeleitet
+                Socket socket = new Socket(duke, 5050);
+
+                if (socket.IsConnected)
+                {
+                    Log.Debug("Socket: ", "Socket is connected");
+                }
 
                 wifiManager.Disconnect();
                 wifiManager.EnableNetwork(network.NetworkId, true);
                 wifiManager.Reconnect();
             }
+        }
+
+        private byte[] IpToByteArray(string Value)
+        {
+            string[] Temp = Value.Split('.');
+            int Length = Temp.Length;
+            byte[] Rueckgabe = new byte[Length];
+            for (int i = 0; i < Length; i++)
+            {
+                Rueckgabe[i] = Convert.ToByte(Convert.ToInt32(Temp[i]));
+            }
+            return Rueckgabe;
         }
 
         private void WepOkClicked(object sender, DialogClickEventArgs e)
