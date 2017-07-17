@@ -6,6 +6,7 @@ using Android.Net.Wifi.P2p;
 using Android.Content;
 using System;
 using System.Collections.Generic;
+using Android.Net.Wifi;
 
 namespace Android_WifiDirect_Intro
 {
@@ -26,6 +27,7 @@ namespace Android_WifiDirect_Intro
             SetContentView(Resource.Layout.Main);
 
             mLvPeers = FindViewById<ListView>(Resource.Id.lvPeers);
+            mLvPeers.ItemClick += ListViewOnItemClick;
 
             mManager = (WifiP2pManager)GetSystemService(WifiP2pService);
             mChannel = mManager.Initialize(this, MainLooper, null);
@@ -52,17 +54,34 @@ namespace Android_WifiDirect_Intro
             UnregisterReceiver(mReceiver);
         }
 
-        public void OnListAllPeers(View view)
+        private void OnListAllPeers(View view)
         {
             mManager.DiscoverPeers(mChannel, new WifiDirectActionListener(this, "Discovery", () => { }));
         }
 
+        private void ListViewOnItemClick(object sender, AdapterView.ItemClickEventArgs itemClickEventArgs)
+        {
+            var peer = mAdapter.GetItem(itemClickEventArgs.Position);
+            WifiP2pConfig conf = new WifiP2pConfig
+            {
+                DeviceAddress = peer.Address,
+                Wps =
+                {
+                    Setup = WpsInfo.Pbc
+                }
+            };
+            mManager.Connect(mChannel, conf, new WifiDirectActionListener(this, "Connect", () => { }));
+        }
+
         public void OnPeersAvailable(WifiP2pDeviceList peers)
         {
+            mPeers.Clear();
+            mAdapter.Clear();
+
             foreach(var peer in peers.DeviceList)
             {
                 mPeers.Add(peer);
-                
+                mAdapter.Add(new PeerItem { Address = peer.DeviceAddress, Name = peer.DeviceName });
             }
 
             mLvPeers.Adapter = mAdapter;
