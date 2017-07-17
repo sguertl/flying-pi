@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Android.Net.Wifi.P2p;
 using System.Collections;
+using Android.Util;
 
 namespace Android_Wifi_Test
 {
@@ -118,12 +119,13 @@ namespace Android_Wifi_Test
 
             var conf = new WifiConfiguration();
             conf.Ssid = "\"" + mSelectedSsid + "\"";
-            conf.PreSharedKey = "\"" + password + "\"";
+            conf.PreSharedKey = "\"" + password.Text + "\"";
 
             var wifiManager = GetSystemService(WifiService).JavaCast<WifiManager>();
             wifiManager.AddNetwork(conf);
             foreach(var network in wifiManager.ConfiguredNetworks.Where(n => n.Ssid.Contains(mSelectedSsid)))
             {
+                Log.Debug("!!!", network.PeerReference.ToString());
                 wifiManager.Disconnect();
                 wifiManager.EnableNetwork(network.NetworkId, true);
                 wifiManager.Reconnect();
