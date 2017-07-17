@@ -1,2 +1,0 @@
-android.app.Application
-Android_WifiDirect_Intro.Android_WifiDirect_Intro
