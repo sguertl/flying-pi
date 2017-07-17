@@ -126,13 +126,18 @@ namespace Android_Wifi_Test
             wifiManager.AddNetwork(conf);
             foreach(var network in wifiManager.ConfiguredNetworks.Where(n => n.Ssid.Contains(mSelectedSsid)))
             {
-                Log.Debug("!!!", network.PeerReference.ToString());
+               
                 // mit socket ersetzen
                 // 172.24.1.1
                 Java.Lang.String ipaddress = new Java.Lang.String("172.24.1.1");
                 InetAddress duke = InetAddress.GetByAddress(ipaddress.GetBytes());
 
                 Socket socket = new Socket(duke, 8888);
+
+                if (socket.IsConnected)
+                {
+                    Log.Debug("!!!", "socket is connected");
+                }
 
                 wifiManager.Disconnect();
                 wifiManager.EnableNetwork(network.NetworkId, true);
