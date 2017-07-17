@@ -18,14 +18,12 @@ namespace Android_WifiDirect_Intro
         private WifiP2pManager mManager;
         private WifiP2pManager.Channel mChannel;
         private MainActivity mActivity;
-        private WifiDirectPeerListener mWifiDirectPeerListener;
 
         public WifiDirectBroadcastReceiver(WifiP2pManager manager, WifiP2pManager.Channel channel, MainActivity activity)
         {
             mManager = manager;
             mChannel = channel;
             mActivity = activity;
-            mWifiDirectPeerListener = new WifiDirectPeerListener();
         }
 
         public override void OnReceive(Context context, Intent intent)

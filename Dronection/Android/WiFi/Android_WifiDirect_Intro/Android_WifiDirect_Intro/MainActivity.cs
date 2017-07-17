@@ -7,6 +7,7 @@ using Android.Content;
 using System;
 using System.Collections.Generic;
 using Android.Net.Wifi;
+using Java.Net;
 
 namespace Android_WifiDirect_Intro
 {
@@ -14,6 +15,7 @@ namespace Android_WifiDirect_Intro
     public class MainActivity : Activity, WifiP2pManager.IPeerListListener
     {
         private ListView mLvPeers;
+        private Button mBtShowPeers;
         private ArrayAdapter<PeerItem> mAdapter;
         private WifiP2pManager mManager;
         private WifiP2pManager.Channel mChannel;
@@ -27,7 +29,10 @@ namespace Android_WifiDirect_Intro
             SetContentView(Resource.Layout.Main);
 
             mLvPeers = FindViewById<ListView>(Resource.Id.lvPeers);
-            mLvPeers.ItemClick += ListViewOnItemClick;
+            mLvPeers.ItemClick += OnListViewItemClick;
+
+            mBtShowPeers = FindViewById<Button>(Resource.Id.btShowPeers);
+            mBtShowPeers.Click += OnListAllPeers;
 
             mManager = (WifiP2pManager)GetSystemService(WifiP2pService);
             mChannel = mManager.Initialize(this, MainLooper, null);
@@ -54,12 +59,12 @@ namespace Android_WifiDirect_Intro
             UnregisterReceiver(mReceiver);
         }
 
-        private void OnListAllPeers(View view)
+        private void OnListAllPeers(object sender, EventArgs e)
         {
-            mManager.DiscoverPeers(mChannel, new WifiDirectActionListener(this, "Discovery", () => { }));
+            mManager.DiscoverPeers(mChannel, new WifiDirectActionListener(this.ApplicationContext, "Discovery", () => { }));
         }
 
-        private void ListViewOnItemClick(object sender, AdapterView.ItemClickEventArgs itemClickEventArgs)
+        private void OnListViewItemClick(object sender, AdapterView.ItemClickEventArgs itemClickEventArgs)
         {
             var peer = mAdapter.GetItem(itemClickEventArgs.Position);
             WifiP2pConfig conf = new WifiP2pConfig

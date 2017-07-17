@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="List all peers"
-        android:onClick="OnListAllPeers"
+        android:id="@+id/btShowPeers"
         android:padding="10dp" />
     <ListView
         android:layout_width="match_parent"
