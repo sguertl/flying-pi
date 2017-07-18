@@ -115,7 +115,7 @@ namespace Android_Wifi_Test
                 System.Console.WriteLine(ex.Message);
             }
 
-            Cancel();
+          
         }
 
         private void Cancel()
