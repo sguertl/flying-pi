@@ -28,6 +28,11 @@ namespace Android_Wifi_Test
 
         public static Socket SOCKET;
 
+        public SocketConnection()
+        {
+            SOCKET = new Socket();
+        }
+
         public override void Run()
         {
             try

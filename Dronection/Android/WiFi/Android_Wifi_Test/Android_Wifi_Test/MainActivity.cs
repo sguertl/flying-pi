@@ -129,7 +129,10 @@ namespace Android_Wifi_Test
                 wifiManager.EnableNetwork(network.NetworkId, true);
                 wifiManager.Reconnect();
             }
-            StartActivity(typeof(DataTransferActivity));
+            if (wifiManager.IsWifiEnabled)
+            {
+                StartActivity(typeof(DataTransferActivity));
+            }
         }
 
         private void WepOkClicked(object sender, DialogClickEventArgs e)
