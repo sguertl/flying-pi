@@ -38,29 +38,18 @@ namespace Android_Wifi_Test
             btSendData.Click += OnSendData;
 
             //mSocket = new Socket("172.24.1.1", 5050);
-            //mSocket.Bind(null);
             //mSocket.Connect(new InetSocketAddress("172.24.1.1", 5050), 5000);
-
-            //mOutputStream = new DataOutputStream(mSocket.OutputStream);
-            Hello();
-        }
-
-        public async Task EstablishConnection()
-        {
-            try
+            mSocket = new Socket();
+            SocketThread st = new SocketThread(ref mSocket);
+            st.Start();
+            if (mSocket.IsConnected)
             {
-                mSocket = new Socket("172.24.1.1", 5050);
                 mOutputStream = new DataOutputStream(mSocket.OutputStream);
             }
-            catch(System.Exception ex)
+            else
             {
-                Log.Debug("!!!", "Error socket connection");
+                System.Console.WriteLine("fail");
             }
-        }
-
-        public async void Hello()
-        {
-            await EstablishConnection();
         }
 
         private void OnSendData(object sender, EventArgs e)
