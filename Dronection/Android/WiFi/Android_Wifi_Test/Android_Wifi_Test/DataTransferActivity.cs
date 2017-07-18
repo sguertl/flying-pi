@@ -29,7 +29,7 @@ namespace Android_Wifi_Test
 
         private DataOutputStream mOutputStream;
 
-        private static readonly string TAG = "DataTransferActivity";
+        private readonly string TAG = "DataTransferActivity";
 
         protected override void OnCreate(Bundle savedInstanceState)
         {

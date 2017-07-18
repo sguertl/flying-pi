@@ -131,7 +131,6 @@ namespace Android_Wifi_Test
             }
             if (wifiManager.IsWifiEnabled)
             {
-                //zt
                 StartActivity(typeof(DataTransferActivity));
             }
         }
