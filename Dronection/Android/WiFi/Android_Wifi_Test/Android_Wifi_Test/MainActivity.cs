@@ -127,12 +127,11 @@ namespace Android_Wifi_Test
 
             var wifiManager = GetSystemService(WifiService).JavaCast<WifiManager>();
             wifiManager.AddNetwork(conf);
-            foreach(var network in wifiManager.ConfiguredNetworks.Where(n => n.Ssid.Contains(mSelectedSsid)))
-            {
-                wifiManager.Disconnect();
-                wifiManager.EnableNetwork(network.NetworkId, true);
-                wifiManager.Reconnect();
-            }
+            var network = wifiManager.ConfiguredNetworks.Where(n => n.Ssid.Contains(mSelectedSsid)).First();
+
+            wifiManager.Disconnect();
+            wifiManager.EnableNetwork(network.NetworkId, true);
+            wifiManager.Reconnect();
             if (wifiManager.IsWifiEnabled)
             {
                 StartActivity(typeof(DataTransferActivity));
