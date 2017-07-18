@@ -12,7 +12,7 @@ using Android.Widget;
 using Java.Lang;
 using Android.Util;
 using Java.Net;
-
+using Java.IO;
 
 namespace Android_Wifi_Test
 {
@@ -37,8 +37,32 @@ namespace Android_Wifi_Test
         {
             try
             {
-                SocketAddress socketAdr = new InetSocketAddress(SERVER_ADDRESS, SERVERPORT);
-                SOCKET.Connect(socketAdr);
+                SOCKET = new Socket(SERVER_ADDRESS, SERVERPORT);
+            }
+            catch (UnknownHostException uhe)
+            {
+                Log.Debug(TAG, uhe.Message + " if the IP address of the host could not be determined.");
+            }
+            catch (IOException uhe)
+            {
+                Log.Debug(TAG, uhe.Message + " if an I/O error occurs when creating the socket.");
+            }
+            catch (SecurityException uhe)
+            {
+                Log.Debug(TAG, uhe.Message + " if a security manager exists and its checkConnect method doesn't allow the operation.");
+            }
+            catch (IllegalAccessException uhe)
+            {
+                Log.Debug(TAG, uhe.Message + " if the port parameter is outside the specified range of valid port values, which is between 0 and 65535, inclusive.");
+            }
+
+            try
+            {
+                if (!SOCKET.IsConnected)
+                {
+                    SocketAddress socketAdr = new InetSocketAddress(SERVER_ADDRESS, SERVERPORT);
+                    SOCKET.Connect(socketAdr, 2000);
+                }
             }
             catch(Java.Lang.Exception ex)
             {

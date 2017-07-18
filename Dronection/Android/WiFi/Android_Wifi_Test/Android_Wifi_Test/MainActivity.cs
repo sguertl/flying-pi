@@ -32,6 +32,10 @@ namespace Android_Wifi_Test
             SetContentView(Resource.Layout.Main);
 
             mListView = FindViewById<ListView>(Resource.Id.listView1);
+
+            var aj = GetSystemService(WifiService).JavaCast<WifiManager>();
+            aj.Disconnect();
+
             RefreshWifiList();
 
             mListView.ItemClick += ListViewOnItemClick;

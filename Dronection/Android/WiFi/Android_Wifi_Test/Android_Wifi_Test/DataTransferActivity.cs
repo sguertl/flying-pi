@@ -14,6 +14,7 @@ using System.IO;
 using Java.IO;
 using System.Threading.Tasks;
 using Android.Util;
+using Android.Net.Wifi;
 
 namespace Android_Wifi_Test
 {
@@ -36,21 +37,35 @@ namespace Android_Wifi_Test
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.DataTransfer);
 
-            this.m_socketCon = new SocketConnection();
-            this.m_socketCon.Start();
+            
+                this.m_socketCon = new SocketConnection();
 
-            while (!SocketConnection.SOCKET.IsConnected)
-            {
-                if(SocketConnection.FLAG == false)
+                this.m_socketCon.Start();
+
+                while (!SocketConnection.SOCKET.IsConnected)
                 {
-                    break;
+                    if (SocketConnection.FLAG == false)
+                    {
+                        break;
+                    }
                 }
-            }
 
-            if (SocketConnection.FLAG)
-            {
-                Log.Debug(TAG, "Connection erfolgreich");
-            }
+                if (SocketConnection.FLAG)
+                {
+                    Log.Debug(TAG, "Connection erfolgreich");
+                    mOutputStream = new DataOutputStream(SocketConnection.SOCKET.OutputStream);
+                }
+                else
+                {
+                    try
+                    {
+                    Cancel();
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Debug(TAG, "Beim schlie0en ist ein fehler aufgetreten");
+                    }
+                }
 
             etInput = FindViewById<EditText>(Resource.Id.etInput);
 
@@ -61,7 +76,7 @@ namespace Android_Wifi_Test
             //mSocket.Bind(null);
             //mSocket.Connect(new InetSocketAddress("172.24.1.1", 5050), 5000);
 
-            mOutputStream = new DataOutputStream(SocketConnection.SOCKET.OutputStream);
+           
             //Hello();
         }
 
@@ -99,6 +114,8 @@ namespace Android_Wifi_Test
                 Cancel();
                 System.Console.WriteLine(ex.Message);
             }
+
+            Cancel();
         }
 
         private void Cancel()
@@ -112,6 +129,7 @@ namespace Android_Wifi_Test
             {
                 System.Console.WriteLine(ex.Message);
             }
+
         }
     }
 }
