@@ -1,3 +1,9 @@
-HostApd: https://frillip.com/using-your-raspberry-pi-3-as-a-wifi-access-point-with-hostapd/
+HostApd: 
+https://frillip.com/using-your-raspberry-pi-3-as-a-wifi-access-point-with-hostapd/
 
-WiFi on Startup: https://raspberrypi.stackexchange.com/questions/8734/execute-script-on-start-up
+WiFi on Startup: 
+https://raspberrypi.stackexchange.com/questions/8734/execute-script-on-start-up
+
+Bluetooth Socket: 
+http://blog.davidvassallo.me/2014/05/11/android-linux-raspberry-pi-bluetooth-communication/
+https://stackoverflow.com/questions/34599703/rfcomm-bluetooth-permission-denied-error-raspberry-pi
