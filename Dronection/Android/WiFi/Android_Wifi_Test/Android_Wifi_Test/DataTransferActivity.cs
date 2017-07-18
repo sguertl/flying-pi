@@ -36,8 +36,8 @@ namespace Android_Wifi_Test
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.DataTransfer);
 
-            m_socketCon = new SocketConnection();
-            m_socketCon.Start();
+            this.m_socketCon = new SocketConnection();
+            this.m_socketCon.Start();
             
 
             while (!SocketConnection.SOCKET.IsConnected)
@@ -51,7 +51,7 @@ namespace Android_Wifi_Test
             if (SocketConnection.FLAG)
             {
                 Log.Debug(TAG, "Connection erfolgreich");
-                mOutputStream = new DataOutputStream(SocketConnection.SOCKET.OutputStream);
+                this.mOutputStream = new DataOutputStream(SocketConnection.SOCKET.OutputStream);
             }
             else
             {
@@ -68,34 +68,8 @@ namespace Android_Wifi_Test
 
             btSendData = FindViewById<Button>(Resource.Id.btSendData);
             btSendData.Click += OnSendData;
-
-            //mSocket = new Socket("172.24.1.1", 5050);
-            //mSocket.Bind(null);
-            //mSocket.Connect(new InetSocketAddress("172.24.1.1", 5050), 5000);
-
-
-            //Hello();
         }
 
-        /*
-        public async Task EstablishConnection()
-        {
-            try
-            {
-                mSocket = new Socket("172.24.1.1", 5050);
-                mOutputStream = new DataOutputStream(mSocket.OutputStream);
-            }
-            catch(System.Exception ex)
-            {
-                Log.Debug("!!!", "Error socket connection");
-            }
-        }
-
-        public async void Hello()
-        {
-            await EstablishConnection();
-        }
-        */
         private void OnSendData(object sender, EventArgs e)
         {
             Java.Lang.String text = new Java.Lang.String(etInput.Text);

@@ -31,14 +31,14 @@ namespace Android_Wifi_Test
             
             SetContentView(Resource.Layout.Main);
 
-            mListView = FindViewById<ListView>(Resource.Id.listView1);
+            this.mListView = FindViewById<ListView>(Resource.Id.listView1);
 
             var aj = GetSystemService(WifiService).JavaCast<WifiManager>();
             aj.Disconnect();
 
             RefreshWifiList();
 
-            mListView.ItemClick += ListViewOnItemClick;
+            this.mListView.ItemClick += ListViewOnItemClick;
         }
 
         private void ListViewOnItemClick(object sender, AdapterView.ItemClickEventArgs itemClickEventArgs)
@@ -123,21 +123,18 @@ namespace Android_Wifi_Test
 
             var conf = new WifiConfiguration();
             conf.Ssid = "\"" + mSelectedSsid + "\"";
-            conf.PreSharedKey = "\"" + "00000000" + "\"";
+            conf.PreSharedKey = "\"" + password.Text + "\"";
 
             var wifiManager = GetSystemService(WifiService).JavaCast<WifiManager>();
   
             int id = wifiManager.AddNetwork(conf);
-           // wifiManager.EnableNetwork(id, true);
 
-            // Test
             IList<WifiConfiguration> myWifi = wifiManager.ConfiguredNetworks;
 
-             WifiConfiguration wc =  myWifi.First(x=> x.Ssid.Contains(mSelectedSsid));
-                wifiManager.Disconnect();
-                wifiManager.EnableNetwork(wc.NetworkId, true);
-                wifiManager.Reconnect();
-            // 
+            WifiConfiguration wc =  myWifi.First(x=> x.Ssid.Contains(mSelectedSsid));
+            wifiManager.Disconnect();
+            wifiManager.EnableNetwork(wc.NetworkId, true);
+            wifiManager.Reconnect();
 
             if (wifiManager.IsWifiEnabled)
             {
