@@ -24,6 +24,8 @@ namespace Android_Wifi_Test
 
         private static readonly string TAG = "SocketConnection";
 
+        public static bool FLAG = true;
+
         public static Socket SOCKET;
 
         public override void Run()
@@ -33,7 +35,9 @@ namespace Android_Wifi_Test
                 SOCKET = new Socket(InetAddress.GetByName(SERVER_ADDRESS), SERVERPORT);
             }catch(Java.Lang.Exception ex)
             {
+                FLAG = false;
                 Log.Debug(TAG, ex.Message);
+                return;
             }
         }
 

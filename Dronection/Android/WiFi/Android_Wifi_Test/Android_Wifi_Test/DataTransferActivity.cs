@@ -29,6 +29,8 @@ namespace Android_Wifi_Test
 
         private DataOutputStream mOutputStream;
 
+        private static readonly string TAG = "DataTransferActivity";
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -36,6 +38,19 @@ namespace Android_Wifi_Test
 
             this.m_socketCon = new SocketConnection();
             this.m_socketCon.Start();
+
+            while (!SocketConnection.SOCKET.IsConnected)
+            {
+                if(SocketConnection.FLAG == false)
+                {
+                    break;
+                }
+            }
+
+            if (SocketConnection.FLAG)
+            {
+                Log.Debug(TAG, "Connection erfolgreich");
+            }
 
             etInput = FindViewById<EditText>(Resource.Id.etInput);
 
@@ -50,6 +65,7 @@ namespace Android_Wifi_Test
             //Hello();
         }
 
+        /*
         public async Task EstablishConnection()
         {
             try
@@ -67,7 +83,7 @@ namespace Android_Wifi_Test
         {
             await EstablishConnection();
         }
-
+        */
         private void OnSendData(object sender, EventArgs e)
         {
             Java.Lang.String text = new Java.Lang.String(etInput.Text);
@@ -90,7 +106,7 @@ namespace Android_Wifi_Test
             try
             {
                 mOutputStream.Close();
-                mSocket.Close();
+                SocketConnection.SOCKET.Close();
             }
             catch(System.Exception ex)
             {
