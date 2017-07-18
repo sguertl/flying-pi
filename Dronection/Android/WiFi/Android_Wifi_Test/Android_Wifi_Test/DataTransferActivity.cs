@@ -27,7 +27,6 @@ namespace Android_Wifi_Test
         //private Socket mSocket;
         //private Stream mOutputStream;
         private SocketConnection m_socketCon;
-
         private DataOutputStream mOutputStream;
 
         private readonly string TAG = "DataTransferActivity";
@@ -37,36 +36,34 @@ namespace Android_Wifi_Test
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.DataTransfer);
 
+            m_socketCon = new SocketConnection();
+            m_socketCon.Start();
             
-                this.m_socketCon = new SocketConnection();
 
-                this.m_socketCon.Start();
-
-                while (!SocketConnection.SOCKET.IsConnected)
+            while (!SocketConnection.SOCKET.IsConnected)
+            {
+                if (SocketConnection.FLAG == false)
                 {
-                    if (SocketConnection.FLAG == false)
-                    {
-                        break;
-                    }
+                    break;
                 }
+            }
 
-                if (SocketConnection.FLAG)
+            if (SocketConnection.FLAG)
+            {
+                Log.Debug(TAG, "Connection erfolgreich");
+                mOutputStream = new DataOutputStream(SocketConnection.SOCKET.OutputStream);
+            }
+            else
+            {
+                try
                 {
-                    Log.Debug(TAG, "Connection erfolgreich");
-                    mOutputStream = new DataOutputStream(SocketConnection.SOCKET.OutputStream);
-                }
-                else
-                {
-                    try
-                    {
                     Cancel();
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Debug(TAG, "Beim schlie0en ist ein fehler aufgetreten");
-                    }
                 }
-
+                catch (Exception ex)
+                {
+                    Log.Debug(TAG, "Beim schlie0en ist ein fehler aufgetreten");
+                }
+            }
             etInput = FindViewById<EditText>(Resource.Id.etInput);
 
             btSendData = FindViewById<Button>(Resource.Id.btSendData);
@@ -76,7 +73,7 @@ namespace Android_Wifi_Test
             //mSocket.Bind(null);
             //mSocket.Connect(new InetSocketAddress("172.24.1.1", 5050), 5000);
 
-           
+
             //Hello();
         }
 
@@ -115,7 +112,7 @@ namespace Android_Wifi_Test
                 System.Console.WriteLine(ex.Message);
             }
 
-          
+            etInput.Text = "";
         }
 
         private void Cancel()

@@ -61,6 +61,7 @@ namespace Android_Wifi_Test
                 if (!SOCKET.IsConnected)
                 {
                     SocketAddress socketAdr = new InetSocketAddress(SERVER_ADDRESS, SERVERPORT);
+                    Thread.Sleep(5000);
                     SOCKET.Connect(socketAdr, 2000);
                 }
             }

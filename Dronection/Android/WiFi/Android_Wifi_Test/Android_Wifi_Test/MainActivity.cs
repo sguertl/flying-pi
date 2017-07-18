@@ -123,7 +123,7 @@ namespace Android_Wifi_Test
 
             var conf = new WifiConfiguration();
             conf.Ssid = "\"" + mSelectedSsid + "\"";
-            conf.PreSharedKey = "\"" + password.Text + "\"";
+            conf.PreSharedKey = "\"" + "00000000" + "\"";
 
             var wifiManager = GetSystemService(WifiService).JavaCast<WifiManager>();
   
@@ -133,7 +133,7 @@ namespace Android_Wifi_Test
             // Test
             IList<WifiConfiguration> myWifi = wifiManager.ConfiguredNetworks;
 
-             WifiConfiguration wc =  myWifi.First(x=> x.Ssid.Contains(mSelectedSsid+""));
+             WifiConfiguration wc =  myWifi.First(x=> x.Ssid.Contains(mSelectedSsid));
                 wifiManager.Disconnect();
                 wifiManager.EnableNetwork(wc.NetworkId, true);
                 wifiManager.Reconnect();
