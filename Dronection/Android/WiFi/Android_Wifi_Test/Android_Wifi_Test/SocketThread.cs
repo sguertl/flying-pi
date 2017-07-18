@@ -16,7 +16,10 @@ namespace Android_Wifi_Test
 {
     public class SocketThread : Thread
     {
-        Socket mSocket;
+        private Socket mSocket;
+
+        private readonly string address = "172.24.1.1";
+        private readonly int port = 5050;
 
         public SocketThread(ref Socket socket)
         {
@@ -25,7 +28,7 @@ namespace Android_Wifi_Test
 
         public override void Run()
         {
-           
+            mSocket = new Socket(address, port);
         }
     }
 }
