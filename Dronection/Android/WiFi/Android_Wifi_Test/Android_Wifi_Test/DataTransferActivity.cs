@@ -99,6 +99,7 @@ namespace Android_Wifi_Test
                 Cancel();
                 System.Console.WriteLine(ex.Message);
             }
+            etInput.Text = "";
         }
 
         private void Cancel()
