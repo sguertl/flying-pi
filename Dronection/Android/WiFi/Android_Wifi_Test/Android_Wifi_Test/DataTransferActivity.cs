@@ -58,15 +58,10 @@ namespace Android_Wifi_Test
             btSendData.Click += OnSendData;
 
             //mSocket = new Socket("172.24.1.1", 5050);
+            //mSocket.Bind(null);
             //mSocket.Connect(new InetSocketAddress("172.24.1.1", 5050), 5000);
-<<<<<<< HEAD
-            mSocket = new Socket();
-            SocketThread st = new SocketThread(ref mSocket);
-            st.Start();
-            if (mSocket.IsConnected)
-=======
 
-            //mOutputStream = new DataOutputStream(mSocket.OutputStream);
+            mOutputStream = new DataOutputStream(SocketConnection.SOCKET.OutputStream);
             //Hello();
         }
 
@@ -74,24 +69,21 @@ namespace Android_Wifi_Test
         public async Task EstablishConnection()
         {
             try
->>>>>>> origin/master
             {
+                mSocket = new Socket("172.24.1.1", 5050);
                 mOutputStream = new DataOutputStream(mSocket.OutputStream);
             }
-            else
+            catch(System.Exception ex)
             {
-                System.Console.WriteLine("fail");
+                Log.Debug("!!!", "Error socket connection");
             }
         }
 
-<<<<<<< HEAD
-=======
         public async void Hello()
         {
             await EstablishConnection();
         }
         */
->>>>>>> origin/master
         private void OnSendData(object sender, EventArgs e)
         {
             Java.Lang.String text = new Java.Lang.String(etInput.Text);
