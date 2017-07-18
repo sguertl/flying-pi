@@ -23,14 +23,34 @@ namespace Android_Wifi_Test
         private EditText etInput;
         private Button btSendData;
 
-        private Socket mSocket;
+        //private Socket mSocket;
         //private Stream mOutputStream;
+        private SocketConnection m_socketCon;
+
         private DataOutputStream mOutputStream;
+
+        private static readonly string TAG = "DataTransferActivity";
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.DataTransfer);
+
+            this.m_socketCon = new SocketConnection();
+            this.m_socketCon.Start();
+
+            while (!SocketConnection.SOCKET.IsConnected)
+            {
+                if(SocketConnection.FLAG == false)
+                {
+                    break;
+                }
+            }
+
+            if (SocketConnection.FLAG)
+            {
+                Log.Debug(TAG, "Connection erfolgreich");
+            }
 
             etInput = FindViewById<EditText>(Resource.Id.etInput);
 
@@ -39,10 +59,22 @@ namespace Android_Wifi_Test
 
             //mSocket = new Socket("172.24.1.1", 5050);
             //mSocket.Connect(new InetSocketAddress("172.24.1.1", 5050), 5000);
+<<<<<<< HEAD
             mSocket = new Socket();
             SocketThread st = new SocketThread(ref mSocket);
             st.Start();
             if (mSocket.IsConnected)
+=======
+
+            //mOutputStream = new DataOutputStream(mSocket.OutputStream);
+            //Hello();
+        }
+
+        /*
+        public async Task EstablishConnection()
+        {
+            try
+>>>>>>> origin/master
             {
                 mOutputStream = new DataOutputStream(mSocket.OutputStream);
             }
@@ -52,6 +84,14 @@ namespace Android_Wifi_Test
             }
         }
 
+<<<<<<< HEAD
+=======
+        public async void Hello()
+        {
+            await EstablishConnection();
+        }
+        */
+>>>>>>> origin/master
         private void OnSendData(object sender, EventArgs e)
         {
             Java.Lang.String text = new Java.Lang.String(etInput.Text);
@@ -74,7 +114,7 @@ namespace Android_Wifi_Test
             try
             {
                 mOutputStream.Close();
-                mSocket.Close();
+                SocketConnection.SOCKET.Close();
             }
             catch(System.Exception ex)
             {

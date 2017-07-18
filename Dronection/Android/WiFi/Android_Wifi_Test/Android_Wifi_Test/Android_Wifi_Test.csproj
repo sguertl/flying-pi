@@ -53,7 +53,11 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+<<<<<<< HEAD
     <Compile Include="SocketThread.cs" />
+=======
+    <Compile Include="SocketConnection.cs" />
+>>>>>>> origin/master
     <Compile Include="WifiEntry.cs" />
   </ItemGroup>
   <ItemGroup>
