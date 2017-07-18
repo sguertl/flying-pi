@@ -23,14 +23,19 @@ namespace Android_Wifi_Test
         private EditText etInput;
         private Button btSendData;
 
-        private Socket mSocket;
+        //private Socket mSocket;
         //private Stream mOutputStream;
+        private SocketConnection m_socketCon;
+
         private DataOutputStream mOutputStream;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.DataTransfer);
+
+            this.m_socketCon = new SocketConnection();
+            this.m_socketCon.Start();
 
             etInput = FindViewById<EditText>(Resource.Id.etInput);
 
@@ -42,7 +47,7 @@ namespace Android_Wifi_Test
             //mSocket.Connect(new InetSocketAddress("172.24.1.1", 5050), 5000);
 
             //mOutputStream = new DataOutputStream(mSocket.OutputStream);
-            Hello();
+            //Hello();
         }
 
         public async Task EstablishConnection()
