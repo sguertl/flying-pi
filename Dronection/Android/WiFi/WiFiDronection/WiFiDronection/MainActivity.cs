@@ -26,7 +26,7 @@ namespace WiFiDronection
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.Main);
-            RequestWindowFeature(WindowFeatures.NoTitle);
+            //RequestWindowFeature(WindowFeatures.NoTitle);
             Window.AddFlags(WindowManagerFlags.Fullscreen);
 
             mTvHeader = FindViewById<TextView>(Resource.Id.tvHeader);

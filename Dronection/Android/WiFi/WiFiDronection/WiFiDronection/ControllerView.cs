@@ -48,6 +48,7 @@ namespace WiFiDronection
         // Transfer data via bluetooth
         //private readonly DataTransfer m_Transfer;
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Ersetzen mit SocketConnection
+        private SocketConnection mSocketConnection;
 
         // Timer for sending data and checking BT connection
         private readonly System.Timers.Timer m_WriteTimer;
@@ -63,6 +64,8 @@ namespace WiFiDronection
             ScreenHeight = Resources.DisplayMetrics.HeightPixels;
 
             //m_Transfer = new DataTransfer(this);
+            mSocketConnection = new SocketConnection();
+            mSocketConnection.Start();
 
             InitShapes();
             InitJoysticks();
@@ -455,16 +458,17 @@ namespace WiFiDronection
             if (!m_Settings.Inverted)
             {
 
-                /*m_Transfer.Write((Int16)m_LeftJS.Throttle,
+                mSocketConnection.Write((Int16)m_LeftJS.Throttle,
                                   (Int16)(m_LeftJS.Rudder + m_Settings.TrimYaw),
                                   (Int16)(m_RightJS.Aileron + m_Settings.TrimPitch),
-                                  (Int16)(m_RightJS.Elevator + m_Settings.TrimRoll));*/
+                                  (Int16)(m_RightJS.Elevator + m_Settings.TrimRoll));
             }
             else
             {
-                /*m_Transfer.Write((Int16)m_RightJS.Throttle,
+                mSocketConnection.Write((Int16)m_RightJS.Throttle,
                                   (Int16)(m_LeftJS.Rudder + m_Settings.TrimYaw),
-                                  (Int16)(m_LeftJS.Aileron + m_Settings.TrimPitch),*/
+                                  (Int16)(m_LeftJS.Aileron + m_Settings.TrimPitch),
+                                  (Int16)(m_RightJS.Elevator + m_Settings.TrimRoll));
             }
         }
     }

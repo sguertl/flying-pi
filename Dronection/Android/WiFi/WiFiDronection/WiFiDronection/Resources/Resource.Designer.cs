@@ -75,14 +75,14 @@ namespace WiFiDronection
 			// aapt resource value: 0x7f05000a
 			public const int btStart = 2131034122;
 			
-			// aapt resource value: 0x7f05000f
-			public const int etDialogPassword = 2131034127;
+			// aapt resource value: 0x7f050010
+			public const int etDialogPassword = 2131034128;
 			
 			// aapt resource value: 0x7f05000c
 			public const int etInput = 2131034124;
 			
-			// aapt resource value: 0x7f05000e
-			public const int lvPeers = 2131034126;
+			// aapt resource value: 0x7f05000f
+			public const int lvPeers = 2131034127;
 			
 			// aapt resource value: 0x7f050001
 			public const int rbThrottleLeft = 2131034113;
@@ -104,6 +104,9 @@ namespace WiFiDronection
 			
 			// aapt resource value: 0x7f050003
 			public const int tvDescription = 2131034115;
+			
+			// aapt resource value: 0x7f05000e
+			public const int tvHeader = 2131034126;
 			
 			// aapt resource value: 0x7f050006
 			public const int tvPitchTrim = 2131034118;
