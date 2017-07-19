@@ -53,7 +53,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ControllerActivity.cs" />
+    <Compile Include="ControllerSettings.cs" />
+    <Compile Include="ControllerView.cs" />
     <Compile Include="DataTransferActivity.cs" />
+    <Compile Include="Joystick.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Peer.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
@@ -70,6 +74,9 @@
     <AndroidResource Include="Resources\layout\DataTransfer.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\ControllerSettings.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml">
@@ -84,6 +91,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\MySeekBar.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
