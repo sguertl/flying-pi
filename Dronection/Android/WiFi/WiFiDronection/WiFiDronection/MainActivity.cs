@@ -119,7 +119,7 @@ namespace WiFiDronection
 
             if (wifiManager.IsWifiEnabled)
             {
-                //StartActivity(typeof(DataTransferActivity));
+                StartActivity(typeof(DataTransferActivity));
                 // Go to next activity
             }
             else
