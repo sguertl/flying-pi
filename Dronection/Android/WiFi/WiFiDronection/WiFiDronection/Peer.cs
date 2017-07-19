@@ -14,7 +14,6 @@ namespace WiFiDronection
 {
     public class Peer
     {
-        public string Name { get; set; }
         public string BSSID { get; set; }
 
         public string SSID { get; set; }
@@ -23,7 +22,7 @@ namespace WiFiDronection
 
         public override string ToString()
         {
-            return string.Format("{0}\n{1}", Name, BSSID);
+            return string.Format("{0}\n{1}", SSID, BSSID);
         }
     }
 }

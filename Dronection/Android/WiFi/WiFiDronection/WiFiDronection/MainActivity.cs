@@ -50,14 +50,10 @@ namespace WiFiDronection
                         RunOnUiThread(() => mLvPeer.Adapter = mAdapter);
                     }
 
-                    if (mAdapter.Count > 0)
-                    {
-                        RunOnUiThread(() => mAdapter.Clear());
-                    }
-
-                    //!filter nach neuem und anzeige rpi
-                    //IEnumerable<ScanResult> results = wifiList.GroupBy(sr => sr.Ssid).Select(group => group.First());
-                    foreach (var wifi in wifiList)//results)
+                    mAdapter.Clear();
+                    
+                    IEnumerable<ScanResult> results = wifiList.Where(w => w.Ssid.ToUpper().Contains("RPI") || w.Ssid.ToUpper().Contains("RASPBERRY"));
+                    foreach (var wifi in results)
                     {
                         var wifi1 = wifi;
                         RunOnUiThread(() =>
