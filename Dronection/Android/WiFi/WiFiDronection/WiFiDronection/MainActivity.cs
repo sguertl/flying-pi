@@ -14,8 +14,9 @@ namespace WiFiDronection
     public class MainActivity : Activity
     {
         private ListView mLvPeer;
-        private ArrayAdapter<Peer> mAdapter;
 
+        private ArrayAdapter<Peer> mAdapter;
+        private List<Peer> mPeerList;
         private string mSelectedSsid;
 
         protected override void OnCreate(Bundle bundle)
@@ -25,6 +26,8 @@ namespace WiFiDronection
 
             mLvPeer = FindViewById<ListView>(Resource.Id.lvPeers);
             mLvPeer.ItemClick += OnListViewItemClick;
+
+            mPeerList = new List<Peer>();
 
             //var aj = GetSystemService(WifiService).JavaCast<WifiManager>();
             //aj.Disconnect();
@@ -51,16 +54,17 @@ namespace WiFiDronection
                     }
                     
                     IEnumerable<ScanResult> results = wifiList.Where(w => w.Ssid.ToUpper().Contains("RPI") || w.Ssid.ToUpper().Contains("RASPBERRY"));
-                    List<Peer> adapterPeers = mAdapter.ToArray<Peer>().ToList();
 
                     foreach (var wifi in results)
                     {
                         var wifi1 = wifi;
                         RunOnUiThread(() =>
                         {
-                            if(adapterPeers.Any(p => p.SSID == wifi1.Ssid) == false)
+                            if(mPeerList.Any(p => p.SSID == wifi1.Ssid) == false)
                             {
-                                mAdapter.Add(new Peer { SSID = wifi1.Ssid, BSSID = wifi1.Bssid, Encryption = wifi1.Capabilities });
+                                Peer p = new Peer { SSID = wifi1.Ssid, BSSID = wifi1.Bssid, Encryption = wifi1.Capabilities };
+                                mAdapter.Add(p);
+                                mPeerList.Add(p);
                             }
                         });
                     }
