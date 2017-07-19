@@ -2,11 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-  
-  <ListView
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/lvPeers" />
-  
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/tvHeader"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="WiFi Dronection"
+        android:textAlignment="center"
+        android:gravity="center_horizontal"
+        android:textSize="24dp"
+        android:fontFamily="Assets/OpenSans-Light.ttf"
+        android:layout_margin="10dp" />
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lvPeers" />
 </LinearLayout>
