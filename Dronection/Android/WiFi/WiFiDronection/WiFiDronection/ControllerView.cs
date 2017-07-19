@@ -46,8 +46,6 @@ namespace WiFiDronection
         private Joystick m_RightJS;
 
         // Transfer data via bluetooth
-        //private readonly DataTransfer m_Transfer;
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Ersetzen mit SocketConnection
         private SocketConnection mSocketConnection;
 
         // Timer for sending data and checking BT connection

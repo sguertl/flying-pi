@@ -65,7 +65,7 @@ namespace WiFiDronection
                     SocketAddress socketAdr = new InetSocketAddress(SERVER_ADDRESS, SERVERPORT);
                     Thread.Sleep(5000);
                     m_Socket.Connect(socketAdr, 2000);
-                    mDataOutputStream = new DataOutputStream(m_Socket.OutputStream);
+                    //mDataOutputStream = new DataOutputStream(m_Socket.OutputStream);
                 }
             }
             catch (Java.Lang.Exception ex)
@@ -73,6 +73,10 @@ namespace WiFiDronection
                 FLAG = false;
                 Log.Debug(TAG, ex.Message);
                 return;
+            }
+            finally
+            {
+                mDataOutputStream = new DataOutputStream(m_Socket.OutputStream);
             }
         }
 
@@ -132,9 +136,18 @@ namespace WiFiDronection
             b[16] = (byte)((checksum >> 16) & 0xFF);
             b[17] = (byte)((checksum >> 8) & 0xFF);
             b[18] = (byte)(checksum & 0xFF);
-
+            output(b);
             return b;
         }
 
+        private void output(byte[] bytes)
+        {
+            string str = "";
+            foreach(byte b in bytes)
+            {
+                str += b + " ";
+            }
+            Log.Debug("!!!", str);
+        }
     }
 }
