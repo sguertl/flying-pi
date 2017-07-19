@@ -76,7 +76,10 @@ namespace WiFiDronection
             }
             finally
             {
-                mDataOutputStream = new DataOutputStream(m_Socket.OutputStream);
+                if (FLAG)
+                {
+                    mDataOutputStream = new DataOutputStream(m_Socket.OutputStream);
+                }
             }
         }
 
