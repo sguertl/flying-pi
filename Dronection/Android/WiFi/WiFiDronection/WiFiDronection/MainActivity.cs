@@ -8,12 +8,14 @@ using Android.Runtime;
 using System.Collections.Generic;
 using System.Linq;
 using Android.Graphics;
+using Android.Views;
 
 namespace WiFiDronection
 {
-    [Activity(Label = "WiFiDronection", MainLauncher = true, Icon = "@drawable/icon")]
+    [Activity(MainLauncher = true, Icon = "@drawable/icon", Theme = "@android:style/Theme.Holo.Light")]
     public class MainActivity : Activity
     {
+        private TextView mTvHeader;
         private ListView mLvPeer;
 
         private ArrayAdapter<Peer> mAdapter;
@@ -24,9 +26,14 @@ namespace WiFiDronection
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.Main);
+            RequestWindowFeature(WindowFeatures.NoTitle);
+            Window.AddFlags(WindowManagerFlags.Fullscreen);
+
+            mTvHeader = FindViewById<TextView>(Resource.Id.tvHeader);
+            var font = Typeface.CreateFromAsset(Assets, "OpenSans-Light.ttf");
+            mTvHeader.Typeface = font;
 
             mLvPeer = FindViewById<ListView>(Resource.Id.lvPeers);
-            
             mLvPeer.ItemClick += OnListViewItemClick;
 
             mPeerList = new List<Peer>();
@@ -114,12 +121,12 @@ namespace WiFiDronection
 
             WifiConfiguration wc = myWifi.First(x => x.Ssid.Contains(mSelectedSsid));
             wifiManager.Disconnect();
-            wifiManager.EnableNetwork(wc.NetworkId, true);
+            wifiManager.EnableNetwork(id, true);
             wifiManager.Reconnect();
 
             if (wifiManager.IsWifiEnabled)
             {
-                StartActivity(typeof(DataTransferActivity));
+                StartActivity(typeof(ControllerActivity));
                 // Go to next activity
             }
             else
