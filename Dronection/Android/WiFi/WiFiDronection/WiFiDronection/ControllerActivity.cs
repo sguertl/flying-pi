@@ -45,6 +45,8 @@ namespace WiFiDronection
 
         private string mStorageDirPath;
 
+        private SocketConnection mSocketConnection;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -107,11 +109,24 @@ namespace WiFiDronection
 
         private void OnStartController(object sender, EventArgs e)
         {
+            mSocketConnection = new SocketConnection();
+            mSocketConnection.Start();
             m_YawTrim = m_SbYawTrim.Progress;
             var cv = new ControllerView(this, m_Settings);
             SetContentView(cv);
         }
 
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            SocketConnection.onCancel();
+        }
+
+        protected override void OnStop()
+        {
+            base.OnStop();
+            SocketConnection.onCancel();
+        }
 
         private void OnThrottleRightClick(object sender, EventArgs e)
         {

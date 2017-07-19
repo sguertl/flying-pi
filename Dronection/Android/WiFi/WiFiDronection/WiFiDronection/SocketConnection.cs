@@ -18,7 +18,7 @@ namespace WiFiDronection
 {
     public class SocketConnection : Thread
     {
-        private readonly string TAG = "SocketConnection";
+        private static readonly string TAG = "SocketConnection";
 
         public static bool FLAG = true;
         public static Socket m_Socket;
@@ -28,7 +28,7 @@ namespace WiFiDronection
         private static readonly byte STARTBYTE = 10;
         private static readonly int PACKET_SIZE = 19;
 
-        private DataOutputStream mDataOutputStream;
+        private static DataOutputStream mDataOutputStream;
 
         public SocketConnection()
         {
@@ -83,7 +83,7 @@ namespace WiFiDronection
             }
         }
 
-        public void Write(params Int16[] args)
+        public static void Write(params Int16[] args)
         {
             byte[] bytes = ConvertToByte(args);
             try
@@ -99,7 +99,7 @@ namespace WiFiDronection
             }
         }
 
-        private byte[] ConvertToByte(params Int16[] args)
+        private static byte[] ConvertToByte(params Int16[] args)
         {
             byte[] b = new byte[PACKET_SIZE];
 
@@ -139,8 +139,22 @@ namespace WiFiDronection
             b[16] = (byte)((checksum >> 16) & 0xFF);
             b[17] = (byte)((checksum >> 8) & 0xFF);
             b[18] = (byte)(checksum & 0xFF);
-            output(b);
+           // output(b);
             return b;
+        }
+
+        public static void onCancel()
+        {
+            try
+            {
+                mDataOutputStream.Close();
+                m_Socket.Close();
+
+                
+            }catch(Java.Lang.Exception ex)
+            {
+                Log.Debug(TAG, "Failed closing");
+            }
         }
 
         private void output(byte[] bytes)

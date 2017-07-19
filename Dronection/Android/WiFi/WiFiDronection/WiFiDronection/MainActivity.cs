@@ -40,9 +40,10 @@ namespace WiFiDronection
 
             //var aj = GetSystemService(WifiService).JavaCast<WifiManager>();
             //aj.Disconnect();
-
             RefreshWifiList();
+
         }
+
 
         private void RefreshWifiList()
         {

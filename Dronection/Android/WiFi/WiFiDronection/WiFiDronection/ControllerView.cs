@@ -46,7 +46,7 @@ namespace WiFiDronection
         private Joystick m_RightJS;
 
         // Transfer data via bluetooth
-        private SocketConnection mSocketConnection;
+        
 
         // Timer for sending data and checking BT connection
         private readonly System.Timers.Timer m_WriteTimer;
@@ -62,8 +62,7 @@ namespace WiFiDronection
             ScreenHeight = Resources.DisplayMetrics.HeightPixels;
 
             //m_Transfer = new DataTransfer(this);
-            mSocketConnection = new SocketConnection();
-            mSocketConnection.Start();
+   
 
             InitShapes();
             InitJoysticks();
@@ -456,14 +455,14 @@ namespace WiFiDronection
             if (!m_Settings.Inverted)
             {
 
-                mSocketConnection.Write((Int16)m_LeftJS.Throttle,
+                SocketConnection.Write((Int16)m_LeftJS.Throttle,
                                   (Int16)(m_LeftJS.Rudder + m_Settings.TrimYaw),
                                   (Int16)(m_RightJS.Aileron + m_Settings.TrimPitch),
                                   (Int16)(m_RightJS.Elevator + m_Settings.TrimRoll));
             }
             else
             {
-                mSocketConnection.Write((Int16)m_RightJS.Throttle,
+                SocketConnection.Write((Int16)m_RightJS.Throttle,
                                   (Int16)(m_LeftJS.Rudder + m_Settings.TrimYaw),
                                   (Int16)(m_LeftJS.Aileron + m_Settings.TrimPitch),
                                   (Int16)(m_RightJS.Elevator + m_Settings.TrimRoll));
