@@ -15,6 +15,7 @@ using Java.IO;
 using System.Threading.Tasks;
 using Android.Util;
 using Android.Net.Wifi;
+using Android.Graphics;
 
 namespace WiFiDronection
 {
@@ -67,6 +68,8 @@ namespace WiFiDronection
             etInput = FindViewById<EditText>(Resource.Id.etInput);
 
             btSendData = FindViewById<Button>(Resource.Id.btSendData);
+            var font = Typeface.CreateFromAsset(Assets, "OpenSans-Light.ttf");
+            btSendData.Typeface = font;
             btSendData.Click += OnSendData;
         }
 

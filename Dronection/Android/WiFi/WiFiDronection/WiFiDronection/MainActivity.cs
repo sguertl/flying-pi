@@ -7,6 +7,7 @@ using Android.Net.Wifi;
 using Android.Runtime;
 using System.Collections.Generic;
 using System.Linq;
+using Android.Graphics;
 
 namespace WiFiDronection
 {
@@ -25,6 +26,7 @@ namespace WiFiDronection
             SetContentView(Resource.Layout.Main);
 
             mLvPeer = FindViewById<ListView>(Resource.Id.lvPeers);
+            
             mLvPeer.ItemClick += OnListViewItemClick;
 
             mPeerList = new List<Peer>();
