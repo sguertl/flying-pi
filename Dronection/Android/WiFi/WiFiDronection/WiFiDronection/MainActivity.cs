@@ -49,16 +49,19 @@ namespace WiFiDronection
                         mAdapter = new ArrayAdapter<Peer>(this, Android.Resource.Layout.SimpleListItem1, Android.Resource.Id.Text1);
                         RunOnUiThread(() => mLvPeer.Adapter = mAdapter);
                     }
-
-                    mAdapter.Clear();
                     
                     IEnumerable<ScanResult> results = wifiList.Where(w => w.Ssid.ToUpper().Contains("RPI") || w.Ssid.ToUpper().Contains("RASPBERRY"));
+                    List<Peer> adapterPeers = mAdapter.ToArray<Peer>().ToList();
+
                     foreach (var wifi in results)
                     {
                         var wifi1 = wifi;
                         RunOnUiThread(() =>
                         {
-                            mAdapter.Add(new Peer { SSID = wifi1.Ssid, BSSID = wifi1.Bssid, Encryption = wifi1.Capabilities });
+                            if(adapterPeers.Any(p => p.SSID == wifi1.Ssid) == false)
+                            {
+                                mAdapter.Add(new Peer { SSID = wifi1.Ssid, BSSID = wifi1.Bssid, Encryption = wifi1.Capabilities });
+                            }
                         });
                     }
 
