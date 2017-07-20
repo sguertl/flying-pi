@@ -21,22 +21,23 @@ namespace WiFiDronection
         private static readonly string TAG = "SocketConnection";
 
         public static bool FLAG = true;
-        public static Socket m_Socket;
+        public Socket m_Socket;
 
         private static readonly string SERVER_ADDRESS = "172.24.1.1";
         private static readonly int SERVERPORT = 5050;
         private static readonly byte STARTBYTE = 10;
         private static readonly int PACKET_SIZE = 19;
 
-        private static DataOutputStream mDataOutputStream;
+        private DataOutputStream mDataOutputStream;
 
         public SocketConnection()
-        {
+        {        
             m_Socket = new Socket();
         }
 
         public override void Run()
         {
+              FLAG = true;
             try
             {
                 m_Socket = new Socket(SERVER_ADDRESS, SERVERPORT);
@@ -65,7 +66,6 @@ namespace WiFiDronection
                     SocketAddress socketAdr = new InetSocketAddress(SERVER_ADDRESS, SERVERPORT);
                     Thread.Sleep(5000);
                     m_Socket.Connect(socketAdr, 2000);
-                    //mDataOutputStream = new DataOutputStream(m_Socket.OutputStream);
                 }
             }
             catch (Java.Lang.Exception ex)
@@ -83,7 +83,7 @@ namespace WiFiDronection
             }
         }
 
-        public static void Write(params Int16[] args)
+        public void Write(params Int16[] args)
         {
             byte[] bytes = ConvertToByte(args);
             try
@@ -99,7 +99,7 @@ namespace WiFiDronection
             }
         }
 
-        private static byte[] ConvertToByte(params Int16[] args)
+        private byte[] ConvertToByte(params Int16[] args)
         {
             byte[] b = new byte[PACKET_SIZE];
 
@@ -139,18 +139,16 @@ namespace WiFiDronection
             b[16] = (byte)((checksum >> 16) & 0xFF);
             b[17] = (byte)((checksum >> 8) & 0xFF);
             b[18] = (byte)(checksum & 0xFF);
-           // output(b);
+            output(b);
             return b;
         }
 
-        public static void onCancel()
+        public void onCancel()
         {
             try
             {
                 mDataOutputStream.Close();
-                m_Socket.Close();
-
-                
+                m_Socket.Close();         
             }catch(Java.Lang.Exception ex)
             {
                 Log.Debug(TAG, "Failed closing");

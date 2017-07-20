@@ -51,7 +51,9 @@ namespace WiFiDronection
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.ControllerSettings);
-        
+
+            mSocketConnection = new SocketConnection();
+
             m_RgControlMethod = FindViewById<RadioGroup>(Resource.Id.rgControlMethod);
             m_RbThrottleLeft = FindViewById<RadioButton>(Resource.Id.rbThrottleLeft);
             m_RbThrottleRight = FindViewById<RadioButton>(Resource.Id.rbThrottleRight);
@@ -108,24 +110,23 @@ namespace WiFiDronection
         }
 
         private void OnStartController(object sender, EventArgs e)
-        {
-            mSocketConnection = new SocketConnection();
+        {           
             mSocketConnection.Start();
             m_YawTrim = m_SbYawTrim.Progress;
-            var cv = new ControllerView(this, m_Settings);
+            var cv = new ControllerView(this, m_Settings, mSocketConnection);
             SetContentView(cv);
         }
 
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            SocketConnection.onCancel();
+            mSocketConnection.onCancel();
         }
 
         protected override void OnStop()
         {
             base.OnStop();
-            SocketConnection.onCancel();
+            mSocketConnection.onCancel();
         }
 
         private void OnThrottleRightClick(object sender, EventArgs e)
