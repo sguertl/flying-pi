@@ -19,20 +19,18 @@ namespace WiFiDronection
              )]
     public class ControllerActivity : Activity
     {
-        ControllerSettings m_Settings;
-
         private RadioGroup m_RgControlMethod;
         private RadioButton m_RbThrottleLeft;
         private RadioButton m_RbThrottleRight;
         private TextView m_TvDescription;
         private Button m_BtStart;
         private Button m_BtShowLog;
-        private SeekBar m_SbYawTrim;
-        private SeekBar m_SbPitchTrim;
-        private SeekBar m_SbRollTrim;
-        private TextView m_TvYawTrim;
-        private TextView m_TvPitchTrim;
-        private TextView m_TvRollTrim;
+
+        private SeekBar mSbTrimBar;
+        private TextView mTvTrimValue;
+        private RadioButton mRbYawTrim;
+        private RadioButton mRbPitchTrim;
+        private RadioButton mRbRollTrim;
 
         //private IntentFilter m_Filter; // Used to filter events when searching
         //private CallReciver m_Receiver;
@@ -60,29 +58,6 @@ namespace WiFiDronection
             m_TvDescription = FindViewById<TextView>(Resource.Id.tvDescription);
             m_BtStart = FindViewById<Button>(Resource.Id.btStart);
             m_BtShowLog = FindViewById<Button>(Resource.Id.btShowLog);
-            m_SbYawTrim = FindViewById<SeekBar>(Resource.Id.sbYawTrim);
-            m_SbPitchTrim = FindViewById<SeekBar>(Resource.Id.sbPitchTrim);
-            m_SbRollTrim = FindViewById<SeekBar>(Resource.Id.sbRollTrim);
-            m_TvYawTrim = FindViewById<TextView>(Resource.Id.tvYawTrim);
-            m_TvYawTrim.Text = "Yaw Trim ( " + ((m_SbYawTrim.Progress * 2 / 10f) - 10) + " )";
-            m_TvPitchTrim = FindViewById<TextView>(Resource.Id.tvPitchTrim);
-            m_TvPitchTrim.Text = "Pitch Trim ( " + ((m_SbPitchTrim.Progress * 2 / 10f) - 10) + " )";
-            m_TvRollTrim = FindViewById<TextView>(Resource.Id.TvRollTrim);
-            m_TvRollTrim.Text = "Roll Trim ( " + ((m_SbRollTrim.Progress * 2 / 10f) - 10) + " )";
-            m_Settings = new ControllerSettings();
-
-            m_SbYawTrim.ProgressChanged += (sender, e) => {
-                m_TvYawTrim.Text = "Yaw Trim ( " + ((m_SbYawTrim.Progress * 2 / 10f) - 10) + " )";
-                m_Settings.TrimYaw = (int)(m_SbYawTrim.Progress * 2 / 10f) - 10;
-            };
-            m_SbPitchTrim.ProgressChanged += (sender, e) => {
-                m_TvPitchTrim.Text = "Pitch Trim ( " + ((m_SbPitchTrim.Progress * 2 / 10f) - 10) + " )";
-                m_Settings.TrimPitch = (int)(m_SbPitchTrim.Progress * 2 / 10f) - 10;
-            };
-            m_SbRollTrim.ProgressChanged += (sender, e) => {
-                m_TvRollTrim.Text = "Roll Trim ( " + ((m_SbRollTrim.Progress * 2 / 10f) - 10) + " )";
-                m_Settings.TrimRoll = (int)(m_SbRollTrim.Progress * 2 / 10f) - 10;
-            };
 
             m_RbThrottleLeft.Click += OnThrottleLeftClick;
             m_RbThrottleRight.Click += OnThrottleRightClick;
@@ -112,9 +87,53 @@ namespace WiFiDronection
         private void OnStartController(object sender, EventArgs e)
         {           
             mSocketConnection.Start();
-            m_YawTrim = m_SbYawTrim.Progress;
-            var cv = new ControllerView(this, m_Settings, mSocketConnection);
-            SetContentView(cv);
+            SetContentView(new ControllerView(this, mSocketConnection));
+            View.Inflate(this, Resource.Layout.ControllerLayout, null);
+            Make();
+        }
+
+        private void Make()
+        {
+            mSbTrimBar = FindViewById<SeekBar>(Resource.Id.sbTrimbar);
+            mTvTrimValue = FindViewById<TextView>(Resource.Id.tvTrimValue);
+            mRbYawTrim = FindViewById<RadioButton>(Resource.Id.rbYawTrim);
+            mRbPitchTrim = FindViewById<RadioButton>(Resource.Id.rbPitchTrim);
+            mRbRollTrim = FindViewById<RadioButton>(Resource.Id.rbRollTrim);
+
+            mSbTrimBar.ProgressChanged += delegate
+            {
+                if (mRbYawTrim.Checked == true)
+                {
+                    ControllerView.Settings.TrimYaw = mSbTrimBar.Progress;
+                }
+                else if (mRbPitchTrim.Checked == true)
+                {
+                    ControllerView.Settings.TrimPitch = mSbTrimBar.Progress;
+                }
+                else
+                {
+                    ControllerView.Settings.TrimRoll = mSbTrimBar.Progress;
+                }
+                mTvTrimValue.Text = mSbTrimBar.Progress.ToString();
+            };
+
+            mRbYawTrim.Click += delegate
+            {
+                mTvTrimValue.Text = ControllerView.Settings.TrimYaw.ToString();
+                mSbTrimBar.Progress = ControllerView.Settings.TrimYaw;
+            };
+
+            mRbPitchTrim.Click += delegate
+            {
+                mTvTrimValue.Text = ControllerView.Settings.TrimPitch.ToString();
+                mSbTrimBar.Progress = ControllerView.Settings.TrimPitch;
+            };
+
+            mRbRollTrim.Click += delegate
+            {
+                mTvTrimValue.Text = ControllerView.Settings.TrimRoll.ToString();
+                mSbTrimBar.Progress = ControllerView.Settings.TrimRoll;
+            };
         }
 
         protected override void OnDestroy()
@@ -131,13 +150,13 @@ namespace WiFiDronection
 
         private void OnThrottleRightClick(object sender, EventArgs e)
         {
-            m_Settings.Inverted = ControllerSettings.ACTIVE;
+            m_Inverted = ControllerSettings.ACTIVE;
             m_TvDescription.Text = TEXT_RIGHT;
         }
 
         private void OnThrottleLeftClick(object sender, EventArgs e)
         {
-            m_Settings.Inverted = ControllerSettings.INACTIVE;
+            m_Inverted = ControllerSettings.INACTIVE;
             m_TvDescription.Text = TEXT_LEFT;
         }
 
@@ -145,13 +164,13 @@ namespace WiFiDronection
         {
             if (m_RbThrottleLeft.Selected)
             {
-                m_Settings.Inverted = ControllerSettings.INACTIVE;
+                m_Inverted = ControllerSettings.INACTIVE;
                 m_TvDescription.Text = TEXT_LEFT;
 
             }
             if (m_RbThrottleRight.Selected)
             {
-                m_Settings.Inverted = ControllerSettings.ACTIVE;
+                m_Inverted = ControllerSettings.ACTIVE;
                 m_TvDescription.Text = TEXT_RIGHT;
             }
         }

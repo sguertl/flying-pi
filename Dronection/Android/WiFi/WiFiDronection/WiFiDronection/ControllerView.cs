@@ -19,11 +19,11 @@ namespace WiFiDronection
     public class ControllerView : View, View.IOnTouchListener
     {
         // Controller Settings
-        ControllerSettings m_Settings;
+        public static ControllerSettings Settings { get; set; }
 
         // Screen metrics in px
-        public readonly float ScreenWidth;
-        public readonly float ScreenHeight;
+        public float ScreenWidth;
+        public float ScreenHeight;
 
         // Joystick ovals
         private ShapeDrawable m_ShapeStickLeft;
@@ -49,20 +49,42 @@ namespace WiFiDronection
         SocketConnection m_SocketConnection;
 
         // Timer for sending data and checking BT connection
-        private readonly System.Timers.Timer m_WriteTimer;
+        private System.Timers.Timer m_WriteTimer;
 
-        public ControllerView(Context context, ControllerSettings settings, SocketConnection socketCon) : base(context)
+        public ControllerView(Context context, SocketConnection socketCon) : base(context)
         {
-            m_Settings = settings;
+            m_SocketConnection = socketCon;
+            Init(context);
+        }
 
+        public ControllerView(Context context, IAttributeSet attrs) : base(context, attrs)
+        {
+            Init(context);
+        }
+
+        public ControllerView(Context context, IAttributeSet attrs, int defStyle) : base(context, attrs, defStyle)
+        {
+            Init(context);
+        }
+
+        private void Init(Context context)
+        {
             SetOnTouchListener(this);
             SetBackgroundColor(Color.White);
+
+            Settings = new ControllerSettings
+            {
+                HeightControlActivated = false,
+                Inverted = false,
+                TrimPitch = 50,
+                TrimRoll = 50,
+                TrimYaw = 50
+            };
 
             ScreenWidth = Resources.DisplayMetrics.WidthPixels;
             ScreenHeight = Resources.DisplayMetrics.HeightPixels;
 
             //m_Transfer = new DataTransfer(this);
-            this.m_SocketConnection = socketCon;
 
             InitShapes();
             InitJoysticks();
@@ -73,6 +95,13 @@ namespace WiFiDronection
             m_WriteTimer.Elapsed += Write;
             m_WriteTimer.Start();
         }
+
+        public SocketConnection SocketCon
+        {
+            get { return m_SocketConnection; }
+            set { m_SocketConnection = value; }
+        }
+
 
         private void InitShapes()
         {
@@ -123,20 +152,20 @@ namespace WiFiDronection
         /// </summary>
         private void InitJoysticks()
         {
-            m_LeftJS = new Joystick(ScreenWidth, ScreenHeight, true, m_Settings.Inverted);
-            m_RightJS = new Joystick(ScreenWidth, ScreenHeight, false, m_Settings.Inverted);
+            m_LeftJS = new Joystick(ScreenWidth, ScreenHeight, true, Settings.Inverted);
+            m_RightJS = new Joystick(ScreenWidth, ScreenHeight, false, Settings.Inverted);
 
             SetBoundsForLeftStick(
                 (int)m_LeftJS.CenterX - (int)Joystick.StickRadius,
-                m_Settings.Inverted ? (int)m_LeftJS.CenterY - (int)Joystick.StickRadius : (int)m_LeftJS.CenterY + (int)Joystick.StickRadius,
+                Settings.Inverted ? (int)m_LeftJS.CenterY - (int)Joystick.StickRadius : (int)m_LeftJS.CenterY + (int)Joystick.StickRadius,
                 (int)m_LeftJS.CenterX + (int)Joystick.StickRadius,
-                m_Settings.Inverted ? (int)m_LeftJS.CenterY + (int)Joystick.StickRadius : (int)m_LeftJS.CenterY + 3 * (int)Joystick.StickRadius);
+                Settings.Inverted ? (int)m_LeftJS.CenterY + (int)Joystick.StickRadius : (int)m_LeftJS.CenterY + 3 * (int)Joystick.StickRadius);
 
             SetBoundsForRightStick(
                 (int)m_RightJS.CenterX - (int)Joystick.StickRadius,
-                m_Settings.Inverted ? (int)m_RightJS.CenterY + (int)Joystick.StickRadius : (int)m_RightJS.CenterY - (int)Joystick.StickRadius,
+                Settings.Inverted ? (int)m_RightJS.CenterY + (int)Joystick.StickRadius : (int)m_RightJS.CenterY - (int)Joystick.StickRadius,
                 (int)m_RightJS.CenterX + (int)Joystick.StickRadius,
-                m_Settings.Inverted ? (int)m_RightJS.CenterY + 3 * (int)Joystick.StickRadius : (int)m_RightJS.CenterY + (int)Joystick.StickRadius);
+                Settings.Inverted ? (int)m_RightJS.CenterY + 3 * (int)Joystick.StickRadius : (int)m_RightJS.CenterY + (int)Joystick.StickRadius);
 
             m_ShapeRadiusLeft.SetBounds(
                 (int)m_LeftJS.CenterX - (int)Joystick.DisplacementRadius,
@@ -171,7 +200,7 @@ namespace WiFiDronection
             switch (e.Action)
             {
                 case MotionEventActions.Up:
-                    if (m_Settings.Inverted)
+                    if (Settings.Inverted)
                     {
                         if (e.GetX() <= ScreenWidth / 2)
                         {
@@ -195,7 +224,7 @@ namespace WiFiDronection
                     }
                     break;
                 case MotionEventActions.Pointer1Up:
-                    if (m_Settings.Inverted)
+                    if (Settings.Inverted)
                     {
                         for (int i = 0; i < Math.Min(2, e.PointerCount); i++)
                         {
@@ -225,7 +254,7 @@ namespace WiFiDronection
                     }
                     break;
                 case MotionEventActions.Pointer2Up:
-                    if (m_Settings.Inverted)
+                    if (Settings.Inverted)
                     {
                         for (int i = 0; i < Math.Min(2, e.PointerCount); i++)
                         {
@@ -262,7 +291,7 @@ namespace WiFiDronection
                     break;
             }
 
-            if (m_Settings.Inverted)
+            if (Settings.Inverted)
             {
                 if (e.PointerCount == 1 && e.GetX() <= ScreenWidth / 2 && !m_RightJS.IsCentered())
                 {
@@ -381,7 +410,7 @@ namespace WiFiDronection
             m_LeftJS.CalculateValues();
             m_RightJS.CalculateValues();
 
-            if (!m_Settings.Inverted)
+            /*if (!Settings.Inverted)
             {
                 // Draw data text for left joystick
                 canvas.DrawText("DATA LEFT JOYSTICK", m_LeftJS.CenterX, m_LeftJS.CenterY - ScreenHeight / 2 - 30, paint);
@@ -397,7 +426,7 @@ namespace WiFiDronection
                 canvas.DrawText("Direction: " + m_RightJS.Direction, m_RightJS.CenterX, m_RightJS.CenterY - ScreenHeight / 2 + 60, paint);
                 canvas.DrawText("Centered: " + m_RightJS.IsCentered(), m_RightJS.CenterX, m_RightJS.CenterY - ScreenHeight / 2 + 90, paint);
             }
-            else if (m_Settings.Inverted)
+            else if (Settings.Inverted)
             {
                 // Draw data text for left joystick
                 canvas.DrawText("DATA LEFT JOYSTICK", m_LeftJS.CenterX, m_LeftJS.CenterY - ScreenHeight / 2 - 30, paint);
@@ -412,7 +441,7 @@ namespace WiFiDronection
                 canvas.DrawText("Aileron: " + m_RightJS.Aileron, m_RightJS.CenterX, m_RightJS.CenterY - ScreenHeight / 2 + 30, paint);
                 canvas.DrawText("Direction: " + m_RightJS.Direction, m_RightJS.CenterX, m_RightJS.CenterY - ScreenHeight / 2 + 60, paint);
                 canvas.DrawText("Centered: " + m_RightJS.IsCentered(), m_RightJS.CenterX, m_RightJS.CenterY - ScreenHeight / 2 + 90, paint);
-            }
+            }*/
 
             // TO BE ADDED: Displaying received data
         }
@@ -452,20 +481,20 @@ namespace WiFiDronection
         /// </summary>
         public void Write(object sender, System.Timers.ElapsedEventArgs e)
         {
-            if (!m_Settings.Inverted)
+            if (!Settings.Inverted)
             {
 
                 m_SocketConnection.Write((Int16)m_LeftJS.Throttle,
-                                  (Int16)(m_LeftJS.Rudder + m_Settings.TrimYaw),
-                                  (Int16)(m_RightJS.Aileron + m_Settings.TrimPitch),
-                                  (Int16)(m_RightJS.Elevator + m_Settings.TrimRoll));
+                                  (Int16)(m_LeftJS.Rudder + Settings.TrimYaw),
+                                  (Int16)(m_RightJS.Aileron + Settings.TrimPitch),
+                                  (Int16)(m_RightJS.Elevator + Settings.TrimRoll));
             }
             else
             {
                 m_SocketConnection.Write((Int16)m_RightJS.Throttle,
-                                  (Int16)(m_LeftJS.Rudder + m_Settings.TrimYaw),
-                                  (Int16)(m_LeftJS.Aileron + m_Settings.TrimPitch),
-                                  (Int16)(m_RightJS.Elevator + m_Settings.TrimRoll));
+                                  (Int16)(m_LeftJS.Rudder + Settings.TrimYaw),
+                                  (Int16)(m_LeftJS.Aileron + Settings.TrimPitch),
+                                  (Int16)(m_RightJS.Elevator + Settings.TrimRoll));
             }
         }
     }
