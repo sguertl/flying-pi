@@ -12,7 +12,7 @@ using Android.Views;
 
 namespace WiFiDronection
 {
-    [Activity(MainLauncher = true, Icon = "@drawable/icon", Theme = "@android:style/Theme.Holo.Light")]
+    [Activity(MainLauncher = true, Icon = "@drawable/icon", Theme = "@android:style/Theme.Holo.Light.NoActionBar.Fullscreen")]
     public class MainActivity : Activity
     {
         private TextView mTvHeader;

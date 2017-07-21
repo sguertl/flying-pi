@@ -76,7 +76,10 @@ namespace WiFiDronection
 			public const int btStart = 2131034122;
 			
 			// aapt resource value: 0x7f050010
-			public const int etDialogPassword = 2131034128;
+			public const int btnHelp = 2131034128;
+			
+			// aapt resource value: 0x7f050011
+			public const int etDialogPassword = 2131034129;
 			
 			// aapt resource value: 0x7f05000c
 			public const int etInput = 2131034124;
