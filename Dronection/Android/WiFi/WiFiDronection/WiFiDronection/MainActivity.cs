@@ -16,6 +16,11 @@ namespace WiFiDronection
     public class MainActivity : Activity
     {
         private TextView mTvHeader;
+        private TextView mTvWifiName;
+        private TextView mTvWifiMac;
+        private TextView mTvFooter;
+        private Button mBtnConnect;
+        private Button mBtnHelp;
         private ListView mLvPeer;
 
         private ArrayAdapter<Peer> mAdapter;
@@ -26,15 +31,28 @@ namespace WiFiDronection
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.Main);
-            //RequestWindowFeature(WindowFeatures.NoTitle);
-            Window.AddFlags(WindowManagerFlags.Fullscreen);
+
+            var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
+            //mTvHeader.Typeface = font;
 
             mTvHeader = FindViewById<TextView>(Resource.Id.tvHeader);
-            var font = Typeface.CreateFromAsset(Assets, "OpenSans-Light.ttf");
-            mTvHeader.Typeface = font;
+            mTvWifiName = FindViewById<TextView>(Resource.Id.tvWifiName);
+            mTvWifiMac = FindViewById<TextView>(Resource.Id.tvWifiMac);
+            mTvFooter = FindViewById<TextView>(Resource.Id.tvFooter);
+            mBtnConnect = FindViewById<Button>(Resource.Id.btnConnect);
+            mBtnHelp = FindViewById<Button>(Resource.Id.btnHelp);
 
-            mLvPeer = FindViewById<ListView>(Resource.Id.lvPeers);
-            mLvPeer.ItemClick += OnListViewItemClick;
+            mTvHeader.Typeface = font;
+            mTvWifiName.Typeface = font;
+            mTvWifiMac.Typeface = font;
+            mTvFooter.Typeface = font;
+            mBtnConnect.Typeface = font;
+            mBtnHelp.Typeface = font;
+
+            mBtnConnect.Click += OnConnect;
+
+            //mLvPeer = FindViewById<ListView>(Resource.Id.lvPeers);
+            //mLvPeer.ItemClick += OnListViewItemClick;
 
             mPeerList = new List<Peer>();
 
@@ -46,7 +64,6 @@ namespace WiFiDronection
             RefreshWifiList();
 
         }
-
 
         private void RefreshWifiList()
         {
@@ -63,7 +80,7 @@ namespace WiFiDronection
                     if (mAdapter == null)
                     {
                         mAdapter = new ArrayAdapter<Peer>(this, Android.Resource.Layout.SimpleListItem1, Android.Resource.Id.Text1);
-                        RunOnUiThread(() => mLvPeer.Adapter = mAdapter);
+                        //RunOnUiThread(() => mLvPeer.Adapter = mAdapter);
                     }
                     
                     IEnumerable<ScanResult> results = wifiList.Where(w => w.Ssid.ToUpper().Contains("RPI") || w.Ssid.ToUpper().Contains("RASPBERRY"));
@@ -76,6 +93,11 @@ namespace WiFiDronection
                             if(mPeerList.Any(p => p.SSID == wifi1.Ssid) == false)
                             {
                                 Peer p = new Peer { SSID = wifi1.Ssid, BSSID = wifi1.Bssid, Encryption = wifi1.Capabilities };
+                                
+                                mSelectedSsid = p.SSID;
+                                mTvWifiName.Text = "SSID: " + p.SSID;
+                                mTvWifiMac.Text = "MAC: " + p.BSSID;
+
                                 mAdapter.Add(p);
                                 mPeerList.Add(p);
                             }
@@ -87,10 +109,17 @@ namespace WiFiDronection
             });
         }
 
-        private void OnListViewItemClick(object sender, AdapterView.ItemClickEventArgs itemClickEventArgs)
+        /*private void OnListViewItemClick(object sender, AdapterView.ItemClickEventArgs itemClickEventArgs)
         {
             var wifiItem = mAdapter.GetItem(itemClickEventArgs.Position);
             mSelectedSsid = wifiItem.SSID;
+            OnCreateDialog(0).Show();
+        }*/
+
+        private void OnConnect(object sender, System.EventArgs e)
+        {
+            //var wifiItem = mAdapter.GetItem(itemClickEventArgs.Position);
+            //mSelectedSsid = wifiItem.SSID;
             OnCreateDialog(0).Show();
         }
 

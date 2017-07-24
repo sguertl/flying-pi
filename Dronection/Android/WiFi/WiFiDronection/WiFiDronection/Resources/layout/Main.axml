@@ -11,28 +11,74 @@
         android:text="WiFi Dronection"
         android:gravity="center_horizontal"
         android:textSize="40dp"
-        android:fontFamily="Assets/OpenSans-Light.ttf"
+        android:fontFamily="Assets/SourceSansPro-Light.ttf"
         android:layout_margin="20dp" />
-    <ListView
+    <TextView
+        android:id="@+id/tvWifiName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Searching WiFi connection ..."
+        android:gravity="center_horizontal"
+        android:textSize="20dp"
+        android:fontFamily="Assets/SourceSansPro-Light.ttf"
+        android:layout_margin="10dp" />
+    <TextView
+        android:id="@+id/tvWifiMac"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:gravity="center_horizontal"
+        android:textSize="20dp"
+        android:fontFamily="Assets/SourceSansPro-Light.ttf"
+        android:layout_margin="10dp" />
+<!--<ListView
         android:id="@+id/lvPeers"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content" />-->
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal">        
+        android:gravity="bottom"
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/btnConnect"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Connect"
+            android:fontFamily="Assets/SourceSansPro-Light.tff"
+            android:textSize="20dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_gravity="bottom"
+            android:layout_margin="10dp"
+            android:textColor="#ffffff"
+            android:background="#005DA9" />
         <Button
             android:id="@+id/btnHelp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Help"
-            android:fontFamily="Assets/OpenSans-Light.ttf"
+            android:fontFamily="Assets/SourceSansPro-Light.ttf"
             android:textSize="20dp"
             android:gravity="center"
             android:layout_gravity="bottom"
             android:layout_margin="10dp"
-            android:background="@android:color/holo_blue_dark"
-            android:foreground="#ffffff" />
+            android:textColor="#ffffff"
+            android:background="#005DA9" />
+        <ImageView
+            android:src="@drawable/ifx_logo"
+            android:layout_height="200dp"
+            android:layout_width="wrap_content"
+            android:layout_margin="10dp" />
+        <TextView
+            android:id="@+id/tvFooter"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Copyright Infineon Technologies Austria AG 2017"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="Assets/SourceSansPro-Light.ttf" />
+    <!-- #0076ff, #0e7afe, #3366ff-->
     </LinearLayout>
 </LinearLayout>

@@ -48,7 +48,10 @@ namespace WiFiDronection
 			public const int Icon = 2130837504;
 			
 			// aapt resource value: 0x7f020001
-			public const int MySeekBar = 2130837505;
+			public const int ifx_logo = 2130837505;
+			
+			// aapt resource value: 0x7f020002
+			public const int MySeekBar = 2130837506;
 			
 			static Drawable()
 			{
@@ -72,14 +75,14 @@ namespace WiFiDronection
 			// aapt resource value: 0x7f05000a
 			public const int btStart = 2131034122;
 			
-			// aapt resource value: 0x7f05000e
-			public const int btnHelp = 2131034126;
-			
 			// aapt resource value: 0x7f05000f
-			public const int etDialogPassword = 2131034127;
+			public const int btnConnect = 2131034127;
 			
-			// aapt resource value: 0x7f05000d
-			public const int lvPeers = 2131034125;
+			// aapt resource value: 0x7f050010
+			public const int btnHelp = 2131034128;
+			
+			// aapt resource value: 0x7f050012
+			public const int etDialogPassword = 2131034130;
 			
 			// aapt resource value: 0x7f050003
 			public const int rbPitchTrim = 2131034115;
@@ -105,11 +108,20 @@ namespace WiFiDronection
 			// aapt resource value: 0x7f050009
 			public const int tvDescription = 2131034121;
 			
+			// aapt resource value: 0x7f050011
+			public const int tvFooter = 2131034129;
+			
 			// aapt resource value: 0x7f05000c
 			public const int tvHeader = 2131034124;
 			
 			// aapt resource value: 0x7f050001
 			public const int tvTrimValue = 2131034113;
+			
+			// aapt resource value: 0x7f05000e
+			public const int tvWifiMac = 2131034126;
+			
+			// aapt resource value: 0x7f05000d
+			public const int tvWifiName = 2131034125;
 			
 			static Id()
 			{
