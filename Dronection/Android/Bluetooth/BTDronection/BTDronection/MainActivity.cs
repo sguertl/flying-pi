@@ -12,7 +12,7 @@ using Android.Util;
 
 namespace BTDronection
 {
-    [Activity(Label = "BluetoothController", MainLauncher = true, Icon = "@drawable/icon", 
+    [Activity(Label = "BTDronection", MainLauncher = true, Icon = "@drawable/icon", 
         Theme = "@android:style/Theme.Light.NoTitleBar.Fullscreen", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class MainActivity : Activity
     {
@@ -77,7 +77,11 @@ namespace BTDronection
             {
                 if(m_BtAdapter.IsEnabled)
                 {
-                    StartActivity(typeof(SearchDevices));
+                    //StartActivity(typeof(SearchDevices));
+                    Toast.MakeText(this, "Pair with device", ToastLength.Short).Show();
+                    Intent bluetoothSettings = new Intent();
+                    bluetoothSettings.SetAction(Android.Provider.Settings.ActionBluetoothSettings);
+                    StartActivity(bluetoothSettings);
                 }
                 else
                 {

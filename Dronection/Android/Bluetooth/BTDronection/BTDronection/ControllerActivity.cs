@@ -37,6 +37,7 @@ namespace BTDronection
 
         public static bool m_Inverted;
         private int m_YawTrim;
+        private readonly int mMinTrim = -50;
 
         private readonly String TEXT_LEFT = "The left joystick will be used to regulate throttle and rudder. The right joystick will be used to regulate elevator and aileron.";
         private readonly String TEXT_RIGHT = "The left joystick will be used to regulate elevator and rudder. The right joystick will be used to regulate the throttle and aileron.";
@@ -104,35 +105,35 @@ namespace BTDronection
             {
                 if (mRbYawTrim.Checked == true)
                 {
-                    ControllerView.Settings.TrimYaw = mSbTrimBar.Progress;
+                    ControllerView.Settings.TrimYaw = mSbTrimBar.Progress + mMinTrim;
                 }
                 else if (mRbPitchTrim.Checked == true)
                 {
-                    ControllerView.Settings.TrimPitch = mSbTrimBar.Progress;
+                    ControllerView.Settings.TrimPitch = mSbTrimBar.Progress + mMinTrim;
                 }
                 else
                 {
-                    ControllerView.Settings.TrimRoll = mSbTrimBar.Progress;
+                    ControllerView.Settings.TrimRoll = mSbTrimBar.Progress + mMinTrim;
                 }
-                mTvTrimValue.Text = mSbTrimBar.Progress.ToString();
+                mTvTrimValue.Text = (mSbTrimBar.Progress + mMinTrim).ToString();
             };
 
             mRbYawTrim.Click += delegate
             {
                 mTvTrimValue.Text = ControllerView.Settings.TrimYaw.ToString();
-                mSbTrimBar.Progress = ControllerView.Settings.TrimYaw;
+                mSbTrimBar.Progress = ControllerView.Settings.TrimYaw + mMinTrim;
             };
 
             mRbPitchTrim.Click += delegate
             {
                 mTvTrimValue.Text = ControllerView.Settings.TrimPitch.ToString();
-                mSbTrimBar.Progress = ControllerView.Settings.TrimPitch;
+                mSbTrimBar.Progress = ControllerView.Settings.TrimPitch + mMinTrim;
             };
 
             mRbRollTrim.Click += delegate
             {
                 mTvTrimValue.Text = ControllerView.Settings.TrimRoll.ToString();
-                mSbTrimBar.Progress = ControllerView.Settings.TrimRoll;
+                mSbTrimBar.Progress = ControllerView.Settings.TrimRoll + mMinTrim;
             };
         }
 

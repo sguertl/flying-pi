@@ -16,14 +16,14 @@
             android:layout_marginBottom="0dp"
             android:layout_marginLeft="10dp"
             android:max="100"
-            android:progress="0"
+            android:progress="50"
             android:progressDrawable="@drawable/myseekbar"
             android:layout_weight=".7" />
         <TextView
             android:id="@+id/tvTrimValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="50"
+            android:text="0"
             android:layout_margin="15dp" />
         <RadioGroup
             android:layout_width="match_parent"

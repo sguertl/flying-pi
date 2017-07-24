@@ -21,7 +21,7 @@ namespace BTDronection
         // Members
         private ListView m_ListView;
         private BluetoothAdapter m_BtAdapter;
-        private ICollection<BluetoothDevice> m_PairedDevice;
+        private List<BluetoothDevice> m_PairedDevice;
         private ArrayAdapter<String> m_Adapter;
         private LinearLayout m_Linear;
         private List<String> m_List;
@@ -69,7 +69,7 @@ namespace BTDronection
             m_ListView = FindViewById<ListView>(Resource.Id.listView);
             m_Linear = FindViewById<LinearLayout>(Resource.Id.linear2);
             m_BtAdapter = BluetoothAdapter.DefaultAdapter;
-            m_PairedDevice = m_BtAdapter.BondedDevices;
+            m_PairedDevice = m_BtAdapter.BondedDevices.Where(bd => bd.Name.ToUpper().Contains("RASPBERRY") || bd.Name.ToUpper().Contains("RPI") || bd.Name.ToUpper().Contains("XMC")).ToList();
             m_List = new List<String>();
             m_UuidList = new List<String>();
             m_IsConnected = true;
