@@ -38,6 +38,7 @@ namespace WiFiDronection
 
         public static bool Inverted;
         private int mYawTrim;
+        private readonly int mMinTrim = -50;
 
         private readonly String TEXT_LEFT = "The left joystick will be used to regulate throttle and rudder. The right joystick will be used to regulate elevator and aileron.";
         private readonly String TEXT_RIGHT = "The left joystick will be used to regulate elevator and rudder. The right joystick will be used to regulate the throttle and aileron.";
@@ -97,17 +98,17 @@ namespace WiFiDronection
             {
                 if (mRbYawTrim.Checked == true)
                 {
-                    ControllerView.Settings.TrimYaw = mSbTrimBar.Progress;
+                    ControllerView.Settings.TrimYaw = mSbTrimBar.Progress + mMinTrim;
                 }
                 else if (mRbPitchTrim.Checked == true)
                 {
-                    ControllerView.Settings.TrimPitch = mSbTrimBar.Progress;
+                    ControllerView.Settings.TrimPitch = mSbTrimBar.Progress + mMinTrim;
                 }
                 else
                 {
                     ControllerView.Settings.TrimRoll = mSbTrimBar.Progress;
                 }
-                mTvTrimValue.Text = mSbTrimBar.Progress.ToString();
+                mTvTrimValue.Text = (mSbTrimBar.Progress + mMinTrim).ToString();
             };
 
             mRbYawTrim.Click += delegate

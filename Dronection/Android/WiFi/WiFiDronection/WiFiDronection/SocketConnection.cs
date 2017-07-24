@@ -157,7 +157,6 @@ namespace WiFiDronection
             b[16] = (byte)((checksum >> 16) & 0xFF);
             b[17] = (byte)((checksum >> 8) & 0xFF);
             b[18] = (byte)(checksum & 0xFF);
-            //output(b);
             return b;
         }
 
