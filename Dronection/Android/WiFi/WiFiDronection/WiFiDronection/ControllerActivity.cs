@@ -14,7 +14,7 @@ using Android.Graphics;
 namespace WiFiDronection
 {
     [Activity(Label = "ControllerActivity",
-              Theme = "@android:style/Theme.Holo.Light.NoTitleBar.Fullscreen",
+              Theme = "@android:style/Theme.Holo.Light.NoActionBar.Fullscreen",
               MainLauncher = false,
               ScreenOrientation = Android.Content.PM.ScreenOrientation.SensorLandscape
              )]
