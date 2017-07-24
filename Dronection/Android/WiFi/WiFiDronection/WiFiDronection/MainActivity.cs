@@ -38,8 +38,11 @@ namespace WiFiDronection
 
             mPeerList = new List<Peer>();
 
-            //var aj = GetSystemService(WifiService).JavaCast<WifiManager>();
-            //aj.Disconnect();
+            WifiManager wm = GetSystemService(WifiService).JavaCast<WifiManager>();
+            if(wm.IsWifiEnabled == false)
+            {
+                wm.SetWifiEnabled(true);
+            }
             RefreshWifiList();
 
         }
