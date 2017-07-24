@@ -35,7 +35,7 @@ namespace WiFiDronection
         //private IntentFilter m_Filter; // Used to filter events when searching
         //private CallReciver m_Receiver;
 
-        private bool m_Inverted;
+        public static bool Inverted;
         private int m_YawTrim;
 
         private readonly String TEXT_LEFT = "The left joystick will be used to regulate throttle and rudder. The right joystick will be used to regulate elevator and aileron.";
@@ -85,15 +85,10 @@ namespace WiFiDronection
         }
 
         private void OnStartController(object sender, EventArgs e)
-        {           
-            mSocketConnection.Start();
-            SetContentView(new ControllerView(this, mSocketConnection));
-            View.Inflate(this, Resource.Layout.ControllerLayout, null);
-            Make();
-        }
-
-        private void Make()
         {
+            mSocketConnection.Start();
+            SetContentView(Resource.Layout.ControllerLayout);
+
             mSbTrimBar = FindViewById<SeekBar>(Resource.Id.sbTrimbar);
             mTvTrimValue = FindViewById<TextView>(Resource.Id.tvTrimValue);
             mRbYawTrim = FindViewById<RadioButton>(Resource.Id.rbYawTrim);
@@ -150,13 +145,13 @@ namespace WiFiDronection
 
         private void OnThrottleRightClick(object sender, EventArgs e)
         {
-            m_Inverted = ControllerSettings.ACTIVE;
+            Inverted = ControllerSettings.ACTIVE;
             m_TvDescription.Text = TEXT_RIGHT;
         }
 
         private void OnThrottleLeftClick(object sender, EventArgs e)
         {
-            m_Inverted = ControllerSettings.INACTIVE;
+            Inverted = ControllerSettings.INACTIVE;
             m_TvDescription.Text = TEXT_LEFT;
         }
 
@@ -164,13 +159,13 @@ namespace WiFiDronection
         {
             if (m_RbThrottleLeft.Selected)
             {
-                m_Inverted = ControllerSettings.INACTIVE;
+                Inverted = ControllerSettings.INACTIVE;
                 m_TvDescription.Text = TEXT_LEFT;
 
             }
             if (m_RbThrottleRight.Selected)
             {
-                m_Inverted = ControllerSettings.ACTIVE;
+                Inverted = ControllerSettings.ACTIVE;
                 m_TvDescription.Text = TEXT_RIGHT;
             }
         }

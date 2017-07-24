@@ -51,31 +51,31 @@ namespace WiFiDronection
         // Timer for sending data and checking BT connection
         private System.Timers.Timer m_WriteTimer;
 
-        public ControllerView(Context context, SocketConnection socketCon) : base(context)
+        public ControllerView(Context context) : base(context)
         {
-            m_SocketConnection = socketCon;
-            Init(context);
+            Init();
         }
 
         public ControllerView(Context context, IAttributeSet attrs) : base(context, attrs)
         {
-            Init(context);
+            Init();
         }
 
         public ControllerView(Context context, IAttributeSet attrs, int defStyle) : base(context, attrs, defStyle)
         {
-            Init(context);
+            Init();
         }
 
-        private void Init(Context context)
+        private void Init()
         {
+            m_SocketConnection = SocketConnection.Instance;
             SetOnTouchListener(this);
             SetBackgroundColor(Color.White);
 
             Settings = new ControllerSettings
             {
                 HeightControlActivated = false,
-                Inverted = false,
+                Inverted = ControllerActivity.Inverted,
                 TrimPitch = 50,
                 TrimRoll = 50,
                 TrimYaw = 50
@@ -94,12 +94,6 @@ namespace WiFiDronection
             m_WriteTimer.AutoReset = true;
             m_WriteTimer.Elapsed += Write;
             m_WriteTimer.Start();
-        }
-
-        public SocketConnection SocketCon
-        {
-            get { return m_SocketConnection; }
-            set { m_SocketConnection = value; }
         }
 
 
