@@ -11,10 +11,11 @@ using Android.Views;
 using Android.Widget;
 using Android.Bluetooth;
 using System.Threading;
+using Android.Graphics;
 
 namespace BTDronection
 {
-    [Activity(Label = "PairedDevices", Theme = "@android:style/Theme.Light.NoTitleBar.Fullscreen",
+    [Activity(Label = "PairedDevices", Theme = "@android:style/Theme.Holo.Light.NoActionBar.Fullscreen",
         ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class PairedDevices : Activity, IEstablishConnection
     {
@@ -28,6 +29,9 @@ namespace BTDronection
         private List<String> m_UuidList;
         private bool m_IsConnected;
         private ProgressDialog m_ProgressDialog;
+        private Button mBtSearchDevices;
+        private TextView mTvExplanation;
+        private TextView mTvHeader;
 
 
         public bool IsConnected
@@ -78,23 +82,42 @@ namespace BTDronection
             m_ProgressDialog.SetMessage("Connecting with device");
             m_ProgressDialog.SetCancelable(false);
 
+            var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
+
+            mBtSearchDevices = FindViewById<Button>(Resource.Id.btSearchDevices);
+            mBtSearchDevices.Click += OnSearchDevices;
+            mBtSearchDevices.Typeface = font;
+
+            mTvExplanation = FindViewById<TextView>(Resource.Id.tvExplanation);
+            mTvExplanation.Typeface = font;
+
+            mTvHeader = FindViewById<TextView>(Resource.Id.tvHeader);
+            mTvHeader.Typeface = font;
+
             // Setting activity background
-            m_Linear.SetBackgroundColor(Android.Graphics.Color.White);
+            m_Linear.SetBackgroundColor(Color.White);
 
             // Setting background color of the ListView
-            m_ListView.SetBackgroundColor(Android.Graphics.Color.WhiteSmoke);
+            m_ListView.SetBackgroundColor(Color.WhiteSmoke);
             m_ListView.DividerHeight = 14;
 
             // Adding handler when clicking on a ListViewItem
-            m_ListView.ItemClick += (object sender, Android.Widget.AdapterView.ItemClickEventArgs e) => { OnItemClick(sender, e); };
+            m_ListView.ItemClick += (object sender, AdapterView.ItemClickEventArgs e) => { OnItemClick(sender, e); };
         }
 
-        private void OnItemClick(object sender, Android.Widget.AdapterView.ItemClickEventArgs e)
+        private void OnItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             TextView view = (TextView)e.View;
             string address = view.Text.Split('\n')[1];
             BluetoothDevice bluetoothDevice = BluetoothAdapter.DefaultAdapter.GetRemoteDevice(address);
             BuildConnection(bluetoothDevice, bluetoothDevice.GetUuids()[0].Uuid.ToString());
+        }
+
+        private void OnSearchDevices(object sender, EventArgs e)
+        {
+            Intent bluetoothSettings = new Intent();
+            bluetoothSettings.SetAction(Android.Provider.Settings.ActionBluetoothSettings);
+            StartActivity(bluetoothSettings);
         }
 
         /// <summary>

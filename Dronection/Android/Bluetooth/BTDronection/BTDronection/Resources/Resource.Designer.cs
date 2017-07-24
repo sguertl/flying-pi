@@ -48,7 +48,10 @@ namespace BTDronection
 			public const int Icon = 2130837504;
 			
 			// aapt resource value: 0x7f020001
-			public const int MySeekBar = 2130837505;
+			public const int ifx_logo = 2130837505;
+			
+			// aapt resource value: 0x7f020002
+			public const int MySeekBar = 2130837506;
 			
 			static Drawable()
 			{
@@ -75,11 +78,14 @@ namespace BTDronection
 			// aapt resource value: 0x7f050004
 			public const int btDisconnect = 2131034116;
 			
-			// aapt resource value: 0x7f050013
-			public const int btPairedDevices = 2131034131;
+			// aapt resource value: 0x7f050014
+			public const int btHelp = 2131034132;
 			
-			// aapt resource value: 0x7f050012
-			public const int btSearchDevices = 2131034130;
+			// aapt resource value: 0x7f050017
+			public const int btSearchDevices = 2131034135;
+			
+			// aapt resource value: 0x7f050013
+			public const int btShowDevices = 2131034131;
 			
 			// aapt resource value: 0x7f050010
 			public const int btShowLog = 2131034128;
@@ -93,20 +99,20 @@ namespace BTDronection
 			// aapt resource value: 0x7f050011
 			public const int linear = 2131034129;
 			
-			// aapt resource value: 0x7f050014
-			public const int linear2 = 2131034132;
-			
 			// aapt resource value: 0x7f050016
-			public const int linear3 = 2131034134;
+			public const int linear2 = 2131034134;
+			
+			// aapt resource value: 0x7f05001a
+			public const int linear3 = 2131034138;
 			
 			// aapt resource value: 0x7f050000
 			public const int linear4 = 2131034112;
 			
-			// aapt resource value: 0x7f050015
-			public const int listView = 2131034133;
+			// aapt resource value: 0x7f050019
+			public const int listView = 2131034137;
 			
-			// aapt resource value: 0x7f050017
-			public const int listViewSearched = 2131034135;
+			// aapt resource value: 0x7f05001b
+			public const int listViewSearched = 2131034139;
 			
 			// aapt resource value: 0x7f050008
 			public const int rbPitchTrim = 2131034120;
@@ -131,6 +137,15 @@ namespace BTDronection
 			
 			// aapt resource value: 0x7f05000e
 			public const int tvDescription = 2131034126;
+			
+			// aapt resource value: 0x7f050018
+			public const int tvExplanation = 2131034136;
+			
+			// aapt resource value: 0x7f050015
+			public const int tvFooter = 2131034133;
+			
+			// aapt resource value: 0x7f050012
+			public const int tvHeader = 2131034130;
 			
 			// aapt resource value: 0x7f050006
 			public const int tvTrimValue = 2131034118;

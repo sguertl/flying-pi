@@ -3,27 +3,62 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/linear">
+    android:id="@+id/linear"
+    android:isScrollContainer="true">
     <TextView
-        android:textSize="32dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp"
+        android:id="@+id/tvHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Bluetooth Controller"
-        android:gravity="center_horizontal" />
+        android:text="BT Dronection"
+        android:gravity="center_horizontal"
+        android:textSize="44dp"
+        android:fontFamily="Assets/SourceSansPro-Light.ttf"
+        android:layout_margin="20dp" />
     <Button
-        android:layout_width="match_parent"
+        android:id="@+id/btShowDevices"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:text="Show devices"
+        android:fontFamily="Assets/SourceSansPro-Light.tff"
+        android:textSize="20dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:layout_gravity="bottom"
         android:layout_margin="10dp"
-        android:textSize="18dp"
-        android:id="@+id/btSearchDevices"
-        android:text="Search Devices" />
+        android:textColor="#ffffff"
+        android:background="#005DA9"/>
     <Button
-        android:layout_width="match_parent"
+        android:id="@+id/btHelp"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:text="Help"
+        android:fontFamily="Assets/SourceSansPro-Light.tff"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:layout_gravity="bottom"
         android:layout_margin="10dp"
-        android:textSize="18dp"
-        android:id="@+id/btPairedDevices"
-        android:text="Show Paired Devices" />
+        android:textColor="#ffffff"
+        android:background="#005DA9" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="bottom"
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
+        <ImageView
+            android:src="@drawable/ifx_logo"
+            android:layout_height="200dp"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" />
+        <TextView
+            android:id="@+id/tvFooter"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="\u00A9 2017 Infineon Technologies Austria AG"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="Assets/SourceSansPro-Light.ttf" />
+    <!-- #0076ff, #0e7afe, #3366ff-->
+    </LinearLayout>
 </LinearLayout>
