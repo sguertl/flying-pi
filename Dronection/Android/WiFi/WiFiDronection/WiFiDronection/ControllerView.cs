@@ -76,9 +76,9 @@ namespace WiFiDronection
             {
                 HeightControlActivated = false,
                 Inverted = ControllerActivity.Inverted,
-                TrimPitch = 50,
-                TrimRoll = 50,
-                TrimYaw = 50
+                TrimPitch = 0,
+                TrimRoll = 0,
+                TrimYaw = 0
             };
 
             ScreenWidth = Resources.DisplayMetrics.WidthPixels;

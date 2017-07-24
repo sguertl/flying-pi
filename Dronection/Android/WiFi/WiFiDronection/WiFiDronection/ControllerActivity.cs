@@ -106,7 +106,7 @@ namespace WiFiDronection
                 }
                 else
                 {
-                    ControllerView.Settings.TrimRoll = mSbTrimBar.Progress;
+                    ControllerView.Settings.TrimRoll = mSbTrimBar.Progress + mMinTrim;
                 }
                 mTvTrimValue.Text = (mSbTrimBar.Progress + mMinTrim).ToString();
             };
@@ -114,19 +114,19 @@ namespace WiFiDronection
             mRbYawTrim.Click += delegate
             {
                 mTvTrimValue.Text = ControllerView.Settings.TrimYaw.ToString();
-                mSbTrimBar.Progress = ControllerView.Settings.TrimYaw;
+                mSbTrimBar.Progress = ControllerView.Settings.TrimYaw - mMinTrim;
             };
 
             mRbPitchTrim.Click += delegate
             {
                 mTvTrimValue.Text = ControllerView.Settings.TrimPitch.ToString();
-                mSbTrimBar.Progress = ControllerView.Settings.TrimPitch;
+                mSbTrimBar.Progress = ControllerView.Settings.TrimPitch - mMinTrim;
             };
 
             mRbRollTrim.Click += delegate
             {
                 mTvTrimValue.Text = ControllerView.Settings.TrimRoll.ToString();
-                mSbTrimBar.Progress = ControllerView.Settings.TrimRoll;
+                mSbTrimBar.Progress = ControllerView.Settings.TrimRoll - mMinTrim;
             };
         }
 
