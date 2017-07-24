@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Android.Graphics;
 using Android.Views;
+using System;
 
 namespace WiFiDronection
 {
@@ -53,6 +54,8 @@ namespace WiFiDronection
 
             mBtnConnect.Enabled = false;
             mBtnConnect.Click += OnConnect;
+
+            mBtnHelp.Click += OnHelp;
 
             //mLvPeer = FindViewById<ListView>(Resource.Id.lvPeers);
             //mLvPeer.ItemClick += OnListViewItemClick;
@@ -120,7 +123,7 @@ namespace WiFiDronection
             OnCreateDialog(0).Show();
         }*/
 
-        private void OnConnect(object sender, System.EventArgs e)
+        private void OnConnect(object sender, EventArgs e)
         {
             //var wifiItem = mAdapter.GetItem(itemClickEventArgs.Position);
             //mSelectedSsid = wifiItem.SSID;
@@ -175,6 +178,11 @@ namespace WiFiDronection
         private void CancelClicked(object sender, DialogClickEventArgs e)
         {
             //
+        }
+
+        private void OnHelp(object sender, EventArgs e)
+        {
+            StartActivity(typeof(HelpActivity));
         }
     }
 }

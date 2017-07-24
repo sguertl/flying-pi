@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:isScrollContainer="true">
+    <TextView
+        android:id="@+id/tvHeaderHelp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Help"
+        android:gravity="center_horizontal"
+        android:textSize="32dp"
+        android:fontFamily="Assets/SourceSansPro-Light.ttf"
+        android:layout_margin="20dp" />
+    <Button
+        android:id="@+id/btnBackHelp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:fontFamily="Assets/SourceSansPro-Light.tff"
+        android:textSize="20dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:layout_gravity="bottom"
+        android:layout_margin="10dp"
+        android:textColor="#ffffff"
+        android:background="#005DA9" />
+</LinearLayout>

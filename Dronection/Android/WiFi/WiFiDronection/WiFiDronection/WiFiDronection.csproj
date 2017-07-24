@@ -56,6 +56,7 @@
     <Compile Include="ControllerActivity.cs" />
     <Compile Include="ControllerSettings.cs" />
     <Compile Include="ControllerView.cs" />
+    <Compile Include="HelpActivity.cs" />
     <Compile Include="Joystick.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Peer.cs" />
@@ -78,6 +79,9 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ControllerLayout.axml" />
+    <AndroidResource Include="Resources\layout\Help.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml">
@@ -98,6 +102,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\ifx_logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\bg.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -20,6 +20,7 @@ namespace WiFiDronection
              )]
     public class ControllerActivity : Activity
     {
+        private TextView mTvHeader;
         private RadioGroup mRgControlMethod;
         private RadioButton mRbThrottleLeft;
         private RadioButton mRbThrottleRight;
@@ -40,8 +41,8 @@ namespace WiFiDronection
         private int mYawTrim;
         private readonly int mMinTrim = -50;
 
-        private readonly String TEXT_LEFT = "The left joystick will be used to regulate throttle and rudder. The right joystick will be used to regulate elevator and aileron.";
-        private readonly String TEXT_RIGHT = "The left joystick will be used to regulate elevator and rudder. The right joystick will be used to regulate the throttle and aileron.";
+        private readonly String TEXT_LEFT = "The left joystick will be used to regulate throttle and yaw. The right joystick will be used to regulate pitch and roll.";
+        private readonly String TEXT_RIGHT = "The left joystick will be used to regulate pitch and yaw. The right joystick will be used to regulate the throttle and roll.";
 
         private string mStorageDirPath;
 
@@ -56,12 +57,20 @@ namespace WiFiDronection
 
             var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
 
+            mTvHeader = FindViewById<TextView>(Resource.Id.tvHeaderSettings);
             mRgControlMethod = FindViewById<RadioGroup>(Resource.Id.rgControlMethod);
             mRbThrottleLeft = FindViewById<RadioButton>(Resource.Id.rbThrottleLeft);
             mRbThrottleRight = FindViewById<RadioButton>(Resource.Id.rbThrottleRight);
             mTvDescription = FindViewById<TextView>(Resource.Id.tvDescription);
             mBtStart = FindViewById<Button>(Resource.Id.btStart);
             mBtShowLog = FindViewById<Button>(Resource.Id.btShowLog);
+
+            mTvHeader.Typeface = font;
+            mRbThrottleLeft.Typeface = font;
+            mRbThrottleRight.Typeface = font;
+            mTvDescription.Typeface = font;
+            mBtStart.Typeface = font;
+            mBtShowLog.Typeface = font;
 
             mRbThrottleLeft.Click += OnThrottleLeftClick;
             mRbThrottleRight.Click += OnThrottleRightClick;

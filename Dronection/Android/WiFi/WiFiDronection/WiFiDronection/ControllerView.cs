@@ -89,6 +89,8 @@ namespace WiFiDronection
             InitShapes();
             InitJoysticks();
 
+            this.SetBackgroundResource(Resource.Drawable.bg);
+
             m_WriteTimer = new System.Timers.Timer();
             m_WriteTimer.Interval = 50;//10
             m_WriteTimer.AutoReset = true;
@@ -384,6 +386,8 @@ namespace WiFiDronection
         /// </summary>
         protected override void OnDraw(Canvas canvas)
         {
+            this.SetBackgroundResource(Resource.Drawable.bg);
+
             // Draw shapes
             m_ShapeBorderRadiusLeft.Draw(canvas);
             m_ShapeBorderRadiusRight.Draw(canvas);
