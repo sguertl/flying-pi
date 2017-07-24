@@ -50,7 +50,7 @@ namespace WiFiDronection
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.ControllerSettings);
 
-            mSocketConnection = new SocketConnection();
+            mSocketConnection = SocketConnection.Instance;
 
             m_RgControlMethod = FindViewById<RadioGroup>(Resource.Id.rgControlMethod);
             m_RbThrottleLeft = FindViewById<RadioButton>(Resource.Id.rbThrottleLeft);

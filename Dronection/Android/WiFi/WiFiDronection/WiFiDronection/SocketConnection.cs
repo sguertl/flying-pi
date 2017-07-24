@@ -28,11 +28,29 @@ namespace WiFiDronection
         private static readonly byte STARTBYTE = 10;
         private static readonly int PACKET_SIZE = 19;
 
+        private static SocketConnection instance = null;
+        private static readonly object padlock = new object();
+
         private DataOutputStream mDataOutputStream;
 
-        public SocketConnection()
+        private SocketConnection()
         {        
             m_Socket = new Socket();
+        }
+
+        public static SocketConnection Instance
+        {
+            get
+            {
+                lock (padlock)
+                {
+                    if(instance == null)
+                    {
+                        instance = new SocketConnection();
+                    }
+                    return instance;
+                }
+            }
         }
 
         public override void Run()
