@@ -12,7 +12,9 @@ using Android.Views;
 
 namespace WiFiDronection
 {
-    [Activity(MainLauncher = true, Icon = "@drawable/icon", Theme = "@android:style/Theme.Holo.Light.NoActionBar.Fullscreen")]
+    [Activity(MainLauncher = true, 
+        Icon = "@drawable/icon", 
+        Theme = "@android:style/Theme.Holo.Light.NoActionBar.Fullscreen")]
     public class MainActivity : Activity
     {
         private TextView mTvHeader;
@@ -49,6 +51,7 @@ namespace WiFiDronection
             mBtnConnect.Typeface = font;
             mBtnHelp.Typeface = font;
 
+            mBtnConnect.Enabled = false;
             mBtnConnect.Click += OnConnect;
 
             //mLvPeer = FindViewById<ListView>(Resource.Id.lvPeers);
@@ -97,6 +100,7 @@ namespace WiFiDronection
                                 mSelectedSsid = p.SSID;
                                 mTvWifiName.Text = "SSID: " + p.SSID;
                                 mTvWifiMac.Text = "MAC: " + p.BSSID;
+                                mBtnConnect.Enabled = true;
 
                                 mAdapter.Add(p);
                                 mPeerList.Add(p);
@@ -130,7 +134,7 @@ namespace WiFiDronection
 
             builder.SetIcon(Android.Resource.Drawable.IcMenuPreferences);
             builder.SetView(customView);
-            builder.SetTitle("Set Wifi password");
+            builder.SetTitle("Enter WiFi password");
             builder.SetPositiveButton("OK", WpaOkClicked);
             builder.SetNegativeButton("Cancel", CancelClicked);
 

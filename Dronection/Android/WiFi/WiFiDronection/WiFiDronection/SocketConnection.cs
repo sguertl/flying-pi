@@ -111,7 +111,7 @@ namespace WiFiDronection
             }
             catch(Java.Lang.Exception ex)
             {
-                Log.Debug(TAG, "Fehler bei der Übertragung");
+                Log.Debug(TAG, "Error sending data");
                 mDataOutputStream.Close();
                 m_Socket.Close();
             }
@@ -161,11 +161,12 @@ namespace WiFiDronection
             return b;
         }
 
-        public void onCancel()
+        public void OnCancel()
         {
             try
             {
-                mDataOutputStream.Close();
+                if(mDataOutputStream != null)
+                    mDataOutputStream.Close();
                 m_Socket.Close();         
             }catch(Java.Lang.Exception ex)
             {
@@ -173,7 +174,7 @@ namespace WiFiDronection
             }
         }
 
-        private void output(byte[] bytes)
+        /*private void Output(byte[] bytes)
         {
             string str = "";
             foreach(byte b in bytes)
@@ -181,6 +182,6 @@ namespace WiFiDronection
                 str += b + " ";
             }
             Log.Debug("!!!", str);
-        }
+        }*/
     }
 }

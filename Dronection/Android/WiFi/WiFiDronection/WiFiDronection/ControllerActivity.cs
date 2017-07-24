@@ -9,22 +9,23 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Android.Graphics;
 
 namespace WiFiDronection
 {
     [Activity(Label = "ControllerActivity",
-              Theme = "@android:style/Theme.Light.NoTitleBar.Fullscreen",
+              Theme = "@android:style/Theme.Holo.Light.NoTitleBar.Fullscreen",
               MainLauncher = false,
               ScreenOrientation = Android.Content.PM.ScreenOrientation.SensorLandscape
              )]
     public class ControllerActivity : Activity
     {
-        private RadioGroup m_RgControlMethod;
-        private RadioButton m_RbThrottleLeft;
-        private RadioButton m_RbThrottleRight;
-        private TextView m_TvDescription;
-        private Button m_BtStart;
-        private Button m_BtShowLog;
+        private RadioGroup mRgControlMethod;
+        private RadioButton mRbThrottleLeft;
+        private RadioButton mRbThrottleRight;
+        private TextView mTvDescription;
+        private Button mBtStart;
+        private Button mBtShowLog;
 
         private SeekBar mSbTrimBar;
         private TextView mTvTrimValue;
@@ -36,7 +37,7 @@ namespace WiFiDronection
         //private CallReciver m_Receiver;
 
         public static bool Inverted;
-        private int m_YawTrim;
+        private int mYawTrim;
 
         private readonly String TEXT_LEFT = "The left joystick will be used to regulate throttle and rudder. The right joystick will be used to regulate elevator and aileron.";
         private readonly String TEXT_RIGHT = "The left joystick will be used to regulate elevator and rudder. The right joystick will be used to regulate the throttle and aileron.";
@@ -52,22 +53,19 @@ namespace WiFiDronection
 
             mSocketConnection = SocketConnection.Instance;
 
-            m_RgControlMethod = FindViewById<RadioGroup>(Resource.Id.rgControlMethod);
-            m_RbThrottleLeft = FindViewById<RadioButton>(Resource.Id.rbThrottleLeft);
-            m_RbThrottleRight = FindViewById<RadioButton>(Resource.Id.rbThrottleRight);
-            m_TvDescription = FindViewById<TextView>(Resource.Id.tvDescription);
-            m_BtStart = FindViewById<Button>(Resource.Id.btStart);
-            m_BtShowLog = FindViewById<Button>(Resource.Id.btShowLog);
+            var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
 
-            m_RbThrottleLeft.Click += OnThrottleLeftClick;
-            m_RbThrottleRight.Click += OnThrottleRightClick;
+            mRgControlMethod = FindViewById<RadioGroup>(Resource.Id.rgControlMethod);
+            mRbThrottleLeft = FindViewById<RadioButton>(Resource.Id.rbThrottleLeft);
+            mRbThrottleRight = FindViewById<RadioButton>(Resource.Id.rbThrottleRight);
+            mTvDescription = FindViewById<TextView>(Resource.Id.tvDescription);
+            mBtStart = FindViewById<Button>(Resource.Id.btStart);
+            mBtShowLog = FindViewById<Button>(Resource.Id.btShowLog);
 
-            m_BtStart.SetBackgroundColor(Android.Graphics.Color.DeepSkyBlue);
-            m_BtStart.SetTextColor(Android.Graphics.Color.White);
-            m_BtShowLog.SetBackgroundColor(Android.Graphics.Color.DeepSkyBlue);
-            m_BtShowLog.SetTextColor(Android.Graphics.Color.White);
+            mRbThrottleLeft.Click += OnThrottleLeftClick;
+            mRbThrottleRight.Click += OnThrottleRightClick;
 
-            m_BtStart.Click += OnStartController;
+            mBtStart.Click += OnStartController;
 
             //m_Filter = new IntentFilter();
 
@@ -134,39 +132,39 @@ namespace WiFiDronection
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            mSocketConnection.onCancel();
+            mSocketConnection.OnCancel();
         }
 
         protected override void OnStop()
         {
             base.OnStop();
-            mSocketConnection.onCancel();
+            mSocketConnection.OnCancel();
         }
 
         private void OnThrottleRightClick(object sender, EventArgs e)
         {
             Inverted = ControllerSettings.ACTIVE;
-            m_TvDescription.Text = TEXT_RIGHT;
+            mTvDescription.Text = TEXT_RIGHT;
         }
 
         private void OnThrottleLeftClick(object sender, EventArgs e)
         {
             Inverted = ControllerSettings.INACTIVE;
-            m_TvDescription.Text = TEXT_LEFT;
+            mTvDescription.Text = TEXT_LEFT;
         }
 
         private void OnRgClick(object sender, EventArgs e)
         {
-            if (m_RbThrottleLeft.Selected)
+            if (mRbThrottleLeft.Selected)
             {
                 Inverted = ControllerSettings.INACTIVE;
-                m_TvDescription.Text = TEXT_LEFT;
+                mTvDescription.Text = TEXT_LEFT;
 
             }
-            if (m_RbThrottleRight.Selected)
+            if (mRbThrottleRight.Selected)
             {
                 Inverted = ControllerSettings.ACTIVE;
-                m_TvDescription.Text = TEXT_RIGHT;
+                mTvDescription.Text = TEXT_RIGHT;
             }
         }
     }

@@ -62,9 +62,11 @@
             android:text="Start"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
+            android:gravity="center_horizontal|center_vertical"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" />
+            android:layout_marginRight="10dp"
+            android:textColor="#ffffff"
+            android:background="#005DA9" />
     <!-- SHOW LOG BUTTON -->
         <Button
             android:id="@+id/btShowLog"
@@ -72,9 +74,11 @@
             android:text="Show Log"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
+            android:gravity="center_horizontal|center_vertical"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp" />
+            android:layout_marginTop="10dp"
+            android:textColor="#ffffff"
+            android:background="#005DA9" />
     </LinearLayout>
 </ScrollView>
