@@ -26,6 +26,8 @@ namespace WiFiDronection
         private Button mBtnConnect;
         private Button mBtnHelp;
 
+        private TextView mTvHeaderDialog;
+
         private ArrayAdapter<Peer> mAdapter;
         private List<Peer> mPeerList;
         private string mSelectedSsid;
@@ -120,12 +122,19 @@ namespace WiFiDronection
 
         protected override Dialog OnCreateDialog(int id)
         {
-            var customView = LayoutInflater.Inflate(Resource.Layout.WifiDialog, null);
-            var builder = new AlertDialog.Builder(this);
+            var wifiDialogView = LayoutInflater.Inflate(Resource.Layout.WifiDialog, null);
+            var wifiDialogHeaderView = FindViewById(Resource.Layout.WifiDialogTitle);
 
-            builder.SetIcon(Android.Resource.Drawable.IcMenuPreferences);
-            builder.SetView(customView);
+
+            var builder = new AlertDialog.Builder(this);
+            //mTvHeaderDialog = FindViewById<TextView>(Resource.Id.tvHeaderDialog);
+            //mTvHeaderDialog.Typeface = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
+
+
+            builder.SetIcon(Resource.Drawable.ifx_logo_small);
+            builder.SetView(wifiDialogView);
             builder.SetTitle("Enter WiFi password");
+            builder.SetCustomTitle(wifiDialogHeaderView);
             builder.SetPositiveButton("OK", WpaOkClicked);
             builder.SetNegativeButton("Cancel", CancelClicked);
 

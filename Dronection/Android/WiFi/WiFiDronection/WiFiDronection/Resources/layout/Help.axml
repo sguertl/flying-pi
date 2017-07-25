@@ -13,6 +13,15 @@
         android:textSize="32dp"
         android:fontFamily="Assets/SourceSansPro-Light.ttf"
         android:layout_margin="20dp" />
+    <TextView
+        android:id="@+id/tvHelpAbout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="About"
+        android:gravity="center_horizontal"
+        android:textSize="24dp"
+        android:fontFamily="Assets/SourceSansPro-Light.ttf"
+        android:layout_margin="10dp" />
     <Button
         android:id="@+id/btnBackHelp"
         android:layout_width="fill_parent"
