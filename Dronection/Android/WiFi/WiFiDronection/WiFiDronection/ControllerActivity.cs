@@ -25,7 +25,7 @@ namespace WiFiDronection
         private RadioButton mRbThrottleLeft;
         private RadioButton mRbThrottleRight;
         private Button mBtStart;
-        private Button mBtShowLog;
+        private Button mBtBackToMain;
         private ImageView mIvMode;
 
         private SeekBar mSbTrimBar;
@@ -59,19 +59,20 @@ namespace WiFiDronection
             mRbThrottleLeft = FindViewById<RadioButton>(Resource.Id.rbThrottleLeft);
             mRbThrottleRight = FindViewById<RadioButton>(Resource.Id.rbThrottleRight);
             mBtStart = FindViewById<Button>(Resource.Id.btStart);
-            mBtShowLog = FindViewById<Button>(Resource.Id.btShowLog);
+            mBtBackToMain = FindViewById<Button>(Resource.Id.btBackToMain);
             mIvMode = FindViewById<ImageView>(Resource.Id.ivMode);
 
             mTvHeader.Typeface = font;
             mRbThrottleLeft.Typeface = font;
             mRbThrottleRight.Typeface = font;
             mBtStart.Typeface = font;
-            mBtShowLog.Typeface = font;
+            mBtBackToMain.Typeface = font;
 
             mRbThrottleLeft.Click += OnThrottleLeftClick;
             mRbThrottleRight.Click += OnThrottleRightClick;
 
             mBtStart.Click += OnStartController;
+            mBtBackToMain.Click += OnBackToMain;
 
             //m_Filter = new IntentFilter();
 
@@ -177,6 +178,10 @@ namespace WiFiDronection
             {
                 Inverted = ControllerSettings.ACTIVE;
             }
+        }
+        private void OnBackToMain(object sender, EventArgs e)
+        {
+            this.Finish();
         }
     }
 }

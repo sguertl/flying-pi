@@ -10,9 +10,19 @@
         android:layout_height="wrap_content"
         android:text="Help"
         android:gravity="center_horizontal"
-        android:textSize="32dp"
+        android:textSize="36dp"
         android:fontFamily="Assets/SourceSansPro-Light.ttf"
         android:layout_margin="20dp" />
+    <TextView
+        android:id="@+id/tvHelpText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:gravity="center_horizontal"
+        android:textSize="14dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp" />
     <TextView
         android:id="@+id/tvHelpAbout"
         android:layout_width="match_parent"
@@ -21,7 +31,49 @@
         android:gravity="center_horizontal"
         android:textSize="24dp"
         android:fontFamily="Assets/SourceSansPro-Light.ttf"
-        android:layout_margin="10dp" />
+        android:layout_margin="10dp"
+        android:textColor="#005DA9" />
+    <TextView
+        android:id="@+id/tvVersion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="version"
+        android:gravity="center_horizontal"
+        android:textSize="14dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp" />
+    <TextView
+        android:id="@+id/tvCredentials"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="This app is designed and developed in Villach, Austria by Sebastian Gürtl, Adrian Klapsch and Christoph Englert."
+        android:gravity="center_horizontal"
+        android:textSize="14dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp" />
+    <TextView
+        android:id="@+id/tvAboutInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="\u00A9 2017 Infineon Technologies Austria AG\nSiemensstraße 2, 9500 Villach"
+        android:gravity="center_horizontal"
+        android:textSize="14dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp" />
+    <TextView
+        android:id="@+id/tvLinkHomepage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        android:text="https://wwww.infineon.com"
+        android:gravity="center_horizontal"
+        android:textSize="14dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp" />
     <Button
         android:id="@+id/btnBackHelp"
         android:layout_width="fill_parent"
