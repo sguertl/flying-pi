@@ -93,34 +93,8 @@ namespace BTDronection
                     Console.WriteLine(e.Message);
                 }
                 return;
-            }
-         //   ManageConnectedSocket(m_Socket);  
+            } 
         }
-
-        /// <summary>
-        /// Starts data transmission
-        /// </summary>
-        /// <param name="mmSocket"></param>
-        private void ManageConnectedSocket(BluetoothSocket mmSocket)
-        {
-            //m_Sender = new Sender(mmSocket);
-            //m_Sender.Start();
-            //Java.Lang.String test = new Java.Lang.String("Dir1:8 Pow1:100 Dir2:3 Pow2:100");
-            //sender.Write(test.GetBytes());
-        }
-
-        /// <summary>
-        /// Writes data got from controller 
-        /// </summary>
-        /// <param name="powerLeft">Power of the left joystick</param>
-        /// <param name="directionLeft">Direction of the left joystick</param>
-        /// <param name="powerRight">Power of the right joystick</param>
-        /// <param name="directionRight">Direction of the right joystick</param>
-        //public void Write(int powerLeft, int directionLeft, int powerRight, int directionRight)
-        //{
-            //Java.Lang.String power = new Java.Lang.String(powerLeft+":"+directionLeft+":"+powerRight+":"+directionRight);
-            //m_Sender.Write(power.GetBytes());
-        //}
 
         /// <summary>
         /// Cancels an in-progress connection and closes the socket

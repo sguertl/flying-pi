@@ -9,22 +9,24 @@ using Android.Runtime;
 using Android.Net.Sip;
 using Android;
 using System.IO;
+using Android.Graphics;
 
 namespace BTDronection
 {
     [Activity(Label = "ControllerActivity",
-              Theme = "@android:style/Theme.Light.NoTitleBar.Fullscreen",
+              Theme = "@android:style/Theme.Holo.Light.NoActionBar.Fullscreen",
               MainLauncher = false,
               ScreenOrientation = Android.Content.PM.ScreenOrientation.SensorLandscape
              )]
     public class ControllerActivity : Activity
     {
-        private RadioGroup m_RgControlMethod;
-        private RadioButton m_RbThrottleLeft;
-        private RadioButton m_RbThrottleRight;
-        private TextView m_TvDescription;
-        private Button m_BtStart;
-        private Button m_BtShowLog;
+        private TextView mTvHeader;
+        private RadioGroup mRgControlMethod;
+        private RadioButton mRbThrottleLeft;
+        private RadioButton mRbThrottleRight;
+        private ImageView mIvMode;
+        private Button mBtStart;
+        private Button mBtShowLog;
 
         private SeekBar mSbTrimBar;
         private TextView mTvTrimValue;
@@ -32,15 +34,12 @@ namespace BTDronection
         private RadioButton mRbPitchTrim;
         private RadioButton mRbRollTrim;
 
-        //private IntentFilter m_Filter; // Used to filter events when searching
-        //private CallReciver m_Receiver;
+        //private IntentFilter mFilter; // Used to filter events when searching
+        //private CallReciver mReceiver;
 
-        public static bool m_Inverted;
-        private int m_YawTrim;
-        private readonly int mMinTrim = -50;
-
-        private readonly String TEXT_LEFT = "The left joystick will be used to regulate throttle and rudder. The right joystick will be used to regulate elevator and aileron.";
-        private readonly String TEXT_RIGHT = "The left joystick will be used to regulate elevator and rudder. The right joystick will be used to regulate the throttle and aileron.";
+        public static bool mInverted;
+        private int mYawTrim;
+        private readonly int mMinTrim = -30;
 
         private string mStorageDirPath;
 
@@ -48,34 +47,38 @@ namespace BTDronection
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.ControllerSettings);
-            m_RgControlMethod = FindViewById<RadioGroup>(Resource.Id.rgControlMethod);
-            m_RbThrottleLeft = FindViewById<RadioButton>(Resource.Id.rbThrottleLeft);
-            m_RbThrottleRight = FindViewById<RadioButton>(Resource.Id.rbThrottleRight);
-            m_TvDescription = FindViewById<TextView>(Resource.Id.tvDescription);
-            m_BtStart = FindViewById<Button>(Resource.Id.btStart);
-            m_BtShowLog = FindViewById<Button>(Resource.Id.btShowLog);
+            mTvHeader = FindViewById<TextView>(Resource.Id.tvHeaderSettings);
+            mRgControlMethod = FindViewById<RadioGroup>(Resource.Id.rgControlMethod);
+            mRbThrottleLeft = FindViewById<RadioButton>(Resource.Id.rbThrottleLeft);
+            mRbThrottleRight = FindViewById<RadioButton>(Resource.Id.rbThrottleRight);
+            mIvMode = FindViewById<ImageView>(Resource.Id.ivMode);
+            mBtStart = FindViewById<Button>(Resource.Id.btStart);
+            mBtShowLog = FindViewById<Button>(Resource.Id.btShowLog);
 
-            m_RbThrottleLeft.Click += OnThrottleLeftClick;
-            m_RbThrottleRight.Click += OnThrottleRightClick;
+            var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
 
-            m_BtStart.SetBackgroundColor(Android.Graphics.Color.DeepSkyBlue);
-            m_BtStart.SetTextColor(Android.Graphics.Color.White);
-            m_BtShowLog.SetBackgroundColor(Android.Graphics.Color.DeepSkyBlue);
-            m_BtShowLog.SetTextColor(Android.Graphics.Color.White);
+            mTvHeader.Typeface = font;
+            mRbThrottleLeft.Typeface = font;
+            mRbThrottleRight.Typeface = font;
+            mBtStart.Typeface = font;
+            mBtShowLog.Typeface = font;
 
-            m_BtStart.Click += OnStartController;
+            mRbThrottleLeft.Click += OnThrottleLeftClick;
+            mRbThrottleRight.Click += OnThrottleRightClick;
 
-            //m_Filter = new IntentFilter();
+            mBtStart.Click += OnStartController;
 
-            // m_Receiver = new CallReciver();
+            //mFilter = new IntentFilter();
 
-            // m_Filter.AddAction("android.intent.action.PHONE_STATE");
-            // m_Filter.AddAction("INCOMING_CALL");
-            // m_Filter.AddAction(SipSession.State.IncomingCall.ToString());
+            // mReceiver = new CallReciver();
+
+            // mFilter.AddAction("android.intent.action.PHONE_STATE");
+            // mFilter.AddAction("INCOMING_CALL");
+            // mFilter.AddAction(SipSession.State.IncomingCall.ToString());
             // Registering events and forwarding them to the broadcast object
-            // RegisterReceiver(m_Receiver, m_Filter);
+            // RegisterReceiver(mReceiver, mFilter);
 
-            mStorageDirPath = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.ToString(), "Airything");
+            mStorageDirPath = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.ToString(), "Airything");
             var storageDir = new Java.IO.File(mStorageDirPath);
             storageDir.Mkdirs();
         }
@@ -86,7 +89,7 @@ namespace BTDronection
             DateTime time = DateTime.Now;
             string logName = string.Format("{0}{1:D2}{2:D2}_{3:D2}{4:D2}{5:D2}_log", time.Year, time.Month, time.Day, time.Hour, time.Minute, time.Second);
             var writer = new Java.IO.FileWriter(new Java.IO.File(mStorageDirPath, logName + ".csv"));
-            if(writer != null)
+            if(DataTransfer.DEBUG == "")
                 writer.Write(DataTransfer.DEBUG);
             ConnectedThread.Cancel();
             writer.Close();
@@ -101,6 +104,12 @@ namespace BTDronection
             mRbYawTrim = FindViewById<RadioButton>(Resource.Id.rbYawTrim);
             mRbPitchTrim = FindViewById<RadioButton>(Resource.Id.rbPitchTrim);
             mRbRollTrim = FindViewById<RadioButton>(Resource.Id.rbRollTrim);
+
+            var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
+            mTvTrimValue.Typeface = font;
+            mRbYawTrim.Typeface = font;
+            mRbPitchTrim.Typeface = font;
+            mRbRollTrim.Typeface = font;
 
             mSbTrimBar.ProgressChanged += delegate
             {
@@ -140,43 +149,27 @@ namespace BTDronection
 
         private void OnThrottleRightClick(object sender, EventArgs e)
         {
-            m_Inverted = ControllerSettings.ACTIVE;
-            m_TvDescription.Text = TEXT_RIGHT;
+            mInverted = ControllerSettings.ACTIVE;
+            mIvMode.SetImageResource(Resource.Drawable.mode2);
         }
 
         private void OnThrottleLeftClick(object sender, EventArgs e)
         {
-            m_Inverted = ControllerSettings.INACTIVE;
-            m_TvDescription.Text = TEXT_LEFT;
+            mInverted = ControllerSettings.INACTIVE;
+            mIvMode.SetImageResource(Resource.Drawable.mode1);
         }
 
         private void OnRgClick(object sender, EventArgs e)
         {
-            if (m_RbThrottleLeft.Selected)
+            if (mRbThrottleLeft.Selected)
             {
-                m_Inverted = ControllerSettings.INACTIVE;
-                m_TvDescription.Text = TEXT_LEFT;
+                mInverted = ControllerSettings.INACTIVE;
 
             }
-            if (m_RbThrottleRight.Selected)
+            if (mRbThrottleRight.Selected)
             {
-                m_Inverted = ControllerSettings.ACTIVE;
-                m_TvDescription.Text = TEXT_RIGHT;
+                mInverted = ControllerSettings.ACTIVE;
             }
         }
-
-        /*private void CheckConnection(object state)
-		{
-			if (!ConnectedThread.m_Socket.IsConnected) {
-				AlertDialog alert = new AlertDialog.Builder(this).Create();
-				alert.SetTitle("Connection lost");
-				alert.SetMessage("Connection to device lost. Please reconnect.");
-				alert.SetButton("Ok", (s, ev) => { });
-				alert.Show();
-				var intent = new Intent(this, typeof(MainActivity))
-					.SetFlags(ActivityFlags.ReorderToFront);
-				StartActivity(intent);
-			}
-		}*/
     }
 }

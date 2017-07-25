@@ -12,13 +12,14 @@
             android:id="@+id/sbTrimbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_gravity="center_vertical"
             android:layout_marginBottom="0dp"
             android:layout_marginLeft="10dp"
-            android:max="100"
-            android:progress="50"
+            android:max="60"
+            android:progress="30"
             android:progressDrawable="@drawable/myseekbar"
-            android:layout_weight=".7" />
+            android:layout_weight=".65" />
+    <!--android:layout_marginTop="10dp"-->
         <TextView
             android:id="@+id/tvTrimValue"
             android:layout_width="wrap_content"
@@ -29,38 +30,36 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:layout_marginRight="0dp"
+            android:layout_marginRight="20dp"
             android:orientation="horizontal"
-            android:layout_weight=".3"
-            android:layout_gravity="right">
+            android:layout_weight=".35"
+            android:layout_gravity="right|center_vertical">
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Yaw Trim"
-                android:textSize="22dp"
+                android:textSize="14dp"
                 android:id="@+id/rbYawTrim"
                 android:height="1dp"
-                android:scaleX="0.5"
-                android:scaleY="0.5"
-                android:checked="true" />
+                android:checked="true"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_marginRight="10dp" />
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Pitch Trim"
-                android:textSize="22dp"
+                android:textSize="14dp"
                 android:id="@+id/rbPitchTrim"
                 android:height="1dp"
-                android:scaleX="0.5"
-                android:scaleY="0.5" />
+                android:layout_marginRight="10dp" />
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Roll Trim"
-                android:textSize="22dp"
+                android:textSize="14dp"
                 android:id="@+id/rbRollTrim"
-                android:height="10dp"
-                android:scaleX="0.5"
-                android:scaleY="0.5" />
+                android:height="1dp"
+                android:layout_marginRight="10dp" />
         </RadioGroup>
     </LinearLayout>
     <BTDronection.ControllerView

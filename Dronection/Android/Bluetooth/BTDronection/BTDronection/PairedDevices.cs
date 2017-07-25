@@ -17,13 +17,13 @@ namespace BTDronection
 {
     [Activity(Label = "PairedDevices", Theme = "@android:style/Theme.Holo.Light.NoActionBar.Fullscreen",
         ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-    public class PairedDevices : Activity, IEstablishConnection
+    public class PairedDevices : Activity
     {
         // Members
         private ListView m_ListView;
         private BluetoothAdapter m_BtAdapter;
         private List<BluetoothDevice> m_PairedDevice;
-        private ArrayAdapter<String> m_Adapter;
+        private ListAdapter m_Adapter;
         private LinearLayout m_Linear;
         private List<String> m_List;
         private List<String> m_UuidList;
@@ -60,7 +60,8 @@ namespace BTDronection
                 m_List.Add(device.Name + "\n" + device.Address);
             }
 
-            m_Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, m_List);
+            //m_Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, m_List);
+            m_Adapter = new ListAdapter(this, m_List);
             m_ListView.Adapter = m_Adapter;
         }
 
@@ -107,7 +108,7 @@ namespace BTDronection
 
         private void OnItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            TextView view = (TextView)e.View;
+            TextView view = (TextView)e.View.FindViewById<TextView>(Resource.Id.tvListItem);
             string address = view.Text.Split('\n')[1];
             BluetoothDevice bluetoothDevice = BluetoothAdapter.DefaultAdapter.GetRemoteDevice(address);
             BuildConnection(bluetoothDevice, bluetoothDevice.GetUuids()[0].Uuid.ToString());
@@ -131,17 +132,14 @@ namespace BTDronection
             // Creating a ConnectionThread object
             ConnectedThread connect = new ConnectedThread(bluetoothDevice, uuid, this);
             connect.Start();
-
             while (!ConnectedThread.m_Socket.IsConnected) { if (ConnectedThread.m_FailedCon) break; }
             if (!ConnectedThread.m_FailedCon)
             {
-                /*var activity2 = new Intent(this, typeof(ConnectedDevices));
-                IList<String> ll = new List<string>();
-                ll.Add(bluetoothDevice.Name);
-                ll.Add(bluetoothDevice.Address);
-                activity2.PutStringArrayListExtra("MyData", ll);
-                StartActivity(activity2);*/
                 StartActivity(typeof(ControllerActivity));
+            }
+            else
+            {
+                Toast.MakeText(this, "Could not connect to peer", ToastLength.Short).Show();
             }
         }
     }

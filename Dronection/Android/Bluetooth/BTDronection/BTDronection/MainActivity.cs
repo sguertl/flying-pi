@@ -67,6 +67,11 @@ namespace BTDronection
             // Setting activity background
             m_Linear.SetBackgroundColor(Android.Graphics.Color.White);
 
+            mBtHelp.Click += delegate
+            {
+                StartActivity(typeof(HelpActivity));
+            };
+
             // Handling paired devices button click
             mBtShowDevices.Click += delegate
             {

@@ -73,7 +73,7 @@ namespace BTDronection
             Settings = new ControllerSettings
             {
                 HeightControlActivated = false,
-                Inverted = ControllerActivity.m_Inverted,
+                Inverted = ControllerActivity.mInverted,
                 TrimPitch = 0,
                 TrimRoll = 0,
                 TrimYaw = 0
@@ -89,6 +89,8 @@ namespace BTDronection
 
             InitShapes();
             InitJoysticks();
+
+            this.SetBackgroundResource(Resource.Drawable.bg);
 
             m_WriteTimer = new System.Timers.Timer();
             m_WriteTimer.Interval = 50;//10
@@ -374,6 +376,7 @@ namespace BTDronection
         /// </summary>
         protected override void OnDraw(Canvas canvas)
         {
+            this.SetBackgroundResource(Resource.Drawable.bg);
             // Draw shapes
             m_ShapeBorderRadiusLeft.Draw(canvas);
             m_ShapeBorderRadiusRight.Draw(canvas);
@@ -469,15 +472,15 @@ namespace BTDronection
             {
 
                 m_Transfer.Write((Int16)m_LeftJS.Throttle,
-                                  (Int16)(m_LeftJS.Rudder + Settings.TrimYaw),
-                                  (Int16)(m_RightJS.Aileron + Settings.TrimPitch),
-                                  (Int16)(m_RightJS.Elevator + Settings.TrimRoll));
+                                  (Int16)(m_LeftJS.Rudder - Settings.TrimYaw),
+                                  (Int16)(m_RightJS.Aileron - Settings.TrimPitch),
+                                  (Int16)(m_RightJS.Elevator - Settings.TrimRoll));
             }
             else {
                 m_Transfer.Write((Int16)m_RightJS.Throttle,
-                                  (Int16)(m_LeftJS.Rudder + Settings.TrimYaw),
-                                  (Int16)(m_LeftJS.Aileron + Settings.TrimPitch),
-                                  (Int16)(m_RightJS.Elevator + Settings.TrimRoll));
+                                  (Int16)(m_LeftJS.Rudder - Settings.TrimYaw),
+                                  (Int16)(m_LeftJS.Aileron - Settings.TrimPitch),
+                                  (Int16)(m_RightJS.Elevator - Settings.TrimRoll));
             }
         }
     }
