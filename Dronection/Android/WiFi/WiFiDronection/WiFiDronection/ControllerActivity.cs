@@ -24,9 +24,9 @@ namespace WiFiDronection
         private RadioGroup mRgControlMethod;
         private RadioButton mRbThrottleLeft;
         private RadioButton mRbThrottleRight;
-        private TextView mTvDescription;
         private Button mBtStart;
         private Button mBtShowLog;
+        private ImageView mIvMode;
 
         private SeekBar mSbTrimBar;
         private TextView mTvTrimValue;
@@ -40,9 +40,6 @@ namespace WiFiDronection
         public static bool Inverted;
         private int mYawTrim;
         private readonly int mMinTrim = -50;
-
-        private readonly String TEXT_LEFT = "The left joystick will be used to regulate throttle and yaw. The right joystick will be used to regulate pitch and roll.";
-        private readonly String TEXT_RIGHT = "The left joystick will be used to regulate pitch and yaw. The right joystick will be used to regulate the throttle and roll.";
 
         private string mStorageDirPath;
 
@@ -61,14 +58,13 @@ namespace WiFiDronection
             mRgControlMethod = FindViewById<RadioGroup>(Resource.Id.rgControlMethod);
             mRbThrottleLeft = FindViewById<RadioButton>(Resource.Id.rbThrottleLeft);
             mRbThrottleRight = FindViewById<RadioButton>(Resource.Id.rbThrottleRight);
-            mTvDescription = FindViewById<TextView>(Resource.Id.tvDescription);
             mBtStart = FindViewById<Button>(Resource.Id.btStart);
             mBtShowLog = FindViewById<Button>(Resource.Id.btShowLog);
+            mIvMode = FindViewById<ImageView>(Resource.Id.ivMode);
 
             mTvHeader.Typeface = font;
             mRbThrottleLeft.Typeface = font;
             mRbThrottleRight.Typeface = font;
-            mTvDescription.Typeface = font;
             mBtStart.Typeface = font;
             mBtShowLog.Typeface = font;
 
@@ -97,11 +93,18 @@ namespace WiFiDronection
             mSocketConnection.Start();
             SetContentView(Resource.Layout.ControllerLayout);
 
+            var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
+
             mSbTrimBar = FindViewById<SeekBar>(Resource.Id.sbTrimbar);
             mTvTrimValue = FindViewById<TextView>(Resource.Id.tvTrimValue);
             mRbYawTrim = FindViewById<RadioButton>(Resource.Id.rbYawTrim);
             mRbPitchTrim = FindViewById<RadioButton>(Resource.Id.rbPitchTrim);
             mRbRollTrim = FindViewById<RadioButton>(Resource.Id.rbRollTrim);
+
+            mTvTrimValue.Typeface = font;
+            mRbYawTrim.Typeface = font;
+            mRbPitchTrim.Typeface = font;
+            mRbRollTrim.Typeface = font;
 
             mSbTrimBar.ProgressChanged += delegate
             {
@@ -154,13 +157,13 @@ namespace WiFiDronection
         private void OnThrottleRightClick(object sender, EventArgs e)
         {
             Inverted = ControllerSettings.ACTIVE;
-            mTvDescription.Text = TEXT_RIGHT;
+            mIvMode.SetImageResource(Resource.Drawable.mode2);
         }
 
         private void OnThrottleLeftClick(object sender, EventArgs e)
         {
             Inverted = ControllerSettings.INACTIVE;
-            mTvDescription.Text = TEXT_LEFT;
+            mIvMode.SetImageResource(Resource.Drawable.mode1);
         }
 
         private void OnRgClick(object sender, EventArgs e)
@@ -168,13 +171,11 @@ namespace WiFiDronection
             if (mRbThrottleLeft.Selected)
             {
                 Inverted = ControllerSettings.INACTIVE;
-                mTvDescription.Text = TEXT_LEFT;
 
             }
             if (mRbThrottleRight.Selected)
             {
                 Inverted = ControllerSettings.ACTIVE;
-                mTvDescription.Text = TEXT_RIGHT;
             }
         }
     }

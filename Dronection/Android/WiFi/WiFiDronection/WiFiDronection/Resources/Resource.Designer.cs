@@ -54,7 +54,13 @@ namespace WiFiDronection
 			public const int ifx_logo = 2130837506;
 			
 			// aapt resource value: 0x7f020003
-			public const int MySeekBar = 2130837507;
+			public const int mode1 = 2130837507;
+			
+			// aapt resource value: 0x7f020004
+			public const int mode2 = 2130837508;
+			
+			// aapt resource value: 0x7f020005
+			public const int MySeekBar = 2130837509;
 			
 			static Drawable()
 			{
@@ -90,6 +96,9 @@ namespace WiFiDronection
 			// aapt resource value: 0x7f050015
 			public const int etDialogPassword = 2131034133;
 			
+			// aapt resource value: 0x7f05000a
+			public const int ivMode = 2131034122;
+			
 			// aapt resource value: 0x7f050003
 			public const int rbPitchTrim = 2131034115;
 			
@@ -110,9 +119,6 @@ namespace WiFiDronection
 			
 			// aapt resource value: 0x7f050000
 			public const int sbTrimbar = 2131034112;
-			
-			// aapt resource value: 0x7f05000a
-			public const int tvDescription = 2131034122;
 			
 			// aapt resource value: 0x7f050014
 			public const int tvFooter = 2131034132;

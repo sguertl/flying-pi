@@ -46,7 +46,7 @@
         android:layout_gravity="bottom"
         android:layout_margin="10dp"
         android:textColor="#ffffff"
-        android:background="#005DA9" />
+        android:background="#E30034" />
     <Button
         android:id="@+id/btnHelp"
         android:layout_width="fill_parent"
@@ -72,17 +72,18 @@
         android:orientation="vertical">
         <ImageView
             android:src="@drawable/ifx_logo"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" />
+            android:scaleType="centerInside"
+            android:adjustViewBounds="true"
+            android:layout_margin="10dp" />
         <TextView
             android:id="@+id/tvFooter"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="\u00A9 2017 Infineon Technologies Austria AG"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="10dp"
+            android:layout_margin="10dp"
             android:fontFamily="Assets/SourceSansPro-Light.ttf" />
     <!-- #0076ff, #0e7afe, #3366ff-->
     </LinearLayout>

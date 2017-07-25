@@ -15,7 +15,8 @@ namespace WiFiDronection
 {
     [Activity(MainLauncher = true, 
         Icon = "@drawable/icon", 
-        Theme = "@android:style/Theme.Holo.Light.NoActionBar.Fullscreen")]
+        Theme = "@android:style/Theme.Holo.Light.NoActionBar.Fullscreen", 
+        ScreenOrientation = Android.Content.PM.ScreenOrientation.SensorPortrait)]
     public class MainActivity : Activity
     {
         private TextView mTvHeader;
@@ -24,7 +25,6 @@ namespace WiFiDronection
         private TextView mTvFooter;
         private Button mBtnConnect;
         private Button mBtnHelp;
-        private ListView mLvPeer;
 
         private ArrayAdapter<Peer> mAdapter;
         private List<Peer> mPeerList;
@@ -57,9 +57,6 @@ namespace WiFiDronection
 
             mBtnHelp.Click += OnHelp;
 
-            //mLvPeer = FindViewById<ListView>(Resource.Id.lvPeers);
-            //mLvPeer.ItemClick += OnListViewItemClick;
-
             mPeerList = new List<Peer>();
 
             WifiManager wm = GetSystemService(WifiService).JavaCast<WifiManager>();
@@ -86,7 +83,6 @@ namespace WiFiDronection
                     if (mAdapter == null)
                     {
                         mAdapter = new ArrayAdapter<Peer>(this, Android.Resource.Layout.SimpleListItem1, Android.Resource.Id.Text1);
-                        //RunOnUiThread(() => mLvPeer.Adapter = mAdapter);
                     }
                     
                     IEnumerable<ScanResult> results = wifiList.Where(w => w.Ssid.ToUpper().Contains("RPI") || w.Ssid.ToUpper().Contains("RASPBERRY"));
@@ -104,6 +100,7 @@ namespace WiFiDronection
                                 mTvWifiName.Text = "SSID: " + p.SSID;
                                 mTvWifiMac.Text = "MAC: " + p.BSSID;
                                 mBtnConnect.Enabled = true;
+                                mBtnConnect.SetBackgroundColor(Color.ParseColor("#005DA9"));
 
                                 mAdapter.Add(p);
                                 mPeerList.Add(p);
@@ -116,17 +113,8 @@ namespace WiFiDronection
             });
         }
 
-        /*private void OnListViewItemClick(object sender, AdapterView.ItemClickEventArgs itemClickEventArgs)
-        {
-            var wifiItem = mAdapter.GetItem(itemClickEventArgs.Position);
-            mSelectedSsid = wifiItem.SSID;
-            OnCreateDialog(0).Show();
-        }*/
-
         private void OnConnect(object sender, EventArgs e)
         {
-            //var wifiItem = mAdapter.GetItem(itemClickEventArgs.Position);
-            //mSelectedSsid = wifiItem.SSID;
             OnCreateDialog(0).Show();
         }
 
@@ -177,7 +165,7 @@ namespace WiFiDronection
 
         private void CancelClicked(object sender, DialogClickEventArgs e)
         {
-            //
+            // Do nothing
         }
 
         private void OnHelp(object sender, EventArgs e)
