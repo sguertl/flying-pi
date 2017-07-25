@@ -24,6 +24,7 @@ namespace WiFiDronection
         private TextView mTvWifiMac;
         private TextView mTvFooter;
         private Button mBtnConnect;
+        private Button mBtnShowLogs;
         private Button mBtnHelp;
 
         private TextView mTvHeaderDialog;
@@ -45,6 +46,7 @@ namespace WiFiDronection
             mTvWifiMac = FindViewById<TextView>(Resource.Id.tvWifiMac);
             mTvFooter = FindViewById<TextView>(Resource.Id.tvFooter);
             mBtnConnect = FindViewById<Button>(Resource.Id.btnConnect);
+            mBtnShowLogs = FindViewById<Button>(Resource.Id.btnShowLogs);
             mBtnHelp = FindViewById<Button>(Resource.Id.btnHelp);
 
             mTvHeader.Typeface = font;
@@ -52,10 +54,13 @@ namespace WiFiDronection
             mTvWifiMac.Typeface = font;
             mTvFooter.Typeface = font;
             mBtnConnect.Typeface = font;
+            mBtnShowLogs.Typeface = font;
             mBtnHelp.Typeface = font;
 
             mBtnConnect.Enabled = false;
             mBtnConnect.Click += OnConnect;
+
+            mBtnShowLogs.Click += OnShowLogFiles;
 
             mBtnHelp.Click += OnHelp;
 
@@ -175,6 +180,11 @@ namespace WiFiDronection
         private void CancelClicked(object sender, DialogClickEventArgs e)
         {
             // Do nothing
+        }
+
+        private void OnShowLogFiles(object sender, EventArgs e)
+        {
+            StartActivity(typeof(LogActivity));
         }
 
         private void OnHelp(object sender, EventArgs e)

@@ -39,7 +39,7 @@ namespace WiFiDronection
 
         public static bool Inverted;
         private int mYawTrim;
-        private readonly int mMinTrim = -50;
+        private readonly int mMinTrim = -30;
 
         private string mStorageDirPath;
 

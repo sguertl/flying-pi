@@ -48,6 +48,18 @@
         android:textColor="#ffffff"
         android:background="#E30034" />
     <Button
+        android:id="@+id/btnShowLogs"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Log files"
+        android:fontFamily="Assets/SourceSansPro-Light.tff"
+        android:textSize="20dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:layout_gravity="bottom"
+        android:layout_margin="10dp"
+        android:textColor="#ffffff"
+        android:background="#005DA9" />
+    <Button
         android:id="@+id/btnHelp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
