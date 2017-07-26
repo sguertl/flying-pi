@@ -16,6 +16,16 @@
         android:textSize="36dp"
         android:layout_margin="20dp" />
   <TextView
+        android:id="@+id/tvHelpText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="WiFi Dronection is a smartphone app for piloting an Infineon multicopter with a Raspberry Pi on it."
+        android:gravity="center_horizontal"
+        android:textSize="14dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp" />
+  <TextView
         android:id="@+id/tvHelpStartScreen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
