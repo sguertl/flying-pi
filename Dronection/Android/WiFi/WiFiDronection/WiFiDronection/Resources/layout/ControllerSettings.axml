@@ -57,10 +57,10 @@
                 android:layout_weight=".4"
                 android:scaleType="centerInside"
                 android:adjustViewBounds="true"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp" />
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp" />
         </LinearLayout>
     <!-- HEIGHT CONTROL
     <ToggleButton
