@@ -33,6 +33,7 @@ namespace WiFiDronection
         private DataOutputStream mDataOutputStream;
         private Socket m_Socket;
         private string mLogData;
+        private long mStartMillis;
 
         public string LogData
         {
@@ -55,6 +56,7 @@ namespace WiFiDronection
         private SocketConnection()
         {        
             m_Socket = new Socket();
+            mStartMillis = 0;
         }
 
         public static SocketConnection Instance
@@ -123,7 +125,8 @@ namespace WiFiDronection
 
         public void Write(params Int16[] args)
         {
-            mLogData += args[0] + "," + args[1] + "," + args[2] + "," + args[3] + "\n";
+            mLogData += mStartMillis + "," + args[0] + "," + args[1] + "," + args[2] + "," + args[3] + "\n";
+            mStartMillis += 10;
             byte[] bytes = ConvertToByte(args);
             try
             {

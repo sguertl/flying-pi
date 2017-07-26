@@ -26,6 +26,11 @@ namespace WiFiDronection
             mFont = Typeface.CreateFromAsset(mContext.Assets, "SourceSansPro-Light.ttf");
         }
 
+        public void DeleteElement(string element)
+        {
+            mFileNames.Remove(element);
+        }
+
         public override string this[int position]
         {
             get { return mFileNames[position]; }
