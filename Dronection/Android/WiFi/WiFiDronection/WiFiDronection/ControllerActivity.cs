@@ -41,8 +41,6 @@ namespace WiFiDronection
         private int mYawTrim;
         private readonly int mMinTrim = -30;
 
-        private string mStorageDirPath;
-
         private SocketConnection mSocketConnection;
         private SocketReader mSocketReader;
 
@@ -84,10 +82,6 @@ namespace WiFiDronection
             // m_Filter.AddAction(SipSession.State.IncomingCall.ToString());
             // Registering events and forwarding them to the broadcast object
             // RegisterReceiver(m_Receiver, m_Filter);
-
-            /*mStorageDirPath = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.ToString(), "Airything");
-            var storageDir = new Java.IO.File(mStorageDirPath);
-            storageDir.Mkdirs();*/
         }
 
         private void OnStartController(object sender, EventArgs e)
@@ -150,13 +144,28 @@ namespace WiFiDronection
         protected override void OnDestroy()
         {
             base.OnDestroy();
+            WriteLogData();
             mSocketConnection.OnCancel();
+            mSocketReader.Close();
         }
 
         protected override void OnStop()
         {
             base.OnStop();
+            WriteLogData();
             mSocketConnection.OnCancel();
+            mSocketReader.Close();
+        }
+
+        private void WriteLogData()
+        {
+            DateTime time = DateTime.Now;
+            string dirName = string.Format("{0}{1:D2}{2:D2}_{3:D2}{4:D2}{5:D2}", time.Year, time.Month, time.Day, time.Hour, time.Minute, time.Second);
+            var storageDir = new Java.IO.File(MainActivity.ApplicationFolderPath + Java.IO.File.Separator + dirName);
+            storageDir.Mkdirs();
+            var writer = new Java.IO.FileWriter(new Java.IO.File(storageDir, "Controlls.csv"));
+            writer.Write(mSocketConnection.LogData);
+            writer.Close();
         }
 
         private void OnThrottleRightClick(object sender, EventArgs e)

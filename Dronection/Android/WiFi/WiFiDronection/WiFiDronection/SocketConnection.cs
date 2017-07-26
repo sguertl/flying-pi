@@ -32,6 +32,13 @@ namespace WiFiDronection
 
         private DataOutputStream mDataOutputStream;
         private Socket m_Socket;
+        private string mLogData;
+
+        public string LogData
+        {
+            get { return mLogData; }
+            set { mLogData = value; }
+        }
 
         public Socket WifiSocket
         {
@@ -116,6 +123,7 @@ namespace WiFiDronection
 
         public void Write(params Int16[] args)
         {
+            mLogData += args[0] + "," + args[1] + "," + args[2] + "," + args[3] + "\n";
             byte[] bytes = ConvertToByte(args);
             try
             {
