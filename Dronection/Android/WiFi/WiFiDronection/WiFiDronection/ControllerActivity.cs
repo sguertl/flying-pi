@@ -44,6 +44,7 @@ namespace WiFiDronection
         private string mStorageDirPath;
 
         private SocketConnection mSocketConnection;
+        private SocketReader mSocketReader;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -92,6 +93,8 @@ namespace WiFiDronection
         private void OnStartController(object sender, EventArgs e)
         {
             mSocketConnection.Start();
+            mSocketReader = new SocketReader(mSocketConnection.WifiSocket.InputStream);
+            mSocketReader.Start();
             SetContentView(Resource.Layout.ControllerLayout);
 
             var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");

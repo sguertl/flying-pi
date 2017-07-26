@@ -21,7 +21,6 @@ namespace WiFiDronection
         private static readonly string TAG = "SocketConnection";
 
         public static bool FLAG = true;
-        public Socket m_Socket;
 
         private static readonly string SERVER_ADDRESS = "172.24.1.1";
         private static readonly int SERVERPORT = 5050;
@@ -32,6 +31,13 @@ namespace WiFiDronection
         private static readonly object padlock = new object();
 
         private DataOutputStream mDataOutputStream;
+        private Socket m_Socket;
+
+        public Socket WifiSocket
+        {
+            get { return m_Socket; }
+        }
+
 
         private SocketConnection()
         {        
@@ -99,6 +105,7 @@ namespace WiFiDronection
                     mDataOutputStream = new DataOutputStream(m_Socket.OutputStream);
                 }
             }
+            Thread.Sleep(5000);
         }
 
         public void Write(params Int16[] args)
