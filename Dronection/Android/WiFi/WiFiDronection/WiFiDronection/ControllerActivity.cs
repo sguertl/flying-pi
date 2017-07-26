@@ -93,8 +93,6 @@ namespace WiFiDronection
         private void OnStartController(object sender, EventArgs e)
         {
             mSocketConnection.Start();
-            mSocketReader = new SocketReader(mSocketConnection.WifiSocket.InputStream);
-            mSocketReader.Start();
             SetContentView(Resource.Layout.ControllerLayout);
 
             var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
@@ -144,6 +142,9 @@ namespace WiFiDronection
                 mTvTrimValue.Text = ControllerView.Settings.TrimRoll.ToString();
                 mSbTrimBar.Progress = ControllerView.Settings.TrimRoll - mMinTrim;
             };
+
+            mSocketReader = new SocketReader(mSocketConnection.InputStream);
+            mSocketReader.Start();
         }
 
         protected override void OnDestroy()

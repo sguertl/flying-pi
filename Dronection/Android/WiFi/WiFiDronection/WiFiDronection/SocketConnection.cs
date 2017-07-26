@@ -38,6 +38,12 @@ namespace WiFiDronection
             get { return m_Socket; }
         }
 
+        private DataInputStream mDataInputStream;
+
+        public DataInputStream InputStream
+        {
+            get { return mDataInputStream; }
+        }
 
         private SocketConnection()
         {        
@@ -61,7 +67,7 @@ namespace WiFiDronection
 
         public override void Run()
         {
-              FLAG = true;
+            FLAG = true;
             try
             {
                 m_Socket = new Socket(SERVER_ADDRESS, SERVERPORT);
@@ -103,9 +109,9 @@ namespace WiFiDronection
                 if (FLAG)
                 {
                     mDataOutputStream = new DataOutputStream(m_Socket.OutputStream);
+                    mDataInputStream = new DataInputStream(m_Socket.InputStream);
                 }
             }
-            Thread.Sleep(5000);
         }
 
         public void Write(params Int16[] args)

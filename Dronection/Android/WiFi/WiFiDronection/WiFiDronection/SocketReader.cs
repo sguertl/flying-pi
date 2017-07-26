@@ -20,9 +20,9 @@ namespace WiFiDronection
     {
         private DataInputStream mDataInputStream;
         
-        public SocketReader(Stream inputStream)
+        public SocketReader(DataInputStream inputStream)
         {
-            mDataInputStream = new DataInputStream(inputStream);
+            mDataInputStream = inputStream;
         }
 
         public override void Run()
