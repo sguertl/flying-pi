@@ -13,9 +13,9 @@ using System;
 
 namespace WiFiDronection
 {
-    [Activity(MainLauncher = true, 
-        Icon = "@drawable/icon", 
-        Theme = "@android:style/Theme.Holo.Light.NoActionBar.Fullscreen", 
+    [Activity(MainLauncher = true,
+        Icon = "@drawable/icon",
+        Theme = "@android:style/Theme.Holo.Light.NoActionBar.Fullscreen",
         ScreenOrientation = Android.Content.PM.ScreenOrientation.SensorPortrait)]
     public class MainActivity : Activity
     {
@@ -33,12 +33,15 @@ namespace WiFiDronection
         private List<Peer> mPeerList;
         private string mSelectedSsid;
 
+        public static string ApplicationFolderPath;
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.Main);
 
             var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
+            //mTvHeader.Typeface = font;
 
             mTvHeader = FindViewById<TextView>(Resource.Id.tvHeader);
             mTvWifiName = FindViewById<TextView>(Resource.Id.tvWifiName);
@@ -66,12 +69,14 @@ namespace WiFiDronection
             mPeerList = new List<Peer>();
 
             WifiManager wm = GetSystemService(WifiService).JavaCast<WifiManager>();
-            if(wm.IsWifiEnabled == false)
+            if (wm.IsWifiEnabled == false)
             {
                 wm.SetWifiEnabled(true);
             }
-            RefreshWifiList();
 
+            CreateApplicationFolder();
+
+            RefreshWifiList();
         }
 
         private void RefreshWifiList()
@@ -90,7 +95,7 @@ namespace WiFiDronection
                     {
                         mAdapter = new ArrayAdapter<Peer>(this, Android.Resource.Layout.SimpleListItem1, Android.Resource.Id.Text1);
                     }
-                    
+
                     IEnumerable<ScanResult> results = wifiList.Where(w => w.Ssid.ToUpper().Contains("RPI") || w.Ssid.ToUpper().Contains("RASPBERRY"));
 
                     foreach (var wifi in results)
@@ -98,10 +103,10 @@ namespace WiFiDronection
                         var wifi1 = wifi;
                         RunOnUiThread(() =>
                         {
-                            if(mPeerList.Any(p => p.SSID == wifi1.Ssid) == false)
+                            if (mPeerList.Any(p => p.SSID == wifi1.Ssid) == false)
                             {
                                 Peer p = new Peer { SSID = wifi1.Ssid, BSSID = wifi1.Bssid, Encryption = wifi1.Capabilities };
-                                
+
                                 mSelectedSsid = p.SSID;
                                 mTvWifiName.Text = "SSID: " + p.SSID;
                                 mTvWifiMac.Text = "MAC: " + p.BSSID;
@@ -190,6 +195,12 @@ namespace WiFiDronection
         {
             StartActivity(typeof(HelpActivity));
         }
+
+        private void CreateApplicationFolder()
+        {
+            ApplicationFolderPath = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.ToString(), "Airything");
+            var storageDir = new Java.IO.File(ApplicationFolderPath);
+            storageDir.Mkdirs();
+        }
     }
 }
-
