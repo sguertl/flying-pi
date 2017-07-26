@@ -20,6 +20,14 @@ namespace WiFiDronection
     {
 
         private TextView mTvHeaderHelp;
+        private TextView mTvHelpStartScreen;
+        private TextView mTvHelpStartScreenText;
+        private TextView mTvHelpControllerSettings;
+        private TextView mTvHelpControllerSettingsText;
+        private TextView mTvHelpController;
+        private TextView mTvHelpControllerText;
+        private TextView mTvHelpLogFiles;
+        private TextView mTvHelpLogFilesText;
         private TextView mTvHelpAbout;
         private TextView mTvVersion;
         private TextView mTvCredentials;
@@ -35,6 +43,14 @@ namespace WiFiDronection
             var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
 
             mTvHeaderHelp = FindViewById<TextView>(Resource.Id.tvHeaderHelp);
+            mTvHelpStartScreen = FindViewById<TextView>(Resource.Id.tvHelpStartScreen);
+            mTvHelpStartScreenText = FindViewById<TextView>(Resource.Id.tvHelpTextStartScreen);
+            mTvHelpControllerSettings = FindViewById<TextView>(Resource.Id.tvHelpControllerSettings);
+            mTvHelpControllerSettingsText = FindViewById<TextView>(Resource.Id.tvHelpTextControllerSettings);
+            mTvHelpController = FindViewById<TextView>(Resource.Id.tvHelpController);
+            mTvHelpControllerText = FindViewById<TextView>(Resource.Id.tvHelpTextController);
+            mTvHelpLogFiles = FindViewById<TextView>(Resource.Id.tvHelpLogFiles);
+            mTvHelpLogFilesText = FindViewById<TextView>(Resource.Id.tvHelpTextLogFiles);
             mTvHelpAbout = FindViewById<TextView>(Resource.Id.tvHelpAbout);
             mTvVersion = FindViewById<TextView>(Resource.Id.tvVersion);
             mTvCredentials = FindViewById<TextView>(Resource.Id.tvCredentials);
@@ -43,6 +59,14 @@ namespace WiFiDronection
             mBtnBackHelp = FindViewById<Button>(Resource.Id.btnBackHelp);
 
             mTvHeaderHelp.Typeface = font;
+            mTvHelpStartScreen.Typeface = font;
+            mTvHelpStartScreenText.Typeface = font;
+            mTvHelpControllerSettings.Typeface = font;
+            mTvHelpControllerSettingsText.Typeface = font;
+            mTvHelpController.Typeface = font;
+            mTvHelpControllerText.Typeface = font;
+            mTvHelpLogFiles.Typeface = font;
+            mTvHelpLogFilesText.Typeface = font;
             mTvHelpAbout.Typeface = font;
             mTvVersion.Typeface = font;
             mTvCredentials.Typeface = font;
@@ -54,11 +78,13 @@ namespace WiFiDronection
 
             PackageManager manager = this.PackageManager;
             PackageInfo info = manager.GetPackageInfo(this.PackageName, 0);
-            mTvVersion.Text = 
-                "Version: " + info.VersionName + 
-                "\nFirst install time: " + new DateTime(info.FirstInstallTime).ToShortDateString() +
-                "\nLast Update Time: " + new DateTime(info.LastUpdateTime).ToShortDateString() + 
-                "\nPackage Name: " + info.PackageName;          
+            Date fit = new Date(info.FirstInstallTime);
+            Date lut = new Date(info.LastUpdateTime);
+            DateTime firstInstall = new DateTime(fit.Year + 1900, fit.Month +1 , fit.Day);
+            DateTime lastUpdate = new DateTime(lut.Year + 1900, lut.Month + 1, lut.Day);
+            mTvVersion.Text = String.Format(
+                "Version: {0}\nFirst install time: {1:yyyy-MM-dd}\nLast Update Time: {2:yyyy-MM-dd}\nPackage Name: {3}", 
+                info.VersionName, firstInstall, lastUpdate, info.PackageName);          
 
         }
 

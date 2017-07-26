@@ -39,7 +39,6 @@ namespace WiFiDronection
             SetContentView(Resource.Layout.Main);
 
             var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
-            //mTvHeader.Typeface = font;
 
             mTvHeader = FindViewById<TextView>(Resource.Id.tvHeader);
             mTvWifiName = FindViewById<TextView>(Resource.Id.tvWifiName);

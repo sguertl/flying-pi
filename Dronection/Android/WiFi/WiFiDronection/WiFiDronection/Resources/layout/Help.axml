@@ -11,13 +11,78 @@
         android:text="Help"
         android:gravity="center_horizontal"
         android:textSize="36dp"
-        android:fontFamily="Assets/SourceSansPro-Light.ttf"
         android:layout_margin="20dp" />
-    <TextView
-        android:id="@+id/tvHelpText"
+  <TextView
+        android:id="@+id/tvHelpStartScreen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=""
+        android:text="Start screen"
+        android:gravity="center_horizontal"
+        android:textSize="24dp"
+        android:layout_margin="10dp"
+        android:textColor="#005DA9" />
+  <TextView
+        android:id="@+id/tvHelpTextStartScreen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start screen help"
+        android:gravity="center_horizontal"
+        android:textSize="14dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp" />
+  <TextView
+        android:id="@+id/tvHelpControllerSettings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Controller Settings"
+        android:gravity="center_horizontal"
+        android:textSize="24dp"
+        android:layout_margin="10dp"
+        android:textColor="#005DA9" />
+  <TextView
+        android:id="@+id/tvHelpTextControllerSettings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Controller Settings help"
+        android:gravity="center_horizontal"
+        android:textSize="14dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp" />
+  <TextView
+        android:id="@+id/tvHelpController"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Controller"
+        android:gravity="center_horizontal"
+        android:textSize="24dp"
+        android:layout_margin="10dp"
+        android:textColor="#005DA9" />
+  <TextView
+        android:id="@+id/tvHelpTextController"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Controller help"
+        android:gravity="center_horizontal"
+        android:textSize="14dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp" />
+  <TextView
+        android:id="@+id/tvHelpLogFiles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Log files"
+        android:gravity="center_horizontal"
+        android:textSize="24dp"
+        android:layout_margin="10dp"
+        android:textColor="#005DA9" />
+    <TextView
+        android:id="@+id/tvHelpTextLogFiles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Log files help"
         android:gravity="center_horizontal"
         android:textSize="14dp"
         android:layout_marginLeft="10dp"
@@ -30,7 +95,6 @@
         android:text="About"
         android:gravity="center_horizontal"
         android:textSize="24dp"
-        android:fontFamily="Assets/SourceSansPro-Light.ttf"
         android:layout_margin="10dp"
         android:textColor="#005DA9" />
     <TextView
@@ -79,7 +143,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Back"
-        android:fontFamily="Assets/SourceSansPro-Light.tff"
         android:textSize="20dp"
         android:gravity="center_horizontal|center_vertical"
         android:layout_gravity="bottom"
