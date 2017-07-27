@@ -26,7 +26,7 @@ namespace WiFiDronection
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.VisualisationLayout);
-
+            string path = Intent.GetStringExtra("filename");
             Init();
         }
 
