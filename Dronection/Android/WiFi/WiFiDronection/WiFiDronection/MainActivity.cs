@@ -225,6 +225,7 @@ namespace WiFiDronection
         {
             // Creates Application folder on internal mobile storage
             ApplicationFolderPath = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.ToString(), "Airything");
+            ApplicationFolderPath += Java.IO.File.Separator + "WiFi";
             var storageDir = new Java.IO.File(ApplicationFolderPath);
             storageDir.Mkdirs();
         }
