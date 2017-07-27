@@ -28,7 +28,6 @@ namespace WiFiDronection
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.RawDataLayout);
-
             mTvHeader = FindViewById<TextView>(Resource.Id.tvHeaderRawData);
             mLvRawData = FindViewById<ListView>(Resource.Id.lvRawData);
             mLvRawData.ItemClick += OnListItemClick;

@@ -18,7 +18,6 @@ namespace WiFiDronection
 {
     public class ControllerView : View, View.IOnTouchListener
     {
-        // Controller Settings
         public static ControllerSettings Settings { get; set; }
 
         // Screen metrics in px
@@ -71,15 +70,6 @@ namespace WiFiDronection
             m_SocketConnection = SocketConnection.Instance;
             SetOnTouchListener(this);
             SetBackgroundColor(Color.White);
-
-            Settings = new ControllerSettings
-            {
-                HeightControlActivated = false,
-                Inverted = ControllerActivity.Inverted,
-                TrimPitch = 0,
-                TrimRoll = 0,
-                TrimYaw = 0
-            };
 
             ScreenWidth = Resources.DisplayMetrics.WidthPixels;
             ScreenHeight = Resources.DisplayMetrics.HeightPixels;

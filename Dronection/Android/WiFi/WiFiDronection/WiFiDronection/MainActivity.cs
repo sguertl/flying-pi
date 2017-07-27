@@ -32,6 +32,8 @@ namespace WiFiDronection
         private ArrayAdapter<Peer> mAdapter;
         private List<Peer> mPeerList;
         private string mSelectedSsid;
+        private string mLastConnectedPeer;
+        private bool mIsConnected;
 
         public static string ApplicationFolderPath;
 
@@ -67,6 +69,9 @@ namespace WiFiDronection
             mBtnHelp.Click += OnHelp;
 
             mPeerList = new List<Peer>();
+
+            mLastConnectedPeer = "";
+            mIsConnected = false;
 
             WifiManager wm = GetSystemService(WifiService).JavaCast<WifiManager>();
             if (wm.IsWifiEnabled == false)
@@ -126,7 +131,16 @@ namespace WiFiDronection
 
         private void OnConnect(object sender, EventArgs e)
         {
-            OnCreateDialog(0).Show();
+            if(mLastConnectedPeer != mSelectedSsid)
+            {
+                OnCreateDialog(0).Show();
+            }
+            else
+            {
+                Intent intent = new Intent(BaseContext, typeof(ControllerActivity));
+                intent.PutExtra("isConnected", mIsConnected);
+                StartActivity(intent);
+            }
         }
 
         protected override Dialog OnCreateDialog(int id)
@@ -172,8 +186,11 @@ namespace WiFiDronection
 
             if (wifiManager.IsWifiEnabled)
             {
-                StartActivity(typeof(ControllerActivity));
-                // Go to next activity
+                mLastConnectedPeer = conf.Ssid;
+                Intent intent = new Intent(BaseContext, typeof(ControllerActivity));
+                intent.PutExtra("isConnected", mIsConnected);
+                StartActivity(intent);
+                mIsConnected = true;
             }
             else
             {
