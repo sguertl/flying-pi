@@ -33,8 +33,10 @@ namespace WiFiDronection
         private TextView mTvHelpAbout;
         private TextView mTvVersion;
         private TextView mTvCredentials;
+        private TextView mTvLinkGithub;
         private TextView mTvAboutInfo;
         private TextView mTvLinkHomepage;
+        private TextView mTvThirdParty;
         private Button mBtnBackHelp;
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -58,8 +60,10 @@ namespace WiFiDronection
             mTvHelpAbout = FindViewById<TextView>(Resource.Id.tvHelpAbout);
             mTvVersion = FindViewById<TextView>(Resource.Id.tvVersion);
             mTvCredentials = FindViewById<TextView>(Resource.Id.tvCredentials);
+            mTvLinkGithub = FindViewById<TextView>(Resource.Id.tvLinkGitHub);
             mTvAboutInfo = FindViewById<TextView>(Resource.Id.tvAboutInfo);
             mTvLinkHomepage = FindViewById<TextView>(Resource.Id.tvLinkHomepage);
+            mTvThirdParty = FindViewById<TextView>(Resource.Id.tvThirdParty);
             mBtnBackHelp = FindViewById<Button>(Resource.Id.btnBackHelp);
 
             mTvHeaderHelp.Typeface = font;
@@ -75,8 +79,10 @@ namespace WiFiDronection
             mTvHelpAbout.Typeface = font;
             mTvVersion.Typeface = font;
             mTvCredentials.Typeface = font;
+            mTvLinkGithub.Typeface = font;
             mTvAboutInfo.Typeface = font;
             mTvLinkHomepage.Typeface = font;
+            mTvThirdParty.Typeface = font;
             mBtnBackHelp.Typeface = font;
 
             mBtnBackHelp.Click += OnBackToMain;
@@ -94,13 +100,18 @@ namespace WiFiDronection
                 "<br/><b>Mode 2</b><br/>The left joystick is used to control Pitch (vertical) and Yaw (horizontal). The right joystick is used to control Throttle (vertical) and Roll (horizontal).<br/>" +
                 "<br/>A click on <i>Start</i> opens the controller.");
 
-            mTvHelpControllerText.TextFormatted = Html.FromHtml("With the controller view you can control a multicopter using the two joysticks. Depending on the previous selection the user can start the multicopter by pushing up the throttle joystick. At the top of the screen the user can adjust trims for yaw, pitch and roll. The trim can be changed either by moving the bar or by clicking the two volume buttons (+ and -) on the smartphone. Once a flight is finished, the user can go back to the <i>Controller Settings</i> menu by clicking the smartphone’s back button.");
+            mTvHelpControllerText.TextFormatted = Html.FromHtml("With the controller view you can control a multicopter using the two joysticks. Depending on the previous selection the user can start the multicopter by pushing up the throttle joystick. At the top of the screen the user can activate altitude control and adjust trims for yaw, pitch and roll. The trim can be changed either by moving the bar or by clicking the two volume buttons (+ and -) on the smartphone. Once a flight is finished, the user can go back to the <i>Controller Settings</i> menu by clicking the smartphone’s back button.");
 
             mTvHelpLogFilesText.TextFormatted = Html.FromHtml(
                 "In this menu a list of all log files is displayed. After a flight, sent and received data is logged and saved in a file. With a click on a file, the user can choose between these three options:<br/>" +
                 "<br/><b>Raw Data</b><br/>This option shows the raw data from the log file.<br/>" +
                 "<br/><b>Visualize</b><br/>This option visualizes the logged data and generates one or more graphs.<br/>" +
                 "<br/><b>Delete file</b><br/>Deletes the file permanently.");
+
+            mTvThirdParty.TextFormatted = Html.FromHtml(
+                "Wifi Dronection includes third-party components and we are very thankful to their authors.<br/><br/>" +
+                "&#9679; <a href='https://github.com/PhilJay/MPAndroidChart'>MPAndroidChart</a> by PhilJay"
+                );
 
             PackageManager manager = this.PackageManager;
             PackageInfo info = manager.GetPackageInfo(this.PackageName, 0);

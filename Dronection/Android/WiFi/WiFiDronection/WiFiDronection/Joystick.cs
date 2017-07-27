@@ -75,7 +75,7 @@ namespace WiFiDronection
 
         // Throttle value of the stick
         private Int16 mThrottle;
-        public Int16 Throttle { get { return GetThrottleValue(); } private set { mThrottle = value; } }
+        public Int16 Throttle { get { return GetThrottleValue(); } set { mThrottle = value; } }
 
         // Rudder value of the stick
         private Int16 mRudder;
@@ -89,6 +89,13 @@ namespace WiFiDronection
         private Int16 mAileron;
         public Int16 Aileron { get { return GetAileronValue(); } private set { mAileron = value; } }
 
+        /// <summary>
+        /// Constructor creates new Joystick object and sets Stick diameter, Displacement diameter and center of the joystick
+        /// </summary>
+        /// <param name="width">Width of screen</param>
+        /// <param name="height">Height of screen</param>
+        /// <param name="isLeftStick">Left or right positioned joystick</param>
+        /// <param name="invertedControl">Mode of controller</param>
         public Joystick(float width, float height, bool isLeftStick, bool invertedControl)
         {
             StickDiameter = (width / 8 + width / 2) / 2 - width / 5;
@@ -97,7 +104,7 @@ namespace WiFiDronection
             StickRadius = StickDiameter / 2;
             DisplacementRadius = DisplacementDiameter / 2;
 
-            mCenterY = height / 2; // / 16 + height / 2 + StickRadius / 2;
+            mCenterY = height / 2;
             if (!invertedControl)
             {
                 if (isLeftStick)
@@ -158,17 +165,14 @@ namespace WiFiDronection
             {
                 if (mYPosition < mCenterY)
                 {
-                    //return mAngle = (int)(Math.Atan((mYPosition - CENTER_Y) / (mXPosition - CENTER_X)) * RAD + 90);
                     return mAngle = (int)(Math.Atan((mYPosition - mCenterY) / (mXPosition - mCenterX)) * RAD + 90) - 90;
                 }
                 else if (mYPosition > mCenterY)
                 {
-                    //return mAngle = (int)(Math.Atan((mYPosition - CENTER_Y) / (mXPosition - CENTER_X)) * RAD) + 90;
                     return mAngle = (int)(Math.Atan((mYPosition - mCenterY) / (mXPosition - mCenterX)) * RAD);
                 }
                 else
                 {
-                    //return mAngle = 90;
                     return mAngle = 0;
                 }
             }
@@ -176,17 +180,14 @@ namespace WiFiDronection
             {
                 if (mYPosition < mCenterY)
                 {
-                    //return mAngle = (int)(Math.Atan((mYPosition - CENTER_Y) / (mXPosition - CENTER_X)) * RAD - 90);
                     return mAngle = (int)(Math.Atan((mYPosition - mCenterY) / (mXPosition - mCenterX)) * RAD - 90) - 90;
                 }
                 else if (mYPosition > mCenterY)
                 {
-                    //return mAngle = (int)(Math.Atan((mYPosition - CENTER_Y) / (mXPosition - CENTER_X)) * RAD) - 90;
                     return mAngle = (int)(Math.Atan((mYPosition - mCenterY) / (mXPosition - mCenterX)) * RAD) - 180;
                 }
                 else
                 {
-                    //return mAngle = -90;
                     return mAngle = -180;
                 }
             }
@@ -194,19 +195,16 @@ namespace WiFiDronection
             {
                 if (mYPosition <= mCenterY)
                 {
-                    //return mAngle = 0;
                     return mAngle = -90;
                 }
                 else
                 {
                     if (mAngle < 0)
                     {
-                        //return mAngle = -180;
                         return mAngle = -270;
                     }
                     else
                     {
-                        //return mAngle = 180;
                         return mAngle = 90;
                     }
                 }
@@ -256,7 +254,7 @@ namespace WiFiDronection
         /// <summary>
         /// Calculates the power of the joystick
         /// </summary>
-        /// <returns>Power of the joystick in percent (max. 100)</returns>
+        /// <returns>Power of the joystick in percent (between 0 and 100)</returns>
         private int GetPower()
         {
             mPower = (int)(100 * Math.Sqrt(
@@ -286,85 +284,50 @@ namespace WiFiDronection
             {
                 return (Int16)throttleValue;
             }
-            //throttleValue = (int)(40 * (mCenterY + DisplacementRadius - mYPosition) / DisplacementDiameter);
-            //throttleValue = Math.Max((Int16)0, throttleValue);
-            //throttleValue = Math.Min((Int16)40, throttleValue);
-            //throttleValue = (int)(32767 * (mCenterY + DisplacementRadius - mYPosition) / DisplacementDiameter);
             throttleValue = (int)(90 * (mCenterY + DisplacementRadius - mYPosition) / DisplacementDiameter);
             throttleValue = Math.Max((Int16)0, throttleValue);
-            //throttleValue = Math.Min((Int16)32767, throttleValue);
             throttleValue = Math.Min((Int16)255, throttleValue);
             Throttle = (Int16)throttleValue;
-            //Console.WriteLine("****************"+mThrottle);
             return (Int16)((mThrottle) * mMultThrottle);
         }
 
         /// <summary>
-        /// Calculates the rudder value of the stick
+        /// Calculates the rudder (yaw) value of the stick
         /// </summary>
         /// <returns>Rudder value (between -32768 and 32767)</returns>
         private Int16 GetRudderValue()
         {
-            //int rudderValue = -32768;
             int rudderValue = -90;
-            /* if (mXPosition < mCenterX - DisplacementRadius)
-             {
-                 return (Int16)rudderValue;
-             }*/
-            //rudderValue = (int)((65536 * (mCenterX + DisplacementRadius - mXPosition) / DisplacementDiameter) - 32768) * (-1);
             rudderValue = (int)((180 * (mCenterX + DisplacementRadius - mXPosition) / DisplacementDiameter) - 90) * (-1);
-            //rudderValue = Math.Max(-32768, rudderValue);
             rudderValue = Math.Max(-90, rudderValue);
-            //rudderValue = Math.Min(32767, rudderValue);
             rudderValue = Math.Min(90, rudderValue);
             mRudder = (Int16)rudderValue;
             return (Int16)((mRudder * -1) * mMultRudder);
         }
 
         /// <summary>
-        /// Calculates the elevator value of the stick
+        /// Calculates the elevator (pitch) value of the stick
         /// </summary>
         /// <returns>Elevator value (between -32768 and 32767)</returns>
         private Int16 GetElevatorValue()
         {
-            //int elevatorValue = -32768;
             int elevatorValue = -100;
-            /*  if (mYPosition > mCenterY + DisplacementRadius)
-              {
-                  return (Int16)elevatorValue;
-              }*/
             elevatorValue = (int)((200 * (mCenterY + DisplacementRadius - mYPosition) / DisplacementDiameter) - 100) * (-1);
-            // elevatorValue = Math.Max(0, elevatorValue);
-            // elevatorValue = Math.Min(40, elevatorValue);
-            //elevatorValue = (int)(65536 * (mCenterY + DisplacementRadius - mYPosition) / DisplacementDiameter) - 32768;
-            //   elevatorValue = (int)(200 * (mCenterY + DisplacementRadius - mYPosition) / DisplacementDiameter) - 100;
-            //elevatorValue = Math.Max(-32768, elevatorValue);
             elevatorValue = Math.Max(-100, elevatorValue);
-            //elevatorValue = Math.Min(32767, elevatorValue);
             elevatorValue = Math.Min(100, elevatorValue);
             mElevator = (Int16)elevatorValue;
             return (Int16)((mElevator * 1) * mMult);
         }
 
         /// <summary>
-        /// Calculates the aileron value of the stick
+        /// Calculates the aileron (roll) value of the stick
         /// </summary>
         /// <returns>Aileron value (between -32768 and 32767)</returns>
         private Int16 GetAileronValue()
         {
-            //int aileronValue = -32768;
             int aileronValue = -100;
-            /*   if (mXPosition < mCenterX - DisplacementRadius)
-               {
-                   //Fehler -100
-
-                   return (Int16)aileronValue;
-               }*/
-            //aileronValue = (int)((65536 * (mCenterX + DisplacementRadius - mXPosition) / DisplacementDiameter) - 32768) * (-1);
             aileronValue = (int)((200 * (mCenterX + DisplacementRadius - mXPosition) / DisplacementDiameter) - 100) * (-1);
-            //aileronValue = Math.Max(-32768, aileronValue);
             aileronValue = Math.Max(-100, aileronValue);
-            //aileronValue = Math.Min(32767, aileronValue);
             aileronValue = Math.Min(100, aileronValue);
             mAileron = (Int16)aileronValue;
             return (Int16)((mAileron * -1) * mMult);
