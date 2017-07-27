@@ -18,43 +18,90 @@ namespace WiFiDronection
         private ListView m_lvVisualisationData;
         private CurrentVisualisatonData m_CurVisData;
 
-        private String[] m_Names = new String[] { "Druck" };
+        private ListAdapter m_Adapter;
 
-        private ArrayAdapter<String> m_Adapter;
+        private String m_Filename;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.VisualisationLayout);
-            string path = Intent.GetStringExtra("filename");
+            this.m_Filename = Intent.GetStringExtra("filename");
             Init();
         }
 
         private void Init()
         {
-            this.m_Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, m_Names);
-
             this.m_lvVisualisationData = FindViewById<ListView>(Resource.Id.lvData);
+            FillRawDataList();
             m_lvVisualisationData.Adapter = m_Adapter;
             //  m_lvVisualisationData.SetBackgroundColor(Android.Graphics.Color.WhiteSmoke);
             m_lvVisualisationData.DividerHeight = 14;
             this.m_lvVisualisationData.ItemClick += OnListViewItemClick;
 
             this.m_CurVisData = CurrentVisualisatonData.Instance;
+        }
 
+        private void FillRawDataList()
+        {
+            var projectDir = new Java.IO.File(MainActivity.ApplicationFolderPath + Java.IO.File.Separator + m_Filename);
+            List<string> fileNames = new List<string>();
+            string[] fileArray = projectDir.List();
 
-            Random rand = new Random();
-
-            for (int x = 1; x <= 100; x++)
+            for (int i = 0; i < fileArray.Length; i++)
             {
-                m_CurVisData.Points.Add(new DataPoint(x, rand.Next(-50,50)));
+                fileArray[i] = fileArray[i].Replace(".csv", "");
+            }
+            if (fileArray != null)
+            {
+                fileNames = fileArray.ToList();
             }
 
+            m_Adapter = new ListAdapter(this, fileNames);
         }
 
-        private void OnListViewItemClick(object sender, EventArgs e)
+        private void OnListViewItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
+            string title = m_Adapter[e.Position];
+            string path = MainActivity.ApplicationFolderPath + Java.IO.File.Separator + m_Filename + Java.IO.File.Separator + title+".csv";
+            var reader = new Java.IO.BufferedReader(new Java.IO.FileReader(path));
+            string line = "";
+
+            if (title.Equals("Controlls"))
+            {
+                m_CurVisData.Points.Add(title, new List<DataPoint>());
+                m_CurVisData.Points.Add(title, new List<DataPoint>());
+                m_CurVisData.Points.Add(title, new List<DataPoint>());
+                m_CurVisData.Points.Add(title, new List<DataPoint>());
+            }
+            else
+            {
+                m_CurVisData.Points.Add(title, new List<DataPoint>()); 
+            }
+
+            while ((line = reader.ReadLine()) != null)
+            {
+                String[] p = line.Split(',');
+                if (title.Equals("Controlls"))
+                {
+
+                }
+                else
+                {
+                    float x = Convert.ToSingle(p[0]);
+                    float y = Convert.ToSingle(p[1]);
+                    int h = Convert.ToInt32(p[2]);
+                    m_CurVisData.Points.First(d => d.Key.Equals(title)).Value.Add(new DataPoint(x,y));
+                    if (h == 0){
+                        m_CurVisData.HighContTime.Add(x);
+                    }
+                }
+  
+            }
+            reader.Close();
             StartActivity(typeof(ShowVisualitionDataActivity));
         }
+
+
     }
 }

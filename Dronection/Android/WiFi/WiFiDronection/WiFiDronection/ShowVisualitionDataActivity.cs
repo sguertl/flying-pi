@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using MikePhil.Charting.Charts;
 using MikePhil.Charting.Data;
+using MikePhil.Charting.Interfaces.Datasets;
 
 namespace WiFiDronection
 {
@@ -21,7 +22,7 @@ namespace WiFiDronection
         private LineChart m_LineChart;
         private List<Entry> m_Entries;
         private CurrentVisualisatonData m_CurVisData;
-        private LineDataSet m_DataSet;
+        private ILineDataSet[] m_DataSet;
         private LineData m_LineData;
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -31,7 +32,8 @@ namespace WiFiDronection
 
             Init();
             AddingPointsToEntries();
-            DesignDataSet();
+           // DesignDataSet();
+
 
             this.m_LineData = new LineData(m_DataSet);
             this.m_LineChart.Data = m_LineData;
@@ -40,23 +42,31 @@ namespace WiFiDronection
 
         private void AddingPointsToEntries()
         {
-            foreach (DataPoint dp in m_CurVisData.Points)
+            int count = 0;
+            foreach (KeyValuePair<string,List<DataPoint>> dp in m_CurVisData.Points)
             {
-                m_Entries.Add(new Entry(dp.X, dp.Y));
+                this.m_Entries = new List<Entry>();
+                foreach (DataPoint dp2 in dp.Value )
+                {
+                    m_Entries.Add(new Entry(dp2.X, dp2.Y));
+                }
+                LineDataSet lds = new LineDataSet(m_Entries, dp.Key);
+                m_DataSet.SetValue(lds,count);
+                count++;
             }      
         }
 
         public void DesignDataSet()
         {
-            this.m_DataSet = new LineDataSet(m_Entries, "Druck");
+       
          //   m_DataSet.SetMode(LineDataSet.Mode)
         }
 
         private void Init()
         {
             this.m_LineChart = (LineChart) FindViewById<LineChart>(Resource.Id.linechart);
-            this.m_Entries = new List<Entry>();
             this.m_CurVisData = CurrentVisualisatonData.Instance;
+            this.m_DataSet = new ILineDataSet[m_CurVisData.Points.Count];
         }
     }
 }

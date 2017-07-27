@@ -4,19 +4,20 @@ namespace WiFiDronection
 {
     public class CurrentVisualisatonData
     {
-        private string m_Title;
-        private List<DataPoint> m_Points;
+        private Dictionary<string,List<DataPoint>> m_Points;
 
-        public List<DataPoint> Points
+        private List<float> m_HighContTime;
+
+        public List<float> HighContTime
+        {
+            get { return m_HighContTime; }
+            set { m_HighContTime = value; }
+        }
+
+        public Dictionary<string, List<DataPoint>> Points
         {
             get { return m_Points; }
             set { m_Points = value; }
-        }
-
-        public string Title
-        {
-            get { return m_Title; }
-            set { m_Title = value; }
         }
 
         /// <summary>
@@ -26,8 +27,7 @@ namespace WiFiDronection
         private static readonly object padlock = new object();
 
         private CurrentVisualisatonData() {
-            this.m_Title = "";
-            this.m_Points = new List<DataPoint>();
+            this.m_Points = new Dictionary<string, List<DataPoint>>();
         }
 
         public static CurrentVisualisatonData Instance

@@ -131,7 +131,7 @@ namespace WiFiDronection
         private void ShowGraph()
         {
             Intent intent = new Intent(BaseContext, typeof(VisualisationActivity));
-            intent.PutExtra("filename", MainActivity.ApplicationFolderPath + Java.IO.File.Separator + mSelectedItem);
+            intent.PutExtra("filename", mSelectedItem);
             StartActivity(intent);
         }
 
