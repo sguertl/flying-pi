@@ -18,6 +18,9 @@ namespace WiFiDronection
 {
     public class SocketReader : Thread
     {
+        /// <summary>
+        /// Members
+        /// </summary>
         private DataInputStream mDataInputStream;
         
         public SocketReader(DataInputStream inputStream)
@@ -25,10 +28,14 @@ namespace WiFiDronection
             mDataInputStream = inputStream;
         }
 
+        /// <summary>
+        /// Reading thread
+        /// Reads data from Raspberry
+        /// </summary>
         public override void Run()
         {
             int bytes;
-            byte[] buffer = new byte[256];
+            byte[] buffer = new byte[1024];
             while (true)
             {
                 try
@@ -43,6 +50,9 @@ namespace WiFiDronection
             }
         }
 
+        /// <summary>
+        /// Close connection
+        /// </summary>
         public void Close()
         {
             mDataInputStream.Close();

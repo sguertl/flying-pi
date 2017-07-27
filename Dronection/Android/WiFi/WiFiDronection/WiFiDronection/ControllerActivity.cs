@@ -20,6 +20,7 @@ namespace WiFiDronection
              )]
     public class ControllerActivity : Activity
     {
+        // Members
         private TextView mTvHeader;
         private RadioGroup mRgControlMethod;
         private RadioButton mRbThrottleLeft;
@@ -34,26 +35,27 @@ namespace WiFiDronection
         private RadioButton mRbPitchTrim;
         private RadioButton mRbRollTrim;
 
-        //private IntentFilter m_Filter; // Used to filter events when searching
-        //private CallReciver m_Receiver;
-
-        public static bool Inverted;
         private int mYawTrim;
-        private readonly int mMinTrim = -30;
         private bool mIsConnected;
-
         private SocketConnection mSocketConnection;
         private SocketReader mSocketReader;
+
+        // Constants
+        private readonly int mMinTrim = -30;
+
+        // Public variables
+        public static bool Inverted;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.ControllerSettings);
 
+            // Get singleton instance of socketconnection
             mSocketConnection = SocketConnection.Instance;
 
             var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
-
+            // Initialize widgets
             mTvHeader = FindViewById<TextView>(Resource.Id.tvHeaderSettings);
             mRgControlMethod = FindViewById<RadioGroup>(Resource.Id.rgControlMethod);
             mRbThrottleLeft = FindViewById<RadioButton>(Resource.Id.rbThrottleLeft);
@@ -75,29 +77,27 @@ namespace WiFiDronection
             mBtBackToMain.Click += OnBackToMain;
 
             mIsConnected = Intent.GetBooleanExtra("isConnected", true);
-
-            //m_Filter = new IntentFilter();
-
-            // m_Receiver = new CallReciver();
-
-            // m_Filter.AddAction("android.intent.action.PHONE_STATE");
-            // m_Filter.AddAction("INCOMING_CALL");
-            // m_Filter.AddAction(SipSession.State.IncomingCall.ToString());
-            // Registering events and forwarding them to the broadcast object
-            // RegisterReceiver(m_Receiver, m_Filter);
         }
 
+        /// <summary>
+        /// Onclick event for start button
+        /// Creates socket connection and opens controllerview
+        /// Start socket reader thread
+        /// </summary>
         private void OnStartController(object sender, EventArgs e)
         {
+            // Create sokcet connection
             if (mSocketConnection.IsSocketConnected == false)
             {
                 mSocketConnection.Start();
             }
             mSocketConnection.isConnected = true;
+            // Change GUI to Controller layout with joysticks
             SetContentView(Resource.Layout.ControllerLayout);
 
             var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
 
+            // Initialize wigets of ControllerLayout
             mSbTrimBar = FindViewById<SeekBar>(Resource.Id.sbTrimbar);
             mTvTrimValue = FindViewById<TextView>(Resource.Id.tvTrimValue);
             mRbYawTrim = FindViewById<RadioButton>(Resource.Id.rbYawTrim);
@@ -144,6 +144,7 @@ namespace WiFiDronection
                 mSbTrimBar.Progress = ControllerView.Settings.TrimRoll - mMinTrim;
             };
 
+            // Start reading from Raspberry
             if(mIsConnected == false)
             {
                 mSocketReader = new SocketReader(mSocketConnection.InputStream);
@@ -151,6 +152,9 @@ namespace WiFiDronection
             }
         }
 
+        /// <summary>
+        /// Save Log when finished
+        /// </summary>
         protected override void OnDestroy()
         {
             base.OnDestroy();
@@ -159,7 +163,10 @@ namespace WiFiDronection
             /*mSocketConnection.OnCancel();
             mSocketReader.Close();*/
         }
-        public delegate void Clean();
+
+        /// <summary>
+        /// Save Log when finished
+        /// </summary>
         protected override void OnStop()
         {
             base.OnStop();
@@ -169,6 +176,9 @@ namespace WiFiDronection
             mSocketReader.Close();*/
         }
 
+        /// <summary>
+        /// Write log in csv format
+        /// </summary>
         private void WriteLogData()
         {
             if(mSocketConnection.LogData != null)
@@ -183,35 +193,30 @@ namespace WiFiDronection
             }
         }
 
+        /// <summary>
+        /// Change control mode
+        /// </summary>
         private void OnThrottleRightClick(object sender, EventArgs e)
         {
             Inverted = ControllerSettings.ACTIVE;
             mIvMode.SetImageResource(Resource.Drawable.mode2);
         }
 
+        /// <summary>
+        /// Change control mode
+        /// </summary>
         private void OnThrottleLeftClick(object sender, EventArgs e)
         {
             Inverted = ControllerSettings.INACTIVE;
             mIvMode.SetImageResource(Resource.Drawable.mode1);
         }
 
-        private void OnRgClick(object sender, EventArgs e)
-        {
-            if (mRbThrottleLeft.Selected)
-            {
-                Inverted = ControllerSettings.INACTIVE;
-
-            }
-            if (mRbThrottleRight.Selected)
-            {
-                Inverted = ControllerSettings.ACTIVE;
-            }
-        }
+        /// <summary>
+        /// Go to back to main activity
+        /// </summary>
         private void OnBackToMain(object sender, EventArgs e)
         {
             this.Finish();
         }
-
-
     }
 }

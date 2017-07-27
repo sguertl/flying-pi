@@ -50,21 +50,33 @@ namespace WiFiDronection
         // Timer for sending data and checking BT connection
         private System.Timers.Timer m_WriteTimer;
 
+        /// <summary>
+        /// View constructor
+        /// </summary>
         public ControllerView(Context context) : base(context)
         {
             Init();
         }
 
+        /// <summary>
+        /// View constructor
+        /// </summary>
         public ControllerView(Context context, IAttributeSet attrs) : base(context, attrs)
         {
             Init();
         }
 
+        /// <summary>
+        /// View constructor
+        /// </summary>
         public ControllerView(Context context, IAttributeSet attrs, int defStyle) : base(context, attrs, defStyle)
         {
             Init();
         }
 
+        /// <summary>
+        /// Initialize members and create drawable shapes 
+        /// </summary>
         private void Init()
         {
             m_SocketConnection = SocketConnection.Instance;
@@ -398,41 +410,6 @@ namespace WiFiDronection
 
             m_LeftJS.CalculateValues();
             m_RightJS.CalculateValues();
-
-            /*if (!Settings.Inverted)
-            {
-                // Draw data text for left joystick
-                canvas.DrawText("DATA LEFT JOYSTICK", m_LeftJS.CenterX, m_LeftJS.CenterY - ScreenHeight / 2 - 30, paint);
-                canvas.DrawText("Throttle: " + m_LeftJS.Throttle, m_LeftJS.CenterX, m_LeftJS.CenterY - ScreenHeight / 2, paint);
-                canvas.DrawText("Rudder: " + m_LeftJS.Rudder, m_LeftJS.CenterX, m_LeftJS.CenterY - ScreenHeight / 2 + 30, paint);
-                canvas.DrawText("Direction: " + m_LeftJS.Direction, m_LeftJS.CenterX, m_LeftJS.CenterY - ScreenHeight / 2 + 60, paint);
-                canvas.DrawText("Centered: " + m_LeftJS.IsCentered(), m_LeftJS.CenterX, m_LeftJS.CenterY - ScreenHeight / 2 + 90, paint);
-
-                // Draw data text for right joystick
-                canvas.DrawText("DATA RIGHT JOYSTICK", m_RightJS.CenterX, m_RightJS.CenterY - ScreenHeight / 2 - 30, paint);
-                canvas.DrawText("Elevator: " + m_RightJS.Elevator, m_RightJS.CenterX, m_RightJS.CenterY - ScreenHeight / 2, paint);
-                canvas.DrawText("Aileron: " + m_RightJS.Aileron, m_RightJS.CenterX, m_RightJS.CenterY - ScreenHeight / 2 + 30, paint);
-                canvas.DrawText("Direction: " + m_RightJS.Direction, m_RightJS.CenterX, m_RightJS.CenterY - ScreenHeight / 2 + 60, paint);
-                canvas.DrawText("Centered: " + m_RightJS.IsCentered(), m_RightJS.CenterX, m_RightJS.CenterY - ScreenHeight / 2 + 90, paint);
-            }
-            else if (Settings.Inverted)
-            {
-                // Draw data text for left joystick
-                canvas.DrawText("DATA LEFT JOYSTICK", m_LeftJS.CenterX, m_LeftJS.CenterY - ScreenHeight / 2 - 30, paint);
-                canvas.DrawText("Elevator: " + m_LeftJS.Elevator, m_LeftJS.CenterX, m_LeftJS.CenterY - ScreenHeight / 2, paint);
-                canvas.DrawText("Rudder: " + m_LeftJS.Rudder, m_LeftJS.CenterX, m_LeftJS.CenterY - ScreenHeight / 2 + 30, paint);
-                canvas.DrawText("Direction: " + m_LeftJS.Direction, m_LeftJS.CenterX, m_LeftJS.CenterY - ScreenHeight / 2 + 60, paint);
-                canvas.DrawText("Centered: " + m_LeftJS.IsCentered(), m_LeftJS.CenterX, m_LeftJS.CenterY - ScreenHeight / 2 + 90, paint);
-
-                // Draw data text for right joystick
-                canvas.DrawText("DATA RIGHT JOYSTICK", m_RightJS.CenterX, m_RightJS.CenterY - ScreenHeight / 2 - 30, paint);
-                canvas.DrawText("Throttle: " + m_RightJS.Throttle, m_RightJS.CenterX, m_RightJS.CenterY - ScreenHeight / 2, paint);
-                canvas.DrawText("Aileron: " + m_RightJS.Aileron, m_RightJS.CenterX, m_RightJS.CenterY - ScreenHeight / 2 + 30, paint);
-                canvas.DrawText("Direction: " + m_RightJS.Direction, m_RightJS.CenterX, m_RightJS.CenterY - ScreenHeight / 2 + 60, paint);
-                canvas.DrawText("Centered: " + m_RightJS.IsCentered(), m_RightJS.CenterX, m_RightJS.CenterY - ScreenHeight / 2 + 90, paint);
-            }*/
-
-            // TO BE ADDED: Displaying received data
         }
 
         /// <summary>

@@ -19,7 +19,7 @@ namespace WiFiDronection
     [Activity(Label = "HelpActivity", Theme = "@android:style/Theme.Holo.Light.NoActionBar.Fullscreen")]
     public class HelpActivity : Activity
     {
-
+        // Members
         private TextView mTvHeaderHelp;
         private TextView mTvHelpText;
         private TextView mTvHelpStartScreen;
@@ -44,6 +44,7 @@ namespace WiFiDronection
 
             var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
 
+            // Initialize widgets
             mTvHeaderHelp = FindViewById<TextView>(Resource.Id.tvHeaderHelp);
             mTvHelpText = FindViewById<TextView>(Resource.Id.tvHelpText);
             mTvHelpStartScreen = FindViewById<TextView>(Resource.Id.tvHelpStartScreen);
@@ -113,6 +114,9 @@ namespace WiFiDronection
 
         }
 
+        /// <summary>
+        /// Go back to MainActivity
+        /// </summary>
         private void OnBackToMain(object sender, EventArgs e)
         {
             Finish();

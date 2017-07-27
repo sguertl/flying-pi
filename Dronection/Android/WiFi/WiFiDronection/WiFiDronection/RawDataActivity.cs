@@ -16,6 +16,7 @@ namespace WiFiDronection
     [Activity(Label = "RawDataActivity", Theme = "@android:style/Theme.Holo.Light.NoActionBar.Fullscreen")]
     public class RawDataActivity : Activity
     {
+        // Members
         private TextView mTvHeader;
         private ListView mLvRawData;
         private TextView mTvDisplayRawData;
@@ -28,6 +29,8 @@ namespace WiFiDronection
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.RawDataLayout);
+
+            // Initialize widgets
             mTvHeader = FindViewById<TextView>(Resource.Id.tvHeaderRawData);
             mLvRawData = FindViewById<ListView>(Resource.Id.lvRawData);
             mLvRawData.ItemClick += OnListItemClick;
@@ -39,11 +42,15 @@ namespace WiFiDronection
             mTvHeader.Typeface = font;
             mBtBack.Typeface = font;
 
+            // Get selected filename from 
             mSelectedFile = Intent.GetStringExtra("filename");
 
             FillRawDataList();
         }
 
+        /// <summary>
+        /// Fills list with the control types
+        /// </summary>
         private void FillRawDataList()
         {
             var projectDir = new Java.IO.File(MainActivity.ApplicationFolderPath + Java.IO.File.Separator + mSelectedFile);
@@ -57,6 +64,10 @@ namespace WiFiDronection
             mLvRawData.Adapter = mAdapter;
         }
 
+        /// <summary>
+        /// Onclick event for list item
+        /// Reads the raw data from a .csv file and diplays it on textview
+        /// </summary>
         private void OnListItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             string fileName = e.View.FindViewById<TextView>(Resource.Id.tvListItem).Text;
@@ -73,6 +84,9 @@ namespace WiFiDronection
             reader.Close();
         }
 
+        /// <summary>
+        /// Onclick event for back button
+        /// </summary>
         private void OnBack(object sender, EventArgs e)
         {
             StartActivity(typeof(LogActivity));

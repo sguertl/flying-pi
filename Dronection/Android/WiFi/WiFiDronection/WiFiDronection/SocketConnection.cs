@@ -18,23 +18,29 @@ namespace WiFiDronection
 {
     public class SocketConnection : Thread
     {
+        // Debug variable
         private static readonly string TAG = "SocketConnection";
 
-        public static bool FLAG = true;
+        // Constants
+        private readonly string SERVER_ADDRESS = "172.24.1.1";
+        private readonly int SERVERPORT = 5050;
+        private readonly byte STARTBYTE = 10;
+        private readonly int PACKET_SIZE = 19;
 
-        private static readonly string SERVER_ADDRESS = "172.24.1.1";
-        private static readonly int SERVERPORT = 5050;
-        private static readonly byte STARTBYTE = 10;
-        private static readonly int PACKET_SIZE = 19;
-
+        // Singleton variables
         private static SocketConnection instance = null;
         private static readonly object padlock = new object();
 
+        // Members
         private DataOutputStream mDataOutputStream;
         private Socket m_Socket;
+        private bool FLAG = true;
         private string mLogData;
         private long mStartMillis;
 
+        /// <summary>
+        /// Saves the flying parameters
+        /// </summary>
         public string LogData
         {
             get { return mLogData; }
@@ -55,6 +61,9 @@ namespace WiFiDronection
             get { return mDataInputStream; }
         }
 
+        /// <summary>
+        /// Singleton constructor
+        /// </summary>
         private SocketConnection()
         {        
             m_Socket = new Socket();
@@ -81,6 +90,9 @@ namespace WiFiDronection
             get { return m_Socket.IsConnected; }
         }
 
+        /// <summary>
+        /// Connection thread
+        /// </summary>
         public override void Run()
         {
             FLAG = true;
@@ -88,6 +100,7 @@ namespace WiFiDronection
             {
                 try
                 {
+                    // Connect with socket
                     m_Socket = new Socket(SERVER_ADDRESS, SERVERPORT);
                 }
                 catch (UnknownHostException uhe)
@@ -111,6 +124,7 @@ namespace WiFiDronection
                 {
                     if (!m_Socket.IsConnected)
                     {
+                        // if first connection attempt fails try again
                         SocketAddress socketAdr = new InetSocketAddress(SERVER_ADDRESS, SERVERPORT);
                         Thread.Sleep(5000);
                         m_Socket.Connect(socketAdr, 2000);
@@ -126,6 +140,7 @@ namespace WiFiDronection
                 {
                     if (FLAG)
                     {
+                        // Create socket reading and writing streams
                         mDataOutputStream = new DataOutputStream(m_Socket.OutputStream);
                         mDataInputStream = new DataInputStream(m_Socket.InputStream);
                     }
@@ -133,10 +148,16 @@ namespace WiFiDronection
             }
         }
 
+        /// <summary>
+        /// Writes controller data to smartphone through socket connection
+        /// </summary>
+        /// <param name="args">Controller parameter (throttle, yaw, pitch, roll)</param>
         public void Write(params Int16[] args)
         {
+            // Save controlls for log file
             mLogData += mStartMillis + "," + args[0] + "," + args[1] + "," + args[2] + "," + args[3] + "\n";
             mStartMillis += 10;
+            // Convert int16 controller parameters to byte stream
             byte[] bytes = ConvertToByte(args);
             try
             {
@@ -151,6 +172,11 @@ namespace WiFiDronection
             }
         }
 
+        /// <summary>
+        /// Convert int16 controller parameters to byte stream
+        /// </summary>
+        /// <param name="args">Controller parameter (throttle, yaw, pitch, roll)</param>
+        /// <returns>byte stream</returns>
         private byte[] ConvertToByte(params Int16[] args)
         {
             byte[] b = new byte[PACKET_SIZE];
@@ -194,6 +220,9 @@ namespace WiFiDronection
             return b;
         }
 
+        /// <summary>
+        /// Close connections
+        /// </summary>
         public void OnCancel()
         {
             try
@@ -206,15 +235,5 @@ namespace WiFiDronection
                 Log.Debug(TAG, "Failed closing");
             }
         }
-
-        /*private void Output(byte[] bytes)
-        {
-            string str = "";
-            foreach(byte b in bytes)
-            {
-                str += b + " ";
-            }
-            Log.Debug("!!!", str);
-        }*/
     }
 }
