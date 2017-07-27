@@ -40,54 +40,54 @@ namespace WiFiDronection
 
         // --------------------------- VARIABLES ------------------------------
 
-        private float m_Mult = 0.3f;
-        private float m_MultRudder = 0.4f;
-        private float m_MultThrottle = 0.7f;
+        private float mMult = 0.1f;
+        private float mMultRudder = 0.4f;
+        private float mMultThrottle = 0.7f;
 
-        private float m_XPosition; // Current x of joystick
-        private float m_YPosition; // Current y of joystick
-        private readonly bool m_LeftStick; // Side of stick
-        private readonly bool m_Inverted; // Control mode
+        private float mXPosition; // Current x of joystick
+        private float mYPosition; // Current y of joystick
+        private readonly bool mLeftStick; // Side of stick
+        private readonly bool mInverted; // Control mode
 
         // Center x of joystick
-        private float m_CenterX;
-        public float CenterX { get { return m_CenterX; } private set { m_CenterX = value; } }
+        private float mCenterX;
+        public float CenterX { get { return mCenterX; } private set { mCenterX = value; } }
 
         // Center y of joystick
-        private float m_CenterY;
-        public float CenterY { get { return m_CenterY; } private set { m_CenterY = value; } }
+        private float mCenterY;
+        public float CenterY { get { return mCenterY; } private set { mCenterY = value; } }
 
         // Current power (= displacement) of the joystick; maximum is 1 (= 100 %)
-        private int m_Power;
-        public int Power { get { return GetPower(); } private set { m_Power = value; } }
+        private int mPower;
+        public int Power { get { return GetPower(); } private set { mPower = value; } }
 
         // Current angle of the joystick
-        private float m_Angle;
-        public float Angle { get { return GetAngle(); } private set { m_Angle = value; } }
+        private float mAngle;
+        public float Angle { get { return GetAngle(); } private set { mAngle = value; } }
 
         // Current direction of the joystick
-        private int m_Direction;
-        public int Direction { get { return GetDirection(); } private set { m_Direction = value; } }
+        private int mDirection;
+        public int Direction { get { return GetDirection(); } private set { mDirection = value; } }
 
         // Vector length
-        private float m_Abs;
-        public float Abs { get { return GetAbs(); } private set { m_Abs = value; } }
+        private float mAbs;
+        public float Abs { get { return GetAbs(); } private set { mAbs = value; } }
 
         // Throttle value of the stick
-        private Int16 m_Throttle;
-        public Int16 Throttle { get { return GetThrottleValue(); } private set { m_Throttle = value; } }
+        private Int16 mThrottle;
+        public Int16 Throttle { get { return GetThrottleValue(); } private set { mThrottle = value; } }
 
         // Rudder value of the stick
-        private Int16 m_Rudder;
-        public Int16 Rudder { get { return GetRudderValue(); } private set { m_Rudder = value; } }
+        private Int16 mRudder;
+        public Int16 Rudder { get { return GetRudderValue(); } private set { mRudder = value; } }
 
         // Elevator value of the stick
-        private Int16 m_Elevator;
-        public Int16 Elevator { get { return GetElevatorValue(); } private set { m_Elevator = value; } }
+        private Int16 mElevator;
+        public Int16 Elevator { get { return GetElevatorValue(); } private set { mElevator = value; } }
 
         // Aileron value of the stick
-        private Int16 m_Aileron;
-        public Int16 Aileron { get { return GetAileronValue(); } private set { m_Aileron = value; } }
+        private Int16 mAileron;
+        public Int16 Aileron { get { return GetAileronValue(); } private set { mAileron = value; } }
 
         public Joystick(float width, float height, bool isLeftStick, bool invertedControl)
         {
@@ -97,35 +97,35 @@ namespace WiFiDronection
             StickRadius = StickDiameter / 2;
             DisplacementRadius = DisplacementDiameter / 2;
 
-            m_CenterY = height / 2; // / 16 + height / 2 + StickRadius / 2;
+            mCenterY = height / 2; // / 16 + height / 2 + StickRadius / 2;
             if (!invertedControl)
             {
                 if (isLeftStick)
                 {
-                    m_CenterX = width / 5 + StickRadius / 2;
-                    SetPosition(m_CenterX, m_CenterY + DisplacementRadius);
+                    mCenterX = width / 5 + StickRadius / 2;
+                    SetPosition(mCenterX, mCenterY + DisplacementRadius);
                 }
                 else
                 {
-                    m_CenterX = width - width / 5 - StickRadius / 2;
-                    SetPosition(m_CenterX, m_CenterY);
+                    mCenterX = width - width / 5 - StickRadius / 2;
+                    SetPosition(mCenterX, mCenterY);
                 }
             }
             else
             {
                 if (isLeftStick)
                 {
-                    m_CenterX = width / 5 + StickRadius / 2;
-                    SetPosition(m_CenterX, m_CenterY);
+                    mCenterX = width / 5 + StickRadius / 2;
+                    SetPosition(mCenterX, mCenterY);
                 }
                 else
                 {
-                    m_CenterX = width - width / 5 - StickRadius / 2;
-                    SetPosition(m_CenterX, m_CenterY + DisplacementRadius);
+                    mCenterX = width - width / 5 - StickRadius / 2;
+                    SetPosition(mCenterX, mCenterY + DisplacementRadius);
                 }
             }
-            m_LeftStick = isLeftStick;
-            m_Inverted = invertedControl;
+            mLeftStick = isLeftStick;
+            mInverted = invertedControl;
         }
 
         /// <summary>
@@ -135,8 +135,8 @@ namespace WiFiDronection
         /// <param name="yPosition">Y-Position of the joystick</param>
         public void SetPosition(float xPosition, float yPosition)
         {
-            m_XPosition = xPosition;
-            m_YPosition = yPosition;
+            mXPosition = xPosition;
+            mYPosition = yPosition;
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace WiFiDronection
         /// <returns>An array containing the x and y position of the joystick</returns>
         public float[] GetPosition()
         {
-            return new float[] { m_XPosition, m_YPosition };
+            return new float[] { mXPosition, mYPosition };
         }
 
         /// <summary>
@@ -154,60 +154,60 @@ namespace WiFiDronection
         /// <returns>Angle of the joystick</returns>
         private float GetAngle()
         {
-            if (m_XPosition > m_CenterX)
+            if (mXPosition > mCenterX)
             {
-                if (m_YPosition < m_CenterY)
+                if (mYPosition < mCenterY)
                 {
-                    //return m_Angle = (int)(Math.Atan((m_YPosition - CENTER_Y) / (m_XPosition - CENTER_X)) * RAD + 90);
-                    return m_Angle = (int)(Math.Atan((m_YPosition - m_CenterY) / (m_XPosition - m_CenterX)) * RAD + 90) - 90;
+                    //return mAngle = (int)(Math.Atan((mYPosition - CENTER_Y) / (mXPosition - CENTER_X)) * RAD + 90);
+                    return mAngle = (int)(Math.Atan((mYPosition - mCenterY) / (mXPosition - mCenterX)) * RAD + 90) - 90;
                 }
-                else if (m_YPosition > m_CenterY)
+                else if (mYPosition > mCenterY)
                 {
-                    //return m_Angle = (int)(Math.Atan((m_YPosition - CENTER_Y) / (m_XPosition - CENTER_X)) * RAD) + 90;
-                    return m_Angle = (int)(Math.Atan((m_YPosition - m_CenterY) / (m_XPosition - m_CenterX)) * RAD);
+                    //return mAngle = (int)(Math.Atan((mYPosition - CENTER_Y) / (mXPosition - CENTER_X)) * RAD) + 90;
+                    return mAngle = (int)(Math.Atan((mYPosition - mCenterY) / (mXPosition - mCenterX)) * RAD);
                 }
                 else
                 {
-                    //return m_Angle = 90;
-                    return m_Angle = 0;
+                    //return mAngle = 90;
+                    return mAngle = 0;
                 }
             }
-            else if (m_XPosition < m_CenterX)
+            else if (mXPosition < mCenterX)
             {
-                if (m_YPosition < m_CenterY)
+                if (mYPosition < mCenterY)
                 {
-                    //return m_Angle = (int)(Math.Atan((m_YPosition - CENTER_Y) / (m_XPosition - CENTER_X)) * RAD - 90);
-                    return m_Angle = (int)(Math.Atan((m_YPosition - m_CenterY) / (m_XPosition - m_CenterX)) * RAD - 90) - 90;
+                    //return mAngle = (int)(Math.Atan((mYPosition - CENTER_Y) / (mXPosition - CENTER_X)) * RAD - 90);
+                    return mAngle = (int)(Math.Atan((mYPosition - mCenterY) / (mXPosition - mCenterX)) * RAD - 90) - 90;
                 }
-                else if (m_YPosition > m_CenterY)
+                else if (mYPosition > mCenterY)
                 {
-                    //return m_Angle = (int)(Math.Atan((m_YPosition - CENTER_Y) / (m_XPosition - CENTER_X)) * RAD) - 90;
-                    return m_Angle = (int)(Math.Atan((m_YPosition - m_CenterY) / (m_XPosition - m_CenterX)) * RAD) - 180;
+                    //return mAngle = (int)(Math.Atan((mYPosition - CENTER_Y) / (mXPosition - CENTER_X)) * RAD) - 90;
+                    return mAngle = (int)(Math.Atan((mYPosition - mCenterY) / (mXPosition - mCenterX)) * RAD) - 180;
                 }
                 else
                 {
-                    //return m_Angle = -90;
-                    return m_Angle = -180;
+                    //return mAngle = -90;
+                    return mAngle = -180;
                 }
             }
             else
             {
-                if (m_YPosition <= m_CenterY)
+                if (mYPosition <= mCenterY)
                 {
-                    //return m_Angle = 0;
-                    return m_Angle = -90;
+                    //return mAngle = 0;
+                    return mAngle = -90;
                 }
                 else
                 {
-                    if (m_Angle < 0)
+                    if (mAngle < 0)
                     {
-                        //return m_Angle = -180;
-                        return m_Angle = -270;
+                        //return mAngle = -180;
+                        return mAngle = -270;
                     }
                     else
                     {
-                        //return m_Angle = 180;
-                        return m_Angle = 90;
+                        //return mAngle = 180;
+                        return mAngle = 90;
                     }
                 }
             }
@@ -219,38 +219,38 @@ namespace WiFiDronection
         /// <returns>Direction of the joystick</returns>
         private int GetDirection()
         {
-            if ((int)m_CenterX == (int)m_XPosition && (int)m_CenterY == (int)m_YPosition)
+            if ((int)mCenterX == (int)mXPosition && (int)mCenterY == (int)mYPosition)
             {
-                return m_Direction = 0;
+                return mDirection = 0;
             }
-            if (m_Power == 0 && (int)m_Angle == 0)
+            if (mPower == 0 && (int)mAngle == 0)
             {
-                return m_Direction = 0;
+                return mDirection = 0;
             }
             int a = 0;
-            if (m_Angle <= 0)
+            if (mAngle <= 0)
             {
-                a = ((int)m_Angle * -1) + 90;
+                a = ((int)mAngle * -1) + 90;
             }
-            else if (m_Angle > 0)
+            else if (mAngle > 0)
             {
-                if (m_Angle <= 90)
+                if (mAngle <= 90)
                 {
-                    a = 90 - (int)m_Angle;
+                    a = 90 - (int)mAngle;
                 }
                 else
                 {
-                    a = 360 - ((int)m_Angle - 90);
+                    a = 360 - ((int)mAngle - 90);
                 }
             }
 
-            m_Direction = ((a + 22) / 45) + 1;
+            mDirection = ((a + 22) / 45) + 1;
 
-            if (m_Direction > 8)
+            if (mDirection > 8)
             {
-                m_Direction = 1;
+                mDirection = 1;
             }
-            return m_Direction;
+            return mDirection;
         }
 
         /// <summary>
@@ -259,11 +259,11 @@ namespace WiFiDronection
         /// <returns>Power of the joystick in percent (max. 100)</returns>
         private int GetPower()
         {
-            m_Power = (int)(100 * Math.Sqrt(
-                (m_XPosition - m_CenterX) * (m_XPosition - m_CenterX) +
-                (m_YPosition - m_CenterY) * (m_YPosition - m_CenterY)) / (DisplacementRadius));
-            m_Power = Math.Min(m_Power, 100);
-            return m_Power;
+            mPower = (int)(100 * Math.Sqrt(
+                (mXPosition - mCenterX) * (mXPosition - mCenterX) +
+                (mYPosition - mCenterY) * (mYPosition - mCenterY)) / (DisplacementRadius));
+            mPower = Math.Min(mPower, 100);
+            return mPower;
         }
 
         /// <summary>
@@ -272,7 +272,7 @@ namespace WiFiDronection
         /// <returns>Length of the vector</returns>
         private float GetAbs()
         {
-            return m_Abs = (float)Math.Sqrt((m_XPosition - m_CenterX) * (m_XPosition - m_CenterX) + (m_YPosition - m_CenterY) * (m_YPosition - m_CenterY));
+            return mAbs = (float)Math.Sqrt((mXPosition - mCenterX) * (mXPosition - mCenterX) + (mYPosition - mCenterY) * (mYPosition - mCenterY));
         }
 
         /// <summary>
@@ -282,21 +282,21 @@ namespace WiFiDronection
         private Int16 GetThrottleValue()
         {
             int throttleValue = 0;
-            if (m_YPosition > m_CenterY + DisplacementRadius)
+            if (mYPosition > mCenterY + DisplacementRadius)
             {
                 return (Int16)throttleValue;
             }
-            //throttleValue = (int)(40 * (m_CenterY + DisplacementRadius - m_YPosition) / DisplacementDiameter);
+            //throttleValue = (int)(40 * (mCenterY + DisplacementRadius - mYPosition) / DisplacementDiameter);
             //throttleValue = Math.Max((Int16)0, throttleValue);
             //throttleValue = Math.Min((Int16)40, throttleValue);
-            //throttleValue = (int)(32767 * (m_CenterY + DisplacementRadius - m_YPosition) / DisplacementDiameter);
-            throttleValue = (int)(90 * (m_CenterY + DisplacementRadius - m_YPosition) / DisplacementDiameter);
+            //throttleValue = (int)(32767 * (mCenterY + DisplacementRadius - mYPosition) / DisplacementDiameter);
+            throttleValue = (int)(90 * (mCenterY + DisplacementRadius - mYPosition) / DisplacementDiameter);
             throttleValue = Math.Max((Int16)0, throttleValue);
             //throttleValue = Math.Min((Int16)32767, throttleValue);
             throttleValue = Math.Min((Int16)255, throttleValue);
-            m_Throttle = (Int16)throttleValue;
-            //Console.WriteLine("****************"+m_Throttle);
-            return (Int16)((m_Throttle) * m_MultThrottle);
+            Throttle = (Int16)throttleValue;
+            //Console.WriteLine("****************"+mThrottle);
+            return (Int16)((mThrottle) * mMultThrottle);
         }
 
         /// <summary>
@@ -307,18 +307,18 @@ namespace WiFiDronection
         {
             //int rudderValue = -32768;
             int rudderValue = -90;
-            /* if (m_XPosition < m_CenterX - DisplacementRadius)
+            /* if (mXPosition < mCenterX - DisplacementRadius)
              {
                  return (Int16)rudderValue;
              }*/
-            //rudderValue = (int)((65536 * (m_CenterX + DisplacementRadius - m_XPosition) / DisplacementDiameter) - 32768) * (-1);
-            rudderValue = (int)((180 * (m_CenterX + DisplacementRadius - m_XPosition) / DisplacementDiameter) - 90) * (-1);
+            //rudderValue = (int)((65536 * (mCenterX + DisplacementRadius - mXPosition) / DisplacementDiameter) - 32768) * (-1);
+            rudderValue = (int)((180 * (mCenterX + DisplacementRadius - mXPosition) / DisplacementDiameter) - 90) * (-1);
             //rudderValue = Math.Max(-32768, rudderValue);
             rudderValue = Math.Max(-90, rudderValue);
             //rudderValue = Math.Min(32767, rudderValue);
             rudderValue = Math.Min(90, rudderValue);
-            m_Rudder = (Int16)rudderValue;
-            return (Int16)((m_Rudder * -1) * m_MultRudder);
+            mRudder = (Int16)rudderValue;
+            return (Int16)((mRudder * -1) * mMultRudder);
         }
 
         /// <summary>
@@ -329,21 +329,21 @@ namespace WiFiDronection
         {
             //int elevatorValue = -32768;
             int elevatorValue = -100;
-            /*  if (m_YPosition > m_CenterY + DisplacementRadius)
+            /*  if (mYPosition > mCenterY + DisplacementRadius)
               {
                   return (Int16)elevatorValue;
               }*/
-            elevatorValue = (int)((200 * (m_CenterY + DisplacementRadius - m_YPosition) / DisplacementDiameter) - 100) * (-1);
+            elevatorValue = (int)((200 * (mCenterY + DisplacementRadius - mYPosition) / DisplacementDiameter) - 100) * (-1);
             // elevatorValue = Math.Max(0, elevatorValue);
             // elevatorValue = Math.Min(40, elevatorValue);
-            //elevatorValue = (int)(65536 * (m_CenterY + DisplacementRadius - m_YPosition) / DisplacementDiameter) - 32768;
-            //   elevatorValue = (int)(200 * (m_CenterY + DisplacementRadius - m_YPosition) / DisplacementDiameter) - 100;
+            //elevatorValue = (int)(65536 * (mCenterY + DisplacementRadius - mYPosition) / DisplacementDiameter) - 32768;
+            //   elevatorValue = (int)(200 * (mCenterY + DisplacementRadius - mYPosition) / DisplacementDiameter) - 100;
             //elevatorValue = Math.Max(-32768, elevatorValue);
             elevatorValue = Math.Max(-100, elevatorValue);
             //elevatorValue = Math.Min(32767, elevatorValue);
             elevatorValue = Math.Min(100, elevatorValue);
-            m_Elevator = (Int16)elevatorValue;
-            return (Int16)((m_Elevator * 1) * m_Mult);
+            mElevator = (Int16)elevatorValue;
+            return (Int16)((mElevator * 1) * mMult);
         }
 
         /// <summary>
@@ -354,20 +354,20 @@ namespace WiFiDronection
         {
             //int aileronValue = -32768;
             int aileronValue = -100;
-            /*   if (m_XPosition < m_CenterX - DisplacementRadius)
+            /*   if (mXPosition < mCenterX - DisplacementRadius)
                {
                    //Fehler -100
 
                    return (Int16)aileronValue;
                }*/
-            //aileronValue = (int)((65536 * (m_CenterX + DisplacementRadius - m_XPosition) / DisplacementDiameter) - 32768) * (-1);
-            aileronValue = (int)((200 * (m_CenterX + DisplacementRadius - m_XPosition) / DisplacementDiameter) - 100) * (-1);
+            //aileronValue = (int)((65536 * (mCenterX + DisplacementRadius - mXPosition) / DisplacementDiameter) - 32768) * (-1);
+            aileronValue = (int)((200 * (mCenterX + DisplacementRadius - mXPosition) / DisplacementDiameter) - 100) * (-1);
             //aileronValue = Math.Max(-32768, aileronValue);
             aileronValue = Math.Max(-100, aileronValue);
             //aileronValue = Math.Min(32767, aileronValue);
             aileronValue = Math.Min(100, aileronValue);
-            m_Aileron = (Int16)aileronValue;
-            return (Int16)((m_Aileron * -1) * m_Mult);
+            mAileron = (Int16)aileronValue;
+            return (Int16)((mAileron * -1) * mMult);
         }
 
         /// <summary>
@@ -386,26 +386,26 @@ namespace WiFiDronection
         /// <returns>True if stick is centered, false if not</returns>
         public bool IsCentered()
         {
-            if (m_Inverted)
+            if (mInverted)
             {
-                if (m_LeftStick)
+                if (mLeftStick)
                 {
-                    return (int)m_XPosition == (int)m_CenterX && (int)m_YPosition == (int)m_CenterY;
+                    return (int)mXPosition == (int)mCenterX && (int)mYPosition == (int)mCenterY;
                 }
                 else
                 {
-                    return (int)m_XPosition == (int)m_CenterX && (int)m_YPosition == (int)(m_CenterY + DisplacementRadius);
+                    return (int)mXPosition == (int)mCenterX && (int)mYPosition == (int)(mCenterY + DisplacementRadius);
                 }
             }
             else
             {
-                if (m_LeftStick)
+                if (mLeftStick)
                 {
-                    return (int)m_XPosition == (int)m_CenterX && (int)m_YPosition == (int)(m_CenterY + DisplacementRadius);
+                    return (int)mXPosition == (int)mCenterX && (int)mYPosition == (int)(mCenterY + DisplacementRadius);
                 }
                 else
                 {
-                    return (int)m_XPosition == (int)m_CenterX && (int)m_YPosition == (int)m_CenterY;
+                    return (int)mXPosition == (int)mCenterX && (int)mYPosition == (int)mCenterY;
                 }
             }
         }

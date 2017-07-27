@@ -38,7 +38,7 @@ namespace WiFiDronection
                 }
                 catch(Java.IO.IOException ex)
                 {
-                    Log.Debug("SocketReader", "Fehler beim Lesen");
+                    Log.Debug("SocketReader", "Error reading");
                 }
             }
         }
