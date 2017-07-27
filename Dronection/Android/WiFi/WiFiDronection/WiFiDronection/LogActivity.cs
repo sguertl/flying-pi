@@ -124,7 +124,7 @@ namespace WiFiDronection
 
         private void OnBackToMain(object sender, EventArgs e)
         {
-            Finish();
+            StartActivity(typeof(MainActivity));
         }
     }
 

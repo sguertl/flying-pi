@@ -15,17 +15,30 @@ namespace WiFiDronection
 {
     public class ListAdapter : BaseAdapter<string>
     {
+        // Activity where the list is placed
         private Activity mContext;
+        // List of all file names which are shown
         private List<string> mFileNames;
+        // Font for the textview in the list
         private Typeface mFont;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="context">Activity where the list is placed</param>
+        /// <param name="names">List of strings which are shown on the list</param>
         public ListAdapter(Activity context, List<string> names)
         {
             mContext = context;
             mFileNames = names;
+            // Standard Infineon font
             mFont = Typeface.CreateFromAsset(mContext.Assets, "SourceSansPro-Light.ttf");
         }
 
+        /// <summary>
+        /// Deletes element of list
+        /// </summary>
+        /// <param name="element">Element which should be deleted</param>
         public void DeleteElement(string element)
         {
             mFileNames.Remove(element);
@@ -50,12 +63,15 @@ namespace WiFiDronection
         {
             string text = mFileNames[position];
             View costumView = convertView;
+            // If the view is not created yet, create it
             if(costumView == null)
             {
+                // Listitem is a custom textview
                 LayoutInflater inflater = (LayoutInflater)mContext.GetSystemService(Context.LayoutInflaterService);
-                costumView = inflater.Inflate(Resource.Layout.CostumListItem, parent, false);
+                costumView = inflater.Inflate(Resource.Layout.CustomListItem, parent, false);
             }
             int id = Resource.Id.tvListItem;
+            // Set text and font
             costumView.FindViewById<TextView>(id).Text = text;
             costumView.FindViewById<TextView>(id).Typeface = mFont;
             return costumView;

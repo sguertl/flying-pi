@@ -96,7 +96,7 @@
     <AndroidResource Include="Resources\layout\Log.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\CostumListItem.axml">
+    <AndroidResource Include="Resources\layout\CustomListItem.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\RawDataLayout.axml">
