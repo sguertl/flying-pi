@@ -40,6 +40,7 @@ namespace WiFiDronection
         public static bool Inverted;
         private int mYawTrim;
         private readonly int mMinTrim = -30;
+        private bool mIsConnected;
 
         private SocketConnection mSocketConnection;
         private SocketReader mSocketReader;
@@ -73,6 +74,8 @@ namespace WiFiDronection
             mBtStart.Click += OnStartController;
             mBtBackToMain.Click += OnBackToMain;
 
+            mIsConnected = Intent.GetBooleanExtra("isConnected", true);
+
             //m_Filter = new IntentFilter();
 
             // m_Receiver = new CallReciver();
@@ -86,8 +89,12 @@ namespace WiFiDronection
 
         private void OnStartController(object sender, EventArgs e)
         {
-            mSocketConnection.Start();
             SetContentView(Resource.Layout.ControllerLayout);
+
+            if(mIsConnected == false)
+            {
+                mSocketConnection.Start();
+            }
 
             var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
 
@@ -137,8 +144,11 @@ namespace WiFiDronection
                 mSbTrimBar.Progress = ControllerView.Settings.TrimRoll - mMinTrim;
             };
 
-            mSocketReader = new SocketReader(mSocketConnection.InputStream);
-            mSocketReader.Start();
+            if(mIsConnected == false)
+            {
+                mSocketReader = new SocketReader(mSocketConnection.InputStream);
+                mSocketReader.Start();
+            }
         }
 
         protected override void OnDestroy()
