@@ -68,6 +68,7 @@ namespace WiFiDronection
         private void Init()
         {
             m_SocketConnection = SocketConnection.Instance;
+            Settings = new ControllerSettings { HeightControlActivated = false, Inverted = ControllerActivity.Inverted, TrimYaw = 0, TrimPitch = 0, TrimRoll = 0 };
             SetOnTouchListener(this);
             SetBackgroundColor(Color.White);
 

@@ -89,12 +89,12 @@ namespace WiFiDronection
 
         private void OnStartController(object sender, EventArgs e)
         {
-            SetContentView(Resource.Layout.ControllerLayout);
-
-            if(mIsConnected == false)
+            if (mIsConnected == false)
             {
                 mSocketConnection.Start();
             }
+
+            SetContentView(Resource.Layout.ControllerLayout);
 
             var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
 
