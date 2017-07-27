@@ -105,11 +105,17 @@ namespace WiFiDronection
 			// aapt resource value: 0x7f050026
 			public const int btnShowLogs = 2131034150;
 			
-			// aapt resource value: 0x7f05002d
-			public const int etDialogPassword = 2131034157;
+			// aapt resource value: 0x7f05002f
+			public const int etDialogPassword = 2131034159;
 			
 			// aapt resource value: 0x7f05000a
 			public const int ivMode = 2131034122;
+			
+			// aapt resource value: 0x7f05002d
+			public const int linechart = 2131034157;
+			
+			// aapt resource value: 0x7f05002e
+			public const int lvData = 2131034158;
 			
 			// aapt resource value: 0x7f05001f
 			public const int lvFiles = 2131034143;
@@ -156,8 +162,8 @@ namespace WiFiDronection
 			// aapt resource value: 0x7f050022
 			public const int tvHeader = 2131034146;
 			
-			// aapt resource value: 0x7f05002e
-			public const int tvHeaderDialog = 2131034158;
+			// aapt resource value: 0x7f050030
+			public const int tvHeaderDialog = 2131034160;
 			
 			// aapt resource value: 0x7f05000e
 			public const int tvHeaderHelp = 2131034126;
@@ -254,10 +260,16 @@ namespace WiFiDronection
 			public const int RawDataLayout = 2130903046;
 			
 			// aapt resource value: 0x7f030007
-			public const int WifiDialog = 2130903047;
+			public const int ShowVisualisationDataLayout = 2130903047;
 			
 			// aapt resource value: 0x7f030008
-			public const int WifiDialogTitle = 2130903048;
+			public const int VisualisationLayout = 2130903048;
+			
+			// aapt resource value: 0x7f030009
+			public const int WifiDialog = 2130903049;
+			
+			// aapt resource value: 0x7f03000a
+			public const int WifiDialogTitle = 2130903050;
 			
 			static Layout()
 			{
