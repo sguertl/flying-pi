@@ -16,10 +16,12 @@ namespace WiFiDronection
     [Activity(Label = "LogActivity", Theme = "@android:style/Theme.Holo.Light.NoActionBar.Fullscreen")]
     public class LogActivity : Activity
     {
+        // Members
         private TextView mTvHeader;
         private ListView mLvFiles;
         private TextView mTvEmpty;
         private Button mBtBack;
+
 
         private ListAdapter mAdapter;
         private string mSelectedItem;
@@ -29,9 +31,11 @@ namespace WiFiDronection
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.Log);
 
+            //initialize widgets
             mTvHeader = FindViewById<TextView>(Resource.Id.tvHeaderLog);
             mLvFiles = FindViewById<ListView>(Resource.Id.lvFiles);
             mLvFiles.ItemClick += OnShowListItemContextMenu;
+            // Set context menu on listview
             RegisterForContextMenu(mLvFiles);
             mTvEmpty = FindViewById<TextView>(Resource.Id.tvEmpty);
             mBtBack = FindViewById<Button>(Resource.Id.btnBackLog);
@@ -46,6 +50,9 @@ namespace WiFiDronection
             FillFilesList();
         }
 
+        /// <summary>
+        /// Function displays messsage if list is empty
+        /// </summary>
         public override void OnContentChanged()
         {
             base.OnContentChanged();
@@ -53,20 +60,29 @@ namespace WiFiDronection
             FindViewById<ListView>(Resource.Id.lvFiles).EmptyView = empty;
         }
 
+        /// <summary>
+        /// Read files in project folder and displays them on the list
+        /// </summary>
         private void FillFilesList()
         {
+            // Get all file names in project folder
             var projectDir = new Java.IO.File(MainActivity.ApplicationFolderPath);
             List<string> fileNames = new List<string>();
             string[] fileArray = projectDir.List();
             if(fileArray != null)
             {
                 fileNames = fileArray.ToList();
+                // Sort files by date
                 fileNames.Sort(new MyComparer());
             }
+            // Display on list
             mAdapter = new ListAdapter(this, fileNames);
             mLvFiles.Adapter = mAdapter;
         }
 
+        /// <summary>
+        /// Show context menu after click on list item
+        /// </summary>
         private void OnShowListItemContextMenu(object sender, AdapterView.ItemClickEventArgs e)
         {
             mSelectedItem = e.View.FindViewById<TextView>(Resource.Id.tvListItem).Text;
@@ -83,6 +99,9 @@ namespace WiFiDronection
             menu.Add(0, v.Id, 0, "Delete");
         }
 
+        /// <summary>
+        /// OnClick event for context menu
+        /// </summary>
         public override bool OnContextItemSelected(IMenuItem item)
         {
             string title = item.ToString().ToLower();
@@ -96,6 +115,9 @@ namespace WiFiDronection
             return true;
         }
 
+        /// <summary>
+        /// Displays the raw data visualization activity
+        /// </summary>
         private void ShowRawData()
         {
             Intent intent = new Intent(BaseContext, typeof(RawDataActivity));
@@ -103,11 +125,17 @@ namespace WiFiDronection
             StartActivity(intent);
         }
 
+        /// <summary>
+        /// Displays the graphical data visualization activity
+        /// </summary>
         private void ShowGraph()
         {
 
         }
 
+        /// <summary>
+        /// Deletes selected folder
+        /// </summary>
         private void DeleteFolder()
         {
             string dir = MainActivity.ApplicationFolderPath + Java.IO.File.Separator + mSelectedItem;
@@ -122,12 +150,18 @@ namespace WiFiDronection
             mLvFiles.Adapter = mAdapter;
         }
 
+        /// <summary>
+        /// OnClick event for back button
+        /// </summary>
         private void OnBackToMain(object sender, EventArgs e)
         {
             StartActivity(typeof(MainActivity));
         }
     }
 
+    /// <summary>
+    /// Comparer for sorting the list by date
+    /// </summary>
     public class MyComparer : IComparer<string>
     {
         public int Compare(string x, string y)

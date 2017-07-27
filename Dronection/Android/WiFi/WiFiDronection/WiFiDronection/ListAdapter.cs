@@ -15,11 +15,9 @@ namespace WiFiDronection
 {
     public class ListAdapter : BaseAdapter<string>
     {
-        // Activity where the list is placed
+        // Members
         private Activity mContext;
-        // List of all file names which are shown
         private List<string> mFileNames;
-        // Font for the textview in the list
         private Typeface mFont;
 
         /// <summary>

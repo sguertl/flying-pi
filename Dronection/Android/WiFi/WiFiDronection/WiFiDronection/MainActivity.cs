@@ -19,6 +19,7 @@ namespace WiFiDronection
         ScreenOrientation = Android.Content.PM.ScreenOrientation.SensorPortrait)]
     public class MainActivity : Activity
     {
+        // Members
         private TextView mTvHeader;
         private TextView mTvWifiName;
         private TextView mTvWifiMac;
@@ -26,15 +27,14 @@ namespace WiFiDronection
         private Button mBtnConnect;
         private Button mBtnShowLogs;
         private Button mBtnHelp;
-
         private TextView mTvHeaderDialog;
-
-        private ArrayAdapter<Peer> mAdapter;
-        private List<Peer> mPeerList;
+        
         private string mSelectedSsid;
         private string mLastConnectedPeer;
         private bool mIsConnected;
 
+        // Public variable 
+        // Root path for project folder
         public static string ApplicationFolderPath;
 
         protected override void OnCreate(Bundle bundle)
@@ -44,6 +44,7 @@ namespace WiFiDronection
 
             var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
 
+            // Initialize members
             mTvHeader = FindViewById<TextView>(Resource.Id.tvHeader);
             mTvWifiName = FindViewById<TextView>(Resource.Id.tvWifiName);
             mTvWifiMac = FindViewById<TextView>(Resource.Id.tvWifiMac);
@@ -67,11 +68,10 @@ namespace WiFiDronection
 
             mBtnHelp.Click += OnHelp;
 
-            mPeerList = new List<Peer>();
-
             mLastConnectedPeer = "";
             mIsConnected = false;
 
+            // Turn on wifi if turned off
             WifiManager wm = GetSystemService(WifiService).JavaCast<WifiManager>();
             if (wm.IsWifiEnabled == false)
             {
@@ -83,11 +83,15 @@ namespace WiFiDronection
             RefreshWifiList();
         }
 
+        /// <summary>
+        /// Scan for wifi devices
+        /// </summary>
         private void RefreshWifiList()
         {
             var wifiManager = GetSystemService(WifiService).JavaCast<WifiManager>();
             wifiManager.StartScan();
 
+            // Start searching thread
             ThreadPool.QueueUserWorkItem(lol =>
             {
                 while (true)
@@ -95,47 +99,36 @@ namespace WiFiDronection
                     Thread.Sleep(3000);
                     var wifiList = wifiManager.ScanResults;
 
-                    if (mAdapter == null)
-                    {
-                        mAdapter = new ArrayAdapter<Peer>(this, Android.Resource.Layout.SimpleListItem1, Android.Resource.Id.Text1);
-                    }
-
+                    // Filter devices by Rasp or Pi
                     IEnumerable<ScanResult> results = wifiList.Where(w => w.Ssid.ToUpper().Contains("RASP") || w.Ssid.ToUpper().Contains("PI"));
-
-                    foreach (var wifi in results)
+                    var wifi = results.First();
+                    RunOnUiThread(() =>
                     {
-                        var wifi1 = wifi;
-                        RunOnUiThread(() =>
-                        {
-                            if (mPeerList.Any(p => p.SSID == wifi1.Ssid) == false)
-                            {
-                                Peer p = new Peer { SSID = wifi1.Ssid, BSSID = wifi1.Bssid, Encryption = wifi1.Capabilities };
-
-                                mSelectedSsid = p.SSID;
-                                mTvWifiName.Text = "SSID: " + p.SSID;
-                                mTvWifiMac.Text = "MAC: " + p.BSSID;
-                                mBtnConnect.Enabled = true;
-                                mBtnConnect.SetBackgroundColor(Color.ParseColor("#005DA9"));
-
-                                mAdapter.Add(p);
-                                mPeerList.Add(p);
-                            }
-                        });
-                    }
-
-                    RunOnUiThread(() => mAdapter.NotifyDataSetChanged());
+                        // Show selected wifi device
+                        mSelectedSsid = wifi.Ssid;
+                        mTvWifiName.Text = "SSID: " + wifi.Ssid;
+                        mTvWifiMac.Text = "MAC: " + wifi.Bssid;
+                        mBtnConnect.Enabled = true;
+                        mBtnConnect.SetBackgroundColor(Color.ParseColor("#005DA9"));
+                    });
                 }
             });
         }
 
+        /// <summary>
+        /// Onclick event for connect button
+        /// </summary>
         private void OnConnect(object sender, EventArgs e)
         {
+            // Check if there is already a connection to the wifi device
             if(mLastConnectedPeer != mSelectedSsid)
             {
+                // Open Password dialog for building wifi connection
                 OnCreateDialog(0).Show();
             }
             else
             {
+                // Open controller activity
                 Intent intent = new Intent(BaseContext, typeof(ControllerActivity));
                 intent.PutExtra("isConnected", mIsConnected);
                 StartActivity(intent);
@@ -163,9 +156,13 @@ namespace WiFiDronection
             return builder.Create();
         }
 
+        /// <summary>
+        /// Onclick event for Ok button of password dialog
+        /// </summary>
         private void WpaOkClicked(object sender, DialogClickEventArgs e)
         {
             var dialog = (AlertDialog)sender;
+            // Get password
             var password = (EditText)dialog.FindViewById(Resource.Id.etDialogPassword);
 
             var conf = new WifiConfiguration();
@@ -173,7 +170,7 @@ namespace WiFiDronection
             conf.PreSharedKey = "\"" + password.Text + "\"";
 
             var wifiManager = GetSystemService(WifiService).JavaCast<WifiManager>();
-
+            // Connect network
             int id = wifiManager.AddNetwork(conf);
 
             IList<WifiConfiguration> myWifi = wifiManager.ConfiguredNetworks;
@@ -183,6 +180,7 @@ namespace WiFiDronection
             wifiManager.EnableNetwork(id, true);
             wifiManager.Reconnect();
 
+            // check if password is correct
             if (wifiManager.IsWifiEnabled)
             {
                 mLastConnectedPeer = mSelectedSsid;
@@ -197,23 +195,35 @@ namespace WiFiDronection
             }
         }
 
+        /// <summary>
+        /// Onclick event on cancel button of password dialog
+        /// </summary>
         private void CancelClicked(object sender, DialogClickEventArgs e)
         {
             // Do nothing
         }
 
+        /// <summary>
+        /// Onclick event on show logs button
+        /// </summary>
         private void OnShowLogFiles(object sender, EventArgs e)
         {
+            // Opens Log activity
             StartActivity(typeof(LogActivity));
         }
 
+        /// <summary>
+        /// Onclick event on help button
+        /// </summary>
         private void OnHelp(object sender, EventArgs e)
         {
+            // Opens Help activity
             StartActivity(typeof(HelpActivity));
         }
 
         private void CreateApplicationFolder()
         {
+            // Creates Application folder on internal mobile storage
             ApplicationFolderPath = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.ToString(), "Airything");
             var storageDir = new Java.IO.File(ApplicationFolderPath);
             storageDir.Mkdirs();

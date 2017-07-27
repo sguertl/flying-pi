@@ -66,7 +66,6 @@
     <Compile Include="ListAdapter.cs" />
     <Compile Include="LogActivity.cs" />
     <Compile Include="MainActivity.cs" />
-    <Compile Include="Peer.cs" />
     <Compile Include="RawDataActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
