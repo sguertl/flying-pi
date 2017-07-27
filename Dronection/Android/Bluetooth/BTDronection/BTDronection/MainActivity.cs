@@ -22,8 +22,11 @@ namespace BTDronection
         private Button mBtShowDevices;
         private LinearLayout m_Linear;
         private TextView mTvHeader;
+        private Button mBtShowLog;
         private Button mBtHelp;
         private TextView mTvFooter;
+
+        public static string ApplicationFolderPath;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -49,6 +52,8 @@ namespace BTDronection
                 // Checking if bluetooth is enabled
                 if (!m_BtAdapter.IsEnabled) { TurnBTOn(); }
             }
+
+            CreateApplicationFolder();
         }
 
         /// <summary>
@@ -60,12 +65,18 @@ namespace BTDronection
             m_BtAdapter = BluetoothAdapter.DefaultAdapter;
             mBtShowDevices = FindViewById<Button>(Resource.Id.btShowDevices);
             m_Linear = FindViewById<LinearLayout>(Resource.Id.linear);
+            mBtShowLog = FindViewById<Button>(Resource.Id.btLog);
             mBtHelp = FindViewById<Button>(Resource.Id.btHelp);
             mTvHeader = FindViewById<TextView>(Resource.Id.tvHeader);
             mTvFooter = FindViewById<TextView>(Resource.Id.tvFooter);
             
             // Setting activity background
             m_Linear.SetBackgroundColor(Android.Graphics.Color.White);
+
+            mBtShowLog.Click += delegate
+            {
+                StartActivity(typeof(LogActivity));
+            };
 
             mBtHelp.Click += delegate
             {
@@ -90,6 +101,7 @@ namespace BTDronection
             mBtShowDevices.Typeface = font;
             mBtHelp.Typeface = font;
             mTvFooter.Typeface = font;
+            mBtShowLog.Typeface = font;
         }
 
         /// <summary>
@@ -99,6 +111,15 @@ namespace BTDronection
         {
             Intent intent = new Intent(BluetoothAdapter.ActionRequestEnable);
             StartActivityForResult(intent, 1);
+        }
+
+        private void CreateApplicationFolder()
+        {
+            // Creates Application folder on internal mobile storage
+            ApplicationFolderPath = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.ToString(), "Airything");
+            ApplicationFolderPath += Java.IO.File.Separator + "Bluetooth";
+            var storageDir = new Java.IO.File(ApplicationFolderPath);
+            storageDir.Mkdirs();
         }
     }
 }

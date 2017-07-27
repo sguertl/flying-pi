@@ -26,6 +26,11 @@ namespace BTDronection
             mFont = Typeface.CreateFromAsset(mContext.Assets, "SourceSansPro-Light.ttf");
         }
 
+        public void DeleteElement(string element)
+        {
+            mDevices.Remove(element);
+        }
+
         public override string this[int position]
         {
             get { return mDevices[position]; }
@@ -48,7 +53,7 @@ namespace BTDronection
             if(costumView == null)
             {
                 LayoutInflater inflater = (LayoutInflater)mContext.GetSystemService(Context.LayoutInflaterService);
-                costumView = inflater.Inflate(Resource.Layout.CostumListItemLayout, parent, false);
+                costumView = inflater.Inflate(Resource.Layout.CustomListItemLayout, parent, false);
             }
             int id = Resource.Id.tvListItem;
             costumView.FindViewById<TextView>(id).Text = text;

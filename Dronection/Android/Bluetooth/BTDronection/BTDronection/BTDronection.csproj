@@ -62,8 +62,10 @@
     <Compile Include="HelpActivity.cs" />
     <Compile Include="Joystick.cs" />
     <Compile Include="ListAdapter.cs" />
+    <Compile Include="LogActivity.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="PairedDevices.cs" />
+    <Compile Include="RawDataActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sender.cs" />
@@ -84,12 +86,14 @@
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ControllerLayout.axml" />
     <AndroidResource Include="Resources\layout\ControllerSettings.axml" />
-    <AndroidResource Include="Resources\layout\CostumListItemLayout.axml">
+    <AndroidResource Include="Resources\layout\CustomListItemLayout.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\Help.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\Log.axml" />
+    <AndroidResource Include="Resources\layout\RawDataLayout.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\Strings.xml" />
@@ -114,6 +118,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\bg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\ifx_logo_small.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

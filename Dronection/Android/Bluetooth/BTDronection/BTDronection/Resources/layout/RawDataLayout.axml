@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:isScrollContainer="true"
+        android:background="#ffffff">
+        <TextView
+            android:id="@+id/tvHeaderRawData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Raw Data"
+            android:textSize="36dp"
+            android:gravity="center_horizontal"
+            android:fontFamily="Assets/SourceSansPro-Light.ttf"
+            android:layout_margin="20dp"
+            android:background="#ffffff" />
+        <ListView
+            android:id="@+id/lvRawData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:divider="#005DA9"
+            android:dividerHeight="5dp" />
+        <TextView
+            android:id="@+id/tvDisplayRawData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No item selected"
+            android:typeface="monospace"
+            android:layout_margin="10dp" />
+        <Button
+            android:id="@+id/btnBackRawData"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:fontFamily="Assets/SourceSansPro-Light.tff"
+            android:textSize="20dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_gravity="bottom"
+            android:layout_margin="10dp"
+            android:textColor="#ffffff"
+            android:background="#005DA9" />
+    </LinearLayout>
+</ScrollView>

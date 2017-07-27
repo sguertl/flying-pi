@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:weightSum="1">
+    <TextView
+        android:id="@+id/tvHeaderLog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Log files"
+        android:gravity="center_horizontal"
+        android:textSize="36dp"
+        android:fontFamily="Assets/SourceSansPro-Light.ttf"
+        android:layout_margin="20dp"
+        android:background="#ffffff" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".85">
+        <ListView
+            android:id="@+id/lvFiles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:divider="#005DA9"
+            android:dividerHeight="5dp" />
+        <TextView
+            android:id="@+id/tvEmpty"
+            android:text="There are no log files in the application folder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="24dp"
+            android:fontFamily="Assets/SourceSansPro-Light.ttf"
+            android:layout_margin="20dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:gravity="bottom"
+        android:layout_gravity="bottom"
+        android:layout_weight=".15">
+        <Button
+            android:id="@+id/btnBackLog"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:fontFamily="Assets/SourceSansPro-Light.tff"
+            android:textSize="20dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_gravity="bottom"
+            android:layout_margin="10dp"
+            android:textColor="#ffffff"
+            android:background="#005DA9" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,28 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:isScrollContainer="true">
-  <TextView
+    android:layout_height="match_parent">
+  >
+  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      android:orientation="vertical"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:isScrollContainer="true">
+    <TextView
         android:id="@+id/tvHeaderHelp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Help"
         android:gravity="center_horizontal"
-        android:textSize="32dp"
-        android:fontFamily="Assets/SourceSansPro-Light.ttf"
+        android:textSize="36dp"
         android:layout_margin="20dp" />
+    <TextView
+          android:id="@+id/tvHelpText"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="WiFi Dronection is a smartphone app for piloting an Infineon multicopter with a Raspberry Pi on it."
+          android:gravity="center_horizontal"
+          android:textSize="14dp"
+          android:layout_marginLeft="10dp"
+          android:layout_marginRight="10dp"
+          android:layout_marginBottom="10dp" />
+    <TextView
+          android:id="@+id/tvHelpStartScreen"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="Start screen"
+          android:gravity="center_horizontal"
+          android:textSize="24dp"
+          android:layout_margin="10dp"
+          android:textColor="#005DA9" />
+    <TextView
+          android:id="@+id/tvHelpTextStartScreen"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="Start screen help"
+          android:gravity="center_horizontal"
+          android:textSize="14dp"
+          android:layout_marginLeft="10dp"
+          android:layout_marginRight="10dp"
+          android:layout_marginBottom="10dp" />
+    <TextView
+          android:id="@+id/tvHelpControllerSettings"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="Controller Settings"
+          android:gravity="center_horizontal"
+          android:textSize="24dp"
+          android:layout_margin="10dp"
+          android:textColor="#005DA9" />
+    <TextView
+          android:id="@+id/tvHelpTextControllerSettings"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="Controller Settings help"
+          android:gravity="center_horizontal"
+          android:textSize="14dp"
+          android:layout_marginLeft="10dp"
+          android:layout_marginRight="10dp"
+          android:layout_marginBottom="10dp" />
+    <TextView
+          android:id="@+id/tvHelpController"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="Controller"
+          android:gravity="center_horizontal"
+          android:textSize="24dp"
+          android:layout_margin="10dp"
+          android:textColor="#005DA9" />
+    <TextView
+          android:id="@+id/tvHelpTextController"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="Controller help"
+          android:gravity="center_horizontal"
+          android:textSize="14dp"
+          android:layout_marginLeft="10dp"
+          android:layout_marginRight="10dp"
+          android:layout_marginBottom="10dp" />
+    <TextView
+          android:id="@+id/tvHelpLogFiles"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="Log files"
+          android:gravity="center_horizontal"
+          android:textSize="24dp"
+          android:layout_margin="10dp"
+          android:textColor="#005DA9" />
+    <TextView
+        android:id="@+id/tvHelpTextLogFiles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Log files help"
+        android:gravity="center_horizontal"
+        android:textSize="14dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp" />
+    <TextView
+        android:id="@+id/tvHelpAbout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="About"
+        android:gravity="center_horizontal"
+        android:textSize="24dp"
+        android:layout_margin="10dp"
+        android:textColor="#005DA9" />
+    <TextView
+        android:id="@+id/tvVersion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="version"
+        android:gravity="center_horizontal"
+        android:textSize="14dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp" />
+    <TextView
+        android:id="@+id/tvCredentials"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="This app is designed and developed in Villach, Austria by Sebastian Gürtl, Adrian Klapsch and Christoph Englert."
+        android:gravity="center_horizontal"
+        android:textSize="14dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp" />
+    <TextView
+        android:id="@+id/tvAboutInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="\u00A9 2017 Infineon Technologies Austria AG\nSiemensstraße 2, 9500 Villach"
+        android:gravity="center_horizontal"
+        android:textSize="14dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp" />
+    <TextView
+        android:id="@+id/tvLinkHomepage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        android:text="https://wwww.infineon.com"
+        android:gravity="center_horizontal"
+        android:textSize="14dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp" />
     <Button
         android:id="@+id/btnBackHelp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Back"
-        android:fontFamily="Assets/SourceSansPro-Light.tff"
         android:textSize="20dp"
         android:gravity="center_horizontal|center_vertical"
         android:layout_gravity="bottom"
         android:layout_margin="10dp"
         android:textColor="#ffffff"
         android:background="#005DA9" />
-</LinearLayout>
+  </LinearLayout>
+</ScrollView>
