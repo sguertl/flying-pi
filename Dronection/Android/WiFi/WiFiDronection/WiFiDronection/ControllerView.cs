@@ -470,20 +470,23 @@ namespace WiFiDronection
         /// </summary>
         public void Write(object sender, System.Timers.ElapsedEventArgs e)
         {
-            if (!Settings.Inverted)
+            if (m_SocketConnection.isConnected)
             {
+                if (!Settings.Inverted)
+                {
 
-                m_SocketConnection.Write((Int16)m_LeftJS.Throttle,
-                                  (Int16)(m_LeftJS.Rudder + Settings.TrimYaw),
-                                  (Int16)(m_RightJS.Aileron + Settings.TrimPitch),
-                                  (Int16)(m_RightJS.Elevator + Settings.TrimRoll));
-            }
-            else
-            {
-                m_SocketConnection.Write((Int16)m_RightJS.Throttle,
-                                  (Int16)(m_LeftJS.Rudder + Settings.TrimYaw),
-                                  (Int16)(m_LeftJS.Aileron + Settings.TrimPitch),
-                                  (Int16)(m_RightJS.Elevator + Settings.TrimRoll));
+                    m_SocketConnection.Write((Int16)m_LeftJS.Throttle,
+                                      (Int16)(m_LeftJS.Rudder + Settings.TrimYaw),
+                                      (Int16)(m_RightJS.Aileron + Settings.TrimPitch),
+                                      (Int16)(m_RightJS.Elevator + Settings.TrimRoll));
+                }
+                else
+                {
+                    m_SocketConnection.Write((Int16)m_RightJS.Throttle,
+                                      (Int16)(m_LeftJS.Rudder + Settings.TrimYaw),
+                                      (Int16)(m_LeftJS.Aileron + Settings.TrimPitch),
+                                      (Int16)(m_RightJS.Elevator + Settings.TrimRoll));
+                }
             }
         }
     }

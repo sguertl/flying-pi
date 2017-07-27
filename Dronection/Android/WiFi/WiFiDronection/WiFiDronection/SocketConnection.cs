@@ -41,6 +41,8 @@ namespace WiFiDronection
             set { mLogData = value; }
         }
 
+        public bool isConnected { get; set; }
+
         public Socket WifiSocket
         {
             get { return m_Socket; }
@@ -74,51 +76,59 @@ namespace WiFiDronection
             }
         }
 
+        public bool IsSocketConnected
+        {
+            get { return m_Socket.IsConnected; }
+        }
+
         public override void Run()
         {
             FLAG = true;
-            try
+            if (m_Socket.IsConnected == false)
             {
-                m_Socket = new Socket(SERVER_ADDRESS, SERVERPORT);
-            }
-            catch (UnknownHostException uhe)
-            {
-                Log.Debug(TAG, uhe.Message + " if the IP address of the host could not be determined.");
-            }
-            catch (IOException uhe)
-            {
-                Log.Debug(TAG, uhe.Message + " if an I/O error occurs when creating the socket.");
-            }
-            catch (SecurityException uhe)
-            {
-                Log.Debug(TAG, uhe.Message + " if a security manager exists and its checkConnect method doesn't allow the operation.");
-            }
-            catch (IllegalAccessException uhe)
-            {
-                Log.Debug(TAG, uhe.Message + " if the port parameter is outside the specified range of valid port values, which is between 0 and 65535, inclusive.");
-            }
-
-            try
-            {
-                if (!m_Socket.IsConnected)
+                try
                 {
-                    SocketAddress socketAdr = new InetSocketAddress(SERVER_ADDRESS, SERVERPORT);
-                    Thread.Sleep(5000);
-                    m_Socket.Connect(socketAdr, 2000);
+                    m_Socket = new Socket(SERVER_ADDRESS, SERVERPORT);
                 }
-            }
-            catch (Java.Lang.Exception ex)
-            {
-                FLAG = false;
-                Log.Debug(TAG, ex.Message);
-                return;
-            }
-            finally
-            {
-                if (FLAG)
+                catch (UnknownHostException uhe)
                 {
-                    mDataOutputStream = new DataOutputStream(m_Socket.OutputStream);
-                    mDataInputStream = new DataInputStream(m_Socket.InputStream);
+                    Log.Debug(TAG, uhe.Message + " if the IP address of the host could not be determined.");
+                }
+                catch (IOException uhe)
+                {
+                    Log.Debug(TAG, uhe.Message + " if an I/O error occurs when creating the socket.");
+                }
+                catch (SecurityException uhe)
+                {
+                    Log.Debug(TAG, uhe.Message + " if a security manager exists and its checkConnect method doesn't allow the operation.");
+                }
+                catch (IllegalAccessException uhe)
+                {
+                    Log.Debug(TAG, uhe.Message + " if the port parameter is outside the specified range of valid port values, which is between 0 and 65535, inclusive.");
+                }
+
+                try
+                {
+                    if (!m_Socket.IsConnected)
+                    {
+                        SocketAddress socketAdr = new InetSocketAddress(SERVER_ADDRESS, SERVERPORT);
+                        Thread.Sleep(5000);
+                        m_Socket.Connect(socketAdr, 2000);
+                    }
+                }
+                catch (Java.Lang.Exception ex)
+                {
+                    FLAG = false;
+                    Log.Debug(TAG, ex.Message);
+                    return;
+                }
+                finally
+                {
+                    if (FLAG)
+                    {
+                        mDataOutputStream = new DataOutputStream(m_Socket.OutputStream);
+                        mDataInputStream = new DataInputStream(m_Socket.InputStream);
+                    }
                 }
             }
         }

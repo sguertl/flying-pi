@@ -89,11 +89,11 @@ namespace WiFiDronection
 
         private void OnStartController(object sender, EventArgs e)
         {
-            if (mIsConnected == false)
+            if (mSocketConnection.IsSocketConnected == false)
             {
                 mSocketConnection.Start();
             }
-
+            mSocketConnection.isConnected = true;
             SetContentView(Resource.Layout.ControllerLayout);
 
             var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
@@ -155,27 +155,32 @@ namespace WiFiDronection
         {
             base.OnDestroy();
             WriteLogData();
-            mSocketConnection.OnCancel();
-            mSocketReader.Close();
+            mSocketConnection.isConnected = false;
+            /*mSocketConnection.OnCancel();
+            mSocketReader.Close();*/
         }
-
+        public delegate void Clean();
         protected override void OnStop()
         {
             base.OnStop();
             WriteLogData();
-            mSocketConnection.OnCancel();
-            mSocketReader.Close();
+            mSocketConnection.isConnected = false;
+            /*mSocketConnection.OnCancel();
+            mSocketReader.Close();*/
         }
 
         private void WriteLogData()
         {
-            DateTime time = DateTime.Now;
-            string dirName = string.Format("{0}{1:D2}{2:D2}_{3:D2}{4:D2}{5:D2}", time.Year, time.Month, time.Day, time.Hour, time.Minute, time.Second);
-            var storageDir = new Java.IO.File(MainActivity.ApplicationFolderPath + Java.IO.File.Separator + dirName);
-            storageDir.Mkdirs();
-            var writer = new Java.IO.FileWriter(new Java.IO.File(storageDir, "Controlls.csv"));
-            writer.Write(mSocketConnection.LogData);
-            writer.Close();
+            if(mSocketConnection.LogData != null)
+            {
+                DateTime time = DateTime.Now;
+                string dirName = string.Format("{0}{1:D2}{2:D2}_{3:D2}{4:D2}{5:D2}", time.Year, time.Month, time.Day, time.Hour, time.Minute, time.Second);
+                var storageDir = new Java.IO.File(MainActivity.ApplicationFolderPath + Java.IO.File.Separator + dirName);
+                storageDir.Mkdirs();
+                var writer = new Java.IO.FileWriter(new Java.IO.File(storageDir, "Controlls.csv"));
+                writer.Write(mSocketConnection.LogData);
+                writer.Close();
+            }
         }
 
         private void OnThrottleRightClick(object sender, EventArgs e)
@@ -206,5 +211,7 @@ namespace WiFiDronection
         {
             this.Finish();
         }
+
+
     }
 }
