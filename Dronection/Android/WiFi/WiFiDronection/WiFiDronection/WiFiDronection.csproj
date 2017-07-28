@@ -111,6 +111,7 @@
     <AndroidResource Include="Resources\layout\ShowVisualisationDataLayout.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\drawable\icon.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml">
@@ -119,9 +120,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\Strings.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Icon.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />

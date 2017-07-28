@@ -48,7 +48,7 @@ namespace WiFiDronection
 			public const int bg = 2130837504;
 			
 			// aapt resource value: 0x7f020001
-			public const int Icon = 2130837505;
+			public const int icon = 2130837505;
 			
 			// aapt resource value: 0x7f020002
 			public const int ifx_logo = 2130837506;
@@ -84,8 +84,8 @@ namespace WiFiDronection
 			// aapt resource value: 0x7f05000d
 			public const int btStart = 2131034125;
 			
-			// aapt resource value: 0x7f050002
-			public const int btnAltitudeControl = 2131034114;
+			// aapt resource value: 0x7f050000
+			public const int btnAltitudeControl = 2131034112;
 			
 			// aapt resource value: 0x7f050021
 			public const int btnBackHelp = 2131034145;
@@ -147,8 +147,8 @@ namespace WiFiDronection
 			// aapt resource value: 0x7f050008
 			public const int rgControlMode = 2131034120;
 			
-			// aapt resource value: 0x7f050000
-			public const int sbTrimbar = 2131034112;
+			// aapt resource value: 0x7f050001
+			public const int sbTrimbar = 2131034113;
 			
 			// aapt resource value: 0x7f05001e
 			public const int tvAboutInfo = 2131034142;
@@ -225,8 +225,8 @@ namespace WiFiDronection
 			// aapt resource value: 0x7f050020
 			public const int tvThirdParty = 2131034144;
 			
-			// aapt resource value: 0x7f050001
-			public const int tvTrimValue = 2131034113;
+			// aapt resource value: 0x7f050002
+			public const int tvTrimValue = 2131034114;
 			
 			// aapt resource value: 0x7f05001b
 			public const int tvVersion = 2131034139;
