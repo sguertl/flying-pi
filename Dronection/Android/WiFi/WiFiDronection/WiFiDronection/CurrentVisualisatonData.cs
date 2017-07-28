@@ -28,6 +28,7 @@ namespace WiFiDronection
 
         private CurrentVisualisatonData() {
             this.m_Points = new Dictionary<string, List<DataPoint>>();
+            this.HighContTime = new List<float>();
         }
 
         public static CurrentVisualisatonData Instance

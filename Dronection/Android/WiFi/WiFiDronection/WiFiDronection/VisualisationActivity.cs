@@ -38,8 +38,10 @@ namespace WiFiDronection
             //  m_lvVisualisationData.SetBackgroundColor(Android.Graphics.Color.WhiteSmoke);
             m_lvVisualisationData.DividerHeight = 14;
             this.m_lvVisualisationData.ItemClick += OnListViewItemClick;
-
+            
             this.m_CurVisData = CurrentVisualisatonData.Instance;
+            this.m_CurVisData.Points = new Dictionary<string, List<DataPoint>>();
+            this.m_CurVisData.HighContTime = new List<float>();
         }
 
         private void FillRawDataList()
@@ -67,7 +69,7 @@ namespace WiFiDronection
             var reader = new Java.IO.BufferedReader(new Java.IO.FileReader(path));
             string line = "";
 
-            if (title.Equals("Controlls"))
+            if (title.Equals("controls"))
             {
                 //throttle, yaw, pitch, roll
                 m_CurVisData.Points.Add("throttle", new List<DataPoint>());
@@ -83,7 +85,7 @@ namespace WiFiDronection
             while ((line = reader.ReadLine()) != null)
             {
                 String[] p = line.Split(',');
-                if (title.Equals("Controlls"))
+                if (title.Equals("controls"))
                 {
                     float x = Convert.ToSingle(p[0]);
                     float t = Convert.ToSingle(p[1]);
@@ -95,12 +97,12 @@ namespace WiFiDronection
                     m_CurVisData.Points["yaw"].Add(new DataPoint(x, y));
                     m_CurVisData.Points["pitch"].Add(new DataPoint(x, p2));
                     m_CurVisData.Points["roll"].Add(new DataPoint(x, r));
-                    //if(h == 1)
-                    //{
-                    //    m_CurVisData.HighContTime.Add(x);
-                    //}
+                    if (h == 1)
+                    {
+                        m_CurVisData.HighContTime.Add(x);
+                    }
                 }
-                else
+                else if(!title.Equals("settings"))
                 {
                     float x = Convert.ToSingle(p[0]);
                     float y = Convert.ToSingle(p[1]);
