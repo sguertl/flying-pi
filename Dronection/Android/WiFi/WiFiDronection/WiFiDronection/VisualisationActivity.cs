@@ -90,7 +90,7 @@ namespace WiFiDronection
                     float y = Convert.ToSingle(p[2]);
                     float p2 = Convert.ToSingle(p[3]);
                     float r = Convert.ToSingle(p[4]);
-              //      int h = Convert.ToInt32(p[5]);
+                    int h = Convert.ToInt32(p[5]);
                     m_CurVisData.Points["throttle"].Add(new DataPoint(x,t));
                     m_CurVisData.Points["yaw"].Add(new DataPoint(x, y));
                     m_CurVisData.Points["pitch"].Add(new DataPoint(x, p2));

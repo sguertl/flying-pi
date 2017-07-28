@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -57,7 +57,7 @@ namespace WiFiDronection
         /// <summary>
         /// Is Height control of the copter active
         /// </summary>
-        public bool HeightControlActivated
+        public bool AltitudeControlActivated
         {
             get;
             set;

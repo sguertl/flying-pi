@@ -29,11 +29,11 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="10dp" />
         <Button
-            android:id="@+id/btnHeightControl"
+            android:id="@+id/btnAltitudeControl"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:text="HEIGHT CONTROL"
-            android:textSize="16dp"
+            android:text="ALTITUDE CONTROL"
+            android:textSize="15dp"
             android:textColor="#ffffff"
             android:background="#005DA9"
             android:layout_marginLeft="10dp"
