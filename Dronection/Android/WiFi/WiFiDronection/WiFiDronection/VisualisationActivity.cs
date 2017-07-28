@@ -90,10 +90,15 @@ namespace WiFiDronection
                     float y = Convert.ToSingle(p[2]);
                     float p2 = Convert.ToSingle(p[3]);
                     float r = Convert.ToSingle(p[4]);
+              //      int h = Convert.ToInt32(p[5]);
                     m_CurVisData.Points["throttle"].Add(new DataPoint(x,t));
                     m_CurVisData.Points["yaw"].Add(new DataPoint(x, y));
                     m_CurVisData.Points["pitch"].Add(new DataPoint(x, p2));
                     m_CurVisData.Points["roll"].Add(new DataPoint(x, r));
+                    //if(h == 1)
+                    //{
+                    //    m_CurVisData.HighContTime.Add(x);
+                    //}
                 }
                 else
                 {
@@ -101,7 +106,7 @@ namespace WiFiDronection
                     float y = Convert.ToSingle(p[1]);
                     int h = Convert.ToInt32(p[2]);
                     m_CurVisData.Points[title].Add(new DataPoint(x, y));
-                    if (h == 0){
+                    if (h == 1){
                         m_CurVisData.HighContTime.Add(x);
                     }
                 }

@@ -12,6 +12,7 @@ using Android.Widget;
 using MikePhil.Charting.Charts;
 using MikePhil.Charting.Data;
 using MikePhil.Charting.Interfaces.Datasets;
+using Android.Graphics;
 
 namespace WiFiDronection
 {
@@ -24,6 +25,8 @@ namespace WiFiDronection
         private CurrentVisualisatonData m_CurVisData;
         private ILineDataSet[] m_DataSet;
         private LineData m_LineData;
+
+        private Color[] m_ColorList = { Color.Red, Color.Green, Color.Blue, Color.Brown};
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -51,6 +54,11 @@ namespace WiFiDronection
                     m_Entries.Add(new Entry(dp2.X, dp2.Y));
                 }
                 LineDataSet lds = new LineDataSet(m_Entries, dp.Key);
+                lds.SetColor(m_ColorList[count], 255);
+                lds.SetCircleColor(m_ColorList[count]);
+                lds.SetDrawCircleHole(true);
+                lds.SetCircleColorHole(Color.Red);
+
                 m_DataSet.SetValue(lds,count);
                 count++;
             }      
