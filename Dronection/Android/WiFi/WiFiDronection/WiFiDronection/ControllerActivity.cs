@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,20 +22,21 @@ namespace WiFiDronection
     {
         // Members
         private TextView mTvHeader;
-        private RadioGroup mRgControlMethod;
-        private RadioButton mRbThrottleLeft;
-        private RadioButton mRbThrottleRight;
+        private RadioGroup mRgControlMode;
+        private RadioButton mRbMode1;
+        private RadioButton mRbMode2;
         private Button mBtStart;
         private Button mBtBackToMain;
-        private ImageView mIvMode;
+        private ImageView mIvMode1;
+        private ImageView mIvMode2;
 
         private SeekBar mSbTrimBar;
         private TextView mTvTrimValue;
+        private Button mBtnAltitudeControl;
         private RadioButton mRbYawTrim;
         private RadioButton mRbPitchTrim;
         private RadioButton mRbRollTrim;
 
-        private int mYawTrim;
         private bool mIsConnected;
         private SocketConnection mSocketConnection;
         private SocketReader mSocketReader;
@@ -59,21 +60,25 @@ namespace WiFiDronection
             var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
             // Initialize widgets
             mTvHeader = FindViewById<TextView>(Resource.Id.tvHeaderSettings);
-            mRgControlMethod = FindViewById<RadioGroup>(Resource.Id.rgControlMethod);
-            mRbThrottleLeft = FindViewById<RadioButton>(Resource.Id.rbThrottleLeft);
-            mRbThrottleRight = FindViewById<RadioButton>(Resource.Id.rbThrottleRight);
+            mRgControlMode = FindViewById<RadioGroup>(Resource.Id.rgControlMode);
+            mRbMode1 = FindViewById<RadioButton>(Resource.Id.rbMode1);
+            mRbMode2 = FindViewById<RadioButton>(Resource.Id.rbMode2);
             mBtStart = FindViewById<Button>(Resource.Id.btStart);
-            mBtBackToMain = FindViewById<Button>(Resource.Id.btBackToMain);
-            mIvMode = FindViewById<ImageView>(Resource.Id.ivMode);
+            mBtBackToMain = FindViewById<Button>(Resource.Id.btnSettingsBack);
+            mIvMode1 = FindViewById<ImageView>(Resource.Id.ivMode1);
+            mIvMode2 = FindViewById<ImageView>(Resource.Id.ivMode2);
 
             mTvHeader.Typeface = font;
-            mRbThrottleLeft.Typeface = font;
-            mRbThrottleRight.Typeface = font;
+            mRbMode1.Typeface = font;
+            mRbMode2.Typeface = font;
             mBtStart.Typeface = font;
             mBtBackToMain.Typeface = font;
 
-            mRbThrottleLeft.Click += OnThrottleLeftClick;
-            mRbThrottleRight.Click += OnThrottleRightClick;
+            mRbMode1.Click += OnMode1Click;
+            mIvMode1.Click += OnMode1Click;
+
+            mRbMode2.Click += OnMode2Click;
+            mIvMode2.Click += OnMode2Click;
 
             mBtStart.Click += OnStartController;
             mBtBackToMain.Click += OnBackToMain;
@@ -95,7 +100,7 @@ namespace WiFiDronection
                 string[] trimParts = parts[1].Split(';');
                 peerSettings.Add(parts[0], new ControllerSettings
                 {
-                    HeightControlActivated = false,
+                    AltitudeControlActivated = false,
                     Inverted = false,
                     TrimYaw = Convert.ToInt16(trimParts[0]),
                     TrimPitch = Convert.ToInt16(trimParts[1]),
@@ -130,14 +135,16 @@ namespace WiFiDronection
 
             var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
 
-            // Initialize wigets of ControllerLayout
+            // Initialize widgets of ControllerLayout
             mSbTrimBar = FindViewById<SeekBar>(Resource.Id.sbTrimbar);
             mTvTrimValue = FindViewById<TextView>(Resource.Id.tvTrimValue);
+            mBtnAltitudeControl = FindViewById<Button>(Resource.Id.btnAltitudeControl);
             mRbYawTrim = FindViewById<RadioButton>(Resource.Id.rbYawTrim);
             mRbPitchTrim = FindViewById<RadioButton>(Resource.Id.rbPitchTrim);
             mRbRollTrim = FindViewById<RadioButton>(Resource.Id.rbRollTrim);
 
             mTvTrimValue.Typeface = font;
+            mBtnAltitudeControl.Typeface = font;
             mRbYawTrim.Typeface = font;
             mRbPitchTrim.Typeface = font;
             mRbRollTrim.Typeface = font;
@@ -235,22 +242,22 @@ namespace WiFiDronection
             }
         }
 
-        /// <summary>
-        /// Change control mode
-        /// </summary>
-        private void OnThrottleRightClick(object sender, EventArgs e)
-        {
-            Inverted = ControllerSettings.ACTIVE;
-            mIvMode.SetImageResource(Resource.Drawable.mode2);
-        }
+		/// <summary>
+		/// Change control mode
+		/// </summary>
+		private void OnMode1Click(object sender, EventArgs e)
+		{
+			Inverted = ControllerSettings.INACTIVE;
+            mRbMode1.Checked = true;
+		}
 
         /// <summary>
         /// Change control mode
         /// </summary>
-        private void OnThrottleLeftClick(object sender, EventArgs e)
+        private void OnMode2Click(object sender, EventArgs e)
         {
-            Inverted = ControllerSettings.INACTIVE;
-            mIvMode.SetImageResource(Resource.Drawable.mode1);
+            Inverted = ControllerSettings.ACTIVE;
+            mRbMode2.Checked = true;
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -82,7 +82,7 @@ namespace WiFiDronection
             m_SocketConnection = SocketConnection.Instance;
             Settings = new ControllerSettings
             {
-                HeightControlActivated = false,
+                AltitudeControlActivated = false,
                 Inverted = ControllerActivity.Inverted,
                 TrimYaw = 0,
                 TrimPitch = 0,

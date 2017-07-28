@@ -30,7 +30,7 @@
                 android:orientation="horizontal"
                 android:layout_gravity="center"
                 android:weightSum="1"
-                android:id="@+id/rgControlMethod">
+                android:id="@+id/rgControlMode">
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
                     android:layout_marginLeft="90dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_weight=".5"
-                    android:id="@+id/rbThrottleLeft" />
+                    android:id="@+id/rbMode1" />
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
                     android:layout_marginLeft="90dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_weight=".5"
-                    android:id="@+id/rbThrottleRight" />
+                    android:id="@+id/rbMode2" />
             </RadioGroup>
         </LinearLayout>
     <!-- DESCRIPTION IMAGEVIEW -->
@@ -61,7 +61,7 @@
             android:layout_height="match_parent"
             android:weightSum="1">
             <ImageView
-                android:id="@+id/ivMode"
+                android:id="@+id/ivMode1"
                 android:src="@drawable/mode1"
                 android:scaleX="1"
                 android:scaleY="1"
@@ -71,7 +71,7 @@
                 android:scaleType="centerInside"
                 android:adjustViewBounds="true" />
             <ImageView
-                android:id="@+id/ivMode"
+                android:id="@+id/ivMode2"
                 android:src="@drawable/mode2"
                 android:scaleX="1"
                 android:scaleY="1"
@@ -94,7 +94,7 @@
             android:background="#005DA9" />
     <!-- Back button -->
         <Button
-            android:id="@+id/btBackToMain"
+            android:id="@+id/btnSettingsBack"
             android:textSize="20dp"
             android:text="Back"
             android:layout_width="match_parent"
