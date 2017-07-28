@@ -27,8 +27,7 @@ namespace WiFiDronection
         private Button mBtnConnect;
         private Button mBtnShowLogs;
         private Button mBtnHelp;
-        private TextView mTvHeaderDialog;
-        
+
         private string mSelectedSsid;
         private string mSelectedBssid;
         private string mLastConnectedPeer;
@@ -111,6 +110,7 @@ namespace WiFiDronection
                         mTvWifiName.Text = "SSID: " + wifi.Ssid;
                         mTvWifiMac.Text = "MAC: " + wifi.Bssid;
                         mBtnConnect.Enabled = true;
+                        mBtnConnect.Text = "Connect";
                         mBtnConnect.SetBackgroundColor(Color.ParseColor("#005DA9"));
                     });
                 }
@@ -229,10 +229,10 @@ namespace WiFiDronection
         {
             // Creates Application folder on internal mobile storage
             ApplicationFolderPath = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.ToString(), "Airything");
-            ApplicationFolderPath += Java.IO.File.Separator + "WiFi";
-            var storageDir = new Java.IO.File(ApplicationFolderPath + Java.IO.File.Separator + "Settings");
+            ApplicationFolderPath += Java.IO.File.Separator + "wifi";
+            var storageDir = new Java.IO.File(ApplicationFolderPath + Java.IO.File.Separator + "settings");
             storageDir.Mkdirs();
-            var settingsFile = new Java.IO.File(ApplicationFolderPath + Java.IO.File.Separator + "Settings" + Java.IO.File.Separator + "Settings.csv");
+            var settingsFile = new Java.IO.File(ApplicationFolderPath + Java.IO.File.Separator + "settings" + Java.IO.File.Separator + "settings.csv");
             settingsFile.CreateNewFile();
         }
     }
