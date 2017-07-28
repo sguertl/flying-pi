@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿﻿﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -113,7 +113,7 @@ namespace WiFiDronection
         {
             // Paint for joystick ovals
             var paintStick = new Paint();
-            paintStick.SetARGB(255, 88, 88, 88);
+            paintStick.Color = Color.ParseColor("#644F54");
             paintStick.SetStyle(Paint.Style.Fill);
             // Shape for left joystick
             m_ShapeStickLeft = new ShapeDrawable(new OvalShape());
@@ -124,7 +124,7 @@ namespace WiFiDronection
 
             // Paint for displacement ovals
             var paintRadius = new Paint();
-            paintRadius.Color = Color.LightGray;
+            paintRadius.Color = Color.ParseColor("#e9e6cd");
             //paintRadius.SetARGB(255, 230, 230, 230);
             //paintRadius.SetStyle(Paint.Style.Fill);
             paintRadius.SetStyle(Paint.Style.Fill);
@@ -341,24 +341,19 @@ namespace WiFiDronection
                 {
                     // Draw left joystick with original coordinates
                     SetBoundsForLeftStick(
-                    (int)xPosition - (int)Joystick.StickRadius,
-                    (int)yPosition - (int)Joystick.StickRadius,
-                    (int)xPosition + (int)Joystick.StickRadius,
-                    (int)yPosition + (int)Joystick.StickRadius);
+                        (int)xPosition - (int)Joystick.StickRadius,
+                        (int)yPosition - (int)Joystick.StickRadius,
+                        (int)xPosition + (int)Joystick.StickRadius,
+                        (int)yPosition + (int)Joystick.StickRadius);
                 }
                 else
                 {
                     // Draw left joystick with maximum coordinates
                     SetBoundsForLeftStick(
-                    (int)(Joystick.DisplacementRadius * Math.Cos(m_LeftJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)m_LeftJS.CenterX,
-                    (int)(Joystick.DisplacementRadius * Math.Sin(m_LeftJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)m_LeftJS.CenterY,
-                    (int)(Joystick.DisplacementRadius * Math.Cos(m_LeftJS.Angle * Math.PI / 180)) + (int)Joystick.StickRadius + (int)m_LeftJS.CenterX,
-                    (int)(Joystick.DisplacementRadius * Math.Sin(m_LeftJS.Angle * Math.PI / 180)) + (int)Joystick.StickRadius + (int)m_LeftJS.CenterY);
-
-                    // OPTION: Set radius as position
-                    //m_LeftJS.SetPosition((int)(m_LeftJS.m_DisplacementRadius * Math.Cos(m_LeftJS.GetAngle() * Math.PI / 180)) + (int)m_LeftJS.CENTER_X, 
-                    //    (int)(m_LeftJS.m_DisplacementRadius * Math.Sin(m_LeftJS.GetAngle() * Math.PI / 180)) + (int)m_LeftJS.CENTER_Y);
-
+                        (int)(Joystick.DisplacementRadius * Math.Cos(m_LeftJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)m_LeftJS.CenterX,
+                        (int)(Joystick.DisplacementRadius * Math.Sin(m_LeftJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)m_LeftJS.CenterY,
+                        (int)(Joystick.DisplacementRadius * Math.Cos(m_LeftJS.Angle * Math.PI / 180)) + (int)Joystick.StickRadius + (int)m_LeftJS.CenterX,
+                        (int)(Joystick.DisplacementRadius * Math.Sin(m_LeftJS.Angle * Math.PI / 180)) + (int)Joystick.StickRadius + (int)m_LeftJS.CenterY);
                 }
             }
             else
@@ -370,23 +365,19 @@ namespace WiFiDronection
                 {
                     // Draw right joystick with original coordinates
                     SetBoundsForRightStick(
-                     (int)xPosition - (int)Joystick.StickRadius,
-                     (int)yPosition - (int)Joystick.StickRadius,
-                     (int)xPosition + (int)Joystick.StickRadius,
-                     (int)yPosition + (int)Joystick.StickRadius);
+                        (int)xPosition - (int)Joystick.StickRadius,
+                        (int)yPosition - (int)Joystick.StickRadius,
+                        (int)xPosition + (int)Joystick.StickRadius,
+                        (int)yPosition + (int)Joystick.StickRadius);
                 }
                 else
                 {
                     // Draw left joystick with maximum coordinates
                     SetBoundsForRightStick(
-                    (int)(Joystick.DisplacementRadius * Math.Cos(m_RightJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)m_RightJS.CenterX,
-                    (int)(Joystick.DisplacementRadius * Math.Sin(m_RightJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)m_RightJS.CenterY,
-                    (int)(Joystick.DisplacementRadius * Math.Cos(m_RightJS.Angle * Math.PI / 180)) + (int)Joystick.StickRadius + (int)m_RightJS.CenterX,
-                    (int)(Joystick.DisplacementRadius * Math.Sin(m_RightJS.Angle * Math.PI / 180)) + (int)Joystick.StickRadius + (int)m_RightJS.CenterY);
-
-                    // OPTION: Set radius as position 
-                    //m_RightJS.SetPosition((int)(m_RightJS.m_DisplacementRadius * Math.Cos(m_RightJS.GetAngle() * Math.PI / 180)) + (int)m_RightJS.CENTER_X,
-                    //    (int)(m_RightJS.m_DisplacementRadius * Math.Sin(m_RightJS.GetAngle() * Math.PI / 180)) + (int)m_RightJS.CENTER_Y);
+                        (int)(Joystick.DisplacementRadius * Math.Cos(m_RightJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)m_RightJS.CenterX,
+                        (int)(Joystick.DisplacementRadius * Math.Sin(m_RightJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)m_RightJS.CenterY,
+                        (int)(Joystick.DisplacementRadius * Math.Cos(m_RightJS.Angle * Math.PI / 180)) + (int)Joystick.StickRadius + (int)m_RightJS.CenterX,
+                        (int)(Joystick.DisplacementRadius * Math.Sin(m_RightJS.Angle * Math.PI / 180)) + (int)Joystick.StickRadius + (int)m_RightJS.CenterY);
                 }
             }
         }
@@ -407,13 +398,6 @@ namespace WiFiDronection
             m_ShapeBorderStickRight.Draw(canvas);
             m_ShapeStickLeft.Draw(canvas);
             m_ShapeStickRight.Draw(canvas);
-
-            // Set paint for data text
-            var paint = new Paint();
-            paint.SetARGB(255, 0, 0, 0);
-            paint.TextSize = 20;
-            paint.TextAlign = Paint.Align.Center;
-            paint.StrokeWidth = 5;
 
             m_LeftJS.CalculateValues();
             m_RightJS.CalculateValues();
@@ -445,12 +429,17 @@ namespace WiFiDronection
             m_ShapeBorderStickRight.SetBounds(left - 2, top - 2, right + 2, bottom + 2);
         }
 
+        private static void AltControlChanged()
+        {
+            
+        }
+
         /// <summary>
         /// Helper method for sending data via bluetooth to the device
         /// Throttle = speed
         /// Rudder = Yaw = rotation
         /// Elevator = Pitch = north south
-        /// Aileron = Elevator = east west
+        /// Aileron = Roll = east west
         /// </summary>
         public void Write(object sender, System.Timers.ElapsedEventArgs e)
         {
@@ -458,15 +447,16 @@ namespace WiFiDronection
             {
                 if (!Settings.Inverted)
                 {
-
-                    m_SocketConnection.Write((Int16)m_LeftJS.Throttle,
+                    int throttle = Settings.AltitudeControlActivated ? 50 : m_LeftJS.Throttle;
+                    m_SocketConnection.Write((Int16)throttle,
                                       (Int16)(m_LeftJS.Rudder + Settings.TrimYaw),
                                       (Int16)(m_RightJS.Aileron + Settings.TrimPitch),
                                       (Int16)(m_RightJS.Elevator + Settings.TrimRoll));
                 }
                 else
                 {
-                    m_SocketConnection.Write((Int16)m_RightJS.Throttle,
+                    int throttle = Settings.AltitudeControlActivated ? 50 : m_RightJS.Throttle;
+                    m_SocketConnection.Write((Int16)throttle,
                                       (Int16)(m_LeftJS.Rudder + Settings.TrimYaw),
                                       (Int16)(m_LeftJS.Aileron + Settings.TrimPitch),
                                       (Int16)(m_RightJS.Elevator + Settings.TrimRoll));

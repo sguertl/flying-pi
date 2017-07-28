@@ -1,4 +1,4 @@
-﻿﻿﻿﻿using System;
+﻿﻿﻿﻿﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -193,14 +193,7 @@ namespace WiFiDronection
             if(mIsConnected == false)
             {
                 mSocketReader = new SocketReader(mSocketConnection.InputStream);
-                try 
-                {
-					mSocketReader.Start();
-				}
-                catch(Exception ex) 
-                {
-                    
-                }
+				mSocketReader.Start();
             }
         }
 
@@ -277,13 +270,13 @@ namespace WiFiDronection
 		{
             if(ControllerView.Settings.AltitudeControlActivated)
             {
-                ControllerView.Settings.AltitudeControlActivated = false;
-				mBtnAltitudeControl.SetBackgroundColor(Color.ParseColor("#E30034"));
+                ControllerView.Settings.AltitudeControlActivated = ControllerSettings.INACTIVE;
+				mBtnAltitudeControl.SetBackgroundColor(Color.ParseColor("#005DA9"));
             }
             else 
             {
-                ControllerView.Settings.AltitudeControlActivated = true;
-                mBtnAltitudeControl.SetBackgroundColor(Color.ParseColor("#005DA9"));
+                ControllerView.Settings.AltitudeControlActivated = ControllerSettings.ACTIVE;
+                mBtnAltitudeControl.SetBackgroundColor(Color.ParseColor("#E30034"));
             }
 		}
 
