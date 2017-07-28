@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -149,7 +149,7 @@ namespace WiFiDronection
             mRbPitchTrim.Typeface = font;
             mRbRollTrim.Typeface = font;
 
-            mSbTrimBar.ProgressChanged += delegate
+			mSbTrimBar.ProgressChanged += delegate
             {
                 if (mRbYawTrim.Checked == true)
                 {
@@ -166,7 +166,9 @@ namespace WiFiDronection
                 mTvTrimValue.Text = (mSbTrimBar.Progress + mMinTrim).ToString();
             };
 
-            mRbYawTrim.Click += delegate
+			mBtnAltitudeControl.Click += OnAltitudeControlClick;
+
+			mRbYawTrim.Click += delegate
             {
                 mTvTrimValue.Text = ControllerView.Settings.TrimYaw.ToString();
                 mSbTrimBar.Progress = ControllerView.Settings.TrimYaw - mMinTrim;
@@ -227,16 +229,17 @@ namespace WiFiDronection
                 string dirName = string.Format("{0}{1:D2}{2:D2}_{3:D2}{4:D2}{5:D2}", time.Year, time.Month, time.Day, time.Hour, time.Minute, time.Second);
                 var storageDir = new Java.IO.File(MainActivity.ApplicationFolderPath + Java.IO.File.Separator + dirName);
                 storageDir.Mkdirs();
-                var writer = new Java.IO.FileWriter(new Java.IO.File(storageDir, "Controlls.csv"));
+                var writer = new Java.IO.FileWriter(new Java.IO.File(storageDir, "controls.csv"));
                 writer.Write(mSocketConnection.LogData);
                 mPeerSettings[mSelectedBssid] = ControllerView.Settings;
-                dirName = MainActivity.ApplicationFolderPath + Java.IO.File.Separator + "Settings";
+                dirName = MainActivity.ApplicationFolderPath + Java.IO.File.Separator + "settings";
                 string settingsString = "";
                 foreach(KeyValuePair<string, ControllerSettings> kvp in mPeerSettings)
                 {
                     settingsString += kvp.Key + "," + kvp.Value.TrimYaw + ";" + kvp.Value.TrimPitch + ";" + kvp.Value.TrimRoll + "\n";
                 }
-                writer = new Java.IO.FileWriter(new Java.IO.File(dirName, "Settings.csv"));
+                writer.Close();
+                writer = new Java.IO.FileWriter(new Java.IO.File(dirName, "settings.csv"));
                 writer.Write(settingsString);
                 writer.Close();
             }
@@ -259,6 +262,20 @@ namespace WiFiDronection
             Inverted = ControllerSettings.ACTIVE;
             mRbMode2.Checked = true;
         }
+
+		private void OnAltitudeControlClick(object sender, EventArgs e)
+		{
+            if(ControllerView.Settings.AltitudeControlActivated)
+            {
+                ControllerView.Settings.AltitudeControlActivated = false;
+				mBtnAltitudeControl.SetBackgroundColor(Color.ParseColor("#E30034"));
+            }
+            else 
+            {
+                ControllerView.Settings.AltitudeControlActivated = true;
+                mBtnAltitudeControl.SetBackgroundColor(Color.ParseColor("#005DA9"));
+            }
+		}
 
         /// <summary>
         /// Go to back to main activity
