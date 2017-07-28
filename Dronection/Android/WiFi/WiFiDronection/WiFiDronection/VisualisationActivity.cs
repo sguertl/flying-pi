@@ -69,10 +69,11 @@ namespace WiFiDronection
 
             if (title.Equals("Controlls"))
             {
-                m_CurVisData.Points.Add(title, new List<DataPoint>());
-                m_CurVisData.Points.Add(title, new List<DataPoint>());
-                m_CurVisData.Points.Add(title, new List<DataPoint>());
-                m_CurVisData.Points.Add(title, new List<DataPoint>());
+                //throttle, yaw, pitch, roll
+                m_CurVisData.Points.Add("throttle", new List<DataPoint>());
+                m_CurVisData.Points.Add("yaw", new List<DataPoint>());
+                m_CurVisData.Points.Add("pitch", new List<DataPoint>());
+                m_CurVisData.Points.Add("roll", new List<DataPoint>());
             }
             else
             {
@@ -84,14 +85,22 @@ namespace WiFiDronection
                 String[] p = line.Split(',');
                 if (title.Equals("Controlls"))
                 {
-
+                    float x = Convert.ToSingle(p[0]);
+                    float t = Convert.ToSingle(p[1]);
+                    float y = Convert.ToSingle(p[2]);
+                    float p2 = Convert.ToSingle(p[3]);
+                    float r = Convert.ToSingle(p[4]);
+                    m_CurVisData.Points["throttle"].Add(new DataPoint(x,t));
+                    m_CurVisData.Points["yaw"].Add(new DataPoint(x, y));
+                    m_CurVisData.Points["pitch"].Add(new DataPoint(x, p2));
+                    m_CurVisData.Points["roll"].Add(new DataPoint(x, r));
                 }
                 else
                 {
                     float x = Convert.ToSingle(p[0]);
                     float y = Convert.ToSingle(p[1]);
                     int h = Convert.ToInt32(p[2]);
-                    m_CurVisData.Points.First(d => d.Key.Equals(title)).Value.Add(new DataPoint(x,y));
+                    m_CurVisData.Points[title].Add(new DataPoint(x, y));
                     if (h == 0){
                         m_CurVisData.HighContTime.Add(x);
                     }
