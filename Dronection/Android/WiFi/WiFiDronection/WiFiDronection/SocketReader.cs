@@ -47,6 +47,11 @@ namespace WiFiDronection
                 {
                     Log.Debug("SocketReader", "Error reading");
                 }
+                catch(NullReferenceException ex)
+                {
+                    Log.Debug("SocketReader", "No socket connection");
+                    throw;
+                }
             }
         }
 

@@ -1,4 +1,4 @@
-﻿﻿﻿using System;
+﻿﻿﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -90,7 +90,7 @@ namespace WiFiDronection
 
         private Dictionary<string, ControllerSettings> ReadPeerSettings()
         {
-            string fileName = MainActivity.ApplicationFolderPath + Java.IO.File.Separator + "Settings" + Java.IO.File.Separator + "Settings.csv";
+            string fileName = MainActivity.ApplicationFolderPath + Java.IO.File.Separator + "settings" + Java.IO.File.Separator + "settings.csv";
             var reader = new Java.IO.BufferedReader(new Java.IO.FileReader(fileName));
             Dictionary<string, ControllerSettings> peerSettings = new Dictionary<string, ControllerSettings>();
             string line = "";
@@ -149,6 +149,9 @@ namespace WiFiDronection
             mRbPitchTrim.Typeface = font;
             mRbRollTrim.Typeface = font;
 
+			mSbTrimBar.Progress = ControllerView.Settings.TrimYaw - mMinTrim;
+			mTvTrimValue.Text = ControllerView.Settings.TrimYaw.ToString();
+
 			mSbTrimBar.ProgressChanged += delegate
             {
                 if (mRbYawTrim.Checked == true)
@@ -190,7 +193,14 @@ namespace WiFiDronection
             if(mIsConnected == false)
             {
                 mSocketReader = new SocketReader(mSocketConnection.InputStream);
-                mSocketReader.Start();
+                try 
+                {
+					mSocketReader.Start();
+				}
+                catch(Exception ex) 
+                {
+                    
+                }
             }
         }
 
