@@ -39,6 +39,8 @@ namespace WiFiDronection
         private bool mIsConnected;
         private SocketConnection mSocketConnection;
         private SocketReader mSocketReader;
+        private string mSelectedBssid;
+        private Dictionary<string, ControllerSettings> mPeerSettings;
 
         // Constants
         private readonly int mMinTrim = -30;
@@ -77,6 +79,30 @@ namespace WiFiDronection
             mBtBackToMain.Click += OnBackToMain;
 
             mIsConnected = Intent.GetBooleanExtra("isConnected", true);
+            mSelectedBssid = Intent.GetStringExtra("mac");
+            mPeerSettings = ReadPeerSettings();
+        }
+
+        private Dictionary<string, ControllerSettings> ReadPeerSettings()
+        {
+            string fileName = MainActivity.ApplicationFolderPath + Java.IO.File.Separator + "Settings" + Java.IO.File.Separator + "Settings.csv";
+            var reader = new Java.IO.BufferedReader(new Java.IO.FileReader(fileName));
+            Dictionary<string, ControllerSettings> peerSettings = new Dictionary<string, ControllerSettings>();
+            string line = "";
+            while((line = reader.ReadLine()) != null)
+            {
+                string[] parts = line.Split(',');
+                string[] trimParts = parts[1].Split(';');
+                peerSettings.Add(parts[0], new ControllerSettings
+                {
+                    HeightControlActivated = false,
+                    Inverted = false,
+                    TrimYaw = Convert.ToInt16(trimParts[0]),
+                    TrimPitch = Convert.ToInt16(trimParts[1]),
+                    TrimRoll = Convert.ToInt16(trimParts[2])
+                });
+            }
+            return peerSettings;
         }
 
         /// <summary>
@@ -94,6 +120,13 @@ namespace WiFiDronection
             mSocketConnection.isConnected = true;
             // Change GUI to Controller layout with joysticks
             SetContentView(Resource.Layout.ControllerLayout);
+
+            if(mPeerSettings.Any(kvp => kvp.Key == mSelectedBssid) == true)
+            {
+                ControllerView.Settings.TrimYaw = mPeerSettings[mSelectedBssid].TrimYaw;
+                ControllerView.Settings.TrimPitch = mPeerSettings[mSelectedBssid].TrimPitch;
+                ControllerView.Settings.TrimRoll = mPeerSettings[mSelectedBssid].TrimRoll;
+            }
 
             var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
 
@@ -189,6 +222,15 @@ namespace WiFiDronection
                 storageDir.Mkdirs();
                 var writer = new Java.IO.FileWriter(new Java.IO.File(storageDir, "Controlls.csv"));
                 writer.Write(mSocketConnection.LogData);
+                mPeerSettings[mSelectedBssid] = ControllerView.Settings;
+                dirName = MainActivity.ApplicationFolderPath + Java.IO.File.Separator + "Settings";
+                string settingsString = "";
+                foreach(KeyValuePair<string, ControllerSettings> kvp in mPeerSettings)
+                {
+                    settingsString += kvp.Key + "," + kvp.Value.TrimYaw + ";" + kvp.Value.TrimPitch + ";" + kvp.Value.TrimRoll + "\n";
+                }
+                writer = new Java.IO.FileWriter(new Java.IO.File(dirName, "Settings.csv"));
+                writer.Write(settingsString);
                 writer.Close();
             }
         }

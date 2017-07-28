@@ -67,5 +67,10 @@ namespace WiFiDronection
         {
 
         }
+
+        public override string ToString()
+        {
+            return TrimYaw + ";" + TrimPitch + ";" + TrimRoll;
+        }
     }
 }

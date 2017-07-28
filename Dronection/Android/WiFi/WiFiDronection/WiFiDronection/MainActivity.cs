@@ -30,6 +30,7 @@ namespace WiFiDronection
         private TextView mTvHeaderDialog;
         
         private string mSelectedSsid;
+        private string mSelectedBssid;
         private string mLastConnectedPeer;
         private bool mIsConnected;
 
@@ -106,6 +107,7 @@ namespace WiFiDronection
                     {
                         // Show selected wifi device
                         mSelectedSsid = wifi.Ssid;
+                        mSelectedBssid = wifi.Bssid;
                         mTvWifiName.Text = "SSID: " + wifi.Ssid;
                         mTvWifiMac.Text = "MAC: " + wifi.Bssid;
                         mBtnConnect.Enabled = true;
@@ -131,6 +133,7 @@ namespace WiFiDronection
                 // Open controller activity
                 Intent intent = new Intent(BaseContext, typeof(ControllerActivity));
                 intent.PutExtra("isConnected", mIsConnected);
+                intent.PutExtra("mac", mSelectedBssid);
                 StartActivity(intent);
             }
         }
@@ -186,6 +189,7 @@ namespace WiFiDronection
                 mLastConnectedPeer = mSelectedSsid;
                 Intent intent = new Intent(BaseContext, typeof(ControllerActivity));
                 intent.PutExtra("isConnected", mIsConnected);
+                intent.PutExtra("mac", mSelectedBssid);
                 StartActivity(intent);
                 mIsConnected = true;
             }
@@ -226,8 +230,10 @@ namespace WiFiDronection
             // Creates Application folder on internal mobile storage
             ApplicationFolderPath = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.ToString(), "Airything");
             ApplicationFolderPath += Java.IO.File.Separator + "WiFi";
-            var storageDir = new Java.IO.File(ApplicationFolderPath);
+            var storageDir = new Java.IO.File(ApplicationFolderPath + Java.IO.File.Separator + "Settings");
             storageDir.Mkdirs();
+            var settingsFile = new Java.IO.File(ApplicationFolderPath + Java.IO.File.Separator + "Settings" + Java.IO.File.Separator + "Settings.csv");
+            settingsFile.CreateNewFile();
         }
     }
 }

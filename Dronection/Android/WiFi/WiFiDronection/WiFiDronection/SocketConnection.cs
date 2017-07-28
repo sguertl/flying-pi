@@ -155,7 +155,7 @@ namespace WiFiDronection
         public void Write(params Int16[] args)
         {
             // Save controlls for log file
-            mLogData += mStartMillis + "," + args[0] + "," + args[1] + "," + args[2] + "," + args[3] + "\n";
+            mLogData += mStartMillis + "," + args[0] + "," + args[1] + "," + args[2] + "," + args[3] + "," + ControllerView.Settings.HeightControlActivated + "\n";
             mStartMillis += 10;
             // Convert int16 controller parameters to byte stream
             byte[] bytes = ConvertToByte(args);
