@@ -116,10 +116,12 @@ namespace BTDronection
         private void CreateApplicationFolder()
         {
             // Creates Application folder on internal mobile storage
-            ApplicationFolderPath = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.ToString(), "Airything");
-            ApplicationFolderPath += Java.IO.File.Separator + "Bluetooth";
-            var storageDir = new Java.IO.File(ApplicationFolderPath);
+            ApplicationFolderPath = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.ToString(), "airything");
+            ApplicationFolderPath += Java.IO.File.Separator + "bluetooth";
+            var storageDir = new Java.IO.File(ApplicationFolderPath + Java.IO.File.Separator + "settings");
             storageDir.Mkdirs();
+            var settingsFile = new Java.IO.File(ApplicationFolderPath + Java.IO.File.Separator + Java.IO.File.Separator + "settings.csv");
+            settingsFile.CreateNewFile();
         }
     }
 }

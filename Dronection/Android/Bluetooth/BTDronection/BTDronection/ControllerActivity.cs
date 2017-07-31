@@ -38,10 +38,10 @@ namespace BTDronection
         //private CallReciver mReceiver;
 
         public static bool mInverted;
-        private int mYawTrim;
         private readonly int mMinTrim = -30;
 
         private string mStorageDirPath;
+        private SocketConnection mSocketConnection;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -68,15 +68,7 @@ namespace BTDronection
 
             mBtStart.Click += OnStartController;
 
-            //mFilter = new IntentFilter();
-
-            // mReceiver = new CallReciver();
-
-            // mFilter.AddAction("android.intent.action.PHONE_STATE");
-            // mFilter.AddAction("INCOMING_CALL");
-            // mFilter.AddAction(SipSession.State.IncomingCall.ToString());
-            // Registering events and forwarding them to the broadcast object
-            // RegisterReceiver(mReceiver, mFilter);
+            mSocketConnection = SocketConnection.Instance;
 
             mStorageDirPath = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.ToString(), "Airything");
             var storageDir = new Java.IO.File(mStorageDirPath);
@@ -91,9 +83,7 @@ namespace BTDronection
             var storageDir = new Java.IO.File(MainActivity.ApplicationFolderPath + Java.IO.File.Separator + logName);
             storageDir.Mkdirs();
             var writer = new Java.IO.FileWriter(new Java.IO.File(storageDir, "Controlls.csv"));
-            writer.Write(DataTransfer.DEBUG);
-            writer.Close();
-            ConnectedThread.Cancel();
+            writer.Write(mSocketConnection.LogData);
             writer.Close();
         }
 

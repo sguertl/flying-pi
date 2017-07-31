@@ -45,8 +45,7 @@ namespace BTDronection
         private Joystick m_LeftJS;
         private Joystick m_RightJS;
 
-        // Transfer data via bluetooth
-        private DataTransfer m_Transfer;
+        private SocketConnection mSocket;
 
         // Timer for sending data and checking BT connection
         private System.Timers.Timer m_WriteTimer;
@@ -72,7 +71,7 @@ namespace BTDronection
         {
             Settings = new ControllerSettings
             {
-                HeightControlActivated = false,
+                AltitudeControlActivated = false,
                 Inverted = ControllerActivity.mInverted,
                 TrimPitch = 0,
                 TrimRoll = 0,
@@ -85,7 +84,7 @@ namespace BTDronection
             ScreenWidth = Resources.DisplayMetrics.WidthPixels;
             ScreenHeight = Resources.DisplayMetrics.HeightPixels;
 
-            m_Transfer = new DataTransfer();
+            mSocket = SocketConnection.Instance;
 
             InitShapes();
             InitJoysticks();
@@ -471,13 +470,13 @@ namespace BTDronection
             if (!Settings.Inverted)
             {
 
-                m_Transfer.Write((Int16)m_LeftJS.Throttle,
+                mSocket.Write((Int16)m_LeftJS.Throttle,
                                   (Int16)(m_LeftJS.Rudder - Settings.TrimYaw),
                                   (Int16)(m_RightJS.Aileron - Settings.TrimPitch),
                                   (Int16)(m_RightJS.Elevator - Settings.TrimRoll));
             }
             else {
-                m_Transfer.Write((Int16)m_RightJS.Throttle,
+                mSocket.Write((Int16)m_RightJS.Throttle,
                                   (Int16)(m_LeftJS.Rudder - Settings.TrimYaw),
                                   (Int16)(m_LeftJS.Aileron - Settings.TrimPitch),
                                   (Int16)(m_RightJS.Elevator - Settings.TrimRoll));

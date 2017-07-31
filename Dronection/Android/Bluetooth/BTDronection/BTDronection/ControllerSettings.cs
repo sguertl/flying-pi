@@ -31,7 +31,7 @@ namespace BTDronection
             set;
         }
 
-        public bool HeightControlActivated
+        public bool AltitudeControlActivated
         {
             get;
             set;

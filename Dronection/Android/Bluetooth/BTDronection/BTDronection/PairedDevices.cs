@@ -20,18 +20,18 @@ namespace BTDronection
     public class PairedDevices : Activity
     {
         // Members
-        private ListView m_ListView;
+        private ListView m_PeerListView;
         private BluetoothAdapter m_BtAdapter;
         private List<BluetoothDevice> m_PairedDevice;
         private ListAdapter m_Adapter;
         private LinearLayout m_Linear;
-        private List<String> m_List;
-        private List<String> m_UuidList;
+        private List<String> m_PeerList;
         private bool m_IsConnected;
         private ProgressDialog m_ProgressDialog;
         private Button mBtSearchDevices;
         private TextView mTvExplanation;
         private TextView mTvHeader;
+        private SocketConnection mSocketConnection;
 
 
         public bool IsConnected
@@ -57,12 +57,12 @@ namespace BTDronection
             // Displaying all paired devices on a ListView
             foreach (BluetoothDevice device in m_PairedDevice)
             {
-                m_List.Add(device.Name + "\n" + device.Address);
+                m_PeerList.Add(device.Name + "\n" + device.Address);
             }
 
-            //m_Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, m_List);
-            m_Adapter = new ListAdapter(this, m_List);
-            m_ListView.Adapter = m_Adapter;
+            //m_Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, m_PeerList);
+            m_Adapter = new ListAdapter(this, m_PeerList);
+            m_PeerListView.Adapter = m_Adapter;
         }
 
         /// <summary>
@@ -71,13 +71,14 @@ namespace BTDronection
         public void Init()
         {
             // Initializing objects
-            m_ListView = FindViewById<ListView>(Resource.Id.listView);
+            m_PeerListView = FindViewById<ListView>(Resource.Id.listView);
             m_Linear = FindViewById<LinearLayout>(Resource.Id.linear2);
             m_BtAdapter = BluetoothAdapter.DefaultAdapter;
             m_PairedDevice = m_BtAdapter.BondedDevices.Where(bd => bd.Name.ToUpper().Contains("RASPBERRY") || bd.Name.ToUpper().Contains("RPI") || bd.Name.ToUpper().Contains("XMC")).ToList();
-            m_List = new List<String>();
-            m_UuidList = new List<String>();
+            m_PeerList = new List<String>();
             m_IsConnected = true;
+
+            mSocketConnection = SocketConnection.Instance;
 
             m_ProgressDialog = new ProgressDialog(this);
             m_ProgressDialog.SetMessage("Connecting with device");
@@ -99,11 +100,11 @@ namespace BTDronection
             m_Linear.SetBackgroundColor(Color.White);
 
             // Setting background color of the ListView
-            m_ListView.SetBackgroundColor(Color.WhiteSmoke);
-            m_ListView.DividerHeight = 14;
+            m_PeerListView.SetBackgroundColor(Color.WhiteSmoke);
+            m_PeerListView.DividerHeight = 14;
 
             // Adding handler when clicking on a ListViewItem
-            m_ListView.ItemClick += (object sender, AdapterView.ItemClickEventArgs e) => { OnItemClick(sender, e); };
+            m_PeerListView.ItemClick += (object sender, AdapterView.ItemClickEventArgs e) => { OnItemClick(sender, e); };
         }
 
         private void OnItemClick(object sender, AdapterView.ItemClickEventArgs e)
@@ -111,7 +112,7 @@ namespace BTDronection
             TextView view = (TextView)e.View.FindViewById<TextView>(Resource.Id.tvListItem);
             string address = view.Text.Split('\n')[1];
             BluetoothDevice bluetoothDevice = BluetoothAdapter.DefaultAdapter.GetRemoteDevice(address);
-            BuildConnection(bluetoothDevice, bluetoothDevice.GetUuids()[0].Uuid.ToString());
+            BuildConnection(bluetoothDevice);
         }
 
         private void OnSearchDevices(object sender, EventArgs e)
@@ -126,14 +127,12 @@ namespace BTDronection
         /// </summary>
         /// <param name="bluetoothDevice"></param>
         /// <param name="uuid"></param>
-        public void BuildConnection(BluetoothDevice bluetoothDevice, string uuid)
+        public void BuildConnection(BluetoothDevice bluetoothDevice)
         {
             Toast.MakeText(ApplicationContext, "Connecting...", 0).Show();
-            // Creating a ConnectionThread object
-            ConnectedThread connect = new ConnectedThread(bluetoothDevice, uuid, this);
-            connect.Start();
-            while (!ConnectedThread.m_Socket.IsConnected) { if (ConnectedThread.m_FailedCon) break; }
-            if (!ConnectedThread.m_FailedCon)
+
+            mSocketConnection.BuildConnection(bluetoothDevice);
+            if(mSocketConnection.IsConnected == true)
             {
                 StartActivity(typeof(ControllerActivity));
             }
@@ -141,6 +140,22 @@ namespace BTDronection
             {
                 Toast.MakeText(this, "Could not connect to peer", ToastLength.Short).Show();
             }
+
+           /* mSocketConnection.Peer = bluetoothDevice;
+            mSocketConnection.Start();
+
+            while (mSocketConnection.IsConnected == false)
+            {
+                if(mSocketConnection.IsConnectionFailed == true)
+                {
+                    Toast.MakeText(this, "Could not connect to peer", ToastLength.Short).Show();
+                    break;
+                }
+            }
+            if(mSocketConnection.IsConnectionFailed == false)
+            {
+                StartActivity(typeof(ControllerActivity));
+            }*/
         }
     }
 }
