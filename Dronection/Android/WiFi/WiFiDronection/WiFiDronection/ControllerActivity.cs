@@ -201,10 +201,10 @@ namespace WiFiDronection
             };
 
             // Start reading from Raspberry
-            if(mIsConnected == false)
+            if(mSocketConnection.WifiSocket.IsConnected == true)
             {
                 mSocketReader = new SocketReader(mSocketConnection.InputStream);
-				mSocketReader.Start();
+                mSocketReader.OnStart();
             }
         }
 
@@ -216,9 +216,7 @@ namespace WiFiDronection
             base.OnDestroy();
             WriteLogData();
             mSocketConnection.OnCancel();
-            //mSocketConnection.isConnected = false;
-            /*mSocketConnection.OnCancel();
-            mSocketReader.Close();*/
+            mSocketReader.Close();
         }
 
         /// <summary>
@@ -229,9 +227,7 @@ namespace WiFiDronection
             base.OnStop();
             WriteLogData();
             mSocketConnection.OnCancel();
-            // mSocketConnection.isConnected = false;
-            /*mSocketConnection.OnCancel();
-            mSocketReader.Close();*/
+            mSocketReader.Close();
         }
 
         /// <summary>

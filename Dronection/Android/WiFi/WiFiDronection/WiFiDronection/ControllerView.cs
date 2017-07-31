@@ -45,7 +45,7 @@ namespace WiFiDronection
         private Joystick mRightJS;
 
         // Transfer data via bluetooth
-        SocketConnection mSocketConnectiontion;
+        SocketConnection mSocketConnection;
 
         // Timer for sending data and checking BT connection
         private System.Timers.Timer mWriteTimer;
@@ -79,7 +79,7 @@ namespace WiFiDronection
         /// </summary>
         private void Init()
         {
-            mSocketConnectiontion = SocketConnection.Instance;
+            mSocketConnection = SocketConnection.Instance;
             Settings = new ControllerSettings
             {
                 AltitudeControlActivated = false,
@@ -445,12 +445,12 @@ namespace WiFiDronection
         /// </summary>
         public void Write(object sender, System.Timers.ElapsedEventArgs e)
         {
-            if (mSocketConnectiontion.isConnected)
+            if (mSocketConnection.WifiSocket.IsConnected)
             {
                 if (!Settings.Inverted)
                 {
                     int throttle = Settings.AltitudeControlActivated ? 50 : mLeftJS.Throttle;
-                    mSocketConnectiontion.Write((Int16)throttle,
+                    mSocketConnection.Write((Int16)throttle,
                                       (Int16)(mLeftJS.Rudder + Settings.TrimYaw),
                                       (Int16)(mRightJS.Aileron + Settings.TrimPitch),
                                       (Int16)(mRightJS.Elevator + Settings.TrimRoll));
@@ -458,7 +458,7 @@ namespace WiFiDronection
                 else
                 {
                     int throttle = Settings.AltitudeControlActivated ? 50 : mRightJS.Throttle;
-                    mSocketConnectiontion.Write((Int16)throttle,
+                    mSocketConnection.Write((Int16)throttle,
                                       (Int16)(mLeftJS.Rudder + Settings.TrimYaw),
                                       (Int16)(mLeftJS.Aileron + Settings.TrimPitch),
                                       (Int16)(mRightJS.Elevator + Settings.TrimRoll));

@@ -316,6 +316,8 @@ namespace WiFiDronection
         {
             try
             {
+                this.m_ConnectionThread = null;
+
                 if (mDataOutputStream != null)
                 {
                     mDataOutputStream.Close();
