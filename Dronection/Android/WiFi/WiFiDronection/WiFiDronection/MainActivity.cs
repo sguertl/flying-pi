@@ -1,4 +1,4 @@
-﻿using Android.App;
+﻿﻿using Android.App;
 using Android.Widget;
 using Android.OS;
 using Android.Content;
@@ -19,7 +19,11 @@ namespace WiFiDronection
         ScreenOrientation = Android.Content.PM.ScreenOrientation.SensorPortrait)]
     public class MainActivity : Activity
     {
-        // Members
+
+		// Root path for project folder
+		public static string ApplicationFolderPath;
+
+        // Widgets
         private TextView mTvHeader;
         private TextView mTvWifiName;
         private TextView mTvWifiMac;
@@ -28,23 +32,25 @@ namespace WiFiDronection
         private Button mBtnShowLogs;
         private Button mBtnHelp;
 
+        // Wifi connection members
         private string mSelectedSsid;
         private string mSelectedBssid;
         private string mLastConnectedPeer;
         private bool mIsConnected;
 
-        // Public variable 
-        // Root path for project folder
-        public static string ApplicationFolderPath;
 
+        /// <summary>
+        /// Entry point for application.
+        /// </summary>
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.Main);
 
+            // Create font
             var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
 
-            // Initialize members
+            // Initialize widgets
             mTvHeader = FindViewById<TextView>(Resource.Id.tvHeader);
             mTvWifiName = FindViewById<TextView>(Resource.Id.tvWifiName);
             mTvWifiMac = FindViewById<TextView>(Resource.Id.tvWifiMac);
@@ -71,7 +77,7 @@ namespace WiFiDronection
             mLastConnectedPeer = "";
             mIsConnected = false;
 
-            // Turn on wifi if turned off
+            // Turn on wifi if it isturned off
             WifiManager wm = GetSystemService(WifiService).JavaCast<WifiManager>();
             if (wm.IsWifiEnabled == false)
             {
@@ -84,7 +90,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Scan for wifi devices
+        /// Scans surroundings for WiFi devices.
         /// </summary>
         private void RefreshWifiList()
         {
@@ -121,14 +127,14 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Onclick event for connect button
+        /// Handles OnClick event of Connect button.
         /// </summary>
         private void OnConnect(object sender, EventArgs e)
         {
             // Check if there is already a connection to the wifi device
             if(mLastConnectedPeer != mSelectedSsid)
             {
-                // Open Password dialog for building wifi connection
+                // Open Password dialog for building a wifi connection
                 OnCreateDialog(0).Show();
             }
             else
@@ -141,6 +147,10 @@ namespace WiFiDronection
             }
         }
 
+        /// <summary>
+        /// Creates a dialog for entering the password.
+        /// </summary>
+        /// <returns>Dialog to enter the password</returns>
         protected override Dialog OnCreateDialog(int id)
         {
             var wifiDialogView = LayoutInflater.Inflate(Resource.Layout.WifiDialog, null);
@@ -156,12 +166,12 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Onclick event for Ok button of password dialog
+        /// Handles OnClick event for Ok button of password dialog
         /// </summary>
         private void WpaOkClicked(object sender, DialogClickEventArgs e)
         {
             var dialog = (AlertDialog)sender;
-            // Get password
+            // Get entered password
             var password = (EditText)dialog.FindViewById(Resource.Id.etDialogPassword);
 
             var conf = new WifiConfiguration();
@@ -179,7 +189,7 @@ namespace WiFiDronection
             wifiManager.EnableNetwork(id, true);
             wifiManager.Reconnect();
 
-            // check if password is correct
+            // Check if password is correct
             if (wifiManager.IsWifiEnabled)
             {
                 mLastConnectedPeer = mSelectedSsid;
@@ -196,7 +206,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Onclick event on cancel button of password dialog
+        /// Handles OnClick event on Cancel button of password dialog
         /// </summary>
         private void CancelClicked(object sender, DialogClickEventArgs e)
         {
@@ -204,7 +214,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Onclick event on show logs button
+        /// Handles OnClick event on Show Logs button
         /// </summary>
         private void OnShowLogFiles(object sender, EventArgs e)
         {
@@ -213,7 +223,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Onclick event on help button
+        /// Handles OnClick event on Help button
         /// </summary>
         private void OnHelp(object sender, EventArgs e)
         {
@@ -221,9 +231,11 @@ namespace WiFiDronection
             StartActivity(typeof(HelpActivity));
         }
 
+        /// <summary>
+        /// Creates the application folder for internal mobile storage.
+        /// </summary>
         private void CreateApplicationFolder()
         {
-            // Creates Application folder on internal mobile storage
             ApplicationFolderPath = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.ToString(), "Airything");
             ApplicationFolderPath += Java.IO.File.Separator + "wifi";
             var storageDir = new Java.IO.File(ApplicationFolderPath + Java.IO.File.Separator + "settings");
@@ -232,6 +244,9 @@ namespace WiFiDronection
             settingsFile.CreateNewFile();
         }
 
+        /// <summary>
+        /// Closes socket connection
+        /// </summary>
         protected override void OnDestroy()
         {
             base.OnDestroy();
@@ -239,6 +254,9 @@ namespace WiFiDronection
             sc.OnCancel();
         }
 
+        /// <summary>
+        /// Closes socket connection.
+        /// </summary>
         protected override void OnStop()
         {
             base.OnStop();
