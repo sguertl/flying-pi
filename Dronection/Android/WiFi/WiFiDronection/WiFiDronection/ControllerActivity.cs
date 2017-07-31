@@ -84,7 +84,7 @@ namespace WiFiDronection
             mBtStart.Click += OnStartController;
             mBtBackToMain.Click += OnBackToMain;
 
-            mIsConnected = Intent.GetBooleanExtra("isConnected", true);
+           // mIsConnected = Intent.GetBooleanExtra("isConnected", true);
             mSelectedBssid = Intent.GetStringExtra("mac");
             mPeerSettings = ReadPeerSettings();
         }
@@ -119,11 +119,21 @@ namespace WiFiDronection
         private void OnStartController(object sender, EventArgs e)
         {
             // Create sokcet connection
-            if (mSocketConnection.IsSocketConnected == false)
+            if (mSocketConnection.WifiSocket.IsConnected == false)
             {
-                mSocketConnection.Start();
+                mSocketConnection.OnStartConnection();
             }
-            mSocketConnection.isConnected = true;
+
+
+            if(mSocketConnection.WifiSocket.IsConnected == false)
+            {
+                StartActivity(typeof(MainActivity));
+            }
+
+            // Ausbessern
+            // mSocketConnection.isConnected = true;
+            //
+
             // Change GUI to Controller layout with joysticks
             SetContentView(Resource.Layout.ControllerLayout);
 
@@ -205,8 +215,8 @@ namespace WiFiDronection
         {
             base.OnDestroy();
             WriteLogData();
-            mSocketConnection.isConnected = false;
-            mSocketConnection.Interrupt();
+            mSocketConnection.OnCancel();
+            //mSocketConnection.isConnected = false;
             /*mSocketConnection.OnCancel();
             mSocketReader.Close();*/
         }
@@ -218,8 +228,8 @@ namespace WiFiDronection
         {
             base.OnStop();
             WriteLogData();
-            mSocketConnection.isConnected = false;
-            mSocketConnection.Interrupt();
+            mSocketConnection.OnCancel();
+            // mSocketConnection.isConnected = false;
             /*mSocketConnection.OnCancel();
             mSocketReader.Close();*/
         }

@@ -16,7 +16,7 @@ using Java.IO;
 
 namespace WiFiDronection
 {
-    public class SocketConnection : Thread
+    public class SocketConnection 
     {
         // Debug variable
         private static readonly string TAG = "SocketConnection";
@@ -34,9 +34,13 @@ namespace WiFiDronection
         // Members
         private DataOutputStream mDataOutputStream;
         private Socket m_Socket;
-        private bool FLAG = true;
         private string mLogData;
         private long mStartMillis;
+
+        // Public Members
+        public Thread m_ConnectionThread;
+
+
 
         /// <summary>
         /// Saves the flying parameters
@@ -65,9 +69,8 @@ namespace WiFiDronection
         /// Singleton constructor
         /// </summary>
         private SocketConnection()
-        {        
-            m_Socket = new Socket();
-            mStartMillis = 0;
+        {
+            Init();
         }
 
         public static SocketConnection Instance
@@ -90,10 +93,93 @@ namespace WiFiDronection
             get { return m_Socket.IsConnected; }
         }
 
+
+        public void Init()
+        {
+            try
+            {
+                this.m_ConnectionThread = new Thread(OnConnecting);
+                mStartMillis = 0;
+                this.OnCancel();
+                this.m_Socket = new Socket();
+            }
+            catch (Java.Lang.Exception ex)
+            {
+                Log.Debug(TAG, ex.Message);
+            }
+        }
+
+        public void OnStartConnection()
+        {
+            Init();
+
+            m_ConnectionThread.Start();
+            m_ConnectionThread.Join();
+
+        }
+
+        /// <summary>
+        /// Try to connect the Socket to a specific SSID and HOST-PORT
+        /// </summary>
+        public void OnConnecting()
+        {
+            if (m_Socket.IsConnected == false)
+            {
+                try
+                {
+                    // Connect with socket
+                    m_Socket = new Socket(SERVER_ADDRESS, SERVERPORT);
+                }
+                catch (UnknownHostException uhe)
+                {
+                    Log.Debug(TAG, uhe.Message + " if the IP address of the host could not be determined.");
+                }
+                catch (IOException uhe)
+                {
+                    Log.Debug(TAG, uhe.Message + " if an I/O error occurs when creating the socket.");
+                }
+                catch (SecurityException uhe)
+                {
+                    Log.Debug(TAG, uhe.Message + " if a security manager exists and its checkConnect method doesn't allow the operation.");
+                }
+                catch (IllegalAccessException uhe)
+                {
+                    Log.Debug(TAG, uhe.Message + " if the port parameter is outside the specified range of valid port values, which is between 0 and 65535, inclusive.");
+                }
+
+                try
+                {
+                    if (!m_Socket.IsConnected)
+                    {
+                        // if first connection attempt fails try again
+                        SocketAddress socketAdr = new InetSocketAddress(SERVER_ADDRESS, SERVERPORT);
+                        Thread.Sleep(5000);
+                        m_Socket.Connect(socketAdr, 2000);
+                    }
+                }
+                catch (Java.Lang.Exception ex)
+                {
+                    Log.Debug(TAG, ex.Message);
+              
+                }
+                finally
+                {
+                    if (m_Socket.IsConnected)
+                    {
+                        // Create socket reading and writing streams
+                        mDataOutputStream = new DataOutputStream(m_Socket.OutputStream);
+                        mDataInputStream = new DataInputStream(m_Socket.InputStream);
+                    }
+
+                }
+            }
+           // return;
+        }
+
         /// <summary>
         /// Connection thread
         /// </summary>
-        public override void Run()
+       /* public override void Run()
         {
             FLAG = true;
             if (m_Socket.IsConnected == false)
@@ -148,9 +234,7 @@ namespace WiFiDronection
                 }
             }
 
-            while(this.IsInterrupted == false) { }
-            return;
-        }
+        }*/
 
         /// <summary>
         /// Writes controller data to smartphone through socket connection
@@ -236,7 +320,10 @@ namespace WiFiDronection
                 {
                     mDataOutputStream.Close();
                 }
-                m_Socket.Close();         
+                if (m_Socket != null)
+                {
+                    m_Socket.Close();
+                }
             }catch(Java.Lang.Exception ex)
             {
                 Log.Debug(TAG, "Failed closing");
