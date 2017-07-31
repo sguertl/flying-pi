@@ -1,14 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Java.Lang;
 using Android.Util;
 using Java.Net;
@@ -27,20 +18,38 @@ namespace WiFiDronection
         private readonly byte STARTBYTE = 10;
         private readonly int PACKET_SIZE = 19;
 
-        // Singleton variables
+        // Singleton members
         private static SocketConnection instance = null;
         private static readonly object padlock = new object();
 
-        // Members
+        // Output stream members
         private DataOutputStream mDataOutputStream;
-        private Socket m_Socket;
         private string mLogData;
         private long mStartMillis;
 
-        // Public Members
-        public Thread m_ConnectionThread;
+        // Thread for connecting
+        public Thread mConnectionThread;
 
+        // Boolean to check if connected
+		public bool isConnected 
+        { 
+            get; 
+            set; 
+        }
+		
+        // Wifi socket
+		private Socket mSocket;
+		public Socket WifiSocket
+		{
+			get { return mSocket; }
+		}
 
+		// Input stream
+		private DataInputStream mDataInputStream;
+		public DataInputStream InputStream
+		{
+			get { return mDataInputStream; }
+		}
 
         /// <summary>
         /// Saves the flying parameters
@@ -51,28 +60,18 @@ namespace WiFiDronection
             set { mLogData = value; }
         }
 
-        public bool isConnected { get; set; }
-
-        public Socket WifiSocket
-        {
-            get { return m_Socket; }
-        }
-
-        private DataInputStream mDataInputStream;
-
-        public DataInputStream InputStream
-        {
-            get { return mDataInputStream; }
-        }
-
         /// <summary>
-        /// Singleton constructor
+        /// Private Singleton constructor.
         /// </summary>
         private SocketConnection()
         {
             Init();
         }
 
+        /// <summary>
+        /// Returns instance of SocketConnection.
+        /// </summary>
+        /// <value>Instance of SocketConnection</value>
         public static SocketConnection Instance
         {
             get
@@ -90,18 +89,20 @@ namespace WiFiDronection
 
         public bool IsSocketConnected
         {
-            get { return m_Socket.IsConnected; }
+            get { return mSocket.IsConnected; }
         }
 
-
+        /// <summary>
+        /// Initizalizes the socket connection.
+        /// </summary>
         public void Init()
         {
             try
             {
-                this.m_ConnectionThread = new Thread(OnConnecting);
+                this.mConnectionThread = new Thread(OnConnecting);
                 mStartMillis = 0;
                 this.OnCancel();
-                this.m_Socket = new Socket();
+                this.mSocket = new Socket();
             }
             catch (Java.Lang.Exception ex)
             {
@@ -109,26 +110,30 @@ namespace WiFiDronection
             }
         }
 
+        /// <summary>
+        /// Starts the socket connection.
+        /// Starts the socket thread.
+        /// </summary>
         public void OnStartConnection()
         {
             Init();
 
-            m_ConnectionThread.Start();
-            m_ConnectionThread.Join();
+            mConnectionThread.Start();
+            mConnectionThread.Join();
 
         }
 
         /// <summary>
-        /// Try to connect the Socket to a specific SSID and HOST-PORT
+        /// Tries to connect the socket to a specific SSID and HOST-PORT
         /// </summary>
         public void OnConnecting()
         {
-            if (m_Socket.IsConnected == false)
+            if (mSocket.IsConnected == false)
             {
                 try
                 {
-                    // Connect with socket
-                    m_Socket = new Socket(SERVER_ADDRESS, SERVERPORT);
+                    // Connect to socket
+                    mSocket = new Socket(SERVER_ADDRESS, SERVERPORT);
                 }
                 catch (UnknownHostException uhe)
                 {
@@ -149,12 +154,12 @@ namespace WiFiDronection
 
                 try
                 {
-                    if (!m_Socket.IsConnected)
+                    if (!mSocket.IsConnected)
                     {
-                        // if first connection attempt fails try again
+                        // If first connection attempt fails try again
                         SocketAddress socketAdr = new InetSocketAddress(SERVER_ADDRESS, SERVERPORT);
                         Thread.Sleep(5000);
-                        m_Socket.Connect(socketAdr, 2000);
+                        mSocket.Connect(socketAdr, 2000);
                     }
                 }
                 catch (Java.Lang.Exception ex)
@@ -164,11 +169,11 @@ namespace WiFiDronection
                 }
                 finally
                 {
-                    if (m_Socket.IsConnected)
+                    if (mSocket.IsConnected)
                     {
                         // Create socket reading and writing streams
-                        mDataOutputStream = new DataOutputStream(m_Socket.OutputStream);
-                        mDataInputStream = new DataInputStream(m_Socket.InputStream);
+                        mDataOutputStream = new DataOutputStream(mSocket.OutputStream);
+                        mDataInputStream = new DataInputStream(mSocket.InputStream);
                     }
 
                 }
@@ -182,12 +187,12 @@ namespace WiFiDronection
        /* public override void Run()
         {
             FLAG = true;
-            if (m_Socket.IsConnected == false)
+            if (mSocket.IsConnected == false)
             {
                 try
                 {
                     // Connect with socket
-                    m_Socket = new Socket(SERVER_ADDRESS, SERVERPORT);
+                    mSocket = new Socket(SERVER_ADDRESS, SERVERPORT);
                 }
                 catch (UnknownHostException uhe)
                 {
@@ -208,12 +213,12 @@ namespace WiFiDronection
 
                 try
                 {
-                    if (!m_Socket.IsConnected)
+                    if (!mSocket.IsConnected)
                     {
                         // if first connection attempt fails try again
                         SocketAddress socketAdr = new InetSocketAddress(SERVER_ADDRESS, SERVERPORT);
                         Thread.Sleep(5000);
-                        m_Socket.Connect(socketAdr, 2000);
+                        mSocket.Connect(socketAdr, 2000);
                     }
                 }
                 catch (Java.Lang.Exception ex)
@@ -227,8 +232,8 @@ namespace WiFiDronection
                     if (FLAG)
                     {
                         // Create socket reading and writing streams
-                        mDataOutputStream = new DataOutputStream(m_Socket.OutputStream);
-                        mDataInputStream = new DataInputStream(m_Socket.InputStream);
+                        mDataOutputStream = new DataOutputStream(mSocket.OutputStream);
+                        mDataInputStream = new DataInputStream(mSocket.InputStream);
                     }
                    
                 }
@@ -242,10 +247,11 @@ namespace WiFiDronection
         /// <param name="args">Controller parameter (throttle, yaw, pitch, roll)</param>
         public void Write(params Int16[] args)
         {
-            // Save controlls for log file
+            // Save controls for log file
             mLogData += mStartMillis + "," + args[0] + "," + args[1] + "," + args[2] + "," + args[3] + "," + (ControllerView.Settings.AltitudeControlActivated ? 1 : 0) + "\n";
 
             mStartMillis += 10;
+
             // Convert int16 controller parameters to byte stream
             byte[] bytes = ConvertToByte(args);
             try
@@ -257,15 +263,15 @@ namespace WiFiDronection
             {
                 Log.Debug(TAG, "Error sending data");
                 mDataOutputStream.Close();
-                m_Socket.Close();
+                mSocket.Close();
             }
         }
 
         /// <summary>
-        /// Convert int16 controller parameters to byte stream
+        /// Converts int16 controller parameters to byte stream
         /// </summary>
         /// <param name="args">Controller parameter (throttle, yaw, pitch, roll)</param>
-        /// <returns>byte stream</returns>
+        /// <returns>Byte stream</returns>
         private byte[] ConvertToByte(params Int16[] args)
         {
             byte[] b = new byte[PACKET_SIZE];
@@ -310,21 +316,21 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Close connections
+        /// Closes connections.
         /// </summary>
         public void OnCancel()
         {
             try
             {
-                this.m_ConnectionThread = null;
+                this.mConnectionThread = null;
 
                 if (mDataOutputStream != null)
                 {
                     mDataOutputStream.Close();
                 }
-                if (m_Socket != null)
+                if (mSocket != null)
                 {
-                    m_Socket.Close();
+                    mSocket.Close();
                 }
             }catch(Java.Lang.Exception ex)
             {

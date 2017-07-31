@@ -1,16 +1,12 @@
-﻿﻿﻿﻿﻿﻿using System;
+﻿﻿﻿﻿﻿﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 using Android.Graphics;
-using Java.Lang;
 
 namespace WiFiDronection
 {
@@ -21,7 +17,7 @@ namespace WiFiDronection
              )]
     public class ControllerActivity : Activity
     {
-        // Members
+        // Widgets controller settings
         private TextView mTvHeader;
         private RadioGroup mRgControlMode;
         private RadioButton mRbMode1;
@@ -31,6 +27,7 @@ namespace WiFiDronection
         private ImageView mIvMode1;
         private ImageView mIvMode2;
 
+        // Widgets controller
         private SeekBar mSbTrimBar;
         private TextView mTvTrimValue;
         private Button mBtnAltitudeControl;
@@ -38,6 +35,7 @@ namespace WiFiDronection
         private RadioButton mRbPitchTrim;
         private RadioButton mRbRollTrim;
 
+        // Socket members
         private bool mIsConnected;
         private SocketConnection mSocketConnection;
         private SocketReader mSocketReader;
@@ -50,15 +48,20 @@ namespace WiFiDronection
         // Public variables
         public static bool Inverted;
 
+        /// <summary>
+        /// Creates activity and initializes widgets
+        /// </summary>
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.ControllerSettings);
 
-            // Get singleton instance of socketconnection
+            // Get singleton instance of socket connection
             mSocketConnection = SocketConnection.Instance;
 
+            // Create font
             var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
+
             // Initialize widgets
             mTvHeader = FindViewById<TextView>(Resource.Id.tvHeaderSettings);
             mRgControlMode = FindViewById<RadioGroup>(Resource.Id.rgControlMode);
@@ -84,11 +87,14 @@ namespace WiFiDronection
             mBtStart.Click += OnStartController;
             mBtBackToMain.Click += OnBackToMain;
 
-           // mIsConnected = Intent.GetBooleanExtra("isConnected", true);
             mSelectedBssid = Intent.GetStringExtra("mac");
             mPeerSettings = ReadPeerSettings();
         }
 
+        /// <summary>
+        /// Reads the settings file for a specific peer
+        /// </summary>
+        /// <returns>Peer with settings</returns>
         private Dictionary<string, ControllerSettings> ReadPeerSettings()
         {
             string fileName = MainActivity.ApplicationFolderPath + Java.IO.File.Separator + "settings" + Java.IO.File.Separator + "settings.csv";
@@ -112,29 +118,24 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Onclick event for start button
-        /// Creates socket connection and opens controllerview
-        /// Start socket reader thread
+        /// Handles OnClick event for Start button.
+        /// Creates socket connection and opens ControllerView.
+        /// Starts socket reader thread.
         /// </summary>
         private void OnStartController(object sender, EventArgs e)
         {
-            // Create sokcet connection
+            // Create socket connection
             if (mSocketConnection.WifiSocket.IsConnected == false)
             {
                 mSocketConnection.OnStartConnection();
             }
-
 
             if(mSocketConnection.WifiSocket.IsConnected == false)
             {
                 StartActivity(typeof(MainActivity));
             }
 
-            // Ausbessern
-            // mSocketConnection.isConnected = true;
-            //
-
-            // Change GUI to Controller layout with joysticks
+            // Change to Controller with joysticks
             SetContentView(Resource.Layout.ControllerLayout);
 
             if(mPeerSettings.Any(kvp => kvp.Key == mSelectedBssid) == true)
@@ -209,7 +210,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Save Log when finished
+        /// Saves Log file when finished.
         /// </summary>
         protected override void OnDestroy()
         {
@@ -219,10 +220,10 @@ namespace WiFiDronection
             mSocketReader.Close();
         }
 
-        /// <summary>
-        /// Save Log when finished
-        /// </summary>
-        protected override void OnStop()
+		/// <summary>
+		/// Saves Log file when finished.
+		/// </summary>
+		protected override void OnStop()
         {
             base.OnStop();
             WriteLogData();
@@ -231,7 +232,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Write log in csv format
+        /// Writes log in csv format.
         /// </summary>
         private void WriteLogData()
         {
@@ -258,7 +259,7 @@ namespace WiFiDronection
         }
 
 		/// <summary>
-		/// Change control mode
+		/// Changes control mode to Mode 1.
 		/// </summary>
 		private void OnMode1Click(object sender, EventArgs e)
 		{
@@ -267,7 +268,7 @@ namespace WiFiDronection
 		}
 
         /// <summary>
-        /// Change control mode
+        /// Changes control mode to Mode 2.
         /// </summary>
         private void OnMode2Click(object sender, EventArgs e)
         {
@@ -275,6 +276,10 @@ namespace WiFiDronection
             mRbMode2.Checked = true;
         }
 
+        /// <summary>
+        /// Handles OnClick event on Altitude Control button.
+        /// Activates or deactivates altitude control.
+        /// </summary>
 		private void OnAltitudeControlClick(object sender, EventArgs e)
 		{
             if(ControllerView.Settings.AltitudeControlActivated)
@@ -290,7 +295,7 @@ namespace WiFiDronection
 		}
 
         /// <summary>
-        /// Go to back to main activity
+        /// Goes to back to main activity.
         /// </summary>
         private void OnBackToMain(object sender, EventArgs e)
         {
