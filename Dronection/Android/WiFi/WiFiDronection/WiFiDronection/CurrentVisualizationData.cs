@@ -2,36 +2,43 @@
 
 namespace WiFiDronection
 {
-    public class CurrentVisualisatonData
+    public class CurrentVisualizationData
     {
-        private Dictionary<string,List<DataPoint>> m_Points;
+        // List of data points
+        private Dictionary<string,List<DataPoint>> mPoints;
+		public Dictionary<string, List<DataPoint>> Points
+		{
+			get { return mPoints; }
+			set { mPoints = value; }
+		}
 
-        private List<float> m_HighContTime;
-
-        public List<float> HighContTime
+        // Altitude control points
+        private List<float> mAltControlTime;
+        public List<float> AltControlTime
         {
-            get { return m_HighContTime; }
-            set { m_HighContTime = value; }
-        }
-
-        public Dictionary<string, List<DataPoint>> Points
-        {
-            get { return m_Points; }
-            set { m_Points = value; }
+            get { return mAltControlTime; }
+            set { mAltControlTime = value; }
         }
 
         /// <summary>
-        /// Singleton
+        /// Singleton pattern
         /// </summary>
-        private static CurrentVisualisatonData instance = null;
+        private static CurrentVisualizationData instance = null;
         private static readonly object padlock = new object();
 
-        private CurrentVisualisatonData() {
-            this.m_Points = new Dictionary<string, List<DataPoint>>();
-            this.HighContTime = new List<float>();
+        /// <summary>
+        /// Private constructor
+        /// </summary>
+        private CurrentVisualizationData() {
+            this.mPoints = new Dictionary<string, List<DataPoint>>();
+            this.AltControlTime = new List<float>();
         }
 
-        public static CurrentVisualisatonData Instance
+        /// <summary>
+        /// Returns the instance.
+        /// </summary>
+        /// <value>Instance of CurrentVisualizationData</value>
+        public static CurrentVisualizationData Instance
         {
             get
             {
@@ -39,13 +46,11 @@ namespace WiFiDronection
                 {
                     if (instance == null)
                     {
-                        instance = new CurrentVisualisatonData();
+                        instance = new CurrentVisualizationData();
                     }
                     return instance;
                 }
             }
         }
-
-
     }
 }
