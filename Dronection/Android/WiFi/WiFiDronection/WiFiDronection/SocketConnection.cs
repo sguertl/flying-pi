@@ -228,8 +228,10 @@ namespace WiFiDronection
         {
             try
             {
-                if(mDataOutputStream != null)
+                if (mDataOutputStream != null)
+                {
                     mDataOutputStream.Close();
+                }
                 m_Socket.Close();         
             }catch(Java.Lang.Exception ex)
             {
