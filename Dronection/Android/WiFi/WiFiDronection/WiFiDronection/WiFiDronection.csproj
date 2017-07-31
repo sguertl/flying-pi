@@ -93,9 +93,6 @@
     <AndroidResource Include="Resources\layout\Help.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\WifiDialogTitle.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\Log.axml">
       <SubType>Designer</SubType>
     </AndroidResource>

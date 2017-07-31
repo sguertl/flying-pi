@@ -5,6 +5,9 @@
     android:layout_height="match_parent"
     android:background="#ffffff"
     android:weightSum="1">
+<!--
+    Header
+    -->
     <TextView
         android:id="@+id/tvHeaderLog"
         android:layout_width="match_parent"
@@ -19,6 +22,9 @@
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight=".85">
+    <!--
+        Files list view
+        -->
         <ListView
             android:id="@+id/lvFiles"
             android:layout_width="match_parent"
@@ -26,6 +32,9 @@
             android:layout_margin="10dp"
             android:divider="#005DA9"
             android:dividerHeight="5dp" />
+    <!--
+        Empty textview
+        -->
         <TextView
             android:id="@+id/tvEmpty"
             android:text="There are no log files in the application folder"
@@ -43,6 +52,9 @@
         android:gravity="bottom"
         android:layout_gravity="bottom"
         android:layout_weight=".15">
+    <!--
+        Back button
+        -->
         <Button
             android:id="@+id/btnBackLog"
             android:layout_width="fill_parent"
