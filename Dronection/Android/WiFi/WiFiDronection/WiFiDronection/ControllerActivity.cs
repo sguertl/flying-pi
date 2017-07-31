@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.Graphics;
+using Java.Lang;
 
 namespace WiFiDronection
 {
@@ -205,6 +206,7 @@ namespace WiFiDronection
             base.OnDestroy();
             WriteLogData();
             mSocketConnection.isConnected = false;
+            mSocketConnection.Interrupt();
             /*mSocketConnection.OnCancel();
             mSocketReader.Close();*/
         }
@@ -217,6 +219,7 @@ namespace WiFiDronection
             base.OnStop();
             WriteLogData();
             mSocketConnection.isConnected = false;
+            mSocketConnection.Interrupt();
             /*mSocketConnection.OnCancel();
             mSocketReader.Close();*/
         }

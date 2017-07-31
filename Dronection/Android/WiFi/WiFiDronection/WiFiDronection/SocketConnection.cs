@@ -144,8 +144,12 @@ namespace WiFiDronection
                         mDataOutputStream = new DataOutputStream(m_Socket.OutputStream);
                         mDataInputStream = new DataInputStream(m_Socket.InputStream);
                     }
+                   
                 }
             }
+
+            while(this.IsInterrupted == false) { }
+            return;
         }
 
         /// <summary>

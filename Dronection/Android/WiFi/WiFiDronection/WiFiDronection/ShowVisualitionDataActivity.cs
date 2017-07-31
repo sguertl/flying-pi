@@ -43,13 +43,13 @@ namespace WiFiDronection
             this.m_LineData = new LineData(m_DataSet);
             this.m_LineChart.Data = m_LineData;
 
-            foreach (float hc in m_CurVisData.HighContTime)
+            /*foreach (float hc in m_CurVisData.HighContTime)
             {
                 LimitLine ll = new LimitLine(hc, "");
                 ll.LineColor = new Color(255, 0, 0, 40);
                 ll.LineWidth = 30f;
                 this.m_LineChart.XAxis.AddLimitLine(ll);
-            }
+            }*/
 
             this.m_LineChart.XAxis.SetDrawLimitLinesBehindData(true);
             this.m_LineChart.Invalidate();
