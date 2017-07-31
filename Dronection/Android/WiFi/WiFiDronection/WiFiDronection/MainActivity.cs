@@ -36,7 +36,7 @@ namespace WiFiDronection
         private string mSelectedSsid;
         private string mSelectedBssid;
         private string mLastConnectedPeer;
-        private bool mIsConnected;
+       // private bool mIsConnected;
 
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace WiFiDronection
             mBtnHelp.Click += OnHelp;
 
             mLastConnectedPeer = "";
-            mIsConnected = false;
+           // mIsConnected = false;
 
             // Turn on wifi if it isturned off
             WifiManager wm = GetSystemService(WifiService).JavaCast<WifiManager>();
@@ -141,7 +141,7 @@ namespace WiFiDronection
             {
                 // Open controller activity
                 Intent intent = new Intent(BaseContext, typeof(ControllerActivity));
-                intent.PutExtra("isConnected", mIsConnected);
+              //  intent.PutExtra("isConnected", mIsConnected);
                 intent.PutExtra("mac", mSelectedBssid);
                 StartActivity(intent);
             }
@@ -194,10 +194,10 @@ namespace WiFiDronection
             {
                 mLastConnectedPeer = mSelectedSsid;
                 Intent intent = new Intent(BaseContext, typeof(ControllerActivity));
-                intent.PutExtra("isConnected", mIsConnected);
+              //  intent.PutExtra("isConnected", mIsConnected);
                 intent.PutExtra("mac", mSelectedBssid);
                 StartActivity(intent);
-                mIsConnected = true;
+                //mIsConnected = true;
             }
             else
             {
