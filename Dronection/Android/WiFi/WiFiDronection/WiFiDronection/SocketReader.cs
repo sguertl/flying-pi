@@ -1,43 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Java.Lang;
 using Java.IO;
-using System.IO;
 using Android.Util;
 
 namespace WiFiDronection
 {
     public class SocketReader
     {
-        /// <summary>
-        /// Members
-        /// </summary>
+        // Input stream
         private DataInputStream mDataInputStream;
 
+        // Data reader thread
+        public Thread mDataReaderThread;
+
         /// <summary>
-        /// Public Memebers
+        /// Initializes a new instance of the <see cref="T:WiFiDronection.SocketReader"/> class.
         /// </summary>
-        public Thread m_DataReaderThread;
-        
-        /// <param name="inputStream"></param>                
+        /// <param name="inputStream">Input stream.</param>
         public SocketReader(DataInputStream inputStream)
         {
             mDataInputStream = inputStream;
-            this.m_DataReaderThread = new Thread(OnRead);
+            this.mDataReaderThread = new Thread(OnRead);
         }
 
         /// <summary>
-        /// Reading thread
-        /// Reads data from Raspberry
+        /// Reads data from Raspberry in a thread.
         /// </summary>
         public void OnRead()
         {
@@ -62,17 +50,19 @@ namespace WiFiDronection
             }
         }
 
+        /// <summary>
+        /// Creates and starts the thread. 
+        /// </summary>
         public void OnStart()
         {
-            this.m_DataReaderThread = new Thread(OnRead);
-            this.m_DataReaderThread.Start();
+            this.mDataReaderThread = new Thread(OnRead);
+            this.mDataReaderThread.Start();
         }
 
-        /// <summary>
-        /// Reading thread
-        /// Reads data from Raspberry
-        /// </summary>
-        /*public override void Run()
+		/// <summary>
+		/// Reads data from Raspberry in a thread.
+		/// </summary>
+		/*public override void Run()
         {
             int bytes;
             byte[] buffer = new byte[1024];
@@ -95,13 +85,13 @@ namespace WiFiDronection
             }
         }*/
 
-        /// <summary>
-        /// Close connection
-        /// </summary>
-        public void Close()
+		/// <summary>
+		/// Closes connection
+		/// </summary>
+		public void Close()
         {
             mDataInputStream.Close();
-            this.m_DataReaderThread = null;
+            this.mDataReaderThread = null;
         }
     }
 }

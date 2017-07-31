@@ -12,41 +12,54 @@ using Android.Widget;
 
 namespace WiFiDronection
 {
-    [Activity(Label = "VisualisationActivity", Theme = "@android:style/Theme.NoTitleBar.Fullscreen")]
-    public class VisualisationActivity : Activity
+    [Activity(Label = "VisualizationActivity", Theme = "@android:style/Theme.NoTitleBar.Fullscreen")]
+    public class VisualizationActivity : Activity
     {
-        private ListView m_lvVisualisationData;
-        private CurrentVisualisatonData m_CurVisData;
+        // Widget
+        private ListView mLvVisualizationData;
 
-        private ListAdapter m_Adapter;
+        // Data to visualize
+        private CurrentVisualizationData mCurVisData;
 
-        private String m_Filename;
+        // Customized adapter
+        private ListAdapter mAdapter;
 
+        // Name of the log file
+        private String mFilename;
+
+        /// <summary>
+        /// Creates the activity and sets the filename.
+        /// </summary>
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.VisualizationLayout);
-            this.m_Filename = Intent.GetStringExtra("filename");
+            this.mFilename = Intent.GetStringExtra("filename");
             Init();
         }
 
+        /// <summary>
+        /// Initializes the widgets and the data to be visualized.
+        /// </summary>
         private void Init()
         {
-            this.m_lvVisualisationData = FindViewById<ListView>(Resource.Id.lvData);
+            this.mLvVisualizationData = FindViewById<ListView>(Resource.Id.lvData);
             FillRawDataList();
-            m_lvVisualisationData.Adapter = m_Adapter;
-            //  m_lvVisualisationData.SetBackgroundColor(Android.Graphics.Color.WhiteSmoke);
-            m_lvVisualisationData.DividerHeight = 14;
-            this.m_lvVisualisationData.ItemClick += OnListViewItemClick;
+            mLvVisualizationData.Adapter = mAdapter;
+            mLvVisualizationData.DividerHeight = 14;
+            this.mLvVisualizationData.ItemClick += OnListViewItemClick;
             
-            this.m_CurVisData = CurrentVisualisatonData.Instance;
-            this.m_CurVisData.Points = new Dictionary<string, List<DataPoint>>();
-            this.m_CurVisData.HighContTime = new List<float>();
+            this.mCurVisData = CurrentVisualizationData.Instance;
+            this.mCurVisData.Points = new Dictionary<string, List<DataPoint>>();
+            this.mCurVisData.AltControlTime = new List<float>();
         }
 
+        /// <summary>
+        /// Fills the raw data list.
+        /// </summary>
         private void FillRawDataList()
         {
-            var projectDir = new Java.IO.File(MainActivity.ApplicationFolderPath + Java.IO.File.Separator + m_Filename);
+            var projectDir = new Java.IO.File(MainActivity.ApplicationFolderPath + Java.IO.File.Separator + mFilename);
             List<string> fileNames = new List<string>();
             string[] fileArray = projectDir.List();
 
@@ -59,27 +72,30 @@ namespace WiFiDronection
                 fileNames = fileArray.ToList();
             }
 
-            m_Adapter = new ListAdapter(this, fileNames);
+            mAdapter = new ListAdapter(this, fileNames);
         }
 
+        /// <summary>
+        /// Handles OnClick event on a list item.
+        /// </summary>
         private void OnListViewItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            string title = m_Adapter[e.Position];
-            string path = MainActivity.ApplicationFolderPath + Java.IO.File.Separator + m_Filename + Java.IO.File.Separator + title+".csv";
+            string title = mAdapter[e.Position];
+            string path = MainActivity.ApplicationFolderPath + Java.IO.File.Separator + mFilename + Java.IO.File.Separator + title+".csv";
             var reader = new Java.IO.BufferedReader(new Java.IO.FileReader(path));
             string line = "";
 
             if (title.Equals("controls"))
             {
                 //throttle, yaw, pitch, roll
-                m_CurVisData.Points.Add("throttle", new List<DataPoint>());
-                m_CurVisData.Points.Add("yaw", new List<DataPoint>());
-                m_CurVisData.Points.Add("pitch", new List<DataPoint>());
-                m_CurVisData.Points.Add("roll", new List<DataPoint>());
+                mCurVisData.Points.Add("throttle", new List<DataPoint>());
+                mCurVisData.Points.Add("yaw", new List<DataPoint>());
+                mCurVisData.Points.Add("pitch", new List<DataPoint>());
+                mCurVisData.Points.Add("roll", new List<DataPoint>());
             }
             else
             {
-                m_CurVisData.Points.Add(title, new List<DataPoint>()); 
+                mCurVisData.Points.Add(title, new List<DataPoint>()); 
             }
 
             while ((line = reader.ReadLine()) != null)
@@ -93,13 +109,13 @@ namespace WiFiDronection
                     float p2 = Convert.ToSingle(p[3]);
                     float r = Convert.ToSingle(p[4]);
                     int h = Convert.ToInt32(p[5]);
-                    m_CurVisData.Points["throttle"].Add(new DataPoint(x,t));
-                    m_CurVisData.Points["yaw"].Add(new DataPoint(x, y));
-                    m_CurVisData.Points["pitch"].Add(new DataPoint(x, p2));
-                    m_CurVisData.Points["roll"].Add(new DataPoint(x, r));
+                    mCurVisData.Points["throttle"].Add(new DataPoint(x,t));
+                    mCurVisData.Points["yaw"].Add(new DataPoint(x, y));
+                    mCurVisData.Points["pitch"].Add(new DataPoint(x, p2));
+                    mCurVisData.Points["roll"].Add(new DataPoint(x, r));
                     if (h == 1)
                     {
-                        m_CurVisData.HighContTime.Add(x);
+                        mCurVisData.AltControlTime.Add(x);
                     }
                 }
                 else if(!title.Equals("settings"))
@@ -107,15 +123,15 @@ namespace WiFiDronection
                     float x = Convert.ToSingle(p[0]);
                     float y = Convert.ToSingle(p[1]);
                     int h = Convert.ToInt32(p[2]);
-                    m_CurVisData.Points[title].Add(new DataPoint(x, y));
+                    mCurVisData.Points[title].Add(new DataPoint(x, y));
                     if (h == 1){
-                        m_CurVisData.HighContTime.Add(x);
+                        mCurVisData.AltControlTime.Add(x);
                     }
                 }
   
             }
             reader.Close();
-            StartActivity(typeof(ShowVisualitionDataActivity));
+            StartActivity(typeof(ShowVisualizationDataActivity));
         }
 
 
