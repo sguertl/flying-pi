@@ -98,21 +98,24 @@ namespace WiFiDronection
                 {
                     Thread.Sleep(3000);
                     var wifiList = wifiManager.ScanResults;
-
-                    // Filter devices by Rasp or Pi
-                    IEnumerable<ScanResult> results = wifiList.Where(w => w.Ssid.ToUpper().Contains("RASP") || w.Ssid.ToUpper().Contains("PI"));
-                    var wifi = results.First();
-                    RunOnUiThread(() =>
+                    if (wifiList != null && wifiList.Count > 0)
                     {
+                        // Filter devices by Rasp or Pi
+                        IEnumerable<ScanResult> results = wifiList.Where(w => w.Ssid.ToUpper().Contains("RASP") || w.Ssid.ToUpper().Contains("PI"));
+
+                        var wifi = results.First();
+                        RunOnUiThread(() =>
+                        {
                         // Show selected wifi device
                         mSelectedSsid = wifi.Ssid;
-                        mSelectedBssid = wifi.Bssid;
-                        mTvWifiName.Text = "SSID: " + wifi.Ssid;
-                        mTvWifiMac.Text = "MAC: " + wifi.Bssid;
-                        mBtnConnect.Enabled = true;
-                        mBtnConnect.Text = "Connect";
-                        mBtnConnect.SetBackgroundColor(Color.ParseColor("#005DA9"));
-                    });
+                            mSelectedBssid = wifi.Bssid;
+                            mTvWifiName.Text = "SSID: " + wifi.Ssid;
+                            mTvWifiMac.Text = "MAC: " + wifi.Bssid;
+                            mBtnConnect.Enabled = true;
+                            mBtnConnect.Text = "Connect";
+                            mBtnConnect.SetBackgroundColor(Color.ParseColor("#005DA9"));
+                        });
+                    }
                 }
             });
         }
