@@ -7,6 +7,9 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+    <!--
+        Altitude control button
+        -->
         <Button
             android:id="@+id/btnAltitudeControl"
             android:layout_width="150dp"
@@ -19,6 +22,9 @@
             android:layout_marginRight="10dp"
             android:gravity="center"
             android:layout_gravity="center_horizontal|center_vertical" />
+    <!--
+        Trim seekbar
+        -->
         <SeekBar
             android:id="@+id/sbTrimbar"
             android:layout_width="160dp"
@@ -29,6 +35,9 @@
             android:max="60"
             android:progress="30"
             android:progressDrawable="@drawable/customseekbar" />
+    <!--
+        Trim value textview
+        -->
         <TextView
             android:id="@+id/tvTrimValue"
             android:layout_width="20dp"
@@ -46,6 +55,9 @@
             android:layout_marginRight="10dp"
             android:orientation="horizontal"
             android:layout_gravity="right|center_vertical">
+        <!--
+            Yaw trim radio button
+            -->
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -56,6 +68,9 @@
                 android:checked="true"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_marginRight="5dp" />
+        <!--
+            Pitch trim radio button
+            -->
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -64,6 +79,9 @@
                 android:id="@+id/rbPitchTrim"
                 android:height="1dp"
                 android:layout_marginRight="5dp" />
+        <!--
+            Roll trim radio button
+            -->
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -7,6 +7,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:isScrollContainer="true">
+    <!--
+        Header
+        -->
         <TextView
             android:id="@+id/tvHeaderHelp"
             android:layout_width="match_parent"
@@ -15,6 +18,9 @@
             android:gravity="center_horizontal"
             android:textSize="36dp"
             android:layout_margin="20dp" />
+    <!--
+        General help text
+        -->
         <TextView
             android:id="@+id/tvHelpText"
             android:layout_width="match_parent"
@@ -25,6 +31,9 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp" />
+    <!--
+        Start screen header
+        -->
         <TextView
             android:id="@+id/tvHelpStartScreen"
             android:layout_width="match_parent"
@@ -34,6 +43,9 @@
             android:textSize="24dp"
             android:layout_margin="10dp"
             android:textColor="#005DA9" />
+    <!--
+        Start screen text
+        -->
         <TextView
             android:id="@+id/tvHelpTextStartScreen"
             android:layout_width="match_parent"
@@ -44,6 +56,9 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp" />
+    <!--
+        Controller settings header
+        -->
         <TextView
             android:id="@+id/tvHelpControllerSettings"
             android:layout_width="match_parent"
@@ -53,6 +68,9 @@
             android:textSize="24dp"
             android:layout_margin="10dp"
             android:textColor="#005DA9" />
+    <!--
+        Controller settings text
+        -->
         <TextView
             android:id="@+id/tvHelpTextControllerSettings"
             android:layout_width="match_parent"
@@ -63,6 +81,9 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp" />
+    <!--
+        Controller header
+        -->
         <TextView
             android:id="@+id/tvHelpController"
             android:layout_width="match_parent"
@@ -72,6 +93,9 @@
             android:textSize="24dp"
             android:layout_margin="10dp"
             android:textColor="#005DA9" />
+    <!--
+        Controller text
+        -->
         <TextView
             android:id="@+id/tvHelpTextController"
             android:layout_width="match_parent"
@@ -82,6 +106,9 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp" />
+    <!--
+        Log files header
+        -->
         <TextView
             android:id="@+id/tvHelpLogFiles"
             android:layout_width="match_parent"
@@ -91,6 +118,9 @@
             android:textSize="24dp"
             android:layout_margin="10dp"
             android:textColor="#005DA9" />
+    <!--
+        Log files text
+        -->
         <TextView
             android:id="@+id/tvHelpTextLogFiles"
             android:layout_width="match_parent"
@@ -101,6 +131,9 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp" />
+    <!--
+        About header
+        -->
         <TextView
             android:id="@+id/tvHelpAbout"
             android:layout_width="match_parent"
@@ -110,6 +143,9 @@
             android:textSize="24dp"
             android:layout_margin="10dp"
             android:textColor="#005DA9" />
+    <!--
+        Version
+        -->
         <TextView
             android:id="@+id/tvVersion"
             android:layout_width="match_parent"
@@ -120,6 +156,9 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp" />
+    <!--
+        Credentials and references
+        -->
         <TextView
             android:id="@+id/tvCredentials"
             android:layout_width="match_parent"
@@ -130,6 +169,9 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp" />
+    <!--
+        GitHub link
+        -->
         <TextView
             android:id="@+id/tvLinkGitHub"
             android:layout_width="match_parent"
@@ -141,6 +183,9 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp" />
+    <!--
+        About
+        -->
         <TextView
             android:id="@+id/tvAboutInfo"
             android:layout_width="match_parent"
@@ -151,6 +196,9 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp" />
+    <!--
+        Homepage link
+        -->
         <TextView
             android:id="@+id/tvLinkHomepage"
             android:layout_width="match_parent"
@@ -162,6 +210,9 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp" />
+    <!--
+        Third party
+        -->
         <TextView
             android:id="@+id/tvThirdParty"
             android:layout_width="match_parent"
@@ -172,6 +223,9 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp" />
+    <!--
+        Back button
+        -->
         <Button
             android:id="@+id/btnBackHelp"
             android:layout_width="fill_parent"
