@@ -1,16 +1,4 @@
-﻿﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-
-namespace WiFiDronection
+﻿namespace WiFiDronection
 {
     public class ControllerSettings
     {
@@ -19,7 +7,7 @@ namespace WiFiDronection
         public static readonly bool INACTIVE = false;
 
         /// <summary>
-        /// Are the joysticks inverted
+        /// Flying mode
         /// </summary>
         public bool Inverted
         {
@@ -55,7 +43,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Is Height control of the copter active
+        /// Altitude control
         /// </summary>
         public bool AltitudeControlActivated
         {
@@ -63,11 +51,10 @@ namespace WiFiDronection
             set;
         }
 
-        public ControllerSettings()
-        {
-
-        }
-
+        /// <summary>
+        /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:WiFiDronection.ControllerSettings"/>.
+        /// </summary>
+        /// <returns>A <see cref="T:System.String"/> that represents the current <see cref="T:WiFiDronection.ControllerSettings"/>.</returns>
         public override string ToString()
         {
             return TrimYaw + ";" + TrimPitch + ";" + TrimRoll;
