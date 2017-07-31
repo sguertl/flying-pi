@@ -25,7 +25,7 @@ namespace WiFiDronection
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.VisualisationLayout);
+            SetContentView(Resource.Layout.VisualizationLayout);
             this.m_Filename = Intent.GetStringExtra("filename");
             Init();
         }

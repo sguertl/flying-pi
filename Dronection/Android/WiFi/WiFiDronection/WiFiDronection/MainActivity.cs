@@ -144,18 +144,11 @@ namespace WiFiDronection
         protected override Dialog OnCreateDialog(int id)
         {
             var wifiDialogView = LayoutInflater.Inflate(Resource.Layout.WifiDialog, null);
-            var wifiDialogHeaderView = FindViewById(Resource.Layout.WifiDialogTitle);
-
 
             var builder = new AlertDialog.Builder(this);
-            //mTvHeaderDialog = FindViewById<TextView>(Resource.Id.tvHeaderDialog);
-            //mTvHeaderDialog.Typeface = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
-
-
             builder.SetIcon(Resource.Drawable.ifx_logo_small);
             builder.SetView(wifiDialogView);
             builder.SetTitle("Enter WiFi password");
-            builder.SetCustomTitle(wifiDialogHeaderView);
             builder.SetPositiveButton("OK", WpaOkClicked);
             builder.SetNegativeButton("Cancel", CancelClicked);
 

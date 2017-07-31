@@ -35,7 +35,7 @@ namespace WiFiDronection
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.ShowVisualisationDataLayout);
+            SetContentView(Resource.Layout.ShowVisualizationDataLayout);
 
             Init();
             AddingPointsToEntries();
