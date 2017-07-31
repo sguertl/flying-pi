@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿﻿using System;
 
 using Android.App;
-using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 using Android.Graphics;
 using Android.Content.PM;
-using Java.Util;
 using Android.Text;
 
 namespace WiFiDronection
@@ -19,7 +12,7 @@ namespace WiFiDronection
     [Activity(Label = "HelpActivity", Theme = "@android:style/Theme.Holo.Light.NoActionBar.Fullscreen")]
     public class HelpActivity : Activity
     {
-        // Members
+        // Widgets
         private TextView mTvHeaderHelp;
         private TextView mTvHelpText;
         private TextView mTvHelpStartScreen;
@@ -39,6 +32,9 @@ namespace WiFiDronection
         private TextView mTvThirdParty;
         private Button mBtnBackHelp;
 
+        /// <summary>
+        /// Creates the activity.
+        /// </summary>
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -87,7 +83,7 @@ namespace WiFiDronection
 
             mBtnBackHelp.Click += OnBackToMain;
 
-
+            // Set help text
             mTvHelpStartScreenText.TextFormatted = Html.FromHtml(
                 "If the user opens the app, a start screen with three buttons appears. The app searches automatically for WiFi hotspots containing the strings <i>Raspberry</i>, <i>RPI</i> or <i>Pi</i>. If the <i>Connect</i> button remains red, the app can’t find a matching WiFi hotspot containing the strings mentioned above. If an appropriate network is found, the <i>Connect</i> button turns blue and the SSID and MAC of the Raspberry Pi are displayed.<br/>" +
                 "<br/><b>Connect</b><br/>Asks the user to enter the password (usually 87654321 or 00000000) and confirm it. After that, the app navigates to <i>Controller Settings.</i><br/>" +
@@ -115,18 +111,14 @@ namespace WiFiDronection
 
             PackageManager manager = this.PackageManager;
             PackageInfo info = manager.GetPackageInfo(this.PackageName, 0);
-            /*Date fit = new Date(info.FirstInstallTime);
-            Date lut = new Date(info.LastUpdateTime);
-            DateTime firstInstall = new DateTime(fit.Year + 1900, fit.Month +1 , fit.Day);
-            DateTime lastUpdate = new DateTime(lut.Year + 1900, lut.Month + 1, lut.Day);*/
             mTvVersion.Text = String.Format(
-                "Version: {0}",//\nFirst install time: {1:yyyy-MM-dd}\nLast Update Time: {2:yyyy-MM-dd}\nPackage Name: {3}",
-                info.VersionName);//, firstInstall, lastUpdate, info.PackageName);          
+                "Version: {0}",
+                info.VersionName);          
 
         }
 
         /// <summary>
-        /// Go back to MainActivity
+        /// Goes back to MainActivity.
         /// </summary>
         private void OnBackToMain(object sender, EventArgs e)
         {

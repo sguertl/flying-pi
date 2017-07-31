@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 using Android.Graphics;
 
@@ -16,15 +13,21 @@ namespace WiFiDronection
     [Activity(Label = "RawDataActivity", Theme = "@android:style/Theme.Holo.Light.NoActionBar.Fullscreen")]
     public class RawDataActivity : Activity
     {
-        // Members
+        // Widgets
         private TextView mTvHeader;
         private ListView mLvRawData;
         private TextView mTvDisplayRawData;
         private Button mBtBack;
 
+        // Customized list adapter
         private ListAdapter mAdapter;
+        // Selected file
         private string mSelectedFile;
 
+        /// <summary>
+        /// Creates the activity and initializes widgets.
+        /// </summary>
+        /// <param name="savedInstanceState">Saved instance state.</param>
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -49,7 +52,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Fills list with the control types
+        /// Fills list with the control types.
         /// </summary>
         private void FillRawDataList()
         {
@@ -65,8 +68,8 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Onclick event for list item
-        /// Reads the raw data from a .csv file and diplays it on textview
+        /// Handles OnClick event for list item.
+        /// Reads the raw data from a .csv file and diplays it on textview.
         /// </summary>
         private void OnListItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
@@ -85,11 +88,11 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Onclick event for back button
+        /// Handles OnClick event for Back button
         /// </summary>
         private void OnBack(object sender, EventArgs e)
         {
-            StartActivity(typeof(LogActivity));
+            Finish();
         }
     }
 }

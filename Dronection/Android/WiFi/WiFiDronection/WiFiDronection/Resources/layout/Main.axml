@@ -4,6 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:isScrollContainer="true">
+<!--
+    Header
+    -->
     <TextView
         android:id="@+id/tvHeader"
         android:layout_width="match_parent"
@@ -13,10 +16,9 @@
         android:textSize="44dp"
         android:fontFamily="Assets/SourceSansPro-Light.ttf"
         android:layout_margin="20dp" />
-<!--<View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray" />-->
+<!--
+    SSID (wifi name) textview
+    -->
     <TextView
         android:id="@+id/tvWifiName"
         android:layout_width="match_parent"
@@ -26,6 +28,9 @@
         android:textSize="20dp"
         android:fontFamily="Assets/SourceSansPro-Light.ttf"
         android:layout_margin="10dp" />
+<!--
+    MAC address textview
+    -->
     <TextView
         android:id="@+id/tvWifiMac"
         android:layout_width="match_parent"
@@ -35,6 +40,10 @@
         android:textSize="20dp"
         android:fontFamily="Assets/SourceSansPro-Light.ttf"
         android:layout_margin="10dp" />
+<!--
+    Connect button
+    Navigates to controller settings 
+    -->
     <Button
         android:id="@+id/btnConnect"
         android:layout_width="fill_parent"
@@ -47,6 +56,10 @@
         android:layout_margin="10dp"
         android:textColor="#ffffff"
         android:background="#E30034" />
+<!--
+    Show logs button
+    Navigates to log activity 
+    -->
     <Button
         android:id="@+id/btnShowLogs"
         android:layout_width="fill_parent"
@@ -59,6 +72,10 @@
         android:layout_margin="10dp"
         android:textColor="#ffffff"
         android:background="#005DA9" />
+<!-- 
+    Help button
+    Navigates to help activity 
+    -->
     <Button
         android:id="@+id/btnHelp"
         android:layout_width="fill_parent"
@@ -71,10 +88,6 @@
         android:layout_margin="10dp"
         android:textColor="#ffffff"
         android:background="#005DA9" />
-<!--<ListView
-        android:id="@+id/lvPeers"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />-->
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="0dp"
@@ -82,6 +95,9 @@
         android:gravity="bottom"
         android:layout_gravity="bottom"
         android:orientation="vertical">
+    <!-- 
+        Infineon logo 
+        -->
         <ImageView
             android:src="@drawable/ifx_logo"
             android:layout_height="wrap_content"
@@ -89,6 +105,9 @@
             android:scaleType="centerInside"
             android:adjustViewBounds="true"
             android:layout_margin="10dp" />
+    <!-- 
+        Footer with copyright
+        -->
         <TextView
             android:id="@+id/tvFooter"
             android:layout_height="wrap_content"
@@ -97,6 +116,5 @@
             android:layout_gravity="center_horizontal"
             android:layout_margin="10dp"
             android:fontFamily="Assets/SourceSansPro-Light.ttf" />
-    <!-- #0076ff, #0e7afe, #3366ff-->
     </LinearLayout>
 </LinearLayout>

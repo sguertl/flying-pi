@@ -1,4 +1,4 @@
-﻿﻿﻿﻿using System;
+﻿﻿﻿﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,33 +25,33 @@ namespace WiFiDronection
         public float ScreenHeight;
 
         // Joystick ovals
-        private ShapeDrawable m_ShapeStickLeft;
-        private ShapeDrawable m_ShapeStickRight;
+        private ShapeDrawable mShapeStickLeft;
+        private ShapeDrawable mShapeStickRight;
 
         // Displacement ovals
-        private ShapeDrawable m_ShapeRadiusLeft;
-        private ShapeDrawable m_ShapeRadiusRight;
+        private ShapeDrawable mShapeRadiusLeft;
+        private ShapeDrawable mShapeRadiusRight;
 
         // Joystick border
-        private ShapeDrawable m_ShapeBorderStickLeft;
-        private ShapeDrawable m_ShapeBorderStickRight;
+        private ShapeDrawable mShapeBorderStickLeft;
+        private ShapeDrawable mShapeBorderStickRight;
 
         // Displacement border
-        private ShapeDrawable m_ShapeBorderRadiusLeft;
-        private ShapeDrawable m_ShapeBorderRadiusRight;
+        private ShapeDrawable mShapeBorderRadiusLeft;
+        private ShapeDrawable mShapeBorderRadiusRight;
 
         // Joystick controllers
-        private Joystick m_LeftJS;
-        private Joystick m_RightJS;
+        private Joystick mLeftJS;
+        private Joystick mRightJS;
 
         // Transfer data via bluetooth
-        SocketConnection m_SocketConnection;
+        SocketConnection mSocketConnectiontion;
 
         // Timer for sending data and checking BT connection
-        private System.Timers.Timer m_WriteTimer;
+        private System.Timers.Timer mWriteTimer;
 
         /// <summary>
-        /// View constructor
+        /// View constructor.
         /// </summary>
         public ControllerView(Context context) : base(context)
         {
@@ -59,7 +59,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// View constructor
+        /// View constructor.
         /// </summary>
         public ControllerView(Context context, IAttributeSet attrs) : base(context, attrs)
         {
@@ -67,7 +67,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// View constructor
+        /// View constructor.
         /// </summary>
         public ControllerView(Context context, IAttributeSet attrs, int defStyle) : base(context, attrs, defStyle)
         {
@@ -75,11 +75,11 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Initialize members and create drawable shapes 
+        /// Initializes members and creates drawable shapes.
         /// </summary>
         private void Init()
         {
-            m_SocketConnection = SocketConnection.Instance;
+            mSocketConnectiontion = SocketConnection.Instance;
             Settings = new ControllerSettings
             {
                 AltitudeControlActivated = false,
@@ -101,14 +101,16 @@ namespace WiFiDronection
 
             this.SetBackgroundResource(Resource.Drawable.bg);
 
-            m_WriteTimer = new System.Timers.Timer();
-            m_WriteTimer.Interval = 50;//10
-            m_WriteTimer.AutoReset = true;
-            m_WriteTimer.Elapsed += Write;
-            m_WriteTimer.Start();
+            mWriteTimer = new System.Timers.Timer();
+            mWriteTimer.Interval = 50;//10
+            mWriteTimer.AutoReset = true;
+            mWriteTimer.Elapsed += Write;
+            mWriteTimer.Start();
         }
 
-
+        /// <summary>
+        /// Initializes the shapes for the stick and the radius.
+        /// </summary>
         private void InitShapes()
         {
             // Paint for joystick ovals
@@ -116,11 +118,11 @@ namespace WiFiDronection
             paintStick.Color = Color.ParseColor("#644F54");
             paintStick.SetStyle(Paint.Style.Fill);
             // Shape for left joystick
-            m_ShapeStickLeft = new ShapeDrawable(new OvalShape());
-            m_ShapeStickLeft.Paint.Set(paintStick);
+            mShapeStickLeft = new ShapeDrawable(new OvalShape());
+            mShapeStickLeft.Paint.Set(paintStick);
             // Shape for right joystick
-            m_ShapeStickRight = new ShapeDrawable(new OvalShape());
-            m_ShapeStickRight.Paint.Set(paintStick);
+            mShapeStickRight = new ShapeDrawable(new OvalShape());
+            mShapeStickRight.Paint.Set(paintStick);
 
             // Paint for displacement ovals
             var paintRadius = new Paint();
@@ -129,77 +131,77 @@ namespace WiFiDronection
             //paintRadius.SetStyle(Paint.Style.Fill);
             paintRadius.SetStyle(Paint.Style.Fill);
             // Shape for left displacement 
-            m_ShapeRadiusLeft = new ShapeDrawable(new OvalShape());
-            m_ShapeRadiusLeft.Paint.Set(paintRadius);
+            mShapeRadiusLeft = new ShapeDrawable(new OvalShape());
+            mShapeRadiusLeft.Paint.Set(paintRadius);
             // Shape for right displacement
-            m_ShapeRadiusRight = new ShapeDrawable(new OvalShape());
-            m_ShapeRadiusRight.Paint.Set(paintRadius);
+            mShapeRadiusRight = new ShapeDrawable(new OvalShape());
+            mShapeRadiusRight.Paint.Set(paintRadius);
 
             // Paint for border ovals
             var paintBorder = new Paint();
             paintBorder.SetARGB(255, 44, 44, 44);
             paintStick.SetStyle(Paint.Style.Fill);
             // Shape for left joystick border
-            m_ShapeBorderStickLeft = new ShapeDrawable(new OvalShape());
-            m_ShapeBorderStickLeft.Paint.Set(paintBorder);
+            mShapeBorderStickLeft = new ShapeDrawable(new OvalShape());
+            mShapeBorderStickLeft.Paint.Set(paintBorder);
             // Shape for right joystick border
-            m_ShapeBorderStickRight = new ShapeDrawable(new OvalShape());
-            m_ShapeBorderStickRight.Paint.Set(paintBorder);
+            mShapeBorderStickRight = new ShapeDrawable(new OvalShape());
+            mShapeBorderStickRight.Paint.Set(paintBorder);
             // Shape for left displacement border
-            m_ShapeBorderRadiusLeft = new ShapeDrawable(new OvalShape());
-            m_ShapeBorderRadiusLeft.Paint.Set(paintBorder);
+            mShapeBorderRadiusLeft = new ShapeDrawable(new OvalShape());
+            mShapeBorderRadiusLeft.Paint.Set(paintBorder);
             // Shape for right displacement border
-            m_ShapeBorderRadiusRight = new ShapeDrawable(new OvalShape());
-            m_ShapeBorderRadiusRight.Paint.Set(paintBorder);
+            mShapeBorderRadiusRight = new ShapeDrawable(new OvalShape());
+            mShapeBorderRadiusRight.Paint.Set(paintBorder);
         }
 
         /// <summary>
-        /// Sets the bounds for every joystick and displacement oval
+        /// Sets the bounds for every joystick and displacement oval.
         /// </summary>
         private void InitJoysticks()
         {
-            m_LeftJS = new Joystick(ScreenWidth, ScreenHeight, true, Settings.Inverted);
-            m_RightJS = new Joystick(ScreenWidth, ScreenHeight, false, Settings.Inverted);
+            mLeftJS = new Joystick(ScreenWidth, ScreenHeight, true, Settings.Inverted);
+            mRightJS = new Joystick(ScreenWidth, ScreenHeight, false, Settings.Inverted);
 
             SetBoundsForLeftStick(
-                (int)m_LeftJS.CenterX - (int)Joystick.StickRadius,
-                Settings.Inverted ? (int)m_LeftJS.CenterY - (int)Joystick.StickRadius : (int)m_LeftJS.CenterY + (int)Joystick.StickRadius,
-                (int)m_LeftJS.CenterX + (int)Joystick.StickRadius,
-                Settings.Inverted ? (int)m_LeftJS.CenterY + (int)Joystick.StickRadius : (int)m_LeftJS.CenterY + 3 * (int)Joystick.StickRadius);
+                (int)mLeftJS.CenterX - (int)Joystick.StickRadius,
+                Settings.Inverted ? (int)mLeftJS.CenterY - (int)Joystick.StickRadius : (int)mLeftJS.CenterY + (int)Joystick.StickRadius,
+                (int)mLeftJS.CenterX + (int)Joystick.StickRadius,
+                Settings.Inverted ? (int)mLeftJS.CenterY + (int)Joystick.StickRadius : (int)mLeftJS.CenterY + 3 * (int)Joystick.StickRadius);
 
             SetBoundsForRightStick(
-                (int)m_RightJS.CenterX - (int)Joystick.StickRadius,
-                Settings.Inverted ? (int)m_RightJS.CenterY + (int)Joystick.StickRadius : (int)m_RightJS.CenterY - (int)Joystick.StickRadius,
-                (int)m_RightJS.CenterX + (int)Joystick.StickRadius,
-                Settings.Inverted ? (int)m_RightJS.CenterY + 3 * (int)Joystick.StickRadius : (int)m_RightJS.CenterY + (int)Joystick.StickRadius);
+                (int)mRightJS.CenterX - (int)Joystick.StickRadius,
+                Settings.Inverted ? (int)mRightJS.CenterY + (int)Joystick.StickRadius : (int)mRightJS.CenterY - (int)Joystick.StickRadius,
+                (int)mRightJS.CenterX + (int)Joystick.StickRadius,
+                Settings.Inverted ? (int)mRightJS.CenterY + 3 * (int)Joystick.StickRadius : (int)mRightJS.CenterY + (int)Joystick.StickRadius);
 
-            m_ShapeRadiusLeft.SetBounds(
-                (int)m_LeftJS.CenterX - (int)Joystick.DisplacementRadius,
-                (int)m_LeftJS.CenterY - (int)Joystick.DisplacementRadius,
-                (int)m_LeftJS.CenterX + (int)Joystick.DisplacementRadius,
-                (int)m_LeftJS.CenterY + (int)Joystick.DisplacementRadius);
+            mShapeRadiusLeft.SetBounds(
+                (int)mLeftJS.CenterX - (int)Joystick.DisplacementRadius,
+                (int)mLeftJS.CenterY - (int)Joystick.DisplacementRadius,
+                (int)mLeftJS.CenterX + (int)Joystick.DisplacementRadius,
+                (int)mLeftJS.CenterY + (int)Joystick.DisplacementRadius);
 
-            m_ShapeRadiusRight.SetBounds(
-                (int)m_RightJS.CenterX - (int)Joystick.DisplacementRadius,
-                (int)m_RightJS.CenterY - (int)Joystick.DisplacementRadius,
-                (int)m_RightJS.CenterX + (int)Joystick.DisplacementRadius,
-                (int)m_RightJS.CenterY + (int)Joystick.DisplacementRadius);
+            mShapeRadiusRight.SetBounds(
+                (int)mRightJS.CenterX - (int)Joystick.DisplacementRadius,
+                (int)mRightJS.CenterY - (int)Joystick.DisplacementRadius,
+                (int)mRightJS.CenterX + (int)Joystick.DisplacementRadius,
+                (int)mRightJS.CenterY + (int)Joystick.DisplacementRadius);
 
-            m_ShapeBorderRadiusLeft.SetBounds(
-                (int)m_LeftJS.CenterX - (int)Joystick.DisplacementRadius - 2,
-                (int)m_LeftJS.CenterY - (int)Joystick.DisplacementRadius - 2,
-                (int)m_LeftJS.CenterX + (int)Joystick.DisplacementRadius + 2,
-                (int)m_LeftJS.CenterY + (int)Joystick.DisplacementRadius + 2);
+            mShapeBorderRadiusLeft.SetBounds(
+                (int)mLeftJS.CenterX - (int)Joystick.DisplacementRadius - 2,
+                (int)mLeftJS.CenterY - (int)Joystick.DisplacementRadius - 2,
+                (int)mLeftJS.CenterX + (int)Joystick.DisplacementRadius + 2,
+                (int)mLeftJS.CenterY + (int)Joystick.DisplacementRadius + 2);
 
-            m_ShapeBorderRadiusRight.SetBounds(
-                (int)m_RightJS.CenterX - (int)Joystick.DisplacementRadius - 2,
-                (int)m_RightJS.CenterY - (int)Joystick.DisplacementRadius - 2,
-                (int)m_RightJS.CenterX + (int)Joystick.DisplacementRadius + 2,
-                (int)m_RightJS.CenterY + (int)Joystick.DisplacementRadius + 2);
+            mShapeBorderRadiusRight.SetBounds(
+                (int)mRightJS.CenterX - (int)Joystick.DisplacementRadius - 2,
+                (int)mRightJS.CenterY - (int)Joystick.DisplacementRadius - 2,
+                (int)mRightJS.CenterX + (int)Joystick.DisplacementRadius + 2,
+                (int)mRightJS.CenterY + (int)Joystick.DisplacementRadius + 2);
         }
 
         /// <summary>
-        /// Checks single or multitouch and sets new bounds
+        /// Checks single or multitouch and sets new bounds.
         /// </summary>
         public bool OnTouch(View v, MotionEvent e)
         {
@@ -210,22 +212,22 @@ namespace WiFiDronection
                     {
                         if (e.GetX() <= ScreenWidth / 2)
                         {
-                            UpdateOvals(m_LeftJS.CenterX, m_LeftJS.CenterY);
+                            UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
                         }
                         else
                         {
-                            UpdateOvals(m_RightJS.CenterX, m_RightJS.CenterY + Joystick.DisplacementRadius);
+                            UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
                         }
                     }
                     else
                     {
                         if (e.GetX() <= ScreenWidth / 2)
                         {
-                            UpdateOvals(m_LeftJS.CenterX, m_LeftJS.CenterY + Joystick.DisplacementRadius);
+                            UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
                         }
                         else
                         {
-                            UpdateOvals(m_RightJS.CenterX, m_RightJS.CenterY);
+                            UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
                         }
                     }
                     break;
@@ -236,11 +238,11 @@ namespace WiFiDronection
                         {
                             if (e.GetX(i) <= ScreenWidth / 2)
                             {
-                                UpdateOvals(m_LeftJS.CenterX, m_LeftJS.CenterY);
+                                UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
                             }
                             else
                             {
-                                UpdateOvals(m_RightJS.CenterX, m_RightJS.CenterY + Joystick.DisplacementRadius);
+                                UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
                             }
                         }
                     }
@@ -250,11 +252,11 @@ namespace WiFiDronection
                         {
                             if (e.GetX(i) <= ScreenWidth / 2)
                             {
-                                UpdateOvals(m_LeftJS.CenterX, m_LeftJS.CenterY + Joystick.DisplacementRadius);
+                                UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
                             }
                             else
                             {
-                                UpdateOvals(m_RightJS.CenterX, m_RightJS.CenterY);
+                                UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
                             }
                         }
                     }
@@ -266,11 +268,11 @@ namespace WiFiDronection
                         {
                             if (e.GetX(i) <= ScreenWidth / 2)
                             {
-                                UpdateOvals(m_LeftJS.CenterX, m_LeftJS.CenterY);
+                                UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
                             }
                             else
                             {
-                                UpdateOvals(m_RightJS.CenterX, m_RightJS.CenterY + Joystick.DisplacementRadius);
+                                UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
                             }
                         }
                     }
@@ -280,11 +282,11 @@ namespace WiFiDronection
                         {
                             if (e.GetX(i) <= ScreenWidth / 2)
                             {
-                                UpdateOvals(m_LeftJS.CenterX, m_LeftJS.CenterY + Joystick.DisplacementRadius);
+                                UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
                             }
                             else
                             {
-                                UpdateOvals(m_RightJS.CenterX, m_RightJS.CenterY);
+                                UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
                             }
                         }
                     }
@@ -299,24 +301,24 @@ namespace WiFiDronection
 
             if (Settings.Inverted)
             {
-                if (e.PointerCount == 1 && e.GetX() <= ScreenWidth / 2 && !m_RightJS.IsCentered())
+                if (e.PointerCount == 1 && e.GetX() <= ScreenWidth / 2 && !mRightJS.IsCentered())
                 {
-                    UpdateOvals(m_RightJS.CenterX, m_RightJS.CenterY + Joystick.DisplacementRadius);
+                    UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
                 }
-                else if (e.PointerCount == 1 && e.GetX() > ScreenWidth / 2 && !m_LeftJS.IsCentered())
+                else if (e.PointerCount == 1 && e.GetX() > ScreenWidth / 2 && !mLeftJS.IsCentered())
                 {
-                    UpdateOvals(m_LeftJS.CenterX, m_LeftJS.CenterY);
+                    UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
                 }
             }
             else
             {
-                if (e.PointerCount == 1 && e.GetX() <= ScreenWidth / 2 && !m_RightJS.IsCentered())
+                if (e.PointerCount == 1 && e.GetX() <= ScreenWidth / 2 && !mRightJS.IsCentered())
                 {
-                    UpdateOvals(m_RightJS.CenterX, m_RightJS.CenterY);
+                    UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
                 }
-                else if (e.PointerCount == 1 && e.GetX() > ScreenWidth / 2 && !m_LeftJS.IsCentered())
+                else if (e.PointerCount == 1 && e.GetX() > ScreenWidth / 2 && !mLeftJS.IsCentered())
                 {
-                    UpdateOvals(m_LeftJS.CenterX, m_LeftJS.CenterY + Joystick.DisplacementRadius);
+                    UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
                 }
             }
 
@@ -325,7 +327,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Sets new bounds for the joystick oval
+        /// Sets new bounds for the joystick oval.
         /// </summary>
         /// <param name="xPosition">X-Position of the touch</param>
         /// <param name="yPosition">Y-Position of the touch</param>
@@ -335,9 +337,9 @@ namespace WiFiDronection
             if (xPosition <= ScreenWidth / 2)
             {
                 // Handle touch in the left half
-                m_LeftJS.SetPosition(xPosition, yPosition);
+                mLeftJS.SetPosition(xPosition, yPosition);
                 // Check if touch was inside the displacement radius
-                if ((m_LeftJS.Abs) <= Joystick.DisplacementRadius)
+                if ((mLeftJS.Abs) <= Joystick.DisplacementRadius)
                 {
                     // Draw left joystick with original coordinates
                     SetBoundsForLeftStick(
@@ -350,18 +352,18 @@ namespace WiFiDronection
                 {
                     // Draw left joystick with maximum coordinates
                     SetBoundsForLeftStick(
-                        (int)(Joystick.DisplacementRadius * Math.Cos(m_LeftJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)m_LeftJS.CenterX,
-                        (int)(Joystick.DisplacementRadius * Math.Sin(m_LeftJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)m_LeftJS.CenterY,
-                        (int)(Joystick.DisplacementRadius * Math.Cos(m_LeftJS.Angle * Math.PI / 180)) + (int)Joystick.StickRadius + (int)m_LeftJS.CenterX,
-                        (int)(Joystick.DisplacementRadius * Math.Sin(m_LeftJS.Angle * Math.PI / 180)) + (int)Joystick.StickRadius + (int)m_LeftJS.CenterY);
+                        (int)(Joystick.DisplacementRadius * Math.Cos(mLeftJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)mLeftJS.CenterX,
+                        (int)(Joystick.DisplacementRadius * Math.Sin(mLeftJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)mLeftJS.CenterY,
+                        (int)(Joystick.DisplacementRadius * Math.Cos(mLeftJS.Angle * Math.PI / 180)) + (int)Joystick.StickRadius + (int)mLeftJS.CenterX,
+                        (int)(Joystick.DisplacementRadius * Math.Sin(mLeftJS.Angle * Math.PI / 180)) + (int)Joystick.StickRadius + (int)mLeftJS.CenterY);
                 }
             }
             else
             {
                 // Handle touch in the right half
-                m_RightJS.SetPosition(xPosition, yPosition);
+                mRightJS.SetPosition(xPosition, yPosition);
                 // Check if touch was inside the displacement radius
-                if ((m_RightJS.Abs) <= Joystick.DisplacementRadius)
+                if ((mRightJS.Abs) <= Joystick.DisplacementRadius)
                 {
                     // Draw right joystick with original coordinates
                     SetBoundsForRightStick(
@@ -374,37 +376,37 @@ namespace WiFiDronection
                 {
                     // Draw left joystick with maximum coordinates
                     SetBoundsForRightStick(
-                        (int)(Joystick.DisplacementRadius * Math.Cos(m_RightJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)m_RightJS.CenterX,
-                        (int)(Joystick.DisplacementRadius * Math.Sin(m_RightJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)m_RightJS.CenterY,
-                        (int)(Joystick.DisplacementRadius * Math.Cos(m_RightJS.Angle * Math.PI / 180)) + (int)Joystick.StickRadius + (int)m_RightJS.CenterX,
-                        (int)(Joystick.DisplacementRadius * Math.Sin(m_RightJS.Angle * Math.PI / 180)) + (int)Joystick.StickRadius + (int)m_RightJS.CenterY);
+                        (int)(Joystick.DisplacementRadius * Math.Cos(mRightJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)mRightJS.CenterX,
+                        (int)(Joystick.DisplacementRadius * Math.Sin(mRightJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)mRightJS.CenterY,
+                        (int)(Joystick.DisplacementRadius * Math.Cos(mRightJS.Angle * Math.PI / 180)) + (int)Joystick.StickRadius + (int)mRightJS.CenterX,
+                        (int)(Joystick.DisplacementRadius * Math.Sin(mRightJS.Angle * Math.PI / 180)) + (int)Joystick.StickRadius + (int)mRightJS.CenterY);
                 }
             }
         }
 
         /// <summary>
-        /// Draws the shapes onto the canvas, which is displayed afterwards
+        /// Draws the shapes onto the canvas, which is displayed afterwards.
         /// </summary>
         protected override void OnDraw(Canvas canvas)
         {
             this.SetBackgroundResource(Resource.Drawable.bg);
 
             // Draw shapes
-            m_ShapeBorderRadiusLeft.Draw(canvas);
-            m_ShapeBorderRadiusRight.Draw(canvas);
-            m_ShapeRadiusLeft.Draw(canvas);
-            m_ShapeRadiusRight.Draw(canvas);
-            m_ShapeBorderStickLeft.Draw(canvas);
-            m_ShapeBorderStickRight.Draw(canvas);
-            m_ShapeStickLeft.Draw(canvas);
-            m_ShapeStickRight.Draw(canvas);
+            mShapeBorderRadiusLeft.Draw(canvas);
+            mShapeBorderRadiusRight.Draw(canvas);
+            mShapeRadiusLeft.Draw(canvas);
+            mShapeRadiusRight.Draw(canvas);
+            mShapeBorderStickLeft.Draw(canvas);
+            mShapeBorderStickRight.Draw(canvas);
+            mShapeStickLeft.Draw(canvas);
+            mShapeStickRight.Draw(canvas);
 
-            m_LeftJS.CalculateValues();
-            m_RightJS.CalculateValues();
+            mLeftJS.CalculateValues();
+            mRightJS.CalculateValues();
         }
 
         /// <summary>
-        /// Helper method for setting the bounds of the left joystick
+        /// Helper method for setting the bounds of the left joystick.
         /// </summary>
         /// <param name="left">Position of left bound</param>
         /// <param name="top">Position of top bound</param>
@@ -412,12 +414,12 @@ namespace WiFiDronection
         /// <param name="bottom">Position of bottom bound</param>
         private void SetBoundsForLeftStick(int left, int top, int right, int bottom)
         {
-            m_ShapeStickLeft.SetBounds(left, top, right, bottom);
-            m_ShapeBorderStickLeft.SetBounds(left - 2, top - 2, right + 2, bottom + 2);
+            mShapeStickLeft.SetBounds(left, top, right, bottom);
+            mShapeBorderStickLeft.SetBounds(left - 2, top - 2, right + 2, bottom + 2);
         }
 
         /// <summary>
-        /// Helper method for setting the bounds of the right joystick
+        /// Helper method for setting the bounds of the right joystick.
         /// </summary>
         /// <param name="left">Position of left bound</param>
         /// <param name="top">Position of top bound</param>
@@ -425,8 +427,8 @@ namespace WiFiDronection
         /// <param name="bottom">Position of bottom bound</param>
         private void SetBoundsForRightStick(int left, int top, int right, int bottom)
         {
-            m_ShapeStickRight.SetBounds(left, top, right, bottom);
-            m_ShapeBorderStickRight.SetBounds(left - 2, top - 2, right + 2, bottom + 2);
+            mShapeStickRight.SetBounds(left, top, right, bottom);
+            mShapeBorderStickRight.SetBounds(left - 2, top - 2, right + 2, bottom + 2);
         }
 
         private static void AltControlChanged()
@@ -435,7 +437,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Helper method for sending data via bluetooth to the device
+        /// Helper method for sending data via bluetooth to the device.
         /// Throttle = speed
         /// Rudder = Yaw = rotation
         /// Elevator = Pitch = north south
@@ -443,23 +445,23 @@ namespace WiFiDronection
         /// </summary>
         public void Write(object sender, System.Timers.ElapsedEventArgs e)
         {
-            if (m_SocketConnection.isConnected)
+            if (mSocketConnectiontion.isConnected)
             {
                 if (!Settings.Inverted)
                 {
-                    int throttle = Settings.AltitudeControlActivated ? 50 : m_LeftJS.Throttle;
-                    m_SocketConnection.Write((Int16)throttle,
-                                      (Int16)(m_LeftJS.Rudder + Settings.TrimYaw),
-                                      (Int16)(m_RightJS.Aileron + Settings.TrimPitch),
-                                      (Int16)(m_RightJS.Elevator + Settings.TrimRoll));
+                    int throttle = Settings.AltitudeControlActivated ? 50 : mLeftJS.Throttle;
+                    mSocketConnectiontion.Write((Int16)throttle,
+                                      (Int16)(mLeftJS.Rudder + Settings.TrimYaw),
+                                      (Int16)(mRightJS.Aileron + Settings.TrimPitch),
+                                      (Int16)(mRightJS.Elevator + Settings.TrimRoll));
                 }
                 else
                 {
-                    int throttle = Settings.AltitudeControlActivated ? 50 : m_RightJS.Throttle;
-                    m_SocketConnection.Write((Int16)throttle,
-                                      (Int16)(m_LeftJS.Rudder + Settings.TrimYaw),
-                                      (Int16)(m_LeftJS.Aileron + Settings.TrimPitch),
-                                      (Int16)(m_RightJS.Elevator + Settings.TrimRoll));
+                    int throttle = Settings.AltitudeControlActivated ? 50 : mRightJS.Throttle;
+                    mSocketConnectiontion.Write((Int16)throttle,
+                                      (Int16)(mLeftJS.Rudder + Settings.TrimYaw),
+                                      (Int16)(mLeftJS.Aileron + Settings.TrimPitch),
+                                      (Int16)(mRightJS.Elevator + Settings.TrimRoll));
                 }
             }
         }
