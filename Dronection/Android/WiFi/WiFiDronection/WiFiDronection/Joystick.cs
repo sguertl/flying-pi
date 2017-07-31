@@ -1,25 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 
 namespace WiFiDronection
 {
     public class Joystick
     {
-        // -------------------------- CONSTANTS --------------------------------
-
-        private const double RAD = 1 / (2 * Math.PI) * 360; // 1 rad in degrees
+		// Constant value to convert 1 rad in degrees
+		private const double RAD = 1 / (2 * Math.PI) * 360;
 
         // Constant direction values
-        public static readonly int CENTER = 0;
+        public static readonly int CENTER = 0; 
         public static readonly int BOTTOM = 1;
         public static readonly int BOTTOM_RIGHT = 2;
         public static readonly int RIGHT = 3;
@@ -31,22 +20,32 @@ namespace WiFiDronection
         public static readonly int LEFT_STICK = 0;
         public static readonly int RIGHT_STICK = 1;
 
-        public readonly float StickDiameter; // Diameter of the joystick
-        public readonly float DisplacementDiameter; // Diameter of the displacement
+        // Diameter of the joystick
+        public readonly float StickDiameter;
+        // Diameter of the displacement
+        public readonly float DisplacementDiameter;
 
-        public static float StickRadius; // Radius of the joystick
-        public static float DisplacementRadius; // Radius of the displacement
+        // Radius of the joystick
+		public static float StickRadius;
+        // Radius of the displacement
+        public static float DisplacementRadius;
 
 
-        // --------------------------- VARIABLES ------------------------------
-
-        private float mMult = 0.1f;
+        // Multiplier for joystick sensitivity (the higher the value, the more sensitive)
+        // Mutliplier for Elevator and Aileron
+        private float mMult = 0.15f;
+        // Multiplier for Rudder
         private float mMultRudder = 0.4f;
+        // Multiplier for throttle
         private float mMultThrottle = 0.7f;
 
-        private float mXPosition; // Current x of joystick
-        private float mYPosition; // Current y of joystick
-        private readonly bool mLeftStick; // Side of stick
+        // Current x-position of joystick
+        private float mXPosition;
+        // Current y-position of joystick
+        private float mYPosition;
+        // Side of stick
+        private readonly bool mLeftStick;
+        // Control mode
         private readonly bool mInverted; // Control mode
 
         // Center x of joystick
@@ -90,7 +89,8 @@ namespace WiFiDronection
         public Int16 Aileron { get { return GetAileronValue(); } private set { mAileron = value; } }
 
         /// <summary>
-        /// Constructor creates new Joystick object and sets Stick diameter, Displacement diameter and center of the joystick
+        /// Creates new Joystick object and sets stick diameter, 
+        /// displacement diameter and center of the joystick.
         /// </summary>
         /// <param name="width">Width of screen</param>
         /// <param name="height">Height of screen</param>
@@ -136,7 +136,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Sets the current position of the joystick
+        /// Sets the current position of the joystick.
         /// </summary>
         /// <param name="xPosition">X-Position of the joystick</param>
         /// <param name="yPosition">Y-Position of the joystick</param>
@@ -147,7 +147,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Returns the current position of the joystick
+        /// Returns the current position of the joystick.
         /// </summary>
         /// <returns>An array containing the x and y position of the joystick</returns>
         public float[] GetPosition()
@@ -156,7 +156,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Calculates the angle of the moved joystick
+        /// Calculates the angle of the moved joystick.
         /// </summary>
         /// <returns>Angle of the joystick</returns>
         private float GetAngle()
@@ -212,7 +212,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Calculates the direction in which the joystick was moved
+        /// Calculates the direction in which the joystick was moved.
         /// </summary>
         /// <returns>Direction of the joystick</returns>
         private int GetDirection()
@@ -252,7 +252,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Calculates the power of the joystick
+        /// Calculates the power of the joystick.
         /// </summary>
         /// <returns>Power of the joystick in percent (between 0 and 100)</returns>
         private int GetPower()
@@ -265,7 +265,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Calculates the length of the vector
+        /// Calculates the length of the vector.
         /// </summary>
         /// <returns>Length of the vector</returns>
         private float GetAbs()
@@ -274,7 +274,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Calculates the throttle value of the stick
+        /// Calculates the throttle value of the stick.
         /// </summary>
         /// <returns>Throttle value (between 0 and 32767)</returns>
         private Int16 GetThrottleValue()
@@ -292,7 +292,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Calculates the rudder (yaw) value of the stick
+        /// Calculates the rudder (yaw) value of the stick.
         /// </summary>
         /// <returns>Rudder value (between -32768 and 32767)</returns>
         private Int16 GetRudderValue()
@@ -306,7 +306,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Calculates the elevator (pitch) value of the stick
+        /// Calculates the elevator (pitch) value of the stick.
         /// </summary>
         /// <returns>Elevator value (between -32768 and 32767)</returns>
         private Int16 GetElevatorValue()
@@ -320,7 +320,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Calculates the aileron (roll) value of the stick
+        /// Calculates the aileron (roll) value of the stick.
         /// </summary>
         /// <returns>Aileron value (between -32768 and 32767)</returns>
         private Int16 GetAileronValue()
@@ -334,7 +334,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Helper method which calls GetPower(), GetAngle() and GetAbs()
+        /// Calls GetPower(), GetAngle() and GetAbs().
         /// </summary>
         public void CalculateValues()
         {
@@ -344,7 +344,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Checks if stick is currently centered
+        /// Checks if stick is currently centered.
         /// </summary>
         /// <returns>True if stick is centered, false if not</returns>
         public bool IsCentered()
