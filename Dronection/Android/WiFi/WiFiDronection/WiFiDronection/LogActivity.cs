@@ -16,22 +16,26 @@ namespace WiFiDronection
     [Activity(Label = "LogActivity", Theme = "@android:style/Theme.Holo.Light.NoActionBar.Fullscreen")]
     public class LogActivity : Activity
     {
-        // Members
+        // Widgets
         private TextView mTvHeader;
         private ListView mLvFiles;
         private TextView mTvEmpty;
         private Button mBtBack;
 
-
+        // Customized list adapter
         private ListAdapter mAdapter;
+        // Selected list item
         private string mSelectedItem;
 
+        /// <summary>
+        /// Creates the activity and initializes the widgets.
+        /// </summary>
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.Log);
 
-            //initialize widgets
+            // Initialize widgets
             mTvHeader = FindViewById<TextView>(Resource.Id.tvHeaderLog);
             mLvFiles = FindViewById<ListView>(Resource.Id.lvFiles);
             mLvFiles.ItemClick += OnShowListItemContextMenu;
@@ -51,7 +55,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Function displays messsage if list is empty
+        /// Displays messsage if list is empty.
         /// </summary>
         public override void OnContentChanged()
         {
@@ -61,7 +65,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Read files in project folder and displays them on the list
+        /// Reads files in project folder and displays them on the list.
         /// </summary>
         private void FillFilesList()
         {
@@ -81,7 +85,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Show context menu after click on list item
+        /// Shows context menu after click on list item.
         /// </summary>
         private void OnShowListItemContextMenu(object sender, AdapterView.ItemClickEventArgs e)
         {
@@ -89,6 +93,9 @@ namespace WiFiDronection
             mLvFiles.ShowContextMenu();
         }
 
+        /// <summary>
+        /// Creates a context menu with options.
+        /// </summary>
         public override void OnCreateContextMenu(IContextMenu menu, View v, IContextMenuContextMenuInfo menuInfo)
         {
             base.OnCreateContextMenu(menu, v, menuInfo);
@@ -100,11 +107,11 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// OnClick event for context menu
+        /// Handles OnClick event for context menu.
         /// </summary>
         public override bool OnContextItemSelected(IMenuItem item)
         {
-            string title = item.ToString().ToLower();
+            string title = item.ToString().ToLower().Trim();
             switch (title)
             {
                 case "raw data": ShowRawData(); break;
@@ -116,7 +123,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Displays the raw data visualization activity
+        /// Displays the raw data activity.
         /// </summary>
         private void ShowRawData()
         {
@@ -126,7 +133,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Displays the graphical data visualization activity
+        /// Displays the graphical data visualization activity.
         /// </summary>
         private void ShowGraph()
         {
@@ -136,7 +143,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Deletes selected folder
+        /// Deletes selected folder.
         /// </summary>
         private void DeleteFolder()
         {
@@ -153,16 +160,16 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// OnClick event for back button
+        /// Handles OnClick event for Back button.
         /// </summary>
         private void OnBackToMain(object sender, EventArgs e)
         {
-            StartActivity(typeof(MainActivity));
+            Finish();
         }
     }
 
     /// <summary>
-    /// Comparer for sorting the list by date
+    /// Comparer for sorting the list by date.
     /// </summary>
     public class MyComparer : IComparer<string>
     {
