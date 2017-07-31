@@ -1,102 +1,105 @@
-﻿using System;
-using System.Collections.Generic;
+﻿﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using Android.App;
-using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using MikePhil.Charting.Charts;
 using MikePhil.Charting.Data;
 using MikePhil.Charting.Interfaces.Datasets;
 using Android.Graphics;
-using Java.Util;
-using Java.Lang;
-using MikePhil.Charting.Components;
 
 namespace WiFiDronection
 {
-    [Activity(Label = "ShowVisualitionDataActivity",  Theme = "@android:style/Theme.NoTitleBar.Fullscreen", 
+    [Activity(Label = "ShowVisualizationDataActivity",  Theme = "@android:style/Theme.NoTitleBar.Fullscreen", 
         ScreenOrientation = Android.Content.PM.ScreenOrientation.SensorLandscape)]
-    public class ShowVisualitionDataActivity : Activity
+    public class ShowVisualizationDataActivity : Activity
     {
-        private LineChart m_LineChart;
-        private List<Entry> m_Entries;
-        private CurrentVisualisatonData m_CurVisData;
-        private ILineDataSet[] m_DataSet;
-        private LineData m_LineData;
+        // Line chart members
+        private LineChart mLineChart;
+        private List<Entry> mEntries;
+        private CurrentVisualizationData mCurVisData;
+        private ILineDataSet[] mDataSet;
+        private LineData mLineData;
 
-        private Color[] m_ColorList = { Color.Red, Color.Green, Color.Blue, Color.Brown};
-        private List<int> m_Colors;
+        // Colors
+        private Color[] mColorList = { Color.Red, Color.Green, Color.Blue, Color.Brown};
+        private List<int> mColors;
 
+        /// <summary>
+        /// Creates the activity and displays the line chart.
+        /// </summary>
+        /// <param name="savedInstanceState">Saved instance state.</param>
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.ShowVisualizationDataLayout);
 
             Init();
-            AddingPointsToEntries();
+            AddPointsToEntries();
 
-            this.m_LineData = new LineData(m_DataSet);
-            this.m_LineChart.Data = m_LineData;
+            this.mLineData = new LineData(mDataSet);
+            this.mLineChart.Data = mLineData;
 
-            /*foreach (float hc in m_CurVisData.HighContTime)
+            /*foreach (float hc in mCurVisData.HighContTime)
             {
                 LimitLine ll = new LimitLine(hc, "");
                 ll.LineColor = new Color(255, 0, 0, 40);
                 ll.LineWidth = 30f;
-                this.m_LineChart.XAxis.AddLimitLine(ll);
+                this.mLineChart.XAxis.AddLimitLine(ll);
             }*/
 
-            this.m_LineChart.XAxis.SetDrawLimitLinesBehindData(true);
-            this.m_LineChart.Invalidate();
+            this.mLineChart.XAxis.SetDrawLimitLinesBehindData(true);
+            this.mLineChart.Invalidate();
         }
 
-        private void AddingPointsToEntries()
+        /// <summary>
+        /// Adds the points to entries.
+        /// </summary>
+        private void AddPointsToEntries()
         {
             int count = 0;
-            foreach (KeyValuePair<string,List<DataPoint>> dp in m_CurVisData.Points)
+            foreach (KeyValuePair<string,List<DataPoint>> dp in mCurVisData.Points)
             {
-                this.m_Entries = new List<Entry>();
-                m_Colors = new List<int>();
+                this.mEntries = new List<Entry>();
+                mColors = new List<int>();
 
                 foreach (DataPoint dp2 in dp.Value )
                 {
-                    m_Entries.Add(new Entry(dp2.X, dp2.Y));
-                    if (m_CurVisData.HighContTime.Any(x => x == dp2.X))
+                    mEntries.Add(new Entry(dp2.X, dp2.Y));
+                    if (mCurVisData.AltControlTime.Any(x => x == dp2.X))
                     {
-                        m_Colors.Add(Color.Black);
+                        mColors.Add(Color.Black);
                     }
                     else
                     {
-                        m_Colors.Add(m_ColorList[count]);
+                        mColors.Add(mColorList[count]);
                     }
                         
                 }
 
-                LineDataSet lds = new LineDataSet(m_Entries, dp.Key);
+                LineDataSet lds = new LineDataSet(mEntries, dp.Key);
 
-                lds.SetColor(m_ColorList[count], 255);
-                // lds.SetColors(m_Colors.ToArray());
-                lds.SetCircleColors(m_Colors.ToArray());
-                // lds.SetCircleColor(m_ColorList[count]);
+                lds.SetColor(mColorList[count], 255);
+                // lds.SetColors(mColors.ToArray());
+                lds.SetCircleColors(mColors.ToArray());
+                // lds.SetCircleColor(mColorList[count]);
                 lds.SetDrawCircleHole(true);
-                lds.SetCircleColorHole(m_ColorList[count]);
+                lds.SetCircleColorHole(mColorList[count]);
 
-                m_DataSet.SetValue(lds,count);
+                mDataSet.SetValue(lds,count);
                 count++;
             }      
         }
 
+        /// <summary>
+        /// Initializes the line chart.
+        /// </summary>
         private void Init()
         {
-            this.m_Colors = new List<int>();
-            this.m_LineChart = (LineChart) FindViewById<LineChart>(Resource.Id.linechart);
-            this.m_CurVisData = CurrentVisualisatonData.Instance;
-            this.m_DataSet = new ILineDataSet[m_CurVisData.Points.Count];
+            this.mColors = new List<int>();
+            this.mLineChart = (LineChart) FindViewById<LineChart>(Resource.Id.linechart);
+            this.mCurVisData = CurrentVisualizationData.Instance;
+            this.mDataSet = new ILineDataSet[mCurVisData.Points.Count];
         }
     }
 }
