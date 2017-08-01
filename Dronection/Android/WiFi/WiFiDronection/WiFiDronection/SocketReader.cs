@@ -8,6 +8,8 @@ namespace WiFiDronection
 {
     public class SocketReader
     {
+        private static readonly string TAG = "SocketReader";
+
         // Input stream
         private DataInputStream mDataInputStream;
 
@@ -29,7 +31,7 @@ namespace WiFiDronection
         /// </summary>
         public void OnRead()
         {
-            int bytes;
+            int bytes = 0;
             byte[] buffer = new byte[1024];
             while (true)
             {
@@ -40,12 +42,12 @@ namespace WiFiDronection
                 }
                 catch (Java.IO.IOException ex)
                 {
-                    Log.Debug("SocketReader", "Error reading");
+                    Log.Debug(TAG, "Error reading (" + ex.Message + ")");
                 }
                 catch (NullReferenceException ex)
                 {
-                    Log.Debug("SocketReader", "No socket connection");
-                    throw new NullReferenceException();
+                    Log.Debug(TAG, "No socket connection (" + ex.Message + ")");
+                   //  throw new NullReferenceException();
                 }
             }
         }
@@ -62,36 +64,26 @@ namespace WiFiDronection
 		/// <summary>
 		/// Reads data from Raspberry in a thread.
 		/// </summary>
-		/*public override void Run()
-        {
-            int bytes;
-            byte[] buffer = new byte[1024];
-            while (true)
-            {
-                try
-                {
-                    bytes = mDataInputStream.Read(buffer);
-                    string msg = new Java.Lang.String(buffer, 0, bytes).ToString();
-                }
-                catch(Java.IO.IOException ex)
-                {
-                    Log.Debug("SocketReader", "Error reading");
-                }
-                catch(NullReferenceException ex)
-                {
-                    Log.Debug("SocketReader", "No socket connection");
-                    throw new NullReferenceException();
-                }
-            }
-        }*/
+		
 
 		/// <summary>
 		/// Closes connection
 		/// </summary>
 		public void Close()
         {
-            mDataInputStream.Close();
-            this.mDataReaderThread = null;
+            try
+            {
+                this.mDataReaderThread = null;
+
+                if (mDataInputStream != null)
+                {
+                    mDataInputStream.Close();
+                }
+                
+            }catch(Java.Lang.Exception ex)
+            {
+                Log.Debug(TAG, ex.Message);
+            }
         }
     }
 }
