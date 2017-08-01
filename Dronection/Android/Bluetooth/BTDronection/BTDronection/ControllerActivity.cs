@@ -34,11 +34,8 @@ namespace BTDronection
         private RadioButton mRbPitchTrim;
         private RadioButton mRbRollTrim;
 
-        //private IntentFilter mFilter; // Used to filter events when searching
-        //private CallReciver mReceiver;
-
         public static bool mInverted;
-        private readonly int mMinTrim = -30;
+        private readonly int mMinTrim = -20;
 
         private string mStorageDirPath;
         private SocketConnection mSocketConnection;

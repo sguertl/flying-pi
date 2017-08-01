@@ -72,7 +72,7 @@ namespace WiFiDronection
         private Dictionary<string, ControllerSettings> mPeerSettings;
 
         // Constants
-        private readonly int mMinTrim = -30;
+        private readonly int mMinTrim = -20;
 
         // Public variables
         public static bool Inverted;

@@ -32,8 +32,8 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
             android:gravity="right|center_horizontal"
-            android:max="60"
-            android:progress="30"
+            android:max="40"
+            android:progress="20"
             android:progressDrawable="@drawable/customseekbar" />
     <!--
         Trim value textview

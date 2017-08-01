@@ -480,16 +480,16 @@ namespace WiFiDronection
                     int throttle = Settings.AltitudeControlActivated ? 50 : mLeftJS.Throttle;
                     mSocketConnection.Write((Int16)throttle,
                                       (Int16)(mLeftJS.Rudder + Settings.TrimYaw),
-                                      (Int16)(mRightJS.Aileron + Settings.TrimPitch),
-                                      (Int16)(mRightJS.Elevator + Settings.TrimRoll));
+                                      (Int16)(mRightJS.Aileron + Settings.TrimRoll),
+                                      (Int16)(mRightJS.Elevator + Settings.TrimPitch));
                 }
                 else
                 {
                     int throttle = Settings.AltitudeControlActivated ? 50 : mRightJS.Throttle;
                     mSocketConnection.Write((Int16)throttle,
                                       (Int16)(mLeftJS.Rudder + Settings.TrimYaw),
-                                      (Int16)(mLeftJS.Aileron + Settings.TrimPitch),
-                                      (Int16)(mRightJS.Elevator + Settings.TrimRoll));
+                                      (Int16)(mLeftJS.Aileron + Settings.TrimRoll),
+                                      (Int16)(mRightJS.Elevator + Settings.TrimPitch));
                 }
             }
         }

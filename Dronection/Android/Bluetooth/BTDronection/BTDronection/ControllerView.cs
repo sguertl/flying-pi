@@ -473,16 +473,16 @@ namespace BTDronection
                 {
 
                     mSocket.Write((Int16)m_LeftJS.Throttle,
-                                      (Int16)(m_LeftJS.Rudder - Settings.TrimYaw),
-                                      (Int16)(m_RightJS.Aileron - Settings.TrimPitch),
-                                      (Int16)(m_RightJS.Elevator - Settings.TrimRoll));
+                                  (Int16)(m_LeftJS.Rudder - Settings.TrimYaw),
+                                  (Int16)(m_RightJS.Aileron - Settings.TrimRoll),
+                                  (Int16)(m_RightJS.Elevator - Settings.TrimPitch));
                 }
                 else
                 {
                     mSocket.Write((Int16)m_RightJS.Throttle,
-                                      (Int16)(m_LeftJS.Rudder - Settings.TrimYaw),
-                                      (Int16)(m_LeftJS.Aileron - Settings.TrimPitch),
-                                      (Int16)(m_RightJS.Elevator - Settings.TrimRoll));
+                                  (Int16)(m_LeftJS.Rudder - Settings.TrimYaw),
+                                  (Int16)(m_LeftJS.Aileron - Settings.TrimRoll),
+                                  (Int16)(m_RightJS.Elevator - Settings.TrimPitch));
                 }
             }
         }
