@@ -123,6 +123,21 @@ namespace BTDronection
             var settingsFile = new Java.IO.File(ApplicationFolderPath + Java.IO.File.Separator + Java.IO.File.Separator + "settings.csv");
             settingsFile.CreateNewFile();
         }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            SocketConnection sc = SocketConnection.Instance;
+            sc.Cancel();
+        }
+
+        protected override void OnStop()
+        {
+            base.OnStop();
+            SocketConnection sc = SocketConnection.Instance;
+            sc.Cancel();
+        }
+
     }
 }
 
