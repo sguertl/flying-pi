@@ -16,13 +16,15 @@
 *  permissions and limitations under the License.						*
 *																		*
 *																		*
-*  File: ShowVisualizationDataActivity.cs														*
-*  Created on: 2017-8-1				*
-*  Author(s): Guertl Sebastian Matthias (IFAT PMM TI COP)											*
+*  File: ShowVisualizationDataActivity.cs								*
+*  Created on: 2017-07-28		                                		*
+*  Author(s): Englert Christoph (IFAT PMM TI COP)						*
 *																		*
-*  <Summary>															*
+*  ShowVisualizationDataActivity shows the previously selected data     *
+*  visualized in a line chart.                                      	*
 *																		*
 ************************************************************************/
+
 ﻿using System.Collections.Generic;
 using System.Linq;
 

@@ -20,7 +20,7 @@
 *  Created on: 2017-07-27                                  				*
 *  Author(s): Klapsch Adrian Vasile (IFAT PMM TI COP)					*
 *																		*
-*  ListAdapter provides a own design for listviews.						*
+*  ListAdapter provides a customized design for listviews.				*
 *																		*
 ************************************************************************/
 

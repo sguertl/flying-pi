@@ -1,4 +1,4 @@
-﻿/************************************************************************
+﻿﻿/************************************************************************
 *																		*
 *  Copyright (C) 2017 Infineon Technologies Austria AG.					*
 *																		*
@@ -16,11 +16,11 @@
 *  permissions and limitations under the License.						*
 *																		*
 *																		*
-*  File: SocketReader.cs														*
-*  Created on: 2017-8-1				*
-*  Author(s): Guertl Sebastian Matthias (IFAT PMM TI COP)											*
+*  File: SocketReader.cs												*
+*  Created on: 2017-07-26			                                	*
+*  Author(s): Klapsch Adrian Vasile (IFAT PMM TI COP)					*
 *																		*
-*  <Summary>															*
+*  SocketReader reads data which is sent by Raspberry.					*
 *																		*
 ************************************************************************/
 using System;

@@ -16,11 +16,15 @@
 *  permissions and limitations under the License.						*
 *																		*
 *																		*
-*  File: LogActivity.cs														*
-*  Created on: 2017-8-1				*
-*  Author(s): Guertl Sebastian Matthias (IFAT PMM TI COP)											*
+*  File: LogActivity.cs											    	*
+*  Created on: 2017-07-27                                               *
+*  Author(s): Klapsch Adrian Vasile (IFAT PMM TI COP)	       			*
 *																		*
-*  <Summary>															*
+*  LogActivity displays all log files in a listview. A click on an      *
+*  item shows the options:                                              *
+*  1) Raw Data                                                          *
+*  2) Visualize                                                         *
+*  3) Delete															*
 *																		*
 ************************************************************************/
 using System;

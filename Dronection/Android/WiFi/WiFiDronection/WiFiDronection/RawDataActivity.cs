@@ -16,13 +16,15 @@
 *  permissions and limitations under the License.						*
 *																		*
 *																		*
-*  File: RawDataActivity.cs														*
-*  Created on: 2017-8-1				*
-*  Author(s): Guertl Sebastian Matthias (IFAT PMM TI COP)											*
+*  File: RawDataActivity.cs												*
+*  Created on: 2017-8-1			                                    	*
+*  Author(s): Englert Christoph (IFAT PMM TI COP)						*
+*             Klapsch Adrian Vasile (IFAT PMM TI COP)                   *
 *																		*
-*  <Summary>															*
+*  RawDataActivity displays raw data from a log file of a flight.		*
 *																		*
 ************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
