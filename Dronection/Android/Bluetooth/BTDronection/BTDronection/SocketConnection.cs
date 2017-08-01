@@ -14,11 +14,11 @@ using Android.Bluetooth;
 using Java.Lang.Reflect;
 using Android.Util;
 using Java.IO;
-using System.Threading;
+
 
 namespace BTDronection
 {
-    public class SocketConnection// : Thread
+    public class SocketConnection
     {
         private BluetoothSocket mSocket;
         private BluetoothAdapter mAdapter;
@@ -27,21 +27,12 @@ namespace BTDronection
         private DataInputStream mDataInputStream;
         private string mLogData;
         private long mStartMillis;
-        private bool mIsConnected;
-        private bool mIsConnectionFailed;
+
+        // Public Member
+        public Thread mConnectionThread;
 
         private readonly byte StartByte = 0x00;
         private readonly int PacketSize = 19;
-
-        public bool IsConnected
-        {
-            get { return mIsConnected; }
-        }
-
-        public bool IsConnectionFailed
-        {
-            get { return mIsConnectionFailed; }
-        }
 
         public BluetoothDevice Peer
         {
@@ -66,6 +57,7 @@ namespace BTDronection
 
         private static SocketConnection instance = null;
         private static readonly object padlock = new object();
+        private static readonly string TAG = "SocketConnection";
 
         public static SocketConnection Instance
         {
@@ -82,16 +74,22 @@ namespace BTDronection
             }
         }
 
-        public SocketConnection()
+        private SocketConnection()
+        {
+            Init();
+        }
+
+        private void Init()
         {
             mAdapter = BluetoothAdapter.DefaultAdapter;
             mStartMillis = 0;
-            mIsConnected = false;
-            mIsConnectionFailed = false;
+
+            this.mConnectionThread = new Thread(BuildConnection);
         }
 
-        public void BuildConnection(BluetoothDevice device)
+        public void Init(BluetoothDevice device)
         {
+            Init();
             BluetoothSocket tmp = null;
             tmp = device.CreateInsecureRfcommSocketToServiceRecord(device.GetUuids()[0].Uuid);
             Class helpClass = tmp.RemoteDevice.Class;
@@ -100,61 +98,42 @@ namespace BTDronection
             Java.Lang.Object[] param = new Java.Lang.Object[] { Integer.ValueOf(1) };
 
             mSocket = (BluetoothSocket)m.Invoke(tmp.RemoteDevice, param);
+        }
 
-            ThreadPool.QueueUserWorkItem(lol =>
+        public void OnStartConnection()
+        {
+            if (mConnectionThread != null)
             {
+                mConnectionThread.Start();
+                mConnectionThread.Join();
+            }
+
+        }
+        public void BuildConnection()
+        {
                 mAdapter.CancelDiscovery();
+
                 try
                 {
                     if (mSocket.IsConnected == false)
                     {
+                        Thread.Sleep(2000);
                         mSocket.Connect();
-                        mIsConnected = true;
                     }
                 }
-                catch (System.Exception sex)
+                catch (Java.Lang.Exception ex)
                 {
-                    mIsConnected = false;
-                    mIsConnectionFailed = true;
+                    Log.Debug(TAG, "Connection could not be created (" + ex.Message + ")");
                     Cancel();
-                    Log.Debug("SocketConnection", "Connection could not be created");
                 }
+
+            if (mSocket.IsConnected)
+            {
                 mDataOutputStream = new DataOutputStream(mSocket.OutputStream);
                 mDataInputStream = new DataInputStream(mSocket.InputStream);
-            });
+            }
+
         }
-
-        /*public override void Run()
-        {
-            BluetoothSocket tmp = null;
-            tmp = mPeer.CreateInsecureRfcommSocketToServiceRecord(mPeer.GetUuids()[0].Uuid);
-            Class helpClass = tmp.RemoteDevice.Class;
-            Class[] paramTypes = new Class[] { Integer.Type };
-            Method m = helpClass.GetMethod("createRfcommSocket", paramTypes);
-            Java.Lang.Object[] param = new Java.Lang.Object[] { Integer.ValueOf(1) };
-
-            mSocket = (BluetoothSocket)m.Invoke(tmp.RemoteDevice, param);
-
-            mAdapter.CancelDiscovery();
-            try
-            {
-                if (mSocket.IsConnected == false)
-                {
-                    mSocket.Connect();
-                    mIsConnected = true;
-                }
-            }
-            catch (System.Exception sex)
-            {
-                mIsConnected = false;
-                mIsConnectionFailed = true;
-                Cancel();
-                Log.Debug("SocketConnection", "Connection could not be created");
-                return;
-            }
-            mDataOutputStream = new DataOutputStream(mSocket.OutputStream);
-            mDataInputStream = new DataInputStream(mSocket.InputStream);
-        }*/
 
         public void Write(params Int16[] args)
         {
@@ -167,9 +146,9 @@ namespace BTDronection
                 mDataOutputStream.Write(bytes);
                 mDataOutputStream.Flush();
             }
-            catch(System.Exception sex)
+            catch(Java.Lang.Exception ex)
             {
-                Log.Debug("SocketConnection", "Error while sending data");
+                Log.Debug(TAG, "Error while sending data (" + ex.Message + ")");
                 Cancel();
             }
         }
@@ -183,9 +162,6 @@ namespace BTDronection
             int pitch = Java.Lang.Float.FloatToIntBits(args[2]);
             int roll = Java.Lang.Float.FloatToIntBits(args[3]);
 
-            //string str = string.Format("Speed: {0} HeightControl: {1} Azimuth: {2} Pitch: {3} Roll: {4}", speed,
-            //        heightcontrol, azimuth, pitch, roll);
-            //Console.WriteLine(str);
             int checksum = StartByte;
             checksum ^= (heightcontrol << 8 | speed) & 0xFFFF;
             checksum ^= azimuth;
@@ -223,14 +199,20 @@ namespace BTDronection
         {
             try
             {
-                mSocket.Close();
+                this.mConnectionThread = null;
+                
                 if (mDataOutputStream != null)
                 {
                     mDataOutputStream.Close();
                 }
-            }catch(System.Exception ex)
-            {
 
+                if(mSocket != null)
+                {
+                    mSocket.Close();
+                }
+            }catch(Java.Lang.Exception ex)
+            {
+                Log.Debug(TAG, "Cancel Failed (" + ex.Message + ")");
             }
         }
     }

@@ -66,6 +66,7 @@
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SocketConnection.cs" />
+    <Compile Include="SocketReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\SourceSansPro-Bold.ttf" />

@@ -131,8 +131,10 @@ namespace BTDronection
         {
             Toast.MakeText(ApplicationContext, "Connecting...", 0).Show();
 
-            mSocketConnection.BuildConnection(bluetoothDevice);
-            if(mSocketConnection.IsConnected == true)
+            mSocketConnection.Init(bluetoothDevice);
+            mSocketConnection.OnStartConnection();
+
+            if(mSocketConnection.Socket.IsConnected == true)
             {
                 StartActivity(typeof(ControllerActivity));
             }
@@ -141,21 +143,6 @@ namespace BTDronection
                 Toast.MakeText(this, "Could not connect to peer", ToastLength.Short).Show();
             }
 
-           /* mSocketConnection.Peer = bluetoothDevice;
-            mSocketConnection.Start();
-
-            while (mSocketConnection.IsConnected == false)
-            {
-                if(mSocketConnection.IsConnectionFailed == true)
-                {
-                    Toast.MakeText(this, "Could not connect to peer", ToastLength.Short).Show();
-                    break;
-                }
-            }
-            if(mSocketConnection.IsConnectionFailed == false)
-            {
-                StartActivity(typeof(ControllerActivity));
-            }*/
         }
     }
 }

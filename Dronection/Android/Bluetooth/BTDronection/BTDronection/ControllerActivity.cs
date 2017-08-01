@@ -78,17 +78,34 @@ namespace BTDronection
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            DateTime time = DateTime.Now;
-            string logName = string.Format("{0}{1:D2}{2:D2}_{3:D2}{4:D2}{5:D2}_log", time.Year, time.Month, time.Day, time.Hour, time.Minute, time.Second);
-            var storageDir = new Java.IO.File(MainActivity.ApplicationFolderPath + Java.IO.File.Separator + logName);
-            storageDir.Mkdirs();
-            var writer = new Java.IO.FileWriter(new Java.IO.File(storageDir, "Controlls.csv"));
-            writer.Write(mSocketConnection.LogData);
-            writer.Close();
+            WriteLogData();
+            mSocketConnection.Cancel();
+        }
+
+        protected override void OnStop()
+        {
+            base.OnStop();
+            WriteLogData();
+            mSocketConnection.Cancel();
+        }
+
+        public void WriteLogData()
+        {
+            if(mSocketConnection.LogData != null)
+            {
+                DateTime time = DateTime.Now;
+                string logName = string.Format("{0}{1:D2}{2:D2}_{3:D2}{4:D2}{5:D2}_log", time.Year, time.Month, time.Day, time.Hour, time.Minute, time.Second);
+                var storageDir = new Java.IO.File(MainActivity.ApplicationFolderPath + Java.IO.File.Separator + logName);
+                storageDir.Mkdirs();
+                var writer = new Java.IO.FileWriter(new Java.IO.File(storageDir, "Controlls.csv"));
+                writer.Write(mSocketConnection.LogData);
+                writer.Close();
+            }
         }
 
         private void OnStartController(object sender, EventArgs e)
         {
+
             SetContentView(Resource.Layout.ControllerLayout);
 
             mSbTrimBar = FindViewById<SeekBar>(Resource.Id.sbTrimbar);
