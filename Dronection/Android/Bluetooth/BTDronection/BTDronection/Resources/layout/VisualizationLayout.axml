@@ -12,6 +12,6 @@
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     android:divider="#005DA9"
-    android:dividerHeight="5fp" />
+    android:dividerHeight="5dp" />
 
 </LinearLayout>
