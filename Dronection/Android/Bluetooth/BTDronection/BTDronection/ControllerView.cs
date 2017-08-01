@@ -72,7 +72,7 @@ namespace BTDronection
             Settings = new ControllerSettings
             {
                 AltitudeControlActivated = false,
-                Inverted = ControllerActivity.mInverted,
+                Inverted = ControllerActivity.Inverted,
                 TrimPitch = 0,
                 TrimRoll = 0,
                 TrimYaw = 0

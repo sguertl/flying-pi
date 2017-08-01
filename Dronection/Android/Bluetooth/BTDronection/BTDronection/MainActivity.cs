@@ -1,14 +1,37 @@
-﻿using System;
+﻿/************************************************************************
+*                                                                       *
+*  Copyright (C) 2017 Infineon Technologies Austria AG.                 *
+*                                                                       *
+*  Licensed under the Apache License, Version 2.0 (the "License");      *
+*  you may not use this file except in compliance with the License.     *
+*  You may obtain a copy of the License at                              *
+*                                                                       *
+*    http://www.apache.org/licenses/LICENSE-2.0                         *
+*                                                                       *
+*  Unless required by applicable law or agreed to in writing, software  *
+*  distributed under the License is distributed on an "AS IS" BASIS,    *
+*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or      *
+*  implied.                                                             *
+*  See the License for the specific language governing                  *
+*  permissions and limitations under the License.                       *
+*                                                                       *
+*                                                                       *
+*  File: MainActivity.cs                                                *
+*  Created on: 2017-07-19                                               *
+*  Author(s): Guertl Sebastian Matthias (IFAT PMM TI COP)               *
+*             Klapsch Adrian Vasile (IFAT PMM TI COP)                   *
+*             Englert Christoph (IFAT PMM TI COP)                       *
+*                                                                       *
+*  MainActivity asks the user to activate bluetooth.                    *
+*                                                                       *
+************************************************************************/
+
+using System;
 using Android.App;
 using Android.Content;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 using Android.OS;
 using Android.Bluetooth;
-using Android.Graphics.Drawables;
-using Android.Graphics.Drawables.Shapes;
-using Android.Util;
 using Android.Graphics;
 
 namespace BTDronection
@@ -17,30 +40,37 @@ namespace BTDronection
         Theme = "@android:style/Theme.Holo.Light.NoActionBar.Fullscreen", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class MainActivity : Activity
     {
-        // Members
-        private BluetoothAdapter m_BtAdapter;
+
+		// Root path for project folder
+		public static string ApplicationFolderPath;
+
+		// Widgets
         private Button mBtShowDevices;
-        private LinearLayout m_Linear;
+        private LinearLayout mLinearLayout;
         private TextView mTvHeader;
         private Button mBtShowLog;
         private Button mBtHelp;
         private TextView mTvFooter;
 
-        public static string ApplicationFolderPath;
+        // Bluetooth members
+        private BluetoothAdapter mBtAdapter;
 
-        protected override void OnCreate(Bundle bundle)
+		/// <summary>
+		/// Entry point for application.
+		/// </summary>
+		protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.Main);
             
             Init();
 
-            // Checking if bluetooth is supported
-            if (m_BtAdapter == null)
+            // Check if bluetooth is supported
+            if (mBtAdapter == null)
             {
                 Toast.MakeText(ApplicationContext, "Bluetooth is not supported", 0).Show();
 
-                // Displaying an alert to inform the user that bluetooth is not supported
+                // Display an alert to inform the user that bluetooth is not supported
                 AlertDialog alert = new AlertDialog.Builder(this).Create();
                 alert.SetTitle("Bluetooth not supported");
                 alert.SetMessage("Bluetooth is not supported!");
@@ -49,29 +79,32 @@ namespace BTDronection
             }
             else
             {
-                // Checking if bluetooth is enabled
-                if (!m_BtAdapter.IsEnabled) { TurnBTOn(); }
+                // Check if bluetooth is enabled
+                if (!mBtAdapter.IsEnabled) 
+                { 
+                    TurnBTOn(); 
+                }
             }
 
             CreateApplicationFolder();
         }
 
         /// <summary>
-        /// Initializing and modifies objects
+        /// Initizalies and modifies objects
         /// </summary>
         public void Init()
         {
-            // Initializing objects
-            m_BtAdapter = BluetoothAdapter.DefaultAdapter;
+			// Initialize widgets
+			mBtAdapter = BluetoothAdapter.DefaultAdapter;
             mBtShowDevices = FindViewById<Button>(Resource.Id.btShowDevices);
-            m_Linear = FindViewById<LinearLayout>(Resource.Id.linear);
+            mLinearLayout = FindViewById<LinearLayout>(Resource.Id.linear);
             mBtShowLog = FindViewById<Button>(Resource.Id.btLog);
             mBtHelp = FindViewById<Button>(Resource.Id.btHelp);
             mTvHeader = FindViewById<TextView>(Resource.Id.tvHeader);
             mTvFooter = FindViewById<TextView>(Resource.Id.tvFooter);
             
-            // Setting activity background
-            m_Linear.SetBackgroundColor(Android.Graphics.Color.White);
+            // Set activity background
+            mLinearLayout.SetBackgroundColor(Android.Graphics.Color.White);
 
             mBtShowLog.Click += delegate
             {
@@ -83,10 +116,10 @@ namespace BTDronection
                 StartActivity(typeof(HelpActivity));
             };
 
-            // Handling paired devices button click
+            // Handle paired devices button click
             mBtShowDevices.Click += delegate
             {
-                if (m_BtAdapter.IsEnabled)
+                if (mBtAdapter.IsEnabled)
                 {
                     StartActivity(typeof(PairedDevices));
                 }
@@ -96,6 +129,7 @@ namespace BTDronection
                 }
             };
 
+            // Create and set font
             var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
             mTvHeader.Typeface = font;
             mBtShowDevices.Typeface = font;
@@ -105,7 +139,7 @@ namespace BTDronection
         }
 
         /// <summary>
-        /// Enables bluetooth on the device
+        /// Enables bluetooth on the device.
         /// </summary>
         public void TurnBTOn()
         {
@@ -113,9 +147,11 @@ namespace BTDronection
             StartActivityForResult(intent, 1);
         }
 
-        private void CreateApplicationFolder()
+		/// <summary>
+		/// Creates the application folder for internal mobile storage.
+		/// </summary>
+		private void CreateApplicationFolder()
         {
-            // Creates Application folder on internal mobile storage
             ApplicationFolderPath = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.ToString(), "airything");
             ApplicationFolderPath += Java.IO.File.Separator + "bluetooth";
             var storageDir = new Java.IO.File(ApplicationFolderPath + Java.IO.File.Separator + "settings");
@@ -124,14 +160,20 @@ namespace BTDronection
             settingsFile.CreateNewFile();
         }
 
-        protected override void OnDestroy()
+		/// <summary>
+		/// Closes socket connection.
+		/// </summary>
+		protected override void OnDestroy()
         {
             base.OnDestroy();
             SocketConnection sc = SocketConnection.Instance;
             sc.Cancel();
         }
 
-        protected override void OnStop()
+		/// <summary>
+		/// Closes socket connection.
+		/// </summary>
+		protected override void OnStop()
         {
             base.OnStop();
             SocketConnection sc = SocketConnection.Instance;

@@ -78,7 +78,7 @@ namespace WiFiDronection
         public static bool Inverted;
 
         /// <summary>
-        /// Creates activity and initializes widgets
+        /// Creates activity and initializes widgets.
         /// </summary>
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -239,28 +239,6 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Saves Log file when finished.
-        /// </summary>
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-            WriteLogData();
-            mSocketConnection.OnCancel();
-            mSocketReader.Close();
-        }
-
-		/// <summary>
-		/// Saves Log file when finished.
-		/// </summary>
-		protected override void OnStop()
-        {
-            base.OnStop();
-            WriteLogData();
-            mSocketConnection.OnCancel();
-            mSocketReader.Close();
-        }
-
-        /// <summary>
         /// Writes log in csv format.
         /// </summary>
         private void WriteLogData()
@@ -322,6 +300,29 @@ namespace WiFiDronection
                 mBtnAltitudeControl.SetBackgroundColor(Color.ParseColor("#E30034"));
             }
 		}
+
+		/// <summary>
+		/// Saves log file and close connection when finished.
+		/// </summary>
+		protected override void OnDestroy()
+		{
+			base.OnDestroy();
+			WriteLogData();
+			mSocketConnection.OnCancel();
+			mSocketReader.Close();
+		}
+
+		/// <summary>
+		/// Saves log file and close connection when finished.
+		/// </summary>
+		protected override void OnStop()
+		{
+			base.OnStop();
+			WriteLogData();
+			mSocketConnection.OnCancel ();
+			mSocketReader.Close();  
+		}
+
 
         /// <summary>
         /// Goes to back to main activity.

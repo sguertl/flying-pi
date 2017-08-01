@@ -1,14 +1,36 @@
+/************************************************************************
+*                                                                       *
+*  Copyright (C) 2017 Infineon Technologies Austria AG.                 *
+*                                                                       *
+*  Licensed under the Apache License, Version 2.0 (the "License");      *
+*  you may not use this file except in compliance with the License.     *
+*  You may obtain a copy of the License at                              *
+*                                                                       *
+*    http://www.apache.org/licenses/LICENSE-2.0                         *
+*                                                                       *
+*  Unless required by applicable law or agreed to in writing, software  *
+*  distributed under the License is distributed on an "AS IS" BASIS,    *
+*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or      *
+*  implied.                                                             *
+*  See the License for the specific language governing                  *
+*  permissions and limitations under the License.                       *
+*                                                                       *
+*                                                                       *
+*  File: ControllerActivity.cs                                          *
+*  Created on: 2017-07-19                                               *
+*  Author(s): Guertl Sebastian Matthias (IFAT PMM TI COP)               *
+*             Klapsch Adrian Vasile (IFAT PMM TI COP)                   *
+*                                                                       *
+*  ControllerActivity has two functionalities:                          *
+*  1) Choose between controller mode before flight.                     *
+*  2) Create ControllerView with Joysticks and settings.                *
+*                                                                       *
+************************************************************************/
+
 using System;
-using System.Threading;
 using Android.App;
-using Android.Content;
 using Android.OS;
 using Android.Widget;
-using Android.Telephony;
-using Android.Runtime;
-using Android.Net.Sip;
-using Android;
-using System.IO;
 using Android.Graphics;
 
 namespace BTDronection
@@ -20,51 +42,73 @@ namespace BTDronection
              )]
     public class ControllerActivity : Activity
     {
+        // Widgets controller settings
         private TextView mTvHeader;
         private RadioGroup mRgControlMethod;
-        private RadioButton mRbThrottleLeft;
-        private RadioButton mRbThrottleRight;
-        private ImageView mIvMode;
+        private RadioButton mRbMode1;
+        private RadioButton mRbMode2;
+        private ImageView mIvMode1;
+        private ImageView mIvMode2;
         private Button mBtStart;
-        private Button mBtShowLog;
+        private Button mBtBack;
 
+        // Widgets controller
         private SeekBar mSbTrimBar;
         private TextView mTvTrimValue;
         private RadioButton mRbYawTrim;
         private RadioButton mRbPitchTrim;
         private RadioButton mRbRollTrim;
+        private Button mBtnAltitudeControl;
 
-        public static bool mInverted;
-        private readonly int mMinTrim = -20;
-
+        // Storage Path
         private string mStorageDirPath;
+
+		// Socket members
         private SocketConnection mSocketConnection;
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        // Constants
+		private readonly int mMinTrim = -20;
+
+		// Public variables
+		public static bool Inverted;
+
+		/// <summary>
+		/// Creates activity and initializes widgets.
+		/// </summary>
+		protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.ControllerSettings);
-            mTvHeader = FindViewById<TextView>(Resource.Id.tvHeaderSettings);
-            mRgControlMethod = FindViewById<RadioGroup>(Resource.Id.rgControlMethod);
-            mRbThrottleLeft = FindViewById<RadioButton>(Resource.Id.rbThrottleLeft);
-            mRbThrottleRight = FindViewById<RadioButton>(Resource.Id.rbThrottleRight);
-            mIvMode = FindViewById<ImageView>(Resource.Id.ivMode);
-            mBtStart = FindViewById<Button>(Resource.Id.btStart);
-            mBtShowLog = FindViewById<Button>(Resource.Id.btShowLog);
 
-            var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
+			SetContentView(Resource.Layout.ControllerSettings);
+
+			// Initialize widgets
+            mTvHeader = FindViewById<TextView>(Resource.Id.tvHeaderSettings);
+            mRgControlMethod = FindViewById<RadioGroup>(Resource.Id.rgControlMode);
+            mRbMode1 = FindViewById<RadioButton>(Resource.Id.rbMode1);
+            mRbMode2 = FindViewById<RadioButton>(Resource.Id.rbMode2);
+            mIvMode1 = FindViewById<ImageView>(Resource.Id.ivMode1);
+            mIvMode2 = FindViewById<ImageView>(Resource.Id.ivMode2);
+            mBtStart = FindViewById<Button>(Resource.Id.btStart);
+            mBtBack = FindViewById<Button>(Resource.Id.btnSettingsBack);
+
+			// Create font
+			var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
 
             mTvHeader.Typeface = font;
-            mRbThrottleLeft.Typeface = font;
-            mRbThrottleRight.Typeface = font;
+            mRbMode1.Typeface = font;
+            mRbMode2.Typeface = font;
             mBtStart.Typeface = font;
-            mBtShowLog.Typeface = font;
+            mBtBack.Typeface = font;
 
-            mRbThrottleLeft.Click += OnThrottleLeftClick;
-            mRbThrottleRight.Click += OnThrottleRightClick;
+            mRbMode1.Click += OnMode1Click;
+            mIvMode1.Click += OnMode1Click;
+
+            mRbMode2.Click += OnMode2Click;
+            mIvMode2.Click += OnMode2Click;
 
             mBtStart.Click += OnStartController;
 
+			// Get singleton instance of socket connection
             mSocketConnection = SocketConnection.Instance;
 
             mStorageDirPath = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.ToString(), "Airything");
@@ -72,21 +116,10 @@ namespace BTDronection
             storageDir.Mkdirs();
         }
 
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-            WriteLogData();
-            mSocketConnection.Cancel();
-        }
-
-        protected override void OnStop()
-        {
-            base.OnStop();
-            WriteLogData();
-            mSocketConnection.Cancel();
-        }
-
-        public void WriteLogData()
+		/// <summary>
+		/// Writes log in csv format.
+		/// </summary>
+		public void WriteLogData()
         {
             if(mSocketConnection.LogData != null)
             {
@@ -94,7 +127,7 @@ namespace BTDronection
                 string logName = string.Format("{0}{1:D2}{2:D2}_{3:D2}{4:D2}{5:D2}_log", time.Year, time.Month, time.Day, time.Hour, time.Minute, time.Second);
                 var storageDir = new Java.IO.File(MainActivity.ApplicationFolderPath + Java.IO.File.Separator + logName);
                 storageDir.Mkdirs();
-                var writer = new Java.IO.FileWriter(new Java.IO.File(storageDir, "Controlls.csv"));
+                var writer = new Java.IO.FileWriter(new Java.IO.File(storageDir, "controls.csv"));
                 writer.Write(mSocketConnection.LogData);
                 writer.Close();
             }
@@ -105,12 +138,14 @@ namespace BTDronection
 
             SetContentView(Resource.Layout.ControllerLayout);
 
+            // Initialize widgets
             mSbTrimBar = FindViewById<SeekBar>(Resource.Id.sbTrimbar);
             mTvTrimValue = FindViewById<TextView>(Resource.Id.tvTrimValue);
             mRbYawTrim = FindViewById<RadioButton>(Resource.Id.rbYawTrim);
             mRbPitchTrim = FindViewById<RadioButton>(Resource.Id.rbPitchTrim);
             mRbRollTrim = FindViewById<RadioButton>(Resource.Id.rbRollTrim);
 
+            // Create and set font
             var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
             mTvTrimValue.Typeface = font;
             mRbYawTrim.Typeface = font;
@@ -153,29 +188,60 @@ namespace BTDronection
             };
         }
 
-        private void OnThrottleRightClick(object sender, EventArgs e)
+		/// <summary>
+		/// Changes control mode to Mode 1.
+		/// </summary>
+		private void OnMode1Click(object sender, EventArgs e)
+		{
+			Inverted = ControllerSettings.INACTIVE;
+			mRbMode1.Checked = true;
+		}
+
+		/// <summary>
+		/// Changes control mode to Mode 2.
+		/// </summary>
+		private void OnMode2Click(object sender, EventArgs e)
         {
-            mInverted = ControllerSettings.ACTIVE;
-            mIvMode.SetImageResource(Resource.Drawable.mode2);
+            Inverted = ControllerSettings.ACTIVE;
+            mRbMode2.Checked = true;
         }
 
-        private void OnThrottleLeftClick(object sender, EventArgs e)
-        {
-            mInverted = ControllerSettings.INACTIVE;
-            mIvMode.SetImageResource(Resource.Drawable.mode1);
-        }
+		/// <summary>
+		/// Handles OnClick event on Altitude Control button.
+		/// Activates or deactivates altitude control.
+		/// </summary>
+		private void OnAltitudeControlClick(object sender, EventArgs e)
+		{
+			if (ControllerView.Settings.AltitudeControlActivated)
+			{
+				ControllerView.Settings.AltitudeControlActivated = ControllerSettings.INACTIVE;
+				mBtnAltitudeControl.SetBackgroundColor(Color.ParseColor("#005DA9"));
+			}
+			else
+			{
+				ControllerView.Settings.AltitudeControlActivated = ControllerSettings.ACTIVE;
+				mBtnAltitudeControl.SetBackgroundColor(Color.ParseColor("#E30034"));
+			}
+		}
 
-        private void OnRgClick(object sender, EventArgs e)
-        {
-            if (mRbThrottleLeft.Selected)
-            {
-                mInverted = ControllerSettings.INACTIVE;
+		/// <summary>
+		/// Saves log file and close connection when finished.
+		/// </summary>
+		protected override void OnDestroy()
+		{
+			base.OnDestroy();
+			WriteLogData();
+			mSocketConnection.Cancel();
+		}
 
-            }
-            if (mRbThrottleRight.Selected)
-            {
-                mInverted = ControllerSettings.ACTIVE;
-            }
-        }
+		/// <summary>
+		/// Saves log file and close connection when finished.
+		/// </summary>
+		protected override void OnStop()
+		{
+			base.OnStop();
+			WriteLogData();
+			mSocketConnection.Cancel();
+		}
     }
 }

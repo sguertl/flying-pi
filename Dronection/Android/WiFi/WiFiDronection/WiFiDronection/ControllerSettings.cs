@@ -43,7 +43,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Trim of yaw parameter [-30;30]
+        /// Trim of yaw parameter [-20;20]
         /// </summary>
         public int TrimYaw
         {
@@ -52,7 +52,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Trim of pitch parameter [-30;30]
+        /// Trim of pitch parameter [-20;20]
         /// </summary>
         public int TrimPitch
         {
@@ -61,7 +61,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Trim of roll paramter [-30;30]
+        /// Trim of roll paramter [-20;20]
         /// </summary>
         public int TrimRoll
         {

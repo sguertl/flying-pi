@@ -71,6 +71,7 @@ namespace WiFiDronection
 
         /// <summary>
         /// Entry point for application.
+		/// Initializes all widgets.
         /// </summary>
         protected override void OnCreate(Bundle bundle)
         {
@@ -107,7 +108,7 @@ namespace WiFiDronection
             mLastConnectedPeer = "";
            // mIsConnected = false;
 
-            // Turn on wifi if it isturned off
+            // Turn on wifi if it is turned off
             WifiManager wm = GetSystemService(WifiService).JavaCast<WifiManager>();
             if (wm.IsWifiEnabled == false)
             {
@@ -285,7 +286,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Closes socket connection
+        /// Closes socket connection.
         /// </summary>
         protected override void OnDestroy()
         {

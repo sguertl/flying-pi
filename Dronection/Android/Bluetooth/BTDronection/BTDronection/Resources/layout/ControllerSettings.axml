@@ -7,6 +7,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:isScrollContainer="true">
+    <!--
+        Header
+        -->
         <TextView
             android:textSize="32dp"
             android:layout_marginTop="20dp"
@@ -16,60 +19,83 @@
             android:text="Controller Settings"
             android:gravity="center_horizontal"
             android:id="@+id/tvHeaderSettings" />
-    <!-- CONTROL MODE -->
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:weightSum="1">
+            android:layout_height="match_parent">
             <RadioGroup
                 android:minWidth="25px"
                 android:minHeight="25px"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight=".6"
-                android:layout_margin="4dp"
                 android:gravity="center_horizontal|center_vertical"
+                android:orientation="horizontal"
                 android:layout_gravity="center"
-                android:id="@+id/rgControlMethod">
+                android:weightSum="1"
+                android:id="@+id/rgControlMode">
+            <!--
+                Mode 1 radio button
+                -->
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
-                    android:text="Mode 1"
                     android:textSize="24dp"
-                    android:layout_margin="10dp"
-                    android:id="@+id/rbThrottleLeft" />
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="140dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight=".5"
+                    android:id="@+id/rbMode1" />
+            <!--
+                Mode 2 radio button
+                -->
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Mode 2"
                     android:textSize="24dp"
-                    android:layout_margin="10dp"
-                    android:id="@+id/rbThrottleRight" />
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="140dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight=".5"
+                    android:id="@+id/rbMode2" />
             </RadioGroup>
-        <!-- DESCRIPTION IMAGEVIEW -->
-            <ImageView
-                android:id="@+id/ivMode"
-                android:src="@drawable/mode1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight=".4"
-                android:scaleType="centerInside"
-                android:adjustViewBounds="true"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp" />
         </LinearLayout>
-    <!-- DESCRIPTION TEXTVIEW -->
-    <!-- HEIGHT CONTROL
-    <ToggleButton
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp" /> -->
-    <!-- START BUTTON -->
+    <!-- DESCRIPTION IMAGEVIEW -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="1">
+        <!--
+            Mode 1 image
+            -->
+            <ImageView
+                android:id="@+id/ivMode1"
+                android:src="@drawable/mode1"
+                android:scaleX="1"
+                android:scaleY="1"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_weight=".5"
+                android:scaleType="centerInside"
+                android:adjustViewBounds="true" />
+        <!--
+            Mode 2 image
+            -->
+            <ImageView
+                android:id="@+id/ivMode2"
+                android:src="@drawable/mode2"
+                android:scaleX="1"
+                android:scaleY="1"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_weight=".5"
+                android:scaleType="centerInside"
+                android:adjustViewBounds="true" />
+        </LinearLayout>
+    <!-- 
+        Start controller button
+        -->
         <Button
             android:id="@+id/btStart"
             android:textSize="20dp"
@@ -80,11 +106,13 @@
             android:layout_margin="10dp"
             android:textColor="#ffffff"
             android:background="#005DA9" />
-    <!-- SHOW LOG BUTTON -->
+    <!-- 
+        Back button
+        -->
         <Button
-            android:id="@+id/btShowLog"
+            android:id="@+id/btnSettingsBack"
             android:textSize="20dp"
-            android:text="Show Log"
+            android:text="Back"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal|center_vertical"

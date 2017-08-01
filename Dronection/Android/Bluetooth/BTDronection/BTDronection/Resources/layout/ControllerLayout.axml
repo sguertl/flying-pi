@@ -6,62 +6,93 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="1.0">
+        android:layout_height="wrap_content">
+    <!--
+        Altitude control button
+        -->
+        <Button
+            android:id="@+id/btnAltitudeControl"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="ALTITUDE CONTROL"
+            android:textSize="15dp"
+            android:textColor="#ffffff"
+            android:background="#005DA9"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal|center_vertical" />
+    <!--
+        Trim seekbar
+        -->
         <SeekBar
             android:id="@+id/sbTrimbar"
-            android:layout_width="match_parent"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginBottom="0dp"
             android:layout_marginLeft="10dp"
+            android:gravity="right|center_horizontal"
             android:max="40"
             android:progress="20"
-            android:progressDrawable="@drawable/myseekbar"
-            android:layout_weight=".65" />
+            android:progressDrawable="@drawable/customseekbar" />
+    <!--
+        Trim value textview
+        -->
         <TextView
             android:id="@+id/tvTrimValue"
-            android:layout_width="wrap_content"
+            android:layout_width="20dp"
             android:layout_height="wrap_content"
             android:text="0"
-            android:layout_margin="15dp" />
+            android:textSize="14dp"
+            android:gravity="right"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp" />
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="10dp"
             android:orientation="horizontal"
-            android:layout_weight=".35"
             android:layout_gravity="right|center_vertical">
+        <!--
+            Yaw trim radio button
+            -->
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Yaw Trim"
-                android:textSize="14dp"
+                android:text="Yaw"
+                android:textSize="12dp"
                 android:id="@+id/rbYawTrim"
                 android:height="1dp"
                 android:checked="true"
                 android:gravity="center_vertical|center_horizontal"
-                android:layout_marginRight="10dp" />
+                android:layout_marginRight="5dp" />
+        <!--
+            Pitch trim radio button
+            -->
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Pitch Trim"
-                android:textSize="14dp"
+                android:text="Pitch"
+                android:textSize="12dp"
                 android:id="@+id/rbPitchTrim"
                 android:height="1dp"
-                android:layout_marginRight="10dp" />
+                android:layout_marginRight="5dp" />
+        <!--
+            Roll trim radio button
+            -->
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Roll Trim"
-                android:textSize="14dp"
+                android:text="Roll"
+                android:textSize="12dp"
                 android:id="@+id/rbRollTrim"
                 android:height="1dp"
-                android:layout_marginRight="10dp" />
+                android:layout_marginRight="5dp" />
         </RadioGroup>
     </LinearLayout>
-    <BTDronection.ControllerView
+    <WiFiDronection.ControllerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/JoystickView" />
