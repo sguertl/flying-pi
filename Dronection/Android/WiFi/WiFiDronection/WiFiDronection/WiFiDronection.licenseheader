@@ -51,7 +51,7 @@ Author(s): %UserDisplayName%
 --%>
 extensions: .vb
 'Sample license text.
-extensions:  .xml .config .xsd
+extensions:  .xml .config .xsd, .axml
 <!--
 Copyright (C) 2017 Infineon Technologies Austria AG.
 
