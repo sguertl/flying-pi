@@ -16,13 +16,16 @@
 *  permissions and limitations under the License.						*
 *																		*
 *																		*
-*  File: HelpActivity.cs														*
-*  Created on: 2017-8-1				*
-*  Author(s): Guertl Sebastian Matthias (IFAT PMM TI COP)											*
+*  File: HelpActivity.cs												*
+*  Created on: 2017-07-25		                                		*
+*  Author(s): Guertl Sebastian Matthias (IFAT PMM TI COP)				*
 *																		*
-*  <Summary>															*
+*  HelpActivity provides general information:                        	*
+*  - Description of the structure of the app                            *
+*  - Version and information about the app                              *
 *																		*
 ************************************************************************/
+
 ﻿using System;
 
 using Android.App;

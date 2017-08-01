@@ -1,4 +1,4 @@
-﻿/************************************************************************
+﻿﻿/************************************************************************
 *																		*
 *  Copyright (C) 2017 Infineon Technologies Austria AG.					*
 *																		*
@@ -16,13 +16,15 @@
 *  permissions and limitations under the License.						*
 *																		*
 *																		*
-*  File: ControllerSettings.cs														*
-*  Created on: 2017-8-1				*
-*  Author(s): Guertl Sebastian Matthias (IFAT PMM TI COP)											*
+*  File: ControllerSettings.cs											*
+*  Created on: 2017-07-19                                   			*
+*  Author(s): Guertl Sebastian Matthias (IFAT PMM TI COP)				*
 *																		*
-*  <Summary>															*
+*  ControllerSettings stores various settings which are important		*
+*  when piloting the drone.                                             *
 *																		*
 ************************************************************************/
+
 namespace WiFiDronection
 {
     public class ControllerSettings

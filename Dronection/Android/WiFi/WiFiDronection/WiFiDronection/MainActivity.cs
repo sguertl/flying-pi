@@ -16,13 +16,18 @@
 *  permissions and limitations under the License.						*
 *																		*
 *																		*
-*  File: MainActivity.cs														*
-*  Created on: 2017-8-1				*
-*  Author(s): Guertl Sebastian Matthias (IFAT PMM TI COP)											*
+*  File: MainActivity.cs												*
+*  Created on: 2017-07-19                               				*
+*  Author(s): Guertl Sebastian Matthias (IFAT PMM TI COP)				*
+*             Klapsch Adrian Vasile (IFAT PMM TI COP)                   *
+*             Englert Christoph (IFAT PMM TI COP)                       *
 *																		*
-*  <Summary>															*
+*  MainActivity is responsible for searching a proper wifi connection   *
+*  and connecting to it using a password which can be entered by a      *
+*  dialog. 											                	*
 *																		*
 ************************************************************************/
+
 ﻿using Android.App;
 using Android.Widget;
 using Android.OS;
@@ -134,18 +139,28 @@ namespace WiFiDronection
                     {
                         // Filter devices by Rasp or Pi
                         IEnumerable<ScanResult> results = wifiList.Where(w => w.Ssid.ToUpper().Contains("RASP") || w.Ssid.ToUpper().Contains("PI"));
-                        var wifi = results.First();
-                        RunOnUiThread(() =>
+                        try
                         {
-                        // Show selected wifi device
-                        mSelectedSsid = wifi.Ssid;
-                            mSelectedBssid = wifi.Bssid;
-                            mTvWifiName.Text = "SSID: " + wifi.Ssid;
-                            mTvWifiMac.Text = "MAC: " + wifi.Bssid;
-                            mBtnConnect.Enabled = true;
-                            mBtnConnect.Text = "Connect";
-                            mBtnConnect.SetBackgroundColor(Color.ParseColor("#005DA9"));
-                        });
+                            var wifi = results.First();
+                            RunOnUiThread(() =>
+                            {
+                                // Show selected wifi device
+                                mSelectedSsid = wifi.Ssid;
+                                mSelectedBssid = wifi.Bssid;
+                                mTvWifiName.Text = "SSID: " + wifi.Ssid;
+                                mTvWifiMac.Text = "MAC: " + wifi.Bssid;
+                                mBtnConnect.Enabled = true;
+                                mBtnConnect.Text = "Connect";
+                                mBtnConnect.SetBackgroundColor(Color.ParseColor("#005DA9"));
+                            });
+                        }
+                        catch(InvalidOperationException ex)
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                mBtnConnect.Text = "Can't find WiFi connection";
+                            });
+                        }
                     }
                 }
             });
@@ -166,7 +181,7 @@ namespace WiFiDronection
             {
                 // Open controller activity
                 Intent intent = new Intent(BaseContext, typeof(ControllerActivity));
-              //  intent.PutExtra("isConnected", mIsConnected);
+                // intent.PutExtra("isConnected", mIsConnected);
                 intent.PutExtra("mac", mSelectedBssid);
                 StartActivity(intent);
             }

@@ -16,13 +16,14 @@
 *  permissions and limitations under the License.						*
 *																		*
 *																		*
-*  File: ListAdapter.cs														*
-*  Created on: 2017-8-1				*
-*  Author(s): Guertl Sebastian Matthias (IFAT PMM TI COP)											*
+*  File: ListAdapter.cs													*
+*  Created on: 2017-07-27                                  				*
+*  Author(s): Klapsch Adrian Vasile (IFAT PMM TI COP)					*
 *																		*
-*  <Summary>															*
+*  ListAdapter provides a own design for listviews.						*
 *																		*
 ************************************************************************/
+
 using System.Collections.Generic;
 
 using Android.App;

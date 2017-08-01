@@ -16,13 +16,14 @@
 *  permissions and limitations under the License.						*
 *																		*
 *																		*
-*  File: DataPoint.cs														*
-*  Created on: 2017-8-1				*
-*  Author(s): Guertl Sebastian Matthias (IFAT PMM TI COP)											*
+*  File: DataPoint.cs													*
+*  Created on: 2017-07-28                                               *
+*  Author(s): Englert Christoph (IFAT PMM TI COP)                       *
 *																		*
-*  <Summary>															*
+*  DataPoint stores x and y coordinates.                        		*
 *																		*
 ************************************************************************/
+
 using System;
 
 namespace WiFiDronection
