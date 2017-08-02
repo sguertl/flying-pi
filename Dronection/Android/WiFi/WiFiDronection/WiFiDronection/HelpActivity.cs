@@ -133,7 +133,7 @@ namespace WiFiDronection
                 "<br/><b>Delete file</b><br/>Deletes the file permanently.");
 
             mTvThirdParty.TextFormatted = Html.FromHtml(
-                "Wifi Dronection includes third-party components and we are very thankful to their authors.<br/><br/>" +
+                "Wifi Dronection includes third-party components and we are very thankful to their authors:<br/><br/>" +
                 "&#9679; <a href='https://github.com/PhilJay/MPAndroidChart'>MPAndroidChart</a> by PhilJay"
                 );
 

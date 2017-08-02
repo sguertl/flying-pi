@@ -15,7 +15,7 @@
         android:fontFamily="Assets/SourceSansPro-Light.ttf"
         android:layout_margin="20dp" />
     <Button
-        android:id="@+id/btShowDevices"
+        android:id="@+id/btnShowDevices"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Show devices"
@@ -26,8 +26,12 @@
         android:layout_margin="10dp"
         android:textColor="#ffffff"
         android:background="#005DA9" />
+<!--
+    Show logs button
+    Navigates to log activity 
+    -->
     <Button
-        android:id="@+id/btLog"
+        android:id="@+id/btnShowLogs"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Log files"
@@ -38,12 +42,16 @@
         android:layout_margin="10dp"
         android:textColor="#ffffff"
         android:background="#005DA9" />
+<!-- 
+    Help button
+    Navigates to help activity 
+    -->
     <Button
-        android:id="@+id/btHelp"
+        android:id="@+id/btnHelp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Help"
-        android:fontFamily="Assets/SourceSansPro-Light.tff"
+        android:fontFamily="Assets/SourceSansPro-Light.ttf"
         android:textSize="20dp"
         android:gravity="center"
         android:layout_gravity="bottom"
@@ -57,20 +65,26 @@
         android:gravity="bottom"
         android:layout_gravity="bottom"
         android:orientation="vertical">
+    <!-- 
+        Infineon logo 
+        -->
         <ImageView
             android:src="@drawable/ifx_logo"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" />
+            android:scaleType="centerInside"
+            android:adjustViewBounds="true"
+            android:layout_margin="10dp" />
+    <!-- 
+        Footer with copyright
+        -->
         <TextView
             android:id="@+id/tvFooter"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="\u00A9 2017 Infineon Technologies Austria AG"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="10dp"
+            android:layout_margin="10dp"
             android:fontFamily="Assets/SourceSansPro-Light.ttf" />
-    <!-- #0076ff, #0e7afe, #3366ff-->
     </LinearLayout>
 </LinearLayout>

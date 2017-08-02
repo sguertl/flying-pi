@@ -96,10 +96,10 @@ namespace BTDronection
         {
 			// Initialize widgets
 			mBtAdapter = BluetoothAdapter.DefaultAdapter;
-            mBtShowDevices = FindViewById<Button>(Resource.Id.btShowDevices);
+            mBtShowDevices = FindViewById<Button>(Resource.Id.btnShowDevices);
             mLinearLayout = FindViewById<LinearLayout>(Resource.Id.linear);
-            mBtShowLog = FindViewById<Button>(Resource.Id.btLog);
-            mBtHelp = FindViewById<Button>(Resource.Id.btHelp);
+            mBtShowLog = FindViewById<Button>(Resource.Id.btnShowLogs);
+            mBtHelp = FindViewById<Button>(Resource.Id.btnHelp);
             mTvHeader = FindViewById<TextView>(Resource.Id.tvHeader);
             mTvFooter = FindViewById<TextView>(Resource.Id.tvFooter);
             

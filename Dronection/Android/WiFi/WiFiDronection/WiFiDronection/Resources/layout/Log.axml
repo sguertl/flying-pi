@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:divider="#005DA9"
-            android:dividerHeight="5dp" />
+            android:dividerHeight="3dp" />
     <!--
         Empty textview
         -->

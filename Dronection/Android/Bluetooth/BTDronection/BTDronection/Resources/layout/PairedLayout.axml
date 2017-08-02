@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:text="Paired devices"
         android:gravity="center_horizontal"
-        android:textSize="44dp"
+        android:textSize="36dp"
         android:fontFamily="Assets/SourceSansPro-Light.ttf"
         android:layout_margin="20dp" />
     <Button
@@ -37,5 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:divider="#005DA9"
+        android:dividerHeight="3dp"
         android:id="@+id/listView" />
 </LinearLayout>
