@@ -42,13 +42,15 @@ At the top of the screen you can make following settings:
 
 If altitude control is deactivated, the button has the background color blue and you can control the drone manually. A click on __Altitude Control__ turns the background color to red and sets the speed to 50 % (although the joystick is not at 50 %). When altitude control is activated, you can just control yaw, pitch and roll while speed is regulated by the drone itself.
 
-Trims can be adjusted by choosing the radio button and moving the seekbar:
+Trims can be adjusted by choosing the radio button and moving the seekbar. Just for explanation:
 + Plus Yaw: Turn right
 + Minus Yaw: Turn left
 + Plus Pitch: Move forward
 + Minus Pitch: Move backward
 + Plus roll: Move right
 + Minus roll: Move left
+
+If you want to change the minimum and maximum trim value, you have to edit `mMinTrim` in `ControllerActivity.cs` and `android:max` of the seekbar in `ControllerLayout.axml`.
 
 
 
