@@ -32,6 +32,7 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Widget;
+using Android.Graphics;
 
 namespace BTDronection
 {
@@ -40,6 +41,7 @@ namespace BTDronection
 	{
 		// Widget
 		private ListView mLvVisualizationData;
+        private Button mBtShowChart;
 
 		// Data to visualize
 		private CurrentVisualizationData mCurVisData;
@@ -49,6 +51,7 @@ namespace BTDronection
 
 		// Name of the log file
 		private String mFilename;
+
 
 		/// <summary>
 		/// Creates the activity and sets the filename.
@@ -72,15 +75,24 @@ namespace BTDronection
 			mLvVisualizationData.DividerHeight = 14;
 			this.mLvVisualizationData.ItemClick += OnListViewItemClick;
 
+            this.mBtShowChart = FindViewById<Button>(Resource.Id.btnShowChart);
+            this.mBtShowChart.Click += OnShowChart;
+
+
 			this.mCurVisData = CurrentVisualizationData.Instance;
 			this.mCurVisData.Points = new Dictionary<string, List<DataPoint>>();
 			this.mCurVisData.AltControlTime = new List<float>();
 		}
 
-		/// <summary>
-		/// Fills the raw data list.
-		/// </summary>
-		private void FillRawDataList()
+        private void OnShowChart(object sender, EventArgs e)
+        {
+            StartActivity(typeof(ShowVisualizationDataActivity));
+        }
+
+        /// <summary>
+        /// Fills the raw data list.
+        /// </summary>
+        private void FillRawDataList()
 		{
 			var projectDir = new Java.IO.File(MainActivity.ApplicationFolderPath + Java.IO.File.Separator + mFilename);
 			List<string> fileNames = new List<string>();
@@ -108,13 +120,24 @@ namespace BTDronection
 			var reader = new Java.IO.BufferedReader(new Java.IO.FileReader(path));
 			string line = "";
 
-			if (title.Equals("controls"))
+			if (title.Equals("Controlls"))
 			{
-				//throttle, yaw, pitch, roll
-				mCurVisData.Points.Add("throttle", new List<DataPoint>());
-				mCurVisData.Points.Add("yaw", new List<DataPoint>());
-				mCurVisData.Points.Add("pitch", new List<DataPoint>());
-				mCurVisData.Points.Add("roll", new List<DataPoint>());
+                    //throttle, yaw, pitch, roll
+                    try
+                    {
+                        mCurVisData.Points.Add("throttle", new List<DataPoint>());
+                        mCurVisData.Points.Add("yaw", new List<DataPoint>());
+                        mCurVisData.Points.Add("pitch", new List<DataPoint>());
+                        mCurVisData.Points.Add("roll", new List<DataPoint>());
+                    }catch(Exception ex)
+                    {
+                        mCurVisData.Points.Remove("throttle");
+                        mCurVisData.Points.Remove("yaw");
+                        mCurVisData.Points.Remove("pitch");
+                        mCurVisData.Points.Remove("roll");
+                        e.View.SetBackgroundColor(Color.White);
+                    return;
+                    }
 			}
 			else
 			{
@@ -124,7 +147,7 @@ namespace BTDronection
 			while ((line = reader.ReadLine()) != null)
 			{
 				String[] p = line.Split(',');
-				if (title.Equals("controls"))
+				if (title.Equals("Controlls"))
 				{
 					float x = Convert.ToSingle(p[0]);
 					float t = Convert.ToSingle(p[1]);
@@ -155,7 +178,9 @@ namespace BTDronection
 
 			}
 			reader.Close();
-			StartActivity(typeof(ShowVisualizationDataActivity));
+
+            Color col = Color.ParseColor("#E30034");
+            e.View.SetBackgroundColor(col);
 		}
 
 
