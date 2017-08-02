@@ -1,0 +1,23 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiFiTest", "WiFiTest\WiFiTest.csproj", "{A50650EC-FE07-41D4-AB83-ADBD7BA315DE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|iPhoneSimulator = Debug|iPhoneSimulator
+		Release|iPhone = Release|iPhone
+		Release|iPhoneSimulator = Release|iPhoneSimulator
+		Debug|iPhone = Debug|iPhone
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A50650EC-FE07-41D4-AB83-ADBD7BA315DE}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{A50650EC-FE07-41D4-AB83-ADBD7BA315DE}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{A50650EC-FE07-41D4-AB83-ADBD7BA315DE}.Release|iPhone.ActiveCfg = Release|iPhone
+		{A50650EC-FE07-41D4-AB83-ADBD7BA315DE}.Release|iPhone.Build.0 = Release|iPhone
+		{A50650EC-FE07-41D4-AB83-ADBD7BA315DE}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{A50650EC-FE07-41D4-AB83-ADBD7BA315DE}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{A50650EC-FE07-41D4-AB83-ADBD7BA315DE}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{A50650EC-FE07-41D4-AB83-ADBD7BA315DE}.Debug|iPhone.Build.0 = Debug|iPhone
+	EndGlobalSection
+EndGlobal

@@ -1,1 +1,0 @@
-This folder is used for storing Dronection iOS WiFi files.
