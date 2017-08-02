@@ -11,4 +11,4 @@ The folder [RPI](https://github.com/sguertl/Flying_Pi/tree/master/RPI) contains 
 + Configuration files
 
 ### XMC
-In the [XMC]https://github.com/sguertl/Flying_Pi/tree/master/XMC folder are all files stored, that are necessary for the bidirectional communication between Raspberry Pi and XMC.
+In the [XMC](https://github.com/sguertl/Flying_Pi/tree/master/XMC) folder are all files stored, that are necessary for the bidirectional communication between Raspberry Pi and XMC.
