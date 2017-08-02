@@ -104,6 +104,7 @@ namespace WiFiDronection
             {
                 fileNames = fileArray.ToList();
                 // Sort files by date
+                fileNames.Remove("settings");
                 fileNames.Sort(new FileComparer());
             }
             // Display on list
