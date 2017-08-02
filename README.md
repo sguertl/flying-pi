@@ -1,7 +1,6 @@
 # Flying Pi
-Flying Pi is a project for piloting a Raspberry Pi Zero W on a LARIX drone with a smartphone.
-
 ## Overview
+Flying Pi is a project for piloting a Raspberry Pi Zero W on a LARIX drone with a smartphone.
 ### Smartphone app
 All smartphone app related files can be found under [Dronection](https://github.com/sguertl/Flying_Pi/tree/master/Dronection). There you can find Android and iOS versions of the app, either using WiFi or Bluetooth (Android only).
 
@@ -40,6 +39,20 @@ After pressing __Start__, a view with two joysticks, which are responsible for c
 At the top of the screen you can make following settings:
 + Activate/deactivate altitude control
 + Adjust trims for yaw, pitch and roll
+
+If altitude control is deactivated, the button has the background color blue and you can control the drone manually. A click on __Altitude Control__ turns the background color to red and sets the speed to 50 % (although the joystick is not at 50 %). When altitude control is activated, you can just control yaw, pitch and roll while speed is regulated by the drone itself.
+
+Trims can be adjusted by choosing the radio button and moving the seekbar:
++ Plus Yaw: Turn right
++ Minus Yaw: Turn left
++ Plus Pitch: Move forward
++ Minus Pitch: Move backward
++ Plus roll: Move right
++ Minus roll: Move left
+
+
+
+
 
 
 
