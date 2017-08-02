@@ -120,7 +120,7 @@ namespace BTDronection
 			var reader = new Java.IO.BufferedReader(new Java.IO.FileReader(path));
 			string line = "";
 
-			if (title.Equals("Controlls"))
+			if (title.Equals("controls"))
 			{
                     //throttle, yaw, pitch, roll
                     try
@@ -136,18 +136,27 @@ namespace BTDronection
                         mCurVisData.Points.Remove("pitch");
                         mCurVisData.Points.Remove("roll");
                         e.View.SetBackgroundColor(Color.White);
-                    return;
+                        return;
                     }
 			}
 			else
 			{
-				mCurVisData.Points.Add(title, new List<DataPoint>());
+                try
+                {
+                    mCurVisData.Points.Add(title, new List<DataPoint>());
+                }catch(Exception ex)
+                {
+                    mCurVisData.Points.Remove(title);
+                    e.View.SetBackgroundColor(Color.White);
+                    return;
+
+                }
 			}
 
 			while ((line = reader.ReadLine()) != null)
 			{
 				String[] p = line.Split(',');
-				if (title.Equals("Controlls"))
+				if (title.Equals("controls"))
 				{
 					float x = Convert.ToSingle(p[0]);
 					float t = Convert.ToSingle(p[1]);
