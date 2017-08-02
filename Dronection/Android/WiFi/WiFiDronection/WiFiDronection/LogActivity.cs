@@ -72,8 +72,8 @@ namespace WiFiDronection
             mBtBack = FindViewById<Button>(Resource.Id.btnBackLog);
             mBtBack.Click += OnBackToMain;
 
+			// Create and set font
             Typeface font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
-
             mTvHeader.Typeface = font;
             mTvEmpty.Typeface = font;
             mBtBack.Typeface = font;
@@ -104,7 +104,7 @@ namespace WiFiDronection
             {
                 fileNames = fileArray.ToList();
                 // Sort files by date
-                fileNames.Sort(new MyComparer());
+                fileNames.Sort(new FileComparer());
             }
             // Display on list
             mAdapter = new ListAdapter(this, fileNames);
@@ -198,7 +198,7 @@ namespace WiFiDronection
     /// <summary>
     /// Comparer for sorting the list by date.
     /// </summary>
-    public class MyComparer : IComparer<string>
+    public class FileComparer : IComparer<string>
     {
         public int Compare(string x, string y)
         {

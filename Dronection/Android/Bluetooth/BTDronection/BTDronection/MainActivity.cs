@@ -121,7 +121,7 @@ namespace BTDronection
             {
                 if (mBtAdapter.IsEnabled)
                 {
-                    StartActivity(typeof(PairedDevices));
+                    StartActivity(typeof(PairedDevicesActivity));
                 }
                 else
                 {

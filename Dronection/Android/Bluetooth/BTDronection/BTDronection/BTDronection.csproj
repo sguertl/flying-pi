@@ -66,7 +66,7 @@
     <Compile Include="ListAdapter.cs" />
     <Compile Include="LogActivity.cs" />
     <Compile Include="MainActivity.cs" />
-    <Compile Include="PairedDevices.cs" />
+    <Compile Include="PairedDevicesActivity.cs" />
     <Compile Include="RawDataActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -92,7 +92,7 @@
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ControllerLayout.axml" />
     <AndroidResource Include="Resources\layout\ControllerSettings.axml" />
-    <AndroidResource Include="Resources\layout\CustomListItemLayout.axml">
+    <AndroidResource Include="Resources\layout\CustomListItem.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\Help.axml">
@@ -103,7 +103,7 @@
     <AndroidResource Include="Resources\layout\VisualizationLayout.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ShowVisualizationDataActivity.axml">
+    <AndroidResource Include="Resources\layout\ShowVisualizationDataLayout.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable\icon.png" />

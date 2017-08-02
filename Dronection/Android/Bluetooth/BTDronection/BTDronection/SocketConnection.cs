@@ -1,14 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿/************************************************************************
+*                                                                       *
+*  Copyright (C) 2017 Infineon Technologies Austria AG.                 *
+*                                                                       *
+*  Licensed under the Apache License, Version 2.0 (the "License");      *
+*  you may not use this file except in compliance with the License.     *
+*  You may obtain a copy of the License at                              *
+*                                                                       *
+*    http://www.apache.org/licenses/LICENSE-2.0                         *
+*                                                                       *
+*  Unless required by applicable law or agreed to in writing, software  *
+*  distributed under the License is distributed on an "AS IS" BASIS,    *
+*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or      *
+*  implied.                                                             *
+*  See the License for the specific language governing                  *
+*  permissions and limitations under the License.                       *
+*                                                                       *
+*                                                                       *
+*  File: SocketConnection.cs                                            *
+*  Created on: 2017-07-19                                               *
+*  Author(s): Klapsch Adrian Vasile (IFAT PMM TI COP)                   *
+*             Englert Christoph (IFAT PMM TI COP)                       *
+*                                                                       *
+*  SocketConnection is a Singleton class that establishes a socket      *
+*  connection to the Raspberry.                                         *
+*                                                                       *
+************************************************************************/
 
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+using System;
+
 using Java.Lang;
 using Android.Bluetooth;
 using Java.Lang.Reflect;
@@ -20,46 +39,61 @@ namespace BTDronection
 {
     public class SocketConnection
     {
-        private BluetoothSocket mSocket;
-        private BluetoothAdapter mAdapter;
-        private BluetoothDevice mPeer;
-        private DataOutputStream mDataOutputStream;
-        private DataInputStream mDataInputStream;
-        private string mLogData;
-        private long mStartMillis;
 
-        // Public Member
-        public Thread mConnectionThread;
+		// Debug variable
+		private static readonly string TAG = "SocketConnection";
 
-        private readonly byte StartByte = 0x00;
-        private readonly int PacketSize = 19;
+        // Constants
+        private readonly byte START_BYTE = 0x00;
+        private readonly int PACKET_SIZE = 19;
 
-        public BluetoothDevice Peer
+		// Singleton members
+		private static SocketConnection instance = null;
+		private static readonly object padlock = new object();
+
+		// Thread for connection
+		public Thread mConnectionThread;
+
+
+        // Input and output members
+		private DataInputStream mDataInputStream;
+		public DataInputStream InputStream
+		{
+			get { return mDataInputStream; }
+		}
+
+		private DataOutputStream mDataOutputStream;
+
+		private string mLogData;
+		public string LogData
+		{
+			get { return mLogData; }
+		}
+
+		private long mStartMillis;
+
+
+		// Bluetooth members
+		private BluetoothAdapter mAdapter;
+
+		private BluetoothDevice mPeer;
+		public BluetoothDevice Peer
         {
             get { return mPeer; }
             set { mPeer = value; }
         }
 
-        public DataInputStream InputStream
-        {
-            get { return mDataInputStream; }
-        }
-
-        public BluetoothSocket Socket
+		private BluetoothSocket mSocket;
+		public BluetoothSocket Socket
         {
             get { return mSocket; }
         }
 
-        public string LogData
-        {
-            get { return mLogData; }
-        }
-
-        private static SocketConnection instance = null;
-        private static readonly object padlock = new object();
-        private static readonly string TAG = "SocketConnection";
-
-        public static SocketConnection Instance
+		/// <summary>
+		/// Returns instance of SocketConnection.
+		/// </summary>
+		/// <value>Instance of SocketConnection</value>
+		public static SocketConnection Instance
         {
             get
             {
@@ -79,7 +113,10 @@ namespace BTDronection
             Init();
         }
 
-        private void Init()
+		/// <summary>
+		/// Initizalizes the socket connection.
+		/// </summary>
+		private void Init()
         {
             mAdapter = BluetoothAdapter.DefaultAdapter;
             mStartMillis = 0;
@@ -87,7 +124,10 @@ namespace BTDronection
             this.mConnectionThread = new Thread(BuildConnection);
         }
 
-        public void Init(BluetoothDevice device)
+		/// <summary>
+		/// Initizalizes the socket connection.
+		/// </summary>
+		public void Init(BluetoothDevice device)
         {
             Init();
             BluetoothSocket tmp = null;
@@ -100,7 +140,11 @@ namespace BTDronection
             mSocket = (BluetoothSocket)m.Invoke(tmp.RemoteDevice, param);
         }
 
-        public void OnStartConnection()
+		/// <summary>
+		/// Starts the socket connection.
+		/// Starts the socket thread.
+		/// </summary>
+		public void OnStartConnection()
         {
             if (mConnectionThread != null)
             {
@@ -109,6 +153,10 @@ namespace BTDronection
             }
 
         }
+
+        /// <summary>
+        /// Establishes a bluetooth connection.
+        /// </summary>
         public void BuildConnection()
         {
                 mAdapter.CancelDiscovery();
@@ -135,7 +183,11 @@ namespace BTDronection
 
         }
 
-        public void Write(params Int16[] args)
+		/// <summary>
+		/// Writes controller data to smartphone through socket connection
+		/// </summary>
+		/// <param name="args">Controller parameter (throttle, yaw, pitch, roll)</param>
+		public void Write(params Int16[] args)
         {
             mLogData += mStartMillis + "," + args[0] + "," + args[1] + "," + args[2] + "," + args[3] + "," + (ControllerView.Settings.AltitudeControlActivated ? 1 : 0) + "\n";
 
@@ -153,22 +205,27 @@ namespace BTDronection
             }
         }
 
-        private byte[] ConvertToByte(params Int16[] args)
+		/// <summary>
+		/// Converts int16 controller parameters to byte stream
+		/// </summary>
+		/// <param name="args">Controller parameter (throttle, yaw, pitch, roll)</param>
+		/// <returns>Byte stream</returns>
+		private byte[] ConvertToByte(params Int16[] args)
         {
-            byte[] b = new byte[PacketSize];
+            byte[] b = new byte[PACKET_SIZE];
             byte speed = (byte)args[0];
             byte heightcontrol = 0;
             int azimuth = Java.Lang.Float.FloatToIntBits(args[1]);
             int pitch = Java.Lang.Float.FloatToIntBits(args[2]);
             int roll = Java.Lang.Float.FloatToIntBits(args[3]);
 
-            int checksum = StartByte;
+            int checksum = START_BYTE;
             checksum ^= (heightcontrol << 8 | speed) & 0xFFFF;
             checksum ^= azimuth;
             checksum ^= pitch;
             checksum ^= roll;
 
-            b[0] = StartByte;
+            b[0] = START_BYTE;
 
             b[1] = (byte)(heightcontrol & 0xFF);
             b[2] = (byte)(speed & 0xFF);
@@ -195,7 +252,10 @@ namespace BTDronection
             return b;
         }
 
-        public void Cancel()
+		/// <summary>
+		/// Closes connections.
+		/// </summary>
+		public void Cancel()
         {
             try
             {

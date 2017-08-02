@@ -5,13 +5,14 @@
     android:layout_height="match_parent"
     android:background="#ffffff"
     android:weightSum="1">
-
-  <ListView
-    android:id="@+id/lvData"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:divider="#005DA9"
-    android:dividerHeight="5dp" />
-
+<!--
+    Visualization data listview
+    -->
+    <ListView
+        android:id="@+id/lvData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:divider="#005DA9"
+        android:dividerHeight="5dp" />
 </LinearLayout>

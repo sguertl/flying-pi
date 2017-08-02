@@ -8,6 +8,9 @@
         android:layout_height="match_parent"
         android:isScrollContainer="true"
         android:background="#ffffff">
+    <!--
+        Header
+        -->
         <TextView
             android:id="@+id/tvHeaderRawData"
             android:layout_width="match_parent"
@@ -18,6 +21,9 @@
             android:fontFamily="Assets/SourceSansPro-Light.ttf"
             android:layout_margin="20dp"
             android:background="#ffffff" />
+    <!--
+        Raw Data listview
+        -->
         <ListView
             android:id="@+id/lvRawData"
             android:layout_width="match_parent"
@@ -25,6 +31,9 @@
             android:layout_margin="10dp"
             android:divider="#005DA9"
             android:dividerHeight="5dp" />
+    <!--
+        Raw data textview
+        -->
         <TextView
             android:id="@+id/tvDisplayRawData"
             android:layout_width="match_parent"
@@ -32,6 +41,9 @@
             android:text="No item selected"
             android:typeface="monospace"
             android:layout_margin="10dp" />
+    <!--
+        Back button
+        -->
         <Button
             android:id="@+id/btnBackRawData"
             android:layout_width="fill_parent"

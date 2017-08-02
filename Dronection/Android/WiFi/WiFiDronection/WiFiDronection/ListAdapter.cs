@@ -87,21 +87,21 @@ namespace WiFiDronection
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
             string text = mFileNames[position];
-            View costumView = convertView;
+            View customView = convertView;
 
             // If the view is not created yet, create it
-            if(costumView == null)
+            if(customView == null)
             {
                 // ListItem is a custom textview
                 LayoutInflater inflater = (LayoutInflater)mContext.GetSystemService(Context.LayoutInflaterService);
-                costumView = inflater.Inflate(Resource.Layout.CustomListItem, parent, false);
+                customView = inflater.Inflate(Resource.Layout.CustomListItem, parent, false);
             }
             int id = Resource.Id.tvListItem;
 
             // Set text and font
-            costumView.FindViewById<TextView>(id).Text = text;
-            costumView.FindViewById<TextView>(id).Typeface = mFont;
-            return costumView;
+            customView.FindViewById<TextView>(id).Text = text;
+            customView.FindViewById<TextView>(id).Typeface = mFont;
+            return customView;
         }
     }
 }

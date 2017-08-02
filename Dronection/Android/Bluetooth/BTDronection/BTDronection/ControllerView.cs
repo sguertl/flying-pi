@@ -1,14 +1,35 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+/************************************************************************
+*                                                                       *
+*  Copyright (C) 2017 Infineon Technologies Austria AG.                 *
+*                                                                       *
+*  Licensed under the Apache License, Version 2.0 (the "License");      *
+*  you may not use this file except in compliance with the License.     *
+*  You may obtain a copy of the License at                              *
+*                                                                       *
+*    http://www.apache.org/licenses/LICENSE-2.0                         *
+*                                                                       *
+*  Unless required by applicable law or agreed to in writing, software  *
+*  distributed under the License is distributed on an "AS IS" BASIS,    *
+*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or      *
+*  implied.                                                             *
+*  See the License for the specific language governing                  *
+*  permissions and limitations under the License.                       *
+*                                                                       *
+*                                                                       *
+*  File: ControllerView.cs                                              *
+*  Created on: 2017-07-19                                               *
+*  Author(s): Guertl Sebastian Matthias (IFAT PMM TI COP)               *
+*             Klapsch Adrian Vasile (IFAT PMM TI COP)                   *
+*                                                                       *
+*  ControllerView is mainly responsible for drawing the joysticks       *
+*  and transferring the resulting data to the recipient.                *
+*                                                                       *
+************************************************************************/
 
-using Android.App;
+using System;
+
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
 using Android.Graphics.Drawables;
 using Android.Graphics;
 using Android.Graphics.Drawables.Shapes;
@@ -19,36 +40,36 @@ namespace BTDronection
     public class ControllerView : View, View.IOnTouchListener
     {
         // Controller Settings
-        //ControllerSettings m_Settings;
+        //ControllerSettings mSettings;
 
         // Screen metrics in px
         public float ScreenWidth;
         public float ScreenHeight;
 
         // Joystick ovals
-        private ShapeDrawable m_ShapeStickLeft;
-        private ShapeDrawable m_ShapeStickRight;
+        private ShapeDrawable mShapeStickLeft;
+        private ShapeDrawable mShapeStickRight;
 
         // Displacement ovals
-        private ShapeDrawable m_ShapeRadiusLeft;
-        private ShapeDrawable m_ShapeRadiusRight;
+        private ShapeDrawable mShapeRadiusLeft;
+        private ShapeDrawable mShapeRadiusRight;
 
         // Joystick border
-        private ShapeDrawable m_ShapeBorderStickLeft;
-        private ShapeDrawable m_ShapeBorderStickRight;
+        private ShapeDrawable mShapeBorderStickLeft;
+        private ShapeDrawable mShapeBorderStickRight;
 
         // Displacement border
-        private ShapeDrawable m_ShapeBorderRadiusLeft;
-        private ShapeDrawable m_ShapeBorderRadiusRight;
+        private ShapeDrawable mShapeBorderRadiusLeft;
+        private ShapeDrawable mShapeBorderRadiusRight;
 
         // Joystick controllers
-        private Joystick m_LeftJS;
-        private Joystick m_RightJS;
+        private Joystick mLeftJS;
+        private Joystick mRightJS;
 
         private SocketConnection mSocket;
 
         // Timer for sending data and checking BT connection
-        private System.Timers.Timer m_WriteTimer;
+        private System.Timers.Timer mWriteTimer;
 
         public static ControllerSettings Settings { get; set; }
 
@@ -69,7 +90,9 @@ namespace BTDronection
 
         private void Init()
         {
-            Settings = new ControllerSettings
+			mSocket = SocketConnection.Instance;
+
+			Settings = new ControllerSettings
             {
                 AltitudeControlActivated = false,
                 Inverted = ControllerActivity.Inverted,
@@ -84,379 +107,341 @@ namespace BTDronection
             ScreenWidth = Resources.DisplayMetrics.WidthPixels;
             ScreenHeight = Resources.DisplayMetrics.HeightPixels;
 
-            mSocket = SocketConnection.Instance;
 
             InitShapes();
             InitJoysticks();
 
             this.SetBackgroundResource(Resource.Drawable.bg);
 
-            m_WriteTimer = new System.Timers.Timer();
-            m_WriteTimer.Interval = 50;//10
-            m_WriteTimer.AutoReset = true;
-            m_WriteTimer.Elapsed += Write;
-            m_WriteTimer.Start();
+            mWriteTimer = new System.Timers.Timer();
+            mWriteTimer.Interval = 50;//10
+            mWriteTimer.AutoReset = true;
+            mWriteTimer.Elapsed += Write;
+            mWriteTimer.Start();
         }
 
-        /// <summary>
-        /// Initializes the joystick and displacement shapes
-        /// </summary>
-        private void InitShapes()
-        {
-            // Paint for joystick ovals
-            var paintStick = new Paint();
-            paintStick.SetARGB(255, 88, 88, 88);
-            paintStick.SetStyle(Paint.Style.Fill);
-            // Shape for left joystick
-            m_ShapeStickLeft = new ShapeDrawable(new OvalShape());
-            m_ShapeStickLeft.Paint.Set(paintStick);
-            // Shape for right joystick
-            m_ShapeStickRight = new ShapeDrawable(new OvalShape());
-            m_ShapeStickRight.Paint.Set(paintStick);
+		/// <summary>
+		/// Initializes the shapes for the stick and the radius.
+		/// </summary>
+		private void InitShapes()
+		{
+			// Paint for joystick ovals
+			var paintStick = new Paint();
+			paintStick.Color = Color.ParseColor("#644F54");
+			paintStick.SetStyle(Paint.Style.Fill);
+			// Shape for left joystick
+			mShapeStickLeft = new ShapeDrawable(new OvalShape());
+			mShapeStickLeft.Paint.Set(paintStick);
+			// Shape for right joystick
+			mShapeStickRight = new ShapeDrawable(new OvalShape());
+			mShapeStickRight.Paint.Set(paintStick);
 
-            // Paint for displacement ovals
-            var paintRadius = new Paint();
-            paintRadius.Color = Color.LightGray;
-            //paintRadius.SetARGB(255, 230, 230, 230);
-            //paintRadius.SetStyle(Paint.Style.Fill);
-            paintRadius.SetStyle(Paint.Style.Fill);
-            // Shape for left displacement 
-            m_ShapeRadiusLeft = new ShapeDrawable(new OvalShape());
-            m_ShapeRadiusLeft.Paint.Set(paintRadius);
-            // Shape for right displacement
-            m_ShapeRadiusRight = new ShapeDrawable(new OvalShape());
-            m_ShapeRadiusRight.Paint.Set(paintRadius);
+			// Paint for displacement ovals
+			var paintRadius = new Paint();
+			paintRadius.Color = Color.ParseColor("#e9e6cd");
+			//paintRadius.SetARGB(255, 230, 230, 230);
+			//paintRadius.SetStyle(Paint.Style.Fill);
+			paintRadius.SetStyle(Paint.Style.Fill);
+			// Shape for left displacement 
+			mShapeRadiusLeft = new ShapeDrawable(new OvalShape());
+			mShapeRadiusLeft.Paint.Set(paintRadius);
+			// Shape for right displacement
+			mShapeRadiusRight = new ShapeDrawable(new OvalShape());
+			mShapeRadiusRight.Paint.Set(paintRadius);
 
-            // Paint for border ovals
-            var paintBorder = new Paint();
-            paintBorder.SetARGB(255, 44, 44, 44);
-            paintStick.SetStyle(Paint.Style.Fill);
-            // Shape for left joystick border
-            m_ShapeBorderStickLeft = new ShapeDrawable(new OvalShape());
-            m_ShapeBorderStickLeft.Paint.Set(paintBorder);
-            // Shape for right joystick border
-            m_ShapeBorderStickRight = new ShapeDrawable(new OvalShape());
-            m_ShapeBorderStickRight.Paint.Set(paintBorder);
-            // Shape for left displacement border
-            m_ShapeBorderRadiusLeft = new ShapeDrawable(new OvalShape());
-            m_ShapeBorderRadiusLeft.Paint.Set(paintBorder);
-            // Shape for right displacement border
-            m_ShapeBorderRadiusRight = new ShapeDrawable(new OvalShape());
-            m_ShapeBorderRadiusRight.Paint.Set(paintBorder);
-        }
+			// Paint for border ovals
+			var paintBorder = new Paint();
+			paintBorder.SetARGB(255, 44, 44, 44);
+			paintStick.SetStyle(Paint.Style.Fill);
+			// Shape for left joystick border
+			mShapeBorderStickLeft = new ShapeDrawable(new OvalShape());
+			mShapeBorderStickLeft.Paint.Set(paintBorder);
+			// Shape for right joystick border
+			mShapeBorderStickRight = new ShapeDrawable(new OvalShape());
+			mShapeBorderStickRight.Paint.Set(paintBorder);
+			// Shape for left displacement border
+			mShapeBorderRadiusLeft = new ShapeDrawable(new OvalShape());
+			mShapeBorderRadiusLeft.Paint.Set(paintBorder);
+			// Shape for right displacement border
+			mShapeBorderRadiusRight = new ShapeDrawable(new OvalShape());
+			mShapeBorderRadiusRight.Paint.Set(paintBorder);
+		}
 
-        /// <summary>
-        /// Sets the bounds for every joystick and displacement oval
-        /// </summary>
-        private void InitJoysticks()
-        {
-            m_LeftJS = new Joystick(ScreenWidth, ScreenHeight, true, Settings.Inverted);
-            m_RightJS = new Joystick(ScreenWidth, ScreenHeight, false, Settings.Inverted);
+		/// <summary>
+		/// Sets the bounds for every joystick and displacement oval.
+		/// </summary>
+		private void InitJoysticks()
+		{
+			mLeftJS = new Joystick(ScreenWidth, ScreenHeight, true, Settings.Inverted);
+			mRightJS = new Joystick(ScreenWidth, ScreenHeight, false, Settings.Inverted);
 
-            SetBoundsForLeftStick(
-                (int)m_LeftJS.CenterX - (int)Joystick.StickRadius,
-                Settings.Inverted ? (int)m_LeftJS.CenterY - (int)Joystick.StickRadius : (int)m_LeftJS.CenterY + (int)Joystick.StickRadius,
-                (int)m_LeftJS.CenterX + (int)Joystick.StickRadius,
-                Settings.Inverted ? (int)m_LeftJS.CenterY + (int)Joystick.StickRadius : (int)m_LeftJS.CenterY + 3 * (int)Joystick.StickRadius);
+			SetBoundsForLeftStick(
+				(int)mLeftJS.CenterX - (int)Joystick.StickRadius,
+				Settings.Inverted ? (int)mLeftJS.CenterY - (int)Joystick.StickRadius : (int)mLeftJS.CenterY + (int)Joystick.StickRadius,
+				(int)mLeftJS.CenterX + (int)Joystick.StickRadius,
+				Settings.Inverted ? (int)mLeftJS.CenterY + (int)Joystick.StickRadius : (int)mLeftJS.CenterY + 3 * (int)Joystick.StickRadius);
 
-            SetBoundsForRightStick(
-                (int)m_RightJS.CenterX - (int)Joystick.StickRadius,
-                Settings.Inverted ? (int)m_RightJS.CenterY + (int)Joystick.StickRadius : (int)m_RightJS.CenterY - (int)Joystick.StickRadius,
-                (int)m_RightJS.CenterX + (int)Joystick.StickRadius,
-                Settings.Inverted ? (int)m_RightJS.CenterY + 3 * (int)Joystick.StickRadius : (int)m_RightJS.CenterY + (int)Joystick.StickRadius);
+			SetBoundsForRightStick(
+				(int)mRightJS.CenterX - (int)Joystick.StickRadius,
+				Settings.Inverted ? (int)mRightJS.CenterY + (int)Joystick.StickRadius : (int)mRightJS.CenterY - (int)Joystick.StickRadius,
+				(int)mRightJS.CenterX + (int)Joystick.StickRadius,
+				Settings.Inverted ? (int)mRightJS.CenterY + 3 * (int)Joystick.StickRadius : (int)mRightJS.CenterY + (int)Joystick.StickRadius);
 
-            m_ShapeRadiusLeft.SetBounds(
-                (int)m_LeftJS.CenterX - (int)Joystick.DisplacementRadius,
-                (int)m_LeftJS.CenterY - (int)Joystick.DisplacementRadius,
-                (int)m_LeftJS.CenterX + (int)Joystick.DisplacementRadius,
-                (int)m_LeftJS.CenterY + (int)Joystick.DisplacementRadius);
+			mShapeRadiusLeft.SetBounds(
+				(int)mLeftJS.CenterX - (int)Joystick.DisplacementRadius,
+				(int)mLeftJS.CenterY - (int)Joystick.DisplacementRadius,
+				(int)mLeftJS.CenterX + (int)Joystick.DisplacementRadius,
+				(int)mLeftJS.CenterY + (int)Joystick.DisplacementRadius);
 
-            m_ShapeRadiusRight.SetBounds(
-                (int)m_RightJS.CenterX - (int)Joystick.DisplacementRadius,
-                (int)m_RightJS.CenterY - (int)Joystick.DisplacementRadius,
-                (int)m_RightJS.CenterX + (int)Joystick.DisplacementRadius,
-                (int)m_RightJS.CenterY + (int)Joystick.DisplacementRadius);
+			mShapeRadiusRight.SetBounds(
+				(int)mRightJS.CenterX - (int)Joystick.DisplacementRadius,
+				(int)mRightJS.CenterY - (int)Joystick.DisplacementRadius,
+				(int)mRightJS.CenterX + (int)Joystick.DisplacementRadius,
+				(int)mRightJS.CenterY + (int)Joystick.DisplacementRadius);
 
-            m_ShapeBorderRadiusLeft.SetBounds(
-                (int)m_LeftJS.CenterX - (int)Joystick.DisplacementRadius - 2,
-                (int)m_LeftJS.CenterY - (int)Joystick.DisplacementRadius - 2,
-                (int)m_LeftJS.CenterX + (int)Joystick.DisplacementRadius + 2,
-                (int)m_LeftJS.CenterY + (int)Joystick.DisplacementRadius + 2);
+			mShapeBorderRadiusLeft.SetBounds(
+				(int)mLeftJS.CenterX - (int)Joystick.DisplacementRadius - 2,
+				(int)mLeftJS.CenterY - (int)Joystick.DisplacementRadius - 2,
+				(int)mLeftJS.CenterX + (int)Joystick.DisplacementRadius + 2,
+				(int)mLeftJS.CenterY + (int)Joystick.DisplacementRadius + 2);
 
-            m_ShapeBorderRadiusRight.SetBounds(
-                (int)m_RightJS.CenterX - (int)Joystick.DisplacementRadius - 2,
-                (int)m_RightJS.CenterY - (int)Joystick.DisplacementRadius - 2,
-                (int)m_RightJS.CenterX + (int)Joystick.DisplacementRadius + 2,
-                (int)m_RightJS.CenterY + (int)Joystick.DisplacementRadius + 2);
-        }
+			mShapeBorderRadiusRight.SetBounds(
+				(int)mRightJS.CenterX - (int)Joystick.DisplacementRadius - 2,
+				(int)mRightJS.CenterY - (int)Joystick.DisplacementRadius - 2,
+				(int)mRightJS.CenterX + (int)Joystick.DisplacementRadius + 2,
+				(int)mRightJS.CenterY + (int)Joystick.DisplacementRadius + 2);
+		}
 
-        /// <summary>
-        /// Checks single or multitouch and sets new bounds
-        /// </summary>
-        public bool OnTouch(View v, MotionEvent e)
-        {
-            switch (e.Action)
-            {
-                case MotionEventActions.Up:
-                    if (Settings.Inverted)
-                    {
-                        if (e.GetX() <= ScreenWidth / 2)
-                        {
-                            UpdateOvals(m_LeftJS.CenterX, m_LeftJS.CenterY);
-                        }
-                        else {
-                            UpdateOvals(m_RightJS.CenterX, m_RightJS.CenterY + Joystick.DisplacementRadius);
-                        }
-                    }
-                    else {
-                        if (e.GetX() <= ScreenWidth / 2)
-                        {
-                            UpdateOvals(m_LeftJS.CenterX, m_LeftJS.CenterY + Joystick.DisplacementRadius);
-                        }
-                        else {
-                            UpdateOvals(m_RightJS.CenterX, m_RightJS.CenterY);
-                        }
-                    }
-                    break;
-                case MotionEventActions.Pointer1Up:
-                    if (Settings.Inverted)
-                    {
-                        for (int i = 0; i < Math.Min(2, e.PointerCount); i++)
-                        {
-                            if (e.GetX(i) <= ScreenWidth / 2)
-                            {
-                                UpdateOvals(m_LeftJS.CenterX, m_LeftJS.CenterY);
-                            }
-                            else {
-                                UpdateOvals(m_RightJS.CenterX, m_RightJS.CenterY + Joystick.DisplacementRadius);
-                            }
-                        }
-                    }
-                    else {
-                        for (int i = 0; i < Math.Min(2, e.PointerCount); i++)
-                        {
-                            if (e.GetX(i) <= ScreenWidth / 2)
-                            {
-                                UpdateOvals(m_LeftJS.CenterX, m_LeftJS.CenterY + Joystick.DisplacementRadius);
-                            }
-                            else {
-                                UpdateOvals(m_RightJS.CenterX, m_RightJS.CenterY);
-                            }
-                        }
-                    }
-                    break;
-                case MotionEventActions.Pointer2Up:
-                    if (Settings.Inverted)
-                    {
-                        for (int i = 0; i < Math.Min(2, e.PointerCount); i++)
-                        {
-                            if (e.GetX(i) <= ScreenWidth / 2)
-                            {
-                                UpdateOvals(m_LeftJS.CenterX, m_LeftJS.CenterY);
-                            }
-                            else {
-                                UpdateOvals(m_RightJS.CenterX, m_RightJS.CenterY + Joystick.DisplacementRadius);
-                            }
-                        }
-                    }
-                    else {
-                        for (int i = 0; i < Math.Min(2, e.PointerCount); i++)
-                        {
-                            if (e.GetX(i) <= ScreenWidth / 2)
-                            {
-                                UpdateOvals(m_LeftJS.CenterX, m_LeftJS.CenterY + Joystick.DisplacementRadius);
-                            }
-                            else {
-                                UpdateOvals(m_RightJS.CenterX, m_RightJS.CenterY);
-                            }
-                        }
-                    }
-                    break;
-                default:
-                    for (int i = 0; i < Math.Min(2, e.PointerCount); i++)
-                    {
-                        UpdateOvals(e.GetX(i), e.GetY(i));
-                    }
-                    break;
-            }
+		/// <summary>
+		/// Checks single or multitouch and sets new bounds.
+		/// </summary>
+		public bool OnTouch(View v, MotionEvent e)
+		{
+			switch (e.Action)
+			{
+				case MotionEventActions.Up:
+					if (Settings.Inverted)
+					{
+						if (e.GetX() <= ScreenWidth / 2)
+						{
+							UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
+						}
+						else
+						{
+							UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
+						}
+					}
+					else
+					{
+						if (e.GetX() <= ScreenWidth / 2)
+						{
+							UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
+						}
+						else
+						{
+							UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
+						}
+					}
+					break;
+				case MotionEventActions.Pointer1Up:
+					if (Settings.Inverted)
+					{
+						for (int i = 0; i < Math.Min(2, e.PointerCount); i++)
+						{
+							if (e.GetX(i) <= ScreenWidth / 2)
+							{
+								UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
+							}
+							else
+							{
+								UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
+							}
+						}
+					}
+					else
+					{
+						for (int i = 0; i < Math.Min(2, e.PointerCount); i++)
+						{
+							if (e.GetX(i) <= ScreenWidth / 2)
+							{
+								UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
+							}
+							else
+							{
+								UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
+							}
+						}
+					}
+					break;
+				case MotionEventActions.Pointer2Up:
+					if (Settings.Inverted)
+					{
+						for (int i = 0; i < Math.Min(2, e.PointerCount); i++)
+						{
+							if (e.GetX(i) <= ScreenWidth / 2)
+							{
+								UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
+							}
+							else
+							{
+								UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
+							}
+						}
+					}
+					else
+					{
+						for (int i = 0; i < Math.Min(2, e.PointerCount); i++)
+						{
+							if (e.GetX(i) <= ScreenWidth / 2)
+							{
+								UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
+							}
+							else
+							{
+								UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
+							}
+						}
+					}
+					break;
+				default:
+					for (int i = 0; i < Math.Min(2, e.PointerCount); i++)
+					{
+						UpdateOvals(e.GetX(i), e.GetY(i));
+					}
+					break;
+			}
 
-            if (Settings.Inverted)
-            {
-                if (e.PointerCount == 1 && e.GetX() <= ScreenWidth / 2 && !m_RightJS.IsCentered())
-                {
-                    UpdateOvals(m_RightJS.CenterX, m_RightJS.CenterY + Joystick.DisplacementRadius);
-                }
-                else if (e.PointerCount == 1 && e.GetX() > ScreenWidth / 2 && !m_LeftJS.IsCentered())
-                {
-                    UpdateOvals(m_LeftJS.CenterX, m_LeftJS.CenterY);
-                }
-            }
-            else {
-                if (e.PointerCount == 1 && e.GetX() <= ScreenWidth / 2 && !m_RightJS.IsCentered())
-                {
-                    UpdateOvals(m_RightJS.CenterX, m_RightJS.CenterY);
-                }
-                else if (e.PointerCount == 1 && e.GetX() > ScreenWidth / 2 && !m_LeftJS.IsCentered())
-                {
-                    UpdateOvals(m_LeftJS.CenterX, m_LeftJS.CenterY + Joystick.DisplacementRadius);
-                }
-            }
+			if (Settings.Inverted)
+			{
+				if (e.PointerCount == 1 && e.GetX() <= ScreenWidth / 2 && !mRightJS.IsCentered())
+				{
+					UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
+				}
+				else if (e.PointerCount == 1 && e.GetX() > ScreenWidth / 2 && !mLeftJS.IsCentered())
+				{
+					UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
+				}
+			}
+			else
+			{
+				if (e.PointerCount == 1 && e.GetX() <= ScreenWidth / 2 && !mRightJS.IsCentered())
+				{
+					UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
+				}
+				else if (e.PointerCount == 1 && e.GetX() > ScreenWidth / 2 && !mLeftJS.IsCentered())
+				{
+					UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
+				}
+			}
 
-            Invalidate();
-            return true;
-        }
+			Invalidate();
+			return true;
+		}
 
-        /// <summary>
-        /// Sets new bounds for the joystick oval
-        /// </summary>
-        /// <param name="xPosition">X-Position of the touch</param>
-        /// <param name="yPosition">Y-Position of the touch</param>
-        private void UpdateOvals(float xPosition, float yPosition)
-        {
-            // Check if touch is in left or right half of the screen
-            if (xPosition <= ScreenWidth / 2)
-            {
-                // Handle touch in the left half
-                m_LeftJS.SetPosition(xPosition, yPosition);
-                // Check if touch was inside the displacement radius
-                if ((m_LeftJS.Abs) <= Joystick.DisplacementRadius)
-                {
-                    // Draw left joystick with original coordinates
-                    SetBoundsForLeftStick(
-                    (int)xPosition - (int)Joystick.StickRadius,
-                    (int)yPosition - (int)Joystick.StickRadius,
-                    (int)xPosition + (int)Joystick.StickRadius,
-                    (int)yPosition + (int)Joystick.StickRadius);
-                }
-                else {
-                    // Draw left joystick with maximum coordinates
-                    SetBoundsForLeftStick(
-                    (int)(Joystick.DisplacementRadius * Math.Cos(m_LeftJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)m_LeftJS.CenterX,
-                    (int)(Joystick.DisplacementRadius * Math.Sin(m_LeftJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)m_LeftJS.CenterY,
-                    (int)(Joystick.DisplacementRadius * Math.Cos(m_LeftJS.Angle * Math.PI / 180)) + (int)Joystick.StickRadius + (int)m_LeftJS.CenterX,
-                    (int)(Joystick.DisplacementRadius * Math.Sin(m_LeftJS.Angle * Math.PI / 180)) + (int)Joystick.StickRadius + (int)m_LeftJS.CenterY);
+		/// <summary>
+		/// Sets new bounds for the joystick oval.
+		/// </summary>
+		/// <param name="xPosition">X-Position of the touch</param>
+		/// <param name="yPosition">Y-Position of the touch</param>
+		private void UpdateOvals(float xPosition, float yPosition)
+		{
+			// Check if touch is in left or right half of the screen
+			if (xPosition <= ScreenWidth / 2)
+			{
+				// Handle touch in the left half
+				mLeftJS.SetPosition(xPosition, yPosition);
+				// Check if touch was inside the displacement radius
+				if ((mLeftJS.Abs) <= Joystick.DisplacementRadius)
+				{
+					// Draw left joystick with original coordinates
+					SetBoundsForLeftStick(
+						(int)xPosition - (int)Joystick.StickRadius,
+						(int)yPosition - (int)Joystick.StickRadius,
+						(int)xPosition + (int)Joystick.StickRadius,
+						(int)yPosition + (int)Joystick.StickRadius);
+				}
+				else
+				{
+					// Draw left joystick with maximum coordinates
+					SetBoundsForLeftStick(
+						(int)(Joystick.DisplacementRadius * Math.Cos(mLeftJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)mLeftJS.CenterX,
+						(int)(Joystick.DisplacementRadius * Math.Sin(mLeftJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)mLeftJS.CenterY,
+						(int)(Joystick.DisplacementRadius * Math.Cos(mLeftJS.Angle * Math.PI / 180)) + (int)Joystick.StickRadius + (int)mLeftJS.CenterX,
+						(int)(Joystick.DisplacementRadius * Math.Sin(mLeftJS.Angle * Math.PI / 180)) + (int)Joystick.StickRadius + (int)mLeftJS.CenterY);
+				}
+			}
+			else
+			{
+				// Handle touch in the right half
+				mRightJS.SetPosition(xPosition, yPosition);
+				// Check if touch was inside the displacement radius
+				if ((mRightJS.Abs) <= Joystick.DisplacementRadius)
+				{
+					// Draw right joystick with original coordinates
+					SetBoundsForRightStick(
+						(int)xPosition - (int)Joystick.StickRadius,
+						(int)yPosition - (int)Joystick.StickRadius,
+						(int)xPosition + (int)Joystick.StickRadius,
+						(int)yPosition + (int)Joystick.StickRadius);
+				}
+				else
+				{
+					// Draw left joystick with maximum coordinates
+					SetBoundsForRightStick(
+						(int)(Joystick.DisplacementRadius * Math.Cos(mRightJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)mRightJS.CenterX,
+						(int)(Joystick.DisplacementRadius * Math.Sin(mRightJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)mRightJS.CenterY,
+						(int)(Joystick.DisplacementRadius * Math.Cos(mRightJS.Angle * Math.PI / 180)) + (int)Joystick.StickRadius + (int)mRightJS.CenterX,
+						(int)(Joystick.DisplacementRadius * Math.Sin(mRightJS.Angle * Math.PI / 180)) + (int)Joystick.StickRadius + (int)mRightJS.CenterY);
+				}
+			}
+		}
 
-                    // OPTION: Set radius as position
-                    //m_LeftJS.SetPosition((int)(m_LeftJS.m_DisplacementRadius * Math.Cos(m_LeftJS.GetAngle() * Math.PI / 180)) + (int)m_LeftJS.CENTER_X, 
-                    //    (int)(m_LeftJS.m_DisplacementRadius * Math.Sin(m_LeftJS.GetAngle() * Math.PI / 180)) + (int)m_LeftJS.CENTER_Y);
+		/// <summary>
+		/// Draws the shapes onto the canvas, which is displayed afterwards.
+		/// </summary>
+		protected override void OnDraw(Canvas canvas)
+		{
+			this.SetBackgroundResource(Resource.Drawable.bg);
 
-                }
-            }
-            else {
-                // Handle touch in the right half
-                m_RightJS.SetPosition(xPosition, yPosition);
-                // Check if touch was inside the displacement radius
-                if ((m_RightJS.Abs) <= Joystick.DisplacementRadius)
-                {
-                    // Draw right joystick with original coordinates
-                    SetBoundsForRightStick(
-                     (int)xPosition - (int)Joystick.StickRadius,
-                     (int)yPosition - (int)Joystick.StickRadius,
-                     (int)xPosition + (int)Joystick.StickRadius,
-                     (int)yPosition + (int)Joystick.StickRadius);
-                }
-                else {
-                    // Draw left joystick with maximum coordinates
-                    SetBoundsForRightStick(
-                    (int)(Joystick.DisplacementRadius * Math.Cos(m_RightJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)m_RightJS.CenterX,
-                    (int)(Joystick.DisplacementRadius * Math.Sin(m_RightJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)m_RightJS.CenterY,
-                    (int)(Joystick.DisplacementRadius * Math.Cos(m_RightJS.Angle * Math.PI / 180)) + (int)Joystick.StickRadius + (int)m_RightJS.CenterX,
-                    (int)(Joystick.DisplacementRadius * Math.Sin(m_RightJS.Angle * Math.PI / 180)) + (int)Joystick.StickRadius + (int)m_RightJS.CenterY);
+			// Draw shapes
+			mShapeBorderRadiusLeft.Draw(canvas);
+			mShapeBorderRadiusRight.Draw(canvas);
+			mShapeRadiusLeft.Draw(canvas);
+			mShapeRadiusRight.Draw(canvas);
+			mShapeBorderStickLeft.Draw(canvas);
+			mShapeBorderStickRight.Draw(canvas);
+			mShapeStickLeft.Draw(canvas);
+			mShapeStickRight.Draw(canvas);
 
-                    // OPTION: Set radius as position 
-                    //m_RightJS.SetPosition((int)(m_RightJS.m_DisplacementRadius * Math.Cos(m_RightJS.GetAngle() * Math.PI / 180)) + (int)m_RightJS.CENTER_X,
-                    //    (int)(m_RightJS.m_DisplacementRadius * Math.Sin(m_RightJS.GetAngle() * Math.PI / 180)) + (int)m_RightJS.CENTER_Y);
-                }
-            }
-        }
+			mLeftJS.CalculateValues();
+			mRightJS.CalculateValues();
+		}
 
-        /// <summary>
-        /// Draws the shapes onto the canvas, which is displayed afterwards
-        /// </summary>
-        protected override void OnDraw(Canvas canvas)
-        {
-            this.SetBackgroundResource(Resource.Drawable.bg);
-            // Draw shapes
-            m_ShapeBorderRadiusLeft.Draw(canvas);
-            m_ShapeBorderRadiusRight.Draw(canvas);
-            m_ShapeRadiusLeft.Draw(canvas);
-            m_ShapeRadiusRight.Draw(canvas);
-            m_ShapeBorderStickLeft.Draw(canvas);
-            m_ShapeBorderStickRight.Draw(canvas);
-            m_ShapeStickLeft.Draw(canvas);
-            m_ShapeStickRight.Draw(canvas);
+		/// <summary>
+		/// Helper method for setting the bounds of the left joystick.
+		/// </summary>
+		/// <param name="left">Position of left bound</param>
+		/// <param name="top">Position of top bound</param>
+		/// <param name="right">Position of right bound</param>
+		/// <param name="bottom">Position of bottom bound</param>
+		private void SetBoundsForLeftStick(int left, int top, int right, int bottom)
+		{
+			mShapeStickLeft.SetBounds(left, top, right, bottom);
+			mShapeBorderStickLeft.SetBounds(left - 2, top - 2, right + 2, bottom + 2);
+		}
 
-            // Set paint for data text
-            var paint = new Paint();
-            paint.SetARGB(255, 0, 0, 0);
-            paint.TextSize = 20;
-            paint.TextAlign = Paint.Align.Center;
-            paint.StrokeWidth = 5;
-
-            m_LeftJS.CalculateValues();
-            m_RightJS.CalculateValues();
-
-            /*if (!m_Settings.Inverted)
-            {
-                // Draw data text for left joystick
-                canvas.DrawText("DATA LEFT JOYSTICK", m_LeftJS.CenterX, m_LeftJS.CenterY - ScreenHeight / 2 - 30, paint);
-                canvas.DrawText("Throttle: " + m_LeftJS.Throttle, m_LeftJS.CenterX, m_LeftJS.CenterY - ScreenHeight / 2, paint);
-                canvas.DrawText("Rudder: " + m_LeftJS.Rudder, m_LeftJS.CenterX, m_LeftJS.CenterY - ScreenHeight / 2 + 30, paint);
-                canvas.DrawText("Direction: " + m_LeftJS.Direction, m_LeftJS.CenterX, m_LeftJS.CenterY - ScreenHeight / 2 + 60, paint);
-                canvas.DrawText("Centered: " + m_LeftJS.IsCentered(), m_LeftJS.CenterX, m_LeftJS.CenterY - ScreenHeight / 2 + 90, paint);
-
-                // Draw data text for right joystick
-                canvas.DrawText("DATA RIGHT JOYSTICK", m_RightJS.CenterX, m_RightJS.CenterY - ScreenHeight / 2 - 30, paint);
-                canvas.DrawText("Elevator: " + m_RightJS.Elevator, m_RightJS.CenterX, m_RightJS.CenterY - ScreenHeight / 2, paint);
-                canvas.DrawText("Aileron: " + m_RightJS.Aileron, m_RightJS.CenterX, m_RightJS.CenterY - ScreenHeight / 2 + 30, paint);
-                canvas.DrawText("Direction: " + m_RightJS.Direction, m_RightJS.CenterX, m_RightJS.CenterY - ScreenHeight / 2 + 60, paint);
-                canvas.DrawText("Centered: " + m_RightJS.IsCentered(), m_RightJS.CenterX, m_RightJS.CenterY - ScreenHeight / 2 + 90, paint);
-            }
-            else if (m_Settings.Inverted)
-            {
-                // Draw data text for left joystick
-                canvas.DrawText("DATA LEFT JOYSTICK", m_LeftJS.CenterX, m_LeftJS.CenterY - ScreenHeight / 2 - 30, paint);
-                canvas.DrawText("Elevator: " + m_LeftJS.Elevator, m_LeftJS.CenterX, m_LeftJS.CenterY - ScreenHeight / 2, paint);
-                canvas.DrawText("Rudder: " + m_LeftJS.Rudder, m_LeftJS.CenterX, m_LeftJS.CenterY - ScreenHeight / 2 + 30, paint);
-                canvas.DrawText("Direction: " + m_LeftJS.Direction, m_LeftJS.CenterX, m_LeftJS.CenterY - ScreenHeight / 2 + 60, paint);
-                canvas.DrawText("Centered: " + m_LeftJS.IsCentered(), m_LeftJS.CenterX, m_LeftJS.CenterY - ScreenHeight / 2 + 90, paint);
-
-                // Draw data text for right joystick
-                canvas.DrawText("DATA RIGHT JOYSTICK", m_RightJS.CenterX, m_RightJS.CenterY - ScreenHeight / 2 - 30, paint);
-                canvas.DrawText("Throttle: " + m_RightJS.Throttle, m_RightJS.CenterX, m_RightJS.CenterY - ScreenHeight / 2, paint);
-                canvas.DrawText("Aileron: " + m_RightJS.Aileron, m_RightJS.CenterX, m_RightJS.CenterY - ScreenHeight / 2 + 30, paint);
-                canvas.DrawText("Direction: " + m_RightJS.Direction, m_RightJS.CenterX, m_RightJS.CenterY - ScreenHeight / 2 + 60, paint);
-                canvas.DrawText("Centered: " + m_RightJS.IsCentered(), m_RightJS.CenterX, m_RightJS.CenterY - ScreenHeight / 2 + 90, paint);
-            }*/
-
-            // TO BE ADDED: Displaying received data
-        }
-
-        /// <summary>
-        /// Helper method for setting the bounds of the left joystick
-        /// </summary>
-        /// <param name="left">Position of left bound</param>
-        /// <param name="top">Position of top bound</param>
-        /// <param name="right">Position of right bound</param>
-        /// <param name="bottom">Position of bottom bound</param>
-        private void SetBoundsForLeftStick(int left, int top, int right, int bottom)
-        {
-            m_ShapeStickLeft.SetBounds(left, top, right, bottom);
-            m_ShapeBorderStickLeft.SetBounds(left - 2, top - 2, right + 2, bottom + 2);
-        }
-
-        /// <summary>
-        /// Helper method for setting the bounds of the right joystick
-        /// </summary>
-        /// <param name="left">Position of left bound</param>
-        /// <param name="top">Position of top bound</param>
-        /// <param name="right">Position of right bound</param>
-        /// <param name="bottom">Position of bottom bound</param>
-        private void SetBoundsForRightStick(int left, int top, int right, int bottom)
-        {
-            m_ShapeStickRight.SetBounds(left, top, right, bottom);
-            m_ShapeBorderStickRight.SetBounds(left - 2, top - 2, right + 2, bottom + 2);
-        }
+		/// <summary>
+		/// Helper method for setting the bounds of the right joystick.
+		/// </summary>
+		/// <param name="left">Position of left bound</param>
+		/// <param name="top">Position of top bound</param>
+		/// <param name="right">Position of right bound</param>
+		/// <param name="bottom">Position of bottom bound</param>
+		private void SetBoundsForRightStick(int left, int top, int right, int bottom)
+		{
+			mShapeStickRight.SetBounds(left, top, right, bottom);
+			mShapeBorderStickRight.SetBounds(left - 2, top - 2, right + 2, bottom + 2);
+		}
 
         /// <summary>
         /// Helper method for sending data via bluetooth to the device
@@ -467,22 +452,23 @@ namespace BTDronection
         /// </summary>
         public void Write(object sender, System.Timers.ElapsedEventArgs e)
         {
-            if (mSocket.Socket.IsConnected == true)
+            if (mSocket.Socket.IsConnected)
             {
                 if (!Settings.Inverted)
                 {
-
-                    mSocket.Write((Int16)m_LeftJS.Throttle,
-                                  (Int16)(m_LeftJS.Rudder - Settings.TrimYaw),
-                                  (Int16)(m_RightJS.Aileron - Settings.TrimRoll),
-                                  (Int16)(m_RightJS.Elevator - Settings.TrimPitch));
+					int throttle = Settings.AltitudeControlActivated ? 50 : mLeftJS.Throttle;
+					mSocket.Write((Int16)throttle,
+                                  (Int16)(mLeftJS.Rudder - Settings.TrimYaw),
+                                  (Int16)(mRightJS.Aileron - Settings.TrimRoll),
+                                  (Int16)(mRightJS.Elevator - Settings.TrimPitch));
                 }
                 else
                 {
-                    mSocket.Write((Int16)m_RightJS.Throttle,
-                                  (Int16)(m_LeftJS.Rudder - Settings.TrimYaw),
-                                  (Int16)(m_LeftJS.Aileron - Settings.TrimRoll),
-                                  (Int16)(m_RightJS.Elevator - Settings.TrimPitch));
+					int throttle = Settings.AltitudeControlActivated ? 50 : mRightJS.Throttle;
+					mSocket.Write((Int16)throttle,
+                                  (Int16)(mLeftJS.Rudder - Settings.TrimYaw),
+                                  (Int16)(mLeftJS.Aileron - Settings.TrimRoll),
+                                  (Int16)(mRightJS.Elevator - Settings.TrimPitch));
                 }
             }
         }

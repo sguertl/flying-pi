@@ -27,17 +27,10 @@
 ************************************************************************/
 
 ﻿﻿﻿﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
 using Android.Util;
 using Android.Views;
-using Android.Widget;
 using Android.Graphics.Drawables;
 using Android.Graphics;
 using Android.Graphics.Drawables.Shapes;
@@ -46,6 +39,8 @@ namespace WiFiDronection
 {
     public class ControllerView : View, View.IOnTouchListener
     {
+
+		// Controller Settings
         public static ControllerSettings Settings { get; set; }
 
         // Screen metrics in px
@@ -73,9 +68,9 @@ namespace WiFiDronection
         private Joystick mRightJS;
 
         // Transfer data via bluetooth
-        SocketConnection mSocketConnection;
+        private SocketConnection mSocketConnection;
 
-        // Timer for sending data and checking BT connection
+        // Timer for sending data and checking WiFi connection
         private System.Timers.Timer mWriteTimer;
 
         /// <summary>
@@ -459,11 +454,6 @@ namespace WiFiDronection
             mShapeBorderStickRight.SetBounds(left - 2, top - 2, right + 2, bottom + 2);
         }
 
-        private static void AltControlChanged()
-        {
-            
-        }
-
         /// <summary>
         /// Helper method for sending data via bluetooth to the device.
         /// Throttle = speed
@@ -479,17 +469,17 @@ namespace WiFiDronection
                 {
                     int throttle = Settings.AltitudeControlActivated ? 50 : mLeftJS.Throttle;
                     mSocketConnection.Write((Int16)throttle,
-                                      (Int16)(mLeftJS.Rudder + Settings.TrimYaw),
-                                      (Int16)(mRightJS.Aileron + Settings.TrimRoll),
-                                      (Int16)(mRightJS.Elevator + Settings.TrimPitch));
+                                      (Int16)(mLeftJS.Rudder - Settings.TrimYaw),
+                                      (Int16)(mRightJS.Aileron - Settings.TrimRoll),
+                                      (Int16)(mRightJS.Elevator - Settings.TrimPitch));
                 }
                 else
                 {
                     int throttle = Settings.AltitudeControlActivated ? 50 : mRightJS.Throttle;
                     mSocketConnection.Write((Int16)throttle,
-                                      (Int16)(mLeftJS.Rudder + Settings.TrimYaw),
-                                      (Int16)(mLeftJS.Aileron + Settings.TrimRoll),
-                                      (Int16)(mRightJS.Elevator + Settings.TrimPitch));
+                                      (Int16)(mLeftJS.Rudder - Settings.TrimYaw),
+                                      (Int16)(mLeftJS.Aileron - Settings.TrimRoll),
+                                      (Int16)(mRightJS.Elevator - Settings.TrimPitch));
                 }
             }
         }

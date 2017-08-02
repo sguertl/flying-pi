@@ -37,13 +37,14 @@ namespace WiFiDronection
 {
     public class SocketConnection 
     {
+		
         // Debug variable
         private static readonly string TAG = "SocketConnection";
 
         // Constants
         private readonly string SERVER_ADDRESS = "172.24.1.1";
-        private readonly int SERVERPORT = 5050;
-        private readonly byte STARTBYTE = 10;
+        private readonly int SERVER_PORT = 5050;
+        private readonly byte START_BYTE = 10;
         private readonly int PACKET_SIZE = 19;
 
         // Singleton members
@@ -59,7 +60,7 @@ namespace WiFiDronection
         public Thread mConnectionThread;
 
         // Boolean to check if connected
-		public bool isConnected 
+		public bool IsConnected 
         { 
             get; 
             set; 
@@ -161,7 +162,7 @@ namespace WiFiDronection
                 try
                 {
                     // Connect to socket
-                    mSocket = new Socket(SERVER_ADDRESS, SERVERPORT);
+                    mSocket = new Socket(SERVER_ADDRESS, SERVER_PORT);
                 }
                 catch (UnknownHostException uhe)
                 {
@@ -185,7 +186,7 @@ namespace WiFiDronection
                     if (!mSocket.IsConnected)
                     {
                         // If first connection attempt fails try again
-                        SocketAddress socketAdr = new InetSocketAddress(SERVER_ADDRESS, SERVERPORT);
+                        SocketAddress socketAdr = new InetSocketAddress(SERVER_ADDRESS, SERVER_PORT);
                         Thread.Sleep(5000);
                         mSocket.Connect(socketAdr, 2000);
                     }
@@ -220,7 +221,7 @@ namespace WiFiDronection
                 try
                 {
                     // Connect with socket
-                    mSocket = new Socket(SERVER_ADDRESS, SERVERPORT);
+                    mSocket = new Socket(SERVER_ADDRESS, SERVER_PORT);
                 }
                 catch (UnknownHostException uhe)
                 {
@@ -244,7 +245,7 @@ namespace WiFiDronection
                     if (!mSocket.IsConnected)
                     {
                         // if first connection attempt fails try again
-                        SocketAddress socketAdr = new InetSocketAddress(SERVER_ADDRESS, SERVERPORT);
+                        SocketAddress socketAdr = new InetSocketAddress(SERVER_ADDRESS, SERVER_PORT);
                         Thread.Sleep(5000);
                         mSocket.Connect(socketAdr, 2000);
                     }
@@ -310,13 +311,13 @@ namespace WiFiDronection
             int pitch = Java.Lang.Float.FloatToIntBits(args[2]);
             int roll = Java.Lang.Float.FloatToIntBits(args[3]);
 
-            int checksum = STARTBYTE;
+            int checksum = START_BYTE;
             checksum ^= (heightcontrol << 8 | speed) & 0xFFFF;
             checksum ^= azimuth;
             checksum ^= pitch;
             checksum ^= roll;
 
-            b[0] = STARTBYTE;
+            b[0] = START_BYTE;
 
             b[1] = (byte)(heightcontrol & 0xFF);
             b[2] = (byte)(speed & 0xFF);

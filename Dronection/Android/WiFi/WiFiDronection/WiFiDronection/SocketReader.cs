@@ -23,6 +23,7 @@
 *  SocketReader reads data which is sent by Raspberry.					*
 *																		*
 ************************************************************************/
+
 using System;
 
 using Java.Lang;
@@ -33,6 +34,7 @@ namespace WiFiDronection
 {
     public class SocketReader
     {
+		
         private static readonly string TAG = "SocketReader";
 
         // Input stream
@@ -87,12 +89,7 @@ namespace WiFiDronection
         }
 
 		/// <summary>
-		/// Reads data from Raspberry in a thread.
-		/// </summary>
-		
-
-		/// <summary>
-		/// Closes connection
+		/// Closes connection.
 		/// </summary>
 		public void Close()
         {
@@ -105,7 +102,8 @@ namespace WiFiDronection
                     mDataInputStream.Close();
                 }
                 
-            }catch(Java.Lang.Exception ex)
+            }
+			catch(Java.Lang.Exception ex)
             {
                 Log.Debug(TAG, ex.Message);
             }

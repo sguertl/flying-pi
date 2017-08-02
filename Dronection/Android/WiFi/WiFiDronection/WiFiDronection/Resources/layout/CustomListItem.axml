@@ -14,5 +14,5 @@
         android:textSize="28dp"
         android:textColor="#005DA9"
         android:layout_margin="10dp"
-        android:text="hello" />
+        android:text="" />
 </LinearLayout>
