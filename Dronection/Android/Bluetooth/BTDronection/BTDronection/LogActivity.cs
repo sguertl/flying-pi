@@ -103,6 +103,7 @@ namespace BTDronection
 			if (fileArray != null)
 			{
 				fileNames = fileArray.ToList();
+                fileNames.Remove("settings");
 				// Sort files by date
 				fileNames.Sort(new FileComparer());
 			}

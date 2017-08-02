@@ -32,6 +32,8 @@ using Android.App;
 using Android.OS;
 using Android.Widget;
 using Android.Graphics;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BTDronection
 {
@@ -60,8 +62,9 @@ namespace BTDronection
         private RadioButton mRbRollTrim;
         private Button mBtnAltitudeControl;
 
-        // Storage Path
-        private string mStorageDirPath;
+        // Private members
+        private Dictionary<string, ControllerSettings> mPeerSettings;
+        private string mSelectedMac;
 
 		// Socket members
         private SocketConnection mSocketConnection;
@@ -111,24 +114,59 @@ namespace BTDronection
 			// Get singleton instance of socket connection
             mSocketConnection = SocketConnection.Instance;
 
-            mStorageDirPath = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.ToString(), "Airything");
-            var storageDir = new Java.IO.File(mStorageDirPath);
-            storageDir.Mkdirs();
+            mSelectedMac = Intent.GetStringExtra("mac");
+            mPeerSettings = ReadPeerSettings();
         }
 
-		/// <summary>
-		/// Writes log in csv format.
-		/// </summary>
-		public void WriteLogData()
+        /// <summary>
+        /// Reads the settings file for a specific peer
+        /// </summary>
+        /// <returns>Peer with settings</returns>
+        private Dictionary<string, ControllerSettings> ReadPeerSettings()
+        {
+            string fileName = MainActivity.ApplicationFolderPath + Java.IO.File.Separator + "settings" + Java.IO.File.Separator + "settings.csv";
+            var reader = new Java.IO.BufferedReader(new Java.IO.FileReader(fileName));
+            Dictionary<string, ControllerSettings> peerSettings = new Dictionary<string, ControllerSettings>();
+            string line = "";
+            while ((line = reader.ReadLine()) != null)
+            {
+                string[] parts = line.Split(',');
+                string[] trimParts = parts[1].Split(';');
+                peerSettings.Add(parts[0], new ControllerSettings
+                {
+                    AltitudeControlActivated = false,
+                    Inverted = false,
+                    TrimYaw = Convert.ToInt16(trimParts[0]),
+                    TrimPitch = Convert.ToInt16(trimParts[1]),
+                    TrimRoll = Convert.ToInt16(trimParts[2])
+                });
+            }
+            return peerSettings;
+        }
+
+        /// <summary>
+        /// Writes log in csv format.
+        /// </summary>
+        public void WriteLogData()
         {
             if(mSocketConnection.LogData != null)
             {
                 DateTime time = DateTime.Now;
-                string logName = string.Format("{0}{1:D2}{2:D2}_{3:D2}{4:D2}{5:D2}_log", time.Year, time.Month, time.Day, time.Hour, time.Minute, time.Second);
+                string logName = string.Format("{0}{1:D2}{2:D2}_{3:D2}{4:D2}{5:D2}", time.Year, time.Month, time.Day, time.Hour, time.Minute, time.Second);
                 var storageDir = new Java.IO.File(MainActivity.ApplicationFolderPath + Java.IO.File.Separator + logName);
                 storageDir.Mkdirs();
                 var writer = new Java.IO.FileWriter(new Java.IO.File(storageDir, "controls.csv"));
                 writer.Write(mSocketConnection.LogData);
+                mPeerSettings[mSelectedMac] = ControllerView.Settings;
+                string dirName = MainActivity.ApplicationFolderPath + Java.IO.File.Separator + "settings";
+                string settingsString = "";
+                foreach (KeyValuePair<string, ControllerSettings> kvp in mPeerSettings)
+                {
+                    settingsString += kvp.Key + "," + kvp.Value.TrimYaw + ";" + kvp.Value.TrimPitch + ";" + kvp.Value.TrimRoll + "\n";
+                }
+                writer.Close();
+                writer = new Java.IO.FileWriter(new Java.IO.File(dirName, "settings.csv"));
+                writer.Write(settingsString);
                 writer.Close();
             }
         }
@@ -137,6 +175,13 @@ namespace BTDronection
         {
 
             SetContentView(Resource.Layout.ControllerLayout);
+
+            if (mPeerSettings.Any(kvp => kvp.Key == mSelectedMac) == true)
+            {
+                ControllerView.Settings.TrimYaw = mPeerSettings[mSelectedMac].TrimYaw;
+                ControllerView.Settings.TrimPitch = mPeerSettings[mSelectedMac].TrimPitch;
+                ControllerView.Settings.TrimRoll = mPeerSettings[mSelectedMac].TrimRoll;
+            }
 
             // Initialize widgets
             mSbTrimBar = FindViewById<SeekBar>(Resource.Id.sbTrimbar);
@@ -151,6 +196,9 @@ namespace BTDronection
             mRbYawTrim.Typeface = font;
             mRbPitchTrim.Typeface = font;
             mRbRollTrim.Typeface = font;
+
+            mSbTrimBar.Progress = ControllerView.Settings.TrimYaw - mMinTrim;
+            mTvTrimValue.Text = ControllerView.Settings.TrimYaw.ToString();
 
             mSbTrimBar.ProgressChanged += delegate
             {

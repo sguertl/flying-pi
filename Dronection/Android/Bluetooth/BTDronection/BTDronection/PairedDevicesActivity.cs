@@ -35,6 +35,8 @@ using Android.OS;
 using Android.Widget;
 using Android.Bluetooth;
 using Android.Graphics;
+using Android.Runtime;
+using Android.Util;
 
 namespace BTDronection
 {
@@ -85,7 +87,10 @@ namespace BTDronection
             // Display all paired devices on a ListView
             foreach (BluetoothDevice device in mPairedDevices)
             {
-                mPeers.Add(device.Name + "\n" + device.Address);
+                if(mPeers.Contains(device.Name + "\n" + device.Address) == false)
+                {
+                    mPeers.Add(device.Name + "\n" + device.Address);
+                }
             }
 
             //mAdapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, mPeers);
@@ -156,7 +161,7 @@ namespace BTDronection
         {
             Intent bluetoothSettings = new Intent();
             bluetoothSettings.SetAction(Android.Provider.Settings.ActionBluetoothSettings);
-            StartActivity(bluetoothSettings);
+            StartActivityForResult(bluetoothSettings, 0);
         }
 
         /// <summary>
@@ -173,12 +178,20 @@ namespace BTDronection
 
             if(mSocketConnection.Socket.IsConnected == true)
             {
-                StartActivity(typeof(ControllerActivity));
+                Intent intent = new Intent(BaseContext, typeof(ControllerActivity));
+                intent.PutExtra("mac", bluetoothDevice.Address);
+                StartActivity(intent);
             }
             else
             {
                 Toast.MakeText(this, "Could not connect to peer", ToastLength.Short).Show();
             }
+        }
+
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            mPairedDevices = mBtAdapter.BondedDevices.Where(bd => bd.Name.ToUpper().Contains("RASPBERRY") || bd.Name.ToUpper().Contains("RPI") || bd.Name.ToUpper().Contains("XMC")).ToList();
+            GetPairedDevices();
         }
     }
 }

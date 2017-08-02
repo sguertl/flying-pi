@@ -92,7 +92,7 @@
                 android:layout_marginRight="5dp" />
         </RadioGroup>
     </LinearLayout>
-    <WiFiDronection.ControllerView
+    <BTDronection.ControllerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/JoystickView" />

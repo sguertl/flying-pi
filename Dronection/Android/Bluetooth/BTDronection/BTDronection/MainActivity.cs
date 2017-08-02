@@ -156,7 +156,7 @@ namespace BTDronection
             ApplicationFolderPath += Java.IO.File.Separator + "bluetooth";
             var storageDir = new Java.IO.File(ApplicationFolderPath + Java.IO.File.Separator + "settings");
             storageDir.Mkdirs();
-            var settingsFile = new Java.IO.File(ApplicationFolderPath + Java.IO.File.Separator + Java.IO.File.Separator + "settings.csv");
+            var settingsFile = new Java.IO.File(ApplicationFolderPath + Java.IO.File.Separator + "settings" + Java.IO.File.Separator + "settings.csv");
             settingsFile.CreateNewFile();
         }
 
