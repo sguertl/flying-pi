@@ -32,6 +32,7 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Widget;
+using Android.Graphics;
 
 namespace WiFiDronection
 {
@@ -40,6 +41,7 @@ namespace WiFiDronection
     {
         // Widget
         private ListView mLvVisualizationData;
+        private Button mBtShowChart;
 
         // Data to visualize
         private CurrentVisualizationData mCurVisData;
@@ -71,10 +73,18 @@ namespace WiFiDronection
             mLvVisualizationData.Adapter = mAdapter;
             mLvVisualizationData.DividerHeight = 14;
             this.mLvVisualizationData.ItemClick += OnListViewItemClick;
-            
+
+            this.mBtShowChart = FindViewById<Button>(Resource.Id.btnShowChart);
+            this.mBtShowChart.Click += OnShowChart;
+
             this.mCurVisData = CurrentVisualizationData.Instance;
             this.mCurVisData.Points = new Dictionary<string, List<DataPoint>>();
             this.mCurVisData.AltControlTime = new List<float>();
+        }
+
+        private void OnShowChart(object sender, EventArgs e)
+        {
+            StartActivity(typeof(ShowVisualizationDataActivity));
         }
 
         /// <summary>
@@ -104,21 +114,43 @@ namespace WiFiDronection
         private void OnListViewItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             string title = mAdapter[e.Position];
-            string path = MainActivity.ApplicationFolderPath + Java.IO.File.Separator + mFilename + Java.IO.File.Separator + title+".csv";
+            string path = MainActivity.ApplicationFolderPath + Java.IO.File.Separator + mFilename + Java.IO.File.Separator + title + ".csv";
             var reader = new Java.IO.BufferedReader(new Java.IO.FileReader(path));
             string line = "";
 
             if (title.Equals("controls"))
             {
                 //throttle, yaw, pitch, roll
-                mCurVisData.Points.Add("throttle", new List<DataPoint>());
-                mCurVisData.Points.Add("yaw", new List<DataPoint>());
-                mCurVisData.Points.Add("pitch", new List<DataPoint>());
-                mCurVisData.Points.Add("roll", new List<DataPoint>());
+                try
+                {
+                    mCurVisData.Points.Add("throttle", new List<DataPoint>());
+                    mCurVisData.Points.Add("yaw", new List<DataPoint>());
+                    mCurVisData.Points.Add("pitch", new List<DataPoint>());
+                    mCurVisData.Points.Add("roll", new List<DataPoint>());
+                }
+                catch (Exception ex)
+                {
+                    mCurVisData.Points.Remove("throttle");
+                    mCurVisData.Points.Remove("yaw");
+                    mCurVisData.Points.Remove("pitch");
+                    mCurVisData.Points.Remove("roll");
+                    e.View.SetBackgroundColor(Color.White);
+                    return;
+                }
             }
             else
             {
-                mCurVisData.Points.Add(title, new List<DataPoint>()); 
+                try
+                {
+                    mCurVisData.Points.Add(title, new List<DataPoint>());
+                }
+                catch (Exception ex)
+                {
+                    mCurVisData.Points.Remove(title);
+                    e.View.SetBackgroundColor(Color.White);
+                    return;
+
+                }
             }
 
             while ((line = reader.ReadLine()) != null)
@@ -132,7 +164,7 @@ namespace WiFiDronection
                     float p2 = Convert.ToSingle(p[3]);
                     float r = Convert.ToSingle(p[4]);
                     int h = Convert.ToInt32(p[5]);
-                    mCurVisData.Points["throttle"].Add(new DataPoint(x,t));
+                    mCurVisData.Points["throttle"].Add(new DataPoint(x, t));
                     mCurVisData.Points["yaw"].Add(new DataPoint(x, y));
                     mCurVisData.Points["pitch"].Add(new DataPoint(x, p2));
                     mCurVisData.Points["roll"].Add(new DataPoint(x, r));
@@ -141,20 +173,23 @@ namespace WiFiDronection
                         mCurVisData.AltControlTime.Add(x);
                     }
                 }
-                else if(!title.Equals("settings"))
+                else if (!title.Equals("settings"))
                 {
                     float x = Convert.ToSingle(p[0]);
                     float y = Convert.ToSingle(p[1]);
                     int h = Convert.ToInt32(p[2]);
                     mCurVisData.Points[title].Add(new DataPoint(x, y));
-                    if (h == 1){
+                    if (h == 1)
+                    {
                         mCurVisData.AltControlTime.Add(x);
                     }
                 }
-  
+
             }
             reader.Close();
-            StartActivity(typeof(ShowVisualizationDataActivity));
+
+            Color col = Color.ParseColor("#E30034");
+            e.View.SetBackgroundColor(col);
         }
 
 
