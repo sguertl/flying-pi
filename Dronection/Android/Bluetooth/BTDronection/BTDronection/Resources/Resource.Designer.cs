@@ -81,17 +81,8 @@ namespace BTDronection
 			// aapt resource value: 0x7f050006
 			public const int JoystickView = 2131034118;
 			
-			// aapt resource value: 0x7f05002a
-			public const int btHelp = 2131034154;
-			
-			// aapt resource value: 0x7f050029
-			public const int btLog = 2131034153;
-			
 			// aapt resource value: 0x7f05002d
 			public const int btSearchDevices = 2131034157;
-			
-			// aapt resource value: 0x7f050028
-			public const int btShowDevices = 2131034152;
 			
 			// aapt resource value: 0x7f05000d
 			public const int btStart = 2131034125;
@@ -108,8 +99,17 @@ namespace BTDronection
 			// aapt resource value: 0x7f050033
 			public const int btnBackRawData = 2131034163;
 			
+			// aapt resource value: 0x7f05002a
+			public const int btnHelp = 2131034154;
+			
 			// aapt resource value: 0x7f05000e
 			public const int btnSettingsBack = 2131034126;
+			
+			// aapt resource value: 0x7f050028
+			public const int btnShowDevices = 2131034152;
+			
+			// aapt resource value: 0x7f050029
+			public const int btnShowLogs = 2131034153;
 			
 			// aapt resource value: 0x7f05000b
 			public const int ivMode1 = 2131034123;
