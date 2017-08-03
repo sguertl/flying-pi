@@ -40,7 +40,7 @@ After connecting to the network, you will be forwared to `ControllerActivity.cs`
 
 You can't change the controlling mode during a flight.
 
-#### Pilot the drone
+##### Pilot the drone
 After pressing __Start__, a view with two joysticks, which are responsible for controlling the drone, and the socket connection will open. This process takes place in `ControllerActivity.cs` and `ControllerView.cs`. 
 At the top of the screen you can make following settings:
 + Activate/deactivate altitude control
@@ -58,5 +58,5 @@ Trims can be adjusted by choosing the radio button and moving the seekbar. Just 
 
 If you want to change the minimum and maximum trim value, you have to edit `mMinTrim` in `ControllerActivity.cs` and `android:max` of the seekbar in `ControllerLayout.axml`.
 
-#### Modify the joystick
+##### Modify the joystick
 Currently, the sensibility of the joysticks is very low. You can make it higher by giving `mMult`, `mMultRudder` and/or `mMultThrottle` a higher value in `Joystick.cs`.
