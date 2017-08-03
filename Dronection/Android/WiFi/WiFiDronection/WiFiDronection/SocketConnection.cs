@@ -128,9 +128,9 @@ namespace WiFiDronection
         {
             try
             {
-                this.mConnectionThread = new Thread(OnConnecting);
-                mStartMillis = 0;
                 this.OnCancel();
+                this.mConnectionThread = new Thread(OnConnecting);
+                mStartMillis = 0;                
                 this.mSocket = new Socket();
             }
             catch (Java.Lang.Exception ex)

@@ -162,6 +162,7 @@ namespace WiFiDronection
             if(mSocketConnection.WifiSocket.IsConnected == false)
             {
                 StartActivity(typeof(MainActivity));
+                return;
             }
 
             // Change to Controller with joysticks
@@ -308,8 +309,14 @@ namespace WiFiDronection
 		{
 			base.OnDestroy();
 			WriteLogData();
-			mSocketConnection.OnCancel();
-			mSocketReader.Close();
+            if (mSocketConnection != null)
+            {
+                mSocketConnection.OnCancel();
+            }
+            if (mSocketReader != null)
+            {
+                mSocketReader.Close();
+            }
 		}
 
 		/// <summary>
@@ -319,9 +326,15 @@ namespace WiFiDronection
 		{
 			base.OnStop();
 			WriteLogData();
-			mSocketConnection.OnCancel ();
-			mSocketReader.Close();  
-		}
+            if (mSocketConnection != null)
+            {
+                mSocketConnection.OnCancel();
+            }
+            if (mSocketReader != null)
+            {
+                mSocketReader.Close();
+            }
+        }
 
 
         /// <summary>

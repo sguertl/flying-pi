@@ -225,7 +225,6 @@ namespace WiFiDronection
 
             IList<WifiConfiguration> myWifi = wifiManager.ConfiguredNetworks;
 
-            WifiConfiguration wc = myWifi.First(x => x.Ssid.Contains(mSelectedSsid));
             wifiManager.Disconnect();
             wifiManager.EnableNetwork(id, true);
             wifiManager.Reconnect();
