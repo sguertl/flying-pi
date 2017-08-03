@@ -36,10 +36,13 @@ using Android.Graphics;
 
 namespace BTDronection
 {
-	[Activity(Label = "VisualizationActivity", Theme = "@android:style/Theme.NoTitleBar.Fullscreen")]
+	[Activity(Label = "VisualizationActivity",
+			  Theme = "@android:style/Theme.Holo.Light.NoActionBar.Fullscreen",
+			  ScreenOrientation = Android.Content.PM.ScreenOrientation.SensorPortrait)]
 	public class VisualizationActivity : Activity
 	{
-		// Widget
+		// Widgets
+		private TextView mTvHeaderVisualization;
 		private ListView mLvVisualizationData;
         private Button mBtShowChart;
 
@@ -72,10 +75,18 @@ namespace BTDronection
 			this.mLvVisualizationData = FindViewById<ListView>(Resource.Id.lvData);
 			FillRawDataList();
 			mLvVisualizationData.Adapter = mAdapter;
-			mLvVisualizationData.DividerHeight = 14;
+			mLvVisualizationData.DividerHeight = 5;
 			this.mLvVisualizationData.ItemClick += OnListViewItemClick;
 
+			// Create font
+			var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
+
+			this.mTvHeaderVisualization = FindViewById<TextView>(Resource.Id.tvHeaderVisualization);
             this.mBtShowChart = FindViewById<Button>(Resource.Id.btnShowChart);
+
+			mTvHeaderVisualization.Typeface = font;
+			mBtShowChart.Typeface = font;
+
             this.mBtShowChart.Click += OnShowChart;
 
 
@@ -188,8 +199,7 @@ namespace BTDronection
 			}
 			reader.Close();
 
-            Color col = Color.ParseColor("#E30034");
-            e.View.SetBackgroundColor(col);
+            e.View.SetBackgroundColor(Color.ParseColor("#928285"));
 		}
 
 

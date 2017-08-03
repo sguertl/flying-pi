@@ -1,4 +1,5 @@
 # Flying Pi
+For a more structured view, go to [Wiki](https://github.com/sguertl/Flying_Pi/wiki).
 ## Overview
 Flying Pi is a project for piloting a Raspberry Pi Zero W on a LARIX drone with a smartphone.
 + [Change SSID limitations](#change-ssid-limitations)
@@ -76,10 +77,6 @@ sudo apt-get update
 sudo apt-get install dnsmasq hostapd
 ```
 ##### Step 2: Configure static IP
-Next you have to tell the Raspberry to ignore wlan0 as it will be configured with a static IP address. So add the followin to the bottom of the file `/etc/dhcpcd.conf`:
-``` 
-denyinterfaces wlan0
-```
 Replace the `wlan0` section in `/etc/network/interfaces` with the following text:
 ```
 allow-hotplug wlan0  
@@ -178,4 +175,42 @@ sudo service dnsmasq start
 ```
 Thanks to [Phil Martin](https://frillip.com/using-your-raspberry-pi-3-as-a-wifi-access-point-with-hostapd/) for this tutorial!
 
+### Serial communication on RPI
+To receive and send data between the XMC and Raspberry Pi Zero W, some configuration must be done on the RPI. It's a good idea to make a backup of your SD card before configuring. Reboots during the steps are also recommended. Again, if you are not root, you have to give your user rights with this command:
+```
+sudo chmod 777 <dir_or_file>
+```
+##### Step 1: Change /boot/config.txt
+Add following content to the bottom of the file `/boot/config.txt`:
+```
+gpu_mem=128
+enable_uart=1
+dtoverlay=w1-gpio
+force_turbo=1
+```
+##### Step 2: Change /boot/cmdline.txt
+As the next step, search the following line in '/boot/cmdline.txt':
+```
+dwc_otg.lpm_enable=0 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait
+```
+Delete `console=serial0,115200` and the whole content after 'rootwait'.
+##### Step 3: Enable serial
+Type the command `sudo raspi-config`, choose `Interface options` -> `Serial` and then disable shell and enable interface.
+##### Step 4: Change /lib/systemd/system/hciuart.service [Optional]
+Open the file `/lib/systemd/system/hciuart.service`and replace everything with:
+```
+[Unit]
+Description=Configure Bluetooth Modems connected by UART
+ConditionPathIsDirectory=/proc/device-tree/soc/gpio@7e200000/bt_pins
+Before=bluetooth.service
+After=dev-ttyS0.device
 
+[Service]
+Type=forking
+ExecStart=/usr/bin/hciattach /dev/ttyS0 bcm43xx 921600 noflow -
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Thanks to [FHEM Wiki](https://wiki.fhem.de/wiki/Raspberry_Pi_3:_GPIO-Port_Module_und_Bluetooth) for this tutorial! 
