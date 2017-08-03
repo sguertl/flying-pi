@@ -76,10 +76,6 @@ sudo apt-get update
 sudo apt-get install dnsmasq hostapd
 ```
 ##### Step 2: Configure static IP
-Next you have to tell the Raspberry to ignore wlan0 as it will be configured with a static IP address. So add the followin to the bottom of the file `/etc/dhcpcd.conf`:
-``` 
-denyinterfaces wlan0
-```
 Replace the `wlan0` section in `/etc/network/interfaces` with the following text:
 ```
 allow-hotplug wlan0  
