@@ -26,7 +26,7 @@ WiFiDronection has two main functionalities:
 ##### Change SSID limitations
 In `MainActivity.cs` the android device searches automatically for a matching WiFi network. Only networks with a SSID including *Rasp* and/or *Pi* (no matter if upper- or lowercase) can be found. If you want to change this limitation, you have to edit the following line in `RefreshWiFiList()`:
 ```C#
-    IEnumerable<ScanResult> results = wifiList.Where(w => w.Ssid.ToUpper().Contains("RASP") || w.Ssid.ToUpper().Contains("PI"));
+IEnumerable<ScanResult> results = wifiList.Where(w => w.Ssid.ToUpper().Contains("RASP") || w.Ssid.ToUpper().Contains("PI"));
 ```
 You can replace an exisiting string or add a new one by writing `|| w.Ssid.ToUpper().Contains("WHATEVER")`.
 If there is no matching network, you can't go on to the Controller.
@@ -60,3 +60,18 @@ If you want to change the minimum and maximum trim value, you have to edit `mMin
 
 ##### Modify the joystick
 Currently, the sensibility of the joysticks is very low. You can make it higher by giving `mMult`, `mMultRudder` and/or `mMultThrottle` a higher value in `Joystick.cs`.
+
+## Raspberry Pi
+### RPI as access point
+A Raspberry Pi Zero W can be configured as an access point providing a wireless LAN with the following steps. If you are not root, you have to give your user rights with this command:
+```
+sudo chmod 777 <dir_or_file>
+```
+###### Step 1
+Download hostapd and dnsmasq.
+```
+sudo apt-get update
+sudo apt-get install dnsmasq hostapd
+```
+###### Step 2
+Next you have to .(You have to give your user rights if you are not root).
