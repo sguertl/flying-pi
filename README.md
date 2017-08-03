@@ -67,11 +67,31 @@ A Raspberry Pi Zero W can be configured as an access point providing a wireless 
 ```
 sudo chmod 777 <dir_or_file>
 ```
-###### Step 1
-Download hostapd and dnsmasq.
+###### Step 1: Download packages
+Download hostapd and dnsmasq:
 ```
 sudo apt-get update
 sudo apt-get install dnsmasq hostapd
 ```
-###### Step 2
-Next you have to .(You have to give your user rights if you are not root).
+###### Step 2: Configure static IP
+Next you have to tell the Raspberry to ignore wlan0 as it will be configured with a static IP address. So add the followin to the bottom of the file `/etc/dhcpcd.conf`:
+``` 
+denyinterfaces wlan0
+```
+Replace the `wlan0` section in `/etc/network/interfaces` with the following text:
+```
+allow-hotplug wlan0  
+iface wlan0 inet static  
+    address 172.24.1.1
+    netmask 255.255.255.0
+    network 172.24.1.0
+    broadcast 172.24.1.255
+```
+Restart `dhcpcd` with `sudo service dhcpcd restart` and reload the configuration for `wlan0` with 
+```
+sudo ifdown wlan0
+sudo ifup wlan0
+```
+###### Step 3
+
+
