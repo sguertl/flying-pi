@@ -34,6 +34,7 @@ using MikePhil.Charting.Charts;
 using MikePhil.Charting.Data;
 using MikePhil.Charting.Interfaces.Datasets;
 using Android.Graphics;
+using Java.Util;
 
 namespace WiFiDronection
 {
@@ -49,7 +50,6 @@ namespace WiFiDronection
         private LineData mLineData;
 
         // Colors
-        private Color[] mColorList = { Color.Red, Color.Green, Color.Blue, Color.Brown};
         private List<int> mColors;
 
         /// <summary>
@@ -85,10 +85,13 @@ namespace WiFiDronection
         private void AddPointsToEntries()
         {
             int count = 0;
+            Random rand = new Random();
+
             foreach (KeyValuePair<string,List<DataPoint>> dp in mCurVisData.Points)
             {
                 this.mEntries = new List<Entry>();
                 mColors = new List<int>();
+                Color col = new Color(rand.NextInt(255), rand.NextInt(255), rand.NextInt(255));
 
                 foreach (DataPoint dp2 in dp.Value )
                 {
@@ -99,19 +102,19 @@ namespace WiFiDronection
                     }
                     else
                     {
-                        mColors.Add(mColorList[count]);
+                        mColors.Add(col);
                     }
                         
                 }
 
                 LineDataSet lds = new LineDataSet(mEntries, dp.Key);
 
-                lds.SetColor(mColorList[count], 255);
+                lds.SetColor(col, 255);
                 // lds.SetColors(mColors.ToArray());
                 lds.SetCircleColors(mColors.ToArray());
                 // lds.SetCircleColor(mColorList[count]);
                 lds.SetDrawCircleHole(true);
-                lds.SetCircleColorHole(mColorList[count]);
+                lds.SetCircleColorHole(col);
 
                 mDataSet.SetValue(lds,count);
                 count++;
