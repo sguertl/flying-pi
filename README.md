@@ -1,4 +1,5 @@
 # Flying Pi
+For a more structured view, go to [Wiki](https://github.com/sguertl/Flying_Pi/wiki).
 ## Overview
 Flying Pi is a project for piloting a Raspberry Pi Zero W on a LARIX drone with a smartphone.
 + [Change SSID limitations](#change-ssid-limitations)
