@@ -142,7 +142,38 @@ wpa_passphrase=raspberry
 # Use AES instead of TKIP
 rsn_pairwise=CCMP
 ```
-
+Edit the file `/etc/default/hostapd` and change the line `#DAEMON_CONF=""` to
+```
+DAEMON_CONF="/etc/hostapd/hostapd.conf"
+```
 ##### Step 4: Configure dnsmasq
+Open the file `/etc/dnsmasq.conf` and add the following content:
+```
+# Use interface wlan0
+interface=wlan0
 
+# Explicitly specify the address to listen on
+listen-address=172.24.1.1
+
+# Bind to the interface to make sure we aren't sending things elsewhere
+bind-interfaces
+
+# Forward DNS requests to Google DNS
+server=8.8.8.8
+
+# Don't forward short names
+domain-needed
+
+# Never forward addresses in the non-routed address spaces
+bogus-priv
+
+# Assign IP addresses between 172.24.1.50 and 172.24.1.150 with a 12 hour lease time
+dhcp-range=172.24.1.50,172.24.1.150,12h
+```
+##### Step 5: Restart services
+The last step is to restart the services:
+```
+sudo service hostapd start
+sudo service dnsmasq start
+```
 
