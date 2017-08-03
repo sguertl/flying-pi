@@ -176,4 +176,6 @@ The last step is to restart the services:
 sudo service hostapd start
 sudo service dnsmasq start
 ```
+Thanks to [Phil Martin](https://frillip.com/using-your-raspberry-pi-3-as-a-wifi-access-point-with-hostapd/) for this tutorial!
+
 
