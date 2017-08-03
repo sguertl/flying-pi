@@ -18,6 +18,7 @@ The folder [RPI](https://github.com/sguertl/Flying_Pi/tree/master/RPI) contains 
 ### LARIX drone
 In the [XMC](https://github.com/sguertl/Flying_Pi/tree/master/XMC) folder are all files stored, that are necessary for the bidirectional communication between Raspberry Pi and XMC.
 
+___
 ## Dronection
 ### WiFiDronection - Android
 WiFiDronection has two main functionalities:
@@ -61,19 +62,20 @@ If you want to change the minimum and maximum trim value, you have to edit `mMin
 ##### Modify the joystick
 Currently, the sensibility of the joysticks is very low. You can make it higher by giving `mMult`, `mMultRudder` and/or `mMultThrottle` a higher value in `Joystick.cs`.
 
+___
 ## Raspberry Pi
 ### RPI as access point
 A Raspberry Pi Zero W can be configured as an access point providing a wireless LAN with the following steps. If you are not root, you have to give your user rights with this command:
 ```
 sudo chmod 777 <dir_or_file>
 ```
-###### Step 1: Download packages
+##### Step 1: Download packages
 Download hostapd and dnsmasq:
 ```
 sudo apt-get update
 sudo apt-get install dnsmasq hostapd
 ```
-###### Step 2: Configure static IP
+##### Step 2: Configure static IP
 Next you have to tell the Raspberry to ignore wlan0 as it will be configured with a static IP address. So add the followin to the bottom of the file `/etc/dhcpcd.conf`:
 ``` 
 denyinterfaces wlan0
@@ -92,6 +94,6 @@ Restart `dhcpcd` with `sudo service dhcpcd restart` and reload the configuration
 sudo ifdown wlan0
 sudo ifup wlan0
 ```
-###### Step 3
+##### Step 3
 
 
