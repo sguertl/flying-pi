@@ -105,8 +105,8 @@ namespace BTDronection
 			// aapt resource value: 0x7f05000e
 			public const int btnSettingsBack = 2131034126;
 			
-			// aapt resource value: 0x7f050036
-			public const int btnShowChart = 2131034166;
+			// aapt resource value: 0x7f050037
+			public const int btnShowChart = 2131034167;
 			
 			// aapt resource value: 0x7f050028
 			public const int btnShowDevices = 2131034152;
@@ -132,8 +132,8 @@ namespace BTDronection
 			// aapt resource value: 0x7f05002f
 			public const int listView = 2131034159;
 			
-			// aapt resource value: 0x7f050035
-			public const int lvData = 2131034165;
+			// aapt resource value: 0x7f050036
+			public const int lvData = 2131034166;
 			
 			// aapt resource value: 0x7f050023
 			public const int lvFiles = 2131034147;
@@ -194,6 +194,9 @@ namespace BTDronection
 			
 			// aapt resource value: 0x7f050007
 			public const int tvHeaderSettings = 2131034119;
+			
+			// aapt resource value: 0x7f050035
+			public const int tvHeaderVisualization = 2131034165;
 			
 			// aapt resource value: 0x7f05001a
 			public const int tvHelpAbout = 2131034138;

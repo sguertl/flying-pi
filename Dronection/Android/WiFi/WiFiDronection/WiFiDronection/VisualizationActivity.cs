@@ -1,4 +1,4 @@
-﻿/************************************************************************
+﻿﻿/************************************************************************
 *																		*
 *  Copyright (C) 2017 Infineon Technologies Austria AG.					*
 *																		*
@@ -36,10 +36,13 @@ using Android.Graphics;
 
 namespace WiFiDronection
 {
-    [Activity(Label = "VisualizationActivity", Theme = "@android:style/Theme.NoTitleBar.Fullscreen")]
+    [Activity(Label = "VisualizationActivity", 
+              Theme = "@android:style/Theme.Holo.Light.NoActionBar.Fullscreen",
+              ScreenOrientation = Android.Content.PM.ScreenOrientation.SensorPortrait)]
     public class VisualizationActivity : Activity
     {
-        // Widget
+        // Widgets
+        private TextView mTvHeaderVisualization;
         private ListView mLvVisualizationData;
         private Button mBtShowChart;
 
@@ -71,10 +74,19 @@ namespace WiFiDronection
             this.mLvVisualizationData = FindViewById<ListView>(Resource.Id.lvData);
             FillRawDataList();
             mLvVisualizationData.Adapter = mAdapter;
-            mLvVisualizationData.DividerHeight = 14;
+            mLvVisualizationData.DividerHeight = 5;
             this.mLvVisualizationData.ItemClick += OnListViewItemClick;
 
+
+			// Create font
+			var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
+
+            this.mTvHeaderVisualization = FindViewById<TextView>(Resource.Id.tvHeaderVisualization);
             this.mBtShowChart = FindViewById<Button>(Resource.Id.btnShowChart);
+
+            mTvHeaderVisualization.Typeface = font;
+            mBtShowChart.Typeface = font;
+
             this.mBtShowChart.Click += OnShowChart;
 
             this.mCurVisData = CurrentVisualizationData.Instance;
@@ -188,8 +200,7 @@ namespace WiFiDronection
             }
             reader.Close();
 
-            Color col = Color.ParseColor("#E30034");
-            e.View.SetBackgroundColor(col);
+            e.View.SetBackgroundColor(Color.ParseColor("#928285"));
         }
 
 

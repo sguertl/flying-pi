@@ -40,7 +40,9 @@ using Android.Graphics;
 
 namespace BTDronection
 {
-	[Activity(Label = "LogActivity", Theme = "@android:style/Theme.Holo.Light.NoActionBar.Fullscreen")]
+	[Activity(Label = "LogActivity",
+			  Theme = "@android:style/Theme.Holo.Light.NoActionBar.Fullscreen",
+			  ScreenOrientation = Android.Content.PM.ScreenOrientation.SensorPortrait)]
 	public class LogActivity : Activity
 	{
 		// Widgets
