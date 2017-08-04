@@ -212,5 +212,6 @@ ExecStart=/usr/bin/hciattach /dev/ttyS0 bcm43xx 921600 noflow -
 [Install]
 WantedBy=multi-user.target
 ```
+Create a file `fhem` in `/etc/init.d/` and add `sleep 10` as content.
 
 Thanks to [FHEM Wiki](https://wiki.fhem.de/wiki/Raspberry_Pi_3:_GPIO-Port_Module_und_Bluetooth) for this tutorial! 
