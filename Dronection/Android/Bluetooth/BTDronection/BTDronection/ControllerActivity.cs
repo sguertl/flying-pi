@@ -310,17 +310,20 @@ namespace BTDronection
 		/// </summary>
 		private void OnAltitudeControlClick(object sender, EventArgs e)
 		{
-			if (ControllerView.Settings.AltitudeControlActivated)
-			{
-				ControllerView.Settings.AltitudeControlActivated = ControllerSettings.INACTIVE;
-				mBtnAltitudeControl.SetBackgroundColor(Color.ParseColor("#005DA9"));
-			}
-			else
-			{
-				ControllerView.Settings.AltitudeControlActivated = ControllerSettings.ACTIVE;
-				mBtnAltitudeControl.SetBackgroundColor(Color.ParseColor("#E30034"));
-			}
-		}
+            Flight tk = Flight.Instance;
+            if (ControllerView.Settings.AltitudeControlActivated)
+            {
+                ControllerView.Settings.AltitudeControlActivated = ControllerSettings.INACTIVE;
+                mBtnAltitudeControl.SetBackgroundColor(Color.ParseColor("#005DA9"));
+            }
+            else
+            {
+                ControllerView.Settings.AltitudeControlActivated = ControllerSettings.ACTIVE;
+                mBtnAltitudeControl.SetBackgroundColor(Color.ParseColor("#E30034"));
+                tk.CV.UpdateOvals(tk.CV.mLeftJS.CenterX, tk.CV.mLeftJS.CenterY);
+                tk.CV.Invalidate();
+            }
+        }
 
 		/// <summary>
 		/// Saves log file and close connection when finished.
