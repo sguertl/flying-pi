@@ -74,7 +74,7 @@
     <Compile Include="ShowVisualizationDataActivity.cs" />
     <Compile Include="SocketConnection.cs" />
     <Compile Include="SocketReader.cs" />
-    <Compile Include="TestKlasse.cs" />
+    <Compile Include="Flight.cs" />
     <Compile Include="VisualizationActivity.cs" />
   </ItemGroup>
   <ItemGroup>

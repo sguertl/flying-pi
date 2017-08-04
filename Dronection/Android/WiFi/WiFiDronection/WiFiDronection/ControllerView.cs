@@ -103,7 +103,7 @@ namespace WiFiDronection
         private void Init()
         {
             // Test
-            TestKlasse tk = TestKlasse.Instance;
+            Flight tk = Flight.Instance;
             tk.CV = this;
 
             mSocketConnection = SocketConnection.Instance;
