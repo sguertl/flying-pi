@@ -306,7 +306,7 @@ namespace WiFiDronection
         /// </summary>
 		private void OnAltitudeControlClick(object sender, EventArgs e)
 		{
-            TestKlasse tk = TestKlasse.Instance;
+            Flight tk = Flight.Instance;
             if(ControllerView.Settings.AltitudeControlActivated)
             {
                 ControllerView.Settings.AltitudeControlActivated = ControllerSettings.INACTIVE;
