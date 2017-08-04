@@ -119,13 +119,15 @@ namespace BTDronection
 			mEtMaxRoll = FindViewById<EditText>(Resource.Id.etMaxRoll);
             mBtStart = FindViewById<Button>(Resource.Id.btStart);
             mBtBack = FindViewById<Button>(Resource.Id.btnSettingsBack);
+       
 
-			// Create font
-			var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
+           // Create font
+           var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
 
             mTvHeader.Typeface = font;
             mRbMode1.Typeface = font;
             mRbMode2.Typeface = font;
+        
             mCbxLoggingActive.Typeface = font;
             mTvMinYaw.Typeface = font;
             mEtMinYaw.Typeface = font;
@@ -150,7 +152,7 @@ namespace BTDronection
 
             mBtStart.Click += OnStartController;
 
-            mBtnAltitudeControl.Click += OnAltitudeControlClick;
+           
 
 			// Get singleton instance of socket connection
             mSocketConnection = SocketConnection.Instance;
@@ -178,12 +180,12 @@ namespace BTDronection
                     AltitudeControlActivated = false,
                     LoggingActivated = mCbxLoggingActive.Checked,
                     Inverted = false,
-                    MinYaw = Convert.ToInt32(mEtMinYaw.Text),
-                    MaxYaw = Convert.ToInt32(mEtMaxYaw.Text),
-                    MinPitch = Convert.ToInt32(mEtMinPitch.Text),
-                    MaxPitch = Convert.ToInt32(mEtMaxPitch.Text),
-                    MinRoll = Convert.ToInt32(mEtMinRoll.Text),
-                    MaxRoll = Convert.ToInt32(mEtMaxRoll.Text),
+                   // MinYaw = Convert.ToInt32(mEtMinYaw.Text),
+                  //  MaxYaw = Convert.ToInt32(mEtMaxYaw.Text),
+                 //   MinPitch = Convert.ToInt32(mEtMinPitch.Text),
+                 //   MaxPitch = Convert.ToInt32(mEtMaxPitch.Text),
+                 //   MinRoll = Convert.ToInt32(mEtMinRoll.Text),
+                 //   MaxRoll = Convert.ToInt32(mEtMaxRoll.Text),
                     TrimYaw = Convert.ToInt16(trimParts[0]),
                     TrimPitch = Convert.ToInt16(trimParts[1]),
                     TrimRoll = Convert.ToInt16(trimParts[2])
@@ -239,6 +241,7 @@ namespace BTDronection
             mRbYawTrim = FindViewById<RadioButton>(Resource.Id.rbYawTrim);
             mRbPitchTrim = FindViewById<RadioButton>(Resource.Id.rbPitchTrim);
             mRbRollTrim = FindViewById<RadioButton>(Resource.Id.rbRollTrim);
+            mBtnAltitudeControl = FindViewById<Button>(Resource.Id.btnAltitudeControl);
 
             // Create and set font
             var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
@@ -246,6 +249,7 @@ namespace BTDronection
             mRbYawTrim.Typeface = font;
             mRbPitchTrim.Typeface = font;
             mRbRollTrim.Typeface = font;
+            mBtnAltitudeControl.Typeface = font;
 
             mSbTrimBar.Progress = ControllerView.Settings.TrimYaw - mMinTrim;
             mTvTrimValue.Text = ControllerView.Settings.TrimYaw.ToString();
@@ -266,6 +270,8 @@ namespace BTDronection
                 }
                 mTvTrimValue.Text = (mSbTrimBar.Progress + mMinTrim).ToString();
             };
+
+            mBtnAltitudeControl.Click += OnAltitudeControlClick;
 
             mRbYawTrim.Click += delegate
             {
