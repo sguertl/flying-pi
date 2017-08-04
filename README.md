@@ -32,8 +32,8 @@ IEnumerable<ScanResult> results = wifiList.Where(w => w.Ssid.ToUpper().Contains(
 ```
 You can replace an exisiting string or add a new one by writing `|| w.Ssid.ToUpper().Contains("WHATEVER")`.
 If there is no matching network, you can't go on to the Controller.
-##### Connect to a network
-If you press the __Connect__ button you will be asked to enter the password. The default password is 87654321 (or 00000000), but it depends on the hostapd-configuration of the Raspberry Pi. If you are already connected to the network, you can just press the OK button and ignore the dialog and a new socket connection (`SocketConnection.cs`) will be established.
+##### Connect to network
+If you press the __Connect__ button you will be asked to enter the password. The default password is 87654321 (or 00000000), but it depends on the hostapd-configuration of the Raspberry Pi. If you are already connected to the network, you can just press the OK button and ignore the dialog and a new socket connection (`SocketConnection.cs`) to `172.24.1.1:5050` will be established.
 
 ##### Choose selection mode
 After connecting to the network, you will be forwared to `ControllerActivity.cs`. Before using the smartphone as a controller, you have to choose between two selection modes by clicking either on the radio button or the image.
