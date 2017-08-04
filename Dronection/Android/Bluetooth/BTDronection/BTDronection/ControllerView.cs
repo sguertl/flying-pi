@@ -63,8 +63,8 @@ namespace BTDronection
         private ShapeDrawable mShapeBorderRadiusRight;
 
         // Joystick controllers
-        private Joystick mLeftJS;
-        private Joystick mRightJS;
+        public Joystick mLeftJS;
+        public Joystick mRightJS;
 
         private SocketConnection mSocket;
 
@@ -90,7 +90,10 @@ namespace BTDronection
 
         private void Init()
         {
-			mSocket = SocketConnection.Instance;
+
+            Flight tk = Flight.Instance;
+            tk.CV = this;
+            mSocket = SocketConnection.Instance;
 
 			Settings = new ControllerSettings
             {
@@ -235,8 +238,16 @@ namespace BTDronection
 					{
 						if (e.GetX() <= ScreenWidth / 2)
 						{
-							UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
-						}
+                            // Test
+                            if (Settings.AltitudeControlActivated)
+                            {
+                                UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
+                            }
+                            else
+                            {
+                                UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
+                            }
+                        }
 						else
 						{
 							UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
@@ -264,8 +275,16 @@ namespace BTDronection
 						{
 							if (e.GetX(i) <= ScreenWidth / 2)
 							{
-								UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
-							}
+                                // Test
+                                if (Settings.AltitudeControlActivated)
+                                {
+                                    UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
+                                }
+                                else
+                                {
+                                    UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
+                                }
+                            }
 							else
 							{
 								UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
@@ -294,8 +313,16 @@ namespace BTDronection
 						{
 							if (e.GetX(i) <= ScreenWidth / 2)
 							{
-								UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
-							}
+                                // Test
+                                if (Settings.AltitudeControlActivated)
+                                {
+                                    UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
+                                }
+                                else
+                                {
+                                    UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
+                                }
+                            }
 							else
 							{
 								UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
@@ -343,7 +370,7 @@ namespace BTDronection
 		/// </summary>
 		/// <param name="xPosition">X-Position of the touch</param>
 		/// <param name="yPosition">Y-Position of the touch</param>
-		private void UpdateOvals(float xPosition, float yPosition)
+		public void UpdateOvals(float xPosition, float yPosition)
 		{
 			// Check if touch is in left or right half of the screen
 			if (xPosition <= ScreenWidth / 2)
@@ -456,7 +483,8 @@ namespace BTDronection
             {
                 if (!Settings.Inverted)
                 {
-					int throttle = Settings.AltitudeControlActivated ? 50 : mLeftJS.Throttle;
+                    //int throttle = Settings.AltitudeControlActivated ? 50 : mLeftJS.Throttle;
+                    int throttle = mLeftJS.Throttle;
 					mSocket.Write((Int16)throttle,
                                   (Int16)(mLeftJS.Rudder - Settings.TrimYaw),
                                   (Int16)(mRightJS.Aileron - Settings.TrimRoll),
@@ -464,8 +492,9 @@ namespace BTDronection
                 }
                 else
                 {
-					int throttle = Settings.AltitudeControlActivated ? 50 : mRightJS.Throttle;
-					mSocket.Write((Int16)throttle,
+					//int throttle = Settings.AltitudeControlActivated ? 50 : mRightJS.Throttle;
+                    int throttle = mRightJS.Throttle;
+                    mSocket.Write((Int16)throttle,
                                   (Int16)(mLeftJS.Rudder - Settings.TrimYaw),
                                   (Int16)(mLeftJS.Aileron - Settings.TrimRoll),
                                   (Int16)(mRightJS.Elevator - Settings.TrimPitch));

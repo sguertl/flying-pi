@@ -148,7 +148,9 @@ namespace BTDronection
         {
             if (mConnectionThread != null)
             {
+                // Start the Connection (BuildConnection)
                 mConnectionThread.Start();
+                // Wait until the thread has finished
                 mConnectionThread.Join();
             }
 
@@ -166,9 +168,10 @@ namespace BTDronection
                     if (mSocket.IsConnected == false)
                     {
                         Thread.Sleep(2000);
+                    // a to the bluetooth device
                         mSocket.Connect();
                     }
-                }
+                } 
                 catch (Java.Lang.Exception ex)
                 {
                     Log.Debug(TAG, "Connection could not be created (" + ex.Message + ")");

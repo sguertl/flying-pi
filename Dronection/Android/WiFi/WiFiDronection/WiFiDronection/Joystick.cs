@@ -1,4 +1,4 @@
-﻿﻿/************************************************************************
+﻿/************************************************************************
 *																		*
 *  Copyright (C) 2017 Infineon Technologies Austria AG.					*
 *																		*
@@ -25,6 +25,7 @@
 *																		*
 ************************************************************************/
 
+using Android.Util;
 using System;
 
 namespace WiFiDronection
@@ -64,7 +65,7 @@ namespace WiFiDronection
         // Multiplier for Rudder
         private float mMultRudder = 0.4f;
         // Multiplier for throttle
-        private float mMultThrottle = 0.7f;
+        private float mMultThrottle = 1f;
 
         // Current x-position of joystick
         private float mXPosition;
@@ -313,7 +314,7 @@ namespace WiFiDronection
             }
             throttleValue = (int)(90 * (mCenterY + DisplacementRadius - mYPosition) / DisplacementDiameter);
             throttleValue = Math.Max((Int16)0, throttleValue);
-            throttleValue = Math.Min((Int16)255, throttleValue);
+            throttleValue = Math.Min((Int16)100, throttleValue);
             Throttle = (Int16)throttleValue;
             return (Int16)((mThrottle) * mMultThrottle);
         }

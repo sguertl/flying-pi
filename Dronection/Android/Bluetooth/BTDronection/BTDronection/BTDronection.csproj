@@ -61,6 +61,7 @@
     <Compile Include="ControllerView.cs" />
     <Compile Include="CurrentVisualizationData.cs" />
     <Compile Include="DataPoint.cs" />
+    <Compile Include="Flight.cs" />
     <Compile Include="HelpActivity.cs" />
     <Compile Include="Joystick.cs" />
     <Compile Include="ListAdapter.cs" />

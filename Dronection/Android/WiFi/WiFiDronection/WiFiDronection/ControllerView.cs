@@ -64,8 +64,8 @@ namespace WiFiDronection
         private ShapeDrawable mShapeBorderRadiusRight;
 
         // Joystick controllers
-        private Joystick mLeftJS;
-        private Joystick mRightJS;
+        public Joystick mLeftJS;
+        public Joystick mRightJS;
 
         // Transfer data via bluetooth
         private SocketConnection mSocketConnection;
@@ -102,6 +102,10 @@ namespace WiFiDronection
         /// </summary>
         private void Init()
         {
+            // Test
+            TestKlasse tk = TestKlasse.Instance;
+            tk.CV = this;
+
             mSocketConnection = SocketConnection.Instance;
             Settings = new ControllerSettings
             {
@@ -246,7 +250,15 @@ namespace WiFiDronection
                     {
                         if (e.GetX() <= ScreenWidth / 2)
                         {
-                            UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
+                            // Test
+                            if (Settings.AltitudeControlActivated)
+                            {
+                                UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
+                            }
+                            else
+                            {
+                                UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
+                            }
                         }
                         else
                         {
@@ -275,7 +287,15 @@ namespace WiFiDronection
                         {
                             if (e.GetX(i) <= ScreenWidth / 2)
                             {
-                                UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
+                                // Test
+                                if (Settings.AltitudeControlActivated)
+                                {
+                                    UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
+                                }
+                                else
+                                {
+                                    UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
+                                }
                             }
                             else
                             {
@@ -305,7 +325,15 @@ namespace WiFiDronection
                         {
                             if (e.GetX(i) <= ScreenWidth / 2)
                             {
-                                UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
+                                // Test
+                                if (Settings.AltitudeControlActivated)
+                                {
+                                    UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
+                                }
+                                else
+                                {
+                                    UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
+                                }
                             }
                             else
                             {
@@ -326,7 +354,9 @@ namespace WiFiDronection
             {
                 if (e.PointerCount == 1 && e.GetX() <= ScreenWidth / 2 && !mRightJS.IsCentered())
                 {
-                    UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
+                    
+                        UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
+                    
                 }
                 else if (e.PointerCount == 1 && e.GetX() > ScreenWidth / 2 && !mLeftJS.IsCentered())
                 {
@@ -337,7 +367,11 @@ namespace WiFiDronection
             {
                 if (e.PointerCount == 1 && e.GetX() <= ScreenWidth / 2 && !mRightJS.IsCentered())
                 {
+            
+                        UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
+  
                     UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
+                    
                 }
                 else if (e.PointerCount == 1 && e.GetX() > ScreenWidth / 2 && !mLeftJS.IsCentered())
                 {
@@ -354,7 +388,7 @@ namespace WiFiDronection
         /// </summary>
         /// <param name="xPosition">X-Position of the touch</param>
         /// <param name="yPosition">Y-Position of the touch</param>
-        private void UpdateOvals(float xPosition, float yPosition)
+        public  void UpdateOvals(float xPosition, float yPosition)
         {
             // Check if touch is in left or right half of the screen
             if (xPosition <= ScreenWidth / 2)
@@ -465,9 +499,11 @@ namespace WiFiDronection
         {
             if (mSocketConnection.WifiSocket.IsConnected)
             {
+                // Test
                 if (!Settings.Inverted)
                 {
-                    int throttle = Settings.AltitudeControlActivated ? 50 : mLeftJS.Throttle;
+                    //int throttle = Settings.AltitudeControlActivated ? 50 : mLeftJS.Throttle;
+                    int throttle = mLeftJS.Throttle;
                     mSocketConnection.Write((Int16)throttle,
                                       (Int16)(mLeftJS.Rudder - Settings.TrimYaw),
                                       (Int16)(mRightJS.Aileron - Settings.TrimRoll),
@@ -475,7 +511,8 @@ namespace WiFiDronection
                 }
                 else
                 {
-                    int throttle = Settings.AltitudeControlActivated ? 50 : mRightJS.Throttle;
+                    //int throttle = Settings.AltitudeControlActivated ? 50 : mRightJS.Throttle;
+                    int throttle = mRightJS.Throttle;
                     mSocketConnection.Write((Int16)throttle,
                                       (Int16)(mLeftJS.Rudder - Settings.TrimYaw),
                                       (Int16)(mLeftJS.Aileron - Settings.TrimRoll),

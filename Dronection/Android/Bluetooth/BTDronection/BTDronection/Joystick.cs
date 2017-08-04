@@ -64,7 +64,7 @@ namespace BTDronection
 		// Multiplier for Rudder
 		private float mMultRudder = 0.4f;
 		// Multiplier for throttle
-		private float mMultThrottle = 0.7f;
+		private float mMultThrottle = 1f;
 
 		// Current x-position of joystick
 		private float mXPosition;

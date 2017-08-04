@@ -35,6 +35,7 @@ using MikePhil.Charting.Data;
 using MikePhil.Charting.Interfaces.Datasets;
 using Android.Graphics;
 using Java.Util;
+using MikePhil.Charting.Components;
 
 namespace BTDronection
 {
@@ -67,13 +68,13 @@ namespace BTDronection
 			this.mLineData = new LineData(mDataSet);
 			this.mLineChart.Data = mLineData;
 
-			/*foreach (float hc in mCurVisData.HighContTime)
+		foreach (float hc in mCurVisData.AltControlTime)
             {
                 LimitLine ll = new LimitLine(hc, "");
                 ll.LineColor = new Color(255, 0, 0, 40);
                 ll.LineWidth = 30f;
                 this.mLineChart.XAxis.AddLimitLine(ll);
-            }*/
+            }
 
 			this.mLineChart.XAxis.SetDrawLimitLinesBehindData(true);
 			this.mLineChart.Invalidate();
