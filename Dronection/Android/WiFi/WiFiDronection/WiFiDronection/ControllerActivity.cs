@@ -246,6 +246,7 @@ namespace WiFiDronection
         {
             if(mSocketConnection.LogData != null)
             {
+                RemoveFolder();
                 DateTime time = DateTime.Now;
                 string dirName = string.Format("{0}{1:D2}{2:D2}_{3:D2}{4:D2}{5:D2}", time.Year, time.Month, time.Day, time.Hour, time.Minute, time.Second);
                 var storageDir = new Java.IO.File(MainActivity.ApplicationFolderPath + Java.IO.File.Separator + dirName);
@@ -263,6 +264,21 @@ namespace WiFiDronection
                 writer = new Java.IO.FileWriter(new Java.IO.File(dirName, "settings.csv"));
                 writer.Write(settingsString);
                 writer.Close();
+            }
+        }
+
+        private void RemoveFolder()
+        {
+            var root = new Java.IO.File(MainActivity.ApplicationFolderPath);
+            List<string> fileNames = root.List().ToList();
+            if(fileNames.Count > 16)
+            {
+                var delFolder = new Java.IO.File(MainActivity.ApplicationFolderPath + Java.IO.File.Separator + fileNames[fileNames.Count - 2]);
+                foreach(string delChild in delFolder.List())
+                {
+                    new Java.IO.File(delFolder.AbsolutePath, delChild).Delete();
+                }
+                delFolder.Delete();
             }
         }
 
