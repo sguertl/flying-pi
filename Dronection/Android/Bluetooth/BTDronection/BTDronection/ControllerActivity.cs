@@ -51,6 +51,19 @@ namespace BTDronection
         private RadioButton mRbMode2;
         private ImageView mIvMode1;
         private ImageView mIvMode2;
+        private CheckBox mCbxLoggingActive;
+        private TextView mTvMinYaw;
+        private EditText mEtMinYaw;
+		private TextView mTvMaxYaw;
+		private EditText mEtMaxYaw;
+		private TextView mTvMinPitch;
+		private EditText mEtMinPitch;
+		private TextView mTvMaxPitch;
+		private EditText mEtMaxPitch;
+		private TextView mTvMinRoll;
+		private EditText mEtMinRoll;
+		private TextView mTvMaxRoll;
+		private EditText mEtMaxRoll;
         private Button mBtStart;
         private Button mBtBack;
 
@@ -91,6 +104,19 @@ namespace BTDronection
             mRbMode2 = FindViewById<RadioButton>(Resource.Id.rbMode2);
             mIvMode1 = FindViewById<ImageView>(Resource.Id.ivMode1);
             mIvMode2 = FindViewById<ImageView>(Resource.Id.ivMode2);
+            mCbxLoggingActive = FindViewById<CheckBox>(Resource.Id.cbxLoggingActive);
+            mTvMinYaw = FindViewById<TextView>(Resource.Id.tvMinYaw);
+            mEtMinYaw = FindViewById<EditText>(Resource.Id.etMinYaw);
+            mTvMaxYaw = FindViewById<TextView>(Resource.Id.tvMaxYaw);
+            mEtMaxYaw = FindViewById<EditText>(Resource.Id.etMaxYaw);
+			mTvMinPitch = FindViewById<TextView>(Resource.Id.tvMinPitch);
+			mEtMinPitch = FindViewById<EditText>(Resource.Id.etMinPitch);
+            mTvMaxPitch = FindViewById<TextView>(Resource.Id.tvMaxPitch);
+            mEtMaxPitch = FindViewById<EditText>(Resource.Id.etMaxPitch);
+			mTvMinRoll = FindViewById<TextView>(Resource.Id.tvMinRoll);
+			mEtMinRoll = FindViewById<EditText>(Resource.Id.etMinRoll);
+			mTvMaxRoll = FindViewById<TextView>(Resource.Id.tvMaxRoll);
+			mEtMaxRoll = FindViewById<EditText>(Resource.Id.etMaxRoll);
             mBtStart = FindViewById<Button>(Resource.Id.btStart);
             mBtBack = FindViewById<Button>(Resource.Id.btnSettingsBack);
 
@@ -100,6 +126,19 @@ namespace BTDronection
             mTvHeader.Typeface = font;
             mRbMode1.Typeface = font;
             mRbMode2.Typeface = font;
+            mCbxLoggingActive.Typeface = font;
+            mTvMinYaw.Typeface = font;
+            mEtMinYaw.Typeface = font;
+			mTvMaxYaw.Typeface = font;
+			mEtMaxYaw.Typeface = font;
+            mTvMinPitch.Typeface = font;
+            mEtMinPitch.Typeface = font;
+            mTvMaxPitch.Typeface = font;
+            mEtMaxPitch.Typeface = font;
+            mTvMinRoll.Typeface = font;
+            mEtMinRoll.Typeface = font;
+            mTvMaxRoll.Typeface = font;
+            mEtMaxRoll.Typeface = font;
             mBtStart.Typeface = font;
             mBtBack.Typeface = font;
 
@@ -110,6 +149,8 @@ namespace BTDronection
             mIvMode2.Click += OnMode2Click;
 
             mBtStart.Click += OnStartController;
+
+            mBtnAltitudeControl.Click += OnAltitudeControlClick;
 
 			// Get singleton instance of socket connection
             mSocketConnection = SocketConnection.Instance;
@@ -135,7 +176,14 @@ namespace BTDronection
                 peerSettings.Add(parts[0], new ControllerSettings
                 {
                     AltitudeControlActivated = false,
+                    LoggingActivated = mCbxLoggingActive.Checked,
                     Inverted = false,
+                    MinYaw = Convert.ToInt32(mEtMinYaw.Text),
+                    MaxYaw = Convert.ToInt32(mEtMaxYaw.Text),
+                    MinPitch = Convert.ToInt32(mEtMinPitch.Text),
+                    MaxPitch = Convert.ToInt32(mEtMaxPitch.Text),
+                    MinRoll = Convert.ToInt32(mEtMinRoll.Text),
+                    MaxRoll = Convert.ToInt32(mEtMaxRoll.Text),
                     TrimYaw = Convert.ToInt16(trimParts[0]),
                     TrimPitch = Convert.ToInt16(trimParts[1]),
                     TrimRoll = Convert.ToInt16(trimParts[2])
@@ -171,9 +219,11 @@ namespace BTDronection
             }
         }
 
+        /// <summary>
+        /// Starts the controller.
+        /// </summary>
         private void OnStartController(object sender, EventArgs e)
         {
-
             SetContentView(Resource.Layout.ControllerLayout);
 
             if (mPeerSettings.Any(kvp => kvp.Key == mSelectedMac) == true)

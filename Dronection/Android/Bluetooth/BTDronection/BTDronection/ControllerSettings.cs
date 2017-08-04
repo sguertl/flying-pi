@@ -43,6 +43,67 @@ namespace BTDronection
             set;
         }
 
+        /// <summary>
+        /// Gets or sets the minimum yaw.
+        /// </summary>
+        /// <value>The minimum yaw.</value>
+        public int MinYaw
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the max yaw.
+        /// </summary>
+        /// <value>The max yaw.</value>
+		public int MaxYaw
+		{
+			get;
+			set;
+		}
+
+        /// <summary>
+        /// Gets or sets the minimum pitch.
+        /// </summary>
+        /// <value>The minimum pitch.</value>
+        public int MinPitch
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the max pitch.
+        /// </summary>
+        /// <value>The max pitch.</value>
+        public int MaxPitch
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the minimum roll.
+        /// </summary>
+        /// <value>The minimum roll.</value>
+		public int MinRoll
+		{
+			get;
+			set;
+		}
+
+        /// <summary>
+        /// Gets or sets the max roll.
+        /// </summary>
+        /// <value>The max roll.</value>
+		public int MaxRoll
+		{
+			get;
+			set;
+		}
+
+
 		/// <summary>
 		/// Trim of yaw parameter [-20;20]
 		/// </summary>
@@ -71,15 +132,26 @@ namespace BTDronection
         }
 
 		/// <summary>
-		/// Altitude control
-		/// </summary>
+        /// Gets or sets a value indicating whether <see cref="T:BTDronection.ControllerSettings"/> altitude control activated.
+        /// </summary>
+        /// <value><c>true</c> if altitude control activated; otherwise, <c>false</c>.</value>
 		public bool AltitudeControlActivated
         {
             get;
             set;
         }
 
-		/// <summary>
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="T:BTDronection.ControllerSettings"/> logging activated.
+        /// </summary>
+        /// <value><c>true</c> if logging activated; otherwise, <c>false</c>.</value>
+        public bool LoggingActivated
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
 		/// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:WiFiDronection.ControllerSettings"/>.
 		/// </summary>
 		/// <returns>A <see cref="T:System.String"/> that represents the current <see cref="T:WiFiDronection.ControllerSettings"/>.</returns>
