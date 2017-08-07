@@ -243,7 +243,14 @@ namespace WiFiDronection
                         }
                         else
                         {
-                            UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
+                            if (Settings.AltitudeControlActivated)
+                            {
+                                UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
+                            }
+                            else
+                            {
+                                UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
+                            }                            
                         }
                     }
                     else
@@ -277,7 +284,14 @@ namespace WiFiDronection
                             }
                             else
                             {
-                                UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
+                                if (Settings.AltitudeControlActivated)
+                                {
+                                    UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
+                                }
+                                else
+                                {
+                                    UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
+                                }
                             }
                         }
                     }
@@ -315,7 +329,14 @@ namespace WiFiDronection
                             }
                             else
                             {
-                                UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
+                                if (Settings.AltitudeControlActivated)
+                                {
+                                    UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
+                                }
+                                else
+                                {
+                                    UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
+                                }
                             }
                         }
                     }
@@ -367,11 +388,7 @@ namespace WiFiDronection
             {
                 if (e.PointerCount == 1 && e.GetX() <= ScreenWidth / 2 && !mRightJS.IsCentered())
                 {
-            
-                        UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
-  
-                    UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
-                    
+                    UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);   
                 }
                 else if (e.PointerCount == 1 && e.GetX() > ScreenWidth / 2 && !mLeftJS.IsCentered())
                 {
