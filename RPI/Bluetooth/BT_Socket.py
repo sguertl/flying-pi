@@ -2,7 +2,7 @@ import struct
 from bluetooth import *
 
 server_sock = BluetoothSocket(RFCOMM)
-server_sock.bind("", PORT_ANY)
+server_sock.bind(("", PORT_ANY))
 server_sock.listen(1)
 
 port = server_sock.getsockname()[1]
@@ -19,13 +19,6 @@ while True:
 
     while True:
         data = client_sock.recv(19)
-
-        for byte in data:
-            byte = ord(byte)
-            byte = bin(byte)[2:].rjust(8, '0')
-            bits = ''
-            for bit in byte:
-                bits = bit + bits
 
     try:
         data = client_sock.recv(19)

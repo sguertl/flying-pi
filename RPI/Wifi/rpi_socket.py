@@ -46,13 +46,12 @@ class rpi_connection:
                 try:
                     # Receive data from client
                     data = conn.recv(19)
-                    self.serial_socket.write(data)
-                    self.serial_socket.flush()
-                    print(data)
                     # Check if connection is alive
                     if not data:
                         print('Connection closed')
                         break
+                    self.serial_socket.write(data)
+                    self.serial_socket.flush()
                     # conn.send('Test')
                 except socket.error as msg:
                     if msg.errno != errno.ECONNRESET:
