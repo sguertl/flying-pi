@@ -60,7 +60,6 @@
                     android:id="@+id/rbMode2" />
             </RadioGroup>
         </LinearLayout>
-    <!-- DESCRIPTION IMAGEVIEW -->
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -75,7 +74,7 @@
                 android:scaleX="1"
                 android:scaleY="1"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
+                android:layout_height="150dp"
                 android:layout_weight=".5"
                 android:scaleType="centerInside"
                 android:adjustViewBounds="true" />
@@ -88,10 +87,190 @@
                 android:scaleX="1"
                 android:scaleY="1"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
+                android:layout_height="150dp"
                 android:layout_weight=".5"
                 android:scaleType="centerInside"
                 android:adjustViewBounds="true" />
+        </LinearLayout>
+    <!--
+        Logging active checkbox
+        -->
+        <CheckBox
+            android:id="@+id/cbxLoggingActive"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Logging active"
+            android:layout_margin="10dp" />
+    <!--
+        Min Max Yaw
+        -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="1">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight=".5"
+                android:weightSum="1">
+                <TextView
+                    android:id="@+id/tvMinYaw"
+                    android:textSize="20dp"
+                    android:text="Min Yaw:"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:layout_margin="10dp"
+                    android:gravity="right" />
+                <EditText
+                    android:id="@+id/etMinYaw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:text="-15"
+                    android:inputType="numberSigned"
+                    android:layout_margin="10dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight=".5"
+                android:weightSum="1">
+                <TextView
+                    android:id="@+id/tvMaxYaw"
+                    android:textSize="20dp"
+                    android:text="Max Yaw:"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:layout_margin="10dp"
+                    android:gravity="right" />
+                <EditText
+                    android:id="@+id/etMaxYaw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:text="15"
+                    android:inputType="numberSigned"
+                    android:layout_margin="10dp" />
+            </LinearLayout>
+        </LinearLayout>
+    <!--
+        Min Max Pitch
+        -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="1">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight=".5"
+                android:weightSum="1">
+                <TextView
+                    android:id="@+id/tvMinPitch"
+                    android:textSize="20dp"
+                    android:text="Min Pitch:"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:layout_margin="10dp"
+                    android:gravity="right" />
+                <EditText
+                    android:id="@+id/etMinPitch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:text="-20"
+                    android:inputType="numberSigned"
+                    android:layout_margin="10dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight=".5"
+                android:weightSum="1">
+                <TextView
+                    android:id="@+id/tvMaxPitch"
+                    android:textSize="20dp"
+                    android:text="Max Pitch:"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:layout_margin="10dp"
+                    android:gravity="right" />
+                <EditText
+                    android:id="@+id/etMaxPitch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:text="20"
+                    android:inputType="numberSigned"
+                    android:layout_margin="10dp" />
+            </LinearLayout>
+        </LinearLayout>
+    <!--
+        Min Max Roll
+        -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="1">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight=".5"
+                android:weightSum="1">
+                <TextView
+                    android:id="@+id/tvMinRoll"
+                    android:textSize="20dp"
+                    android:text="Min Roll:"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:layout_margin="10dp"
+                    android:gravity="right" />
+                <EditText
+                    android:id="@+id/etMinRoll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:text="-20"
+                    android:inputType="numberSigned"
+                    android:layout_margin="10dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight=".5"
+                android:weightSum="1">
+                <TextView
+                    android:id="@+id/tvMaxRoll"
+                    android:textSize="20dp"
+                    android:text="Max Roll:"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:layout_margin="10dp"
+                    android:gravity="right" />
+                <EditText
+                    android:id="@+id/etMaxRoll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:text="20"
+                    android:inputType="numberSigned"
+                    android:layout_margin="10dp" />
+            </LinearLayout>
         </LinearLayout>
     <!-- 
         Start controller button

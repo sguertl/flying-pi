@@ -351,7 +351,10 @@ namespace WiFiDronection
         {
             try
             {
-                ControllerView.Settings.AltitudeControlActivated = false;
+				if (ControllerView.Settings != null)
+				{
+					ControllerView.Settings.AltitudeControlActivated = false;
+				}
 
                 this.mConnectionThread = null;
 

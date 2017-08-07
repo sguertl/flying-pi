@@ -126,8 +126,7 @@ namespace BTDronection
 			mEtMaxRoll = FindViewById<EditText>(Resource.Id.etMaxRoll);
             mBtStart = FindViewById<Button>(Resource.Id.btStart);
             mBtBack = FindViewById<Button>(Resource.Id.btnSettingsBack);
-       
-
+      		
             // Create font
             var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
 
@@ -159,9 +158,7 @@ namespace BTDronection
 
             mBtStart.Click += OnStartController;
            
-            mCbxLoggingActive.Click += delegate {
-                mLoggingActive = mCbxLoggingActive.Checked;
-            };
+			mCbxLoggingActive.Click += (sender, e) => mLoggingActive = mCbxLoggingActive.Checked;
 
 			// Get singleton instance of socket connection
 			mSocketConnection = SocketConnection.Instance;
@@ -234,6 +231,7 @@ namespace BTDronection
         {
             if(mSocketConnection.LogData != null)
             {
+                RemoveFolder();
                 DateTime time = DateTime.Now;
                 string logName = string.Format("{0}{1:D2}{2:D2}_{3:D2}{4:D2}{5:D2}", time.Year, time.Month, time.Day, time.Hour, time.Minute, time.Second);
                 var storageDir = new Java.IO.File(MainActivity.ApplicationFolderPath + Java.IO.File.Separator + logName);
@@ -272,7 +270,6 @@ namespace BTDronection
 
 			mMinRoll = Convert.ToInt32(mEtMinRoll.Text);
 			mMaxRoll = Convert.ToInt32(mEtMaxRoll.Text);
-
 
 			SetContentView(Resource.Layout.ControllerLayout);
 
@@ -346,6 +343,24 @@ namespace BTDronection
                 mSbTrimBar.Progress = ControllerView.Settings.TrimRoll - mMinTrim;
             };
         }
+
+		/// <summary>
+		/// Removes old files.
+		/// </summary>
+		private void RemoveFolder()
+		{
+			var root = new Java.IO.File (MainActivity.ApplicationFolderPath);
+			List<string> fileNames = root.List().ToList();
+			if(fileNames.Count > 16) 
+			{
+				var delFolder = new Java.IO.File (MainActivity.ApplicationFolderPath + Java.IO.File.Separator + fileNames [fileNames.Count - 2]);
+				foreach (string delChild in delFolder.List()) 
+				{
+					new Java.IO.File (delFolder.AbsolutePath, delChild).Delete();
+				}
+				delFolder.Delete();
+			}
+		}
 
 		/// <summary>
 		/// Changes control mode to Mode 1.

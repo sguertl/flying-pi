@@ -1,4 +1,4 @@
-﻿/************************************************************************
+﻿﻿/************************************************************************
 *																		*
 *  Copyright (C) 2017 Infineon Technologies Austria AG.					*
 *																		*
@@ -51,25 +51,45 @@ namespace WiFiDronection
         private RadioGroup mRgControlMode;
         private RadioButton mRbMode1;
         private RadioButton mRbMode2;
-        private Button mBtStart;
-        private Button mBtBackToMain;
         private ImageView mIvMode1;
         private ImageView mIvMode2;
+		private CheckBox mCbxLoggingActive;
+		private TextView mTvMinYaw;
+		private EditText mEtMinYaw;
+		private TextView mTvMaxYaw;
+		private EditText mEtMaxYaw;
+		private TextView mTvMinPitch;
+		private EditText mEtMinPitch;
+		private TextView mTvMaxPitch;
+		private EditText mEtMaxPitch;
+		private TextView mTvMinRoll;
+		private EditText mEtMinRoll;
+		private TextView mTvMaxRoll;
+		private EditText mEtMaxRoll;
+		private Button mBtStart;
+		private Button mBtBackToMain;
 
         // Widgets controller
         private SeekBar mSbTrimBar;
         private TextView mTvTrimValue;
-        private Button mBtnAltitudeControl;
         private RadioButton mRbYawTrim;
         private RadioButton mRbPitchTrim;
         private RadioButton mRbRollTrim;
+		private Button mBtnAltitudeControl;
 
-        // Socket members
-        private bool mIsConnected;
+		// Socket members
+		private bool mIsConnected;
         private SocketConnection mSocketConnection;
         private SocketReader mSocketReader;
         private string mSelectedBssid;
         private Dictionary<string, ControllerSettings> mPeerSettings;
+		private bool mLoggingActive;
+		private int mMinYaw;
+		private int mMaxYaw;
+		private int mMinPitch;
+		private int mMaxPitch;
+		private int mMinRoll;
+		private int mMaxRoll;
 
         // Constants
         private readonly int mMinTrim = -20;
@@ -96,10 +116,23 @@ namespace WiFiDronection
             mRgControlMode = FindViewById<RadioGroup>(Resource.Id.rgControlMode);
             mRbMode1 = FindViewById<RadioButton>(Resource.Id.rbMode1);
             mRbMode2 = FindViewById<RadioButton>(Resource.Id.rbMode2);
-            mBtStart = FindViewById<Button>(Resource.Id.btStart);
-            mBtBackToMain = FindViewById<Button>(Resource.Id.btnSettingsBack);
             mIvMode1 = FindViewById<ImageView>(Resource.Id.ivMode1);
             mIvMode2 = FindViewById<ImageView>(Resource.Id.ivMode2);
+			mCbxLoggingActive = FindViewById<CheckBox>(Resource.Id.cbxLoggingActive);
+			mTvMinYaw = FindViewById<TextView>(Resource.Id.tvMinYaw);
+			mEtMinYaw = FindViewById<EditText>(Resource.Id.etMinYaw);
+			mTvMaxYaw = FindViewById<TextView>(Resource.Id.tvMaxYaw);
+			mEtMaxYaw = FindViewById<EditText>(Resource.Id.etMaxYaw);
+			mTvMinPitch = FindViewById<TextView>(Resource.Id.tvMinPitch);
+			mEtMinPitch = FindViewById<EditText>(Resource.Id.etMinPitch);
+			mTvMaxPitch = FindViewById<TextView>(Resource.Id.tvMaxPitch);
+			mEtMaxPitch = FindViewById<EditText>(Resource.Id.etMaxPitch);
+			mTvMinRoll = FindViewById<TextView>(Resource.Id.tvMinRoll);
+			mEtMinRoll = FindViewById<EditText>(Resource.Id.etMinRoll);
+			mTvMaxRoll = FindViewById<TextView>(Resource.Id.tvMaxRoll);
+			mEtMaxRoll = FindViewById<EditText>(Resource.Id.etMaxRoll);
+			mBtStart = FindViewById<Button>(Resource.Id.btStart);
+			mBtBackToMain = FindViewById<Button>(Resource.Id.btnSettingsBack);
 
             mTvHeader.Typeface = font;
             mRbMode1.Typeface = font;
@@ -116,8 +149,19 @@ namespace WiFiDronection
             mBtStart.Click += OnStartController;
             mBtBackToMain.Click += OnBackToMain;
 
-            mSelectedBssid = Intent.GetStringExtra("mac");
+			mCbxLoggingActive.Click += (sender, e) => mLoggingActive = mCbxLoggingActive.Checked;
+
+			mSelectedBssid = Intent.GetStringExtra("mac");
             mPeerSettings = ReadPeerSettings();
+
+			mCbxLoggingActive.Checked = mLoggingActive;
+
+			mEtMinYaw.Text = mMinYaw.ToString();
+			mEtMaxYaw.Text = mMaxYaw.ToString();
+			mEtMinPitch.Text = mMinPitch.ToString();
+			mEtMaxPitch.Text = mMaxPitch.ToString();
+			mEtMinRoll.Text = mMinRoll.ToString();
+			mEtMaxRoll.Text = mMaxRoll.ToString();
         }
 
         /// <summary>
@@ -134,13 +178,34 @@ namespace WiFiDronection
             {
                 string[] parts = line.Split(',');
                 string[] trimParts = parts[1].Split(';');
+				try
+				{
+					mLoggingActive = trimParts[3].Equals("true");
+					mMinYaw = Convert.ToInt32(trimParts[4]);
+					mMaxYaw = Convert.ToInt32(trimParts[5]);
+					mMinPitch = Convert.ToInt32(trimParts[6]);
+					mMaxPitch = Convert.ToInt32(trimParts[7]);
+					mMinRoll = Convert.ToInt32(trimParts[8]);
+					mMaxRoll = Convert.ToInt32(trimParts[9]);
+				}
+				catch (IndexOutOfRangeException ex)
+				{
+					Toast.MakeText(this, "Can't load settings", ToastLength.Short).Show();
+				}
                 peerSettings.Add(parts[0], new ControllerSettings
                 {
-                    AltitudeControlActivated = false,
-                    Inverted = false,
-                    TrimYaw = Convert.ToInt16(trimParts[0]),
-                    TrimPitch = Convert.ToInt16(trimParts[1]),
-                    TrimRoll = Convert.ToInt16(trimParts[2])
+					AltitudeControlActivated = false,
+					Inverted = false,
+					TrimYaw = Convert.ToInt16(trimParts[0]),
+					TrimPitch = Convert.ToInt16(trimParts[1]),
+					TrimRoll = Convert.ToInt16(trimParts[2]),
+					LoggingActivated = mLoggingActive,
+					MinYaw = mMinYaw,
+					MaxYaw = mMaxYaw,
+					MinPitch = mMinPitch,
+					MaxPitch = mMaxPitch,
+					MinRoll = mMinRoll,
+					MaxRoll = mMaxRoll
                 });
             }
             return peerSettings;
@@ -154,7 +219,7 @@ namespace WiFiDronection
         private void OnStartController(object sender, EventArgs e)
         {
             // Create socket connection
-            if (mSocketConnection.WifiSocket.IsConnected == false)
+            if(mSocketConnection.WifiSocket.IsConnected == false)
             {
                 mSocketConnection.OnStartConnection();
             }
@@ -165,6 +230,15 @@ namespace WiFiDronection
                 return;
             }
 
+			mMinYaw = Convert.ToInt32(mEtMinYaw.Text);
+			mMaxYaw = Convert.ToInt32(mEtMaxYaw.Text);
+
+			mMinPitch = Convert.ToInt32(mEtMinPitch.Text);
+			mMaxPitch = Convert.ToInt32(mEtMaxPitch.Text);
+
+			mMinRoll = Convert.ToInt32(mEtMinRoll.Text);
+			mMaxRoll = Convert.ToInt32(mEtMaxRoll.Text);
+
             // Change to Controller with joysticks
             SetContentView(Resource.Layout.ControllerLayout);
 
@@ -173,6 +247,13 @@ namespace WiFiDronection
                 ControllerView.Settings.TrimYaw = mPeerSettings[mSelectedBssid].TrimYaw;
                 ControllerView.Settings.TrimPitch = mPeerSettings[mSelectedBssid].TrimPitch;
                 ControllerView.Settings.TrimRoll = mPeerSettings[mSelectedBssid].TrimRoll;
+				ControllerView.Settings.LoggingActivated = mLoggingActive;
+				ControllerView.Settings.MinYaw = mMinYaw;
+				ControllerView.Settings.MaxYaw = mMaxYaw;
+				ControllerView.Settings.MinPitch = mMinPitch;
+				ControllerView.Settings.MaxPitch = mMaxPitch;
+				ControllerView.Settings.MinRoll = mMinRoll;
+				ControllerView.Settings.MaxRoll = mMaxRoll;
             }
 
             var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
@@ -239,34 +320,40 @@ namespace WiFiDronection
             }
         }
 
-        /// <summary>
-        /// Writes log in csv format.
-        /// </summary>
-        private void WriteLogData()
-        {
-            if(mSocketConnection.LogData != null)
-            {
-                RemoveFolder();
-                DateTime time = DateTime.Now;
-                string dirName = string.Format("{0}{1:D2}{2:D2}_{3:D2}{4:D2}{5:D2}", time.Year, time.Month, time.Day, time.Hour, time.Minute, time.Second);
-                var storageDir = new Java.IO.File(MainActivity.ApplicationFolderPath + Java.IO.File.Separator + dirName);
-                storageDir.Mkdirs();
-                var writer = new Java.IO.FileWriter(new Java.IO.File(storageDir, "controls.csv"));
-                writer.Write(mSocketConnection.LogData);
-                mPeerSettings[mSelectedBssid] = ControllerView.Settings;
-                dirName = MainActivity.ApplicationFolderPath + Java.IO.File.Separator + "settings";
-                string settingsString = "";
-                foreach(KeyValuePair<string, ControllerSettings> kvp in mPeerSettings)
+		/// <summary>
+		/// Writes log in csv format.
+		/// </summary>
+		private void WriteLogData()
+		{
+			if (mSocketConnection.LogData != null)
+			{
+				RemoveFolder();
+				DateTime time = DateTime.Now;
+				string dirName = string.Format("{0}{1:D2}{2:D2}_{3:D2}{4:D2}{5:D2}", time.Year, time.Month, time.Day, time.Hour, time.Minute, time.Second);
+				var storageDir = new Java.IO.File(MainActivity.ApplicationFolderPath + Java.IO.File.Separator + dirName);
+				var writer = new Java.IO.FileWriter(new Java.IO.File(storageDir, "controls.csv"));
+                if(mLoggingActive)
                 {
-                    settingsString += kvp.Key + "," + kvp.Value.TrimYaw + ";" + kvp.Value.TrimPitch + ";" + kvp.Value.TrimRoll + "\n";
-                }
-                writer.Close();
-                writer = new Java.IO.FileWriter(new Java.IO.File(dirName, "settings.csv"));
-                writer.Write(settingsString);
-                writer.Close();
-            }
-        }
+					storageDir.Mkdirs();
+					writer.Write(mSocketConnection.LogData);
+				}
+                mPeerSettings[mSelectedBssid] = ControllerView.Settings;
+				dirName = MainActivity.ApplicationFolderPath + Java.IO.File.Separator + "settings";
+				string settingsString = "";
+				foreach (KeyValuePair<string, ControllerSettings> kvp in mPeerSettings)
+				{
+					settingsString += kvp.Key + "," + kvp.Value.TrimYaw + ";" + kvp.Value.TrimPitch + ";" + kvp.Value.TrimRoll + "\n";
+				}
+				writer.Close();
+				writer = new Java.IO.FileWriter(new Java.IO.File(dirName, "settings.csv"));
+				writer.Write(settingsString);
+				writer.Close();
+			}
+		}
 
+        /// <summary>
+        /// Removes old files.
+        /// </summary>
         private void RemoveFolder()
         {
             var root = new Java.IO.File(MainActivity.ApplicationFolderPath);
