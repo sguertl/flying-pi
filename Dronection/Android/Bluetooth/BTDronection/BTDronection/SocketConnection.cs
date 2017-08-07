@@ -217,7 +217,7 @@ namespace BTDronection
         {
             byte[] b = new byte[PACKET_SIZE];
             byte speed = (byte)args[0];
-            byte heightcontrol = 0;
+            byte heightcontrol = (byte)(ControllerView.Settings.AltitudeControlActivated == true ? 1 : 0);
             int azimuth = Java.Lang.Float.FloatToIntBits(args[1]);
             int pitch = Java.Lang.Float.FloatToIntBits(args[2]);
             int roll = Java.Lang.Float.FloatToIntBits(args[3]);
@@ -262,6 +262,9 @@ namespace BTDronection
         {
             try
             {
+
+                ControllerView.Settings.AltitudeControlActivated = false;
+
                 this.mConnectionThread = null;
                 
                 if (mDataOutputStream != null)

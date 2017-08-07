@@ -231,7 +231,17 @@ namespace BTDronection
 						}
 						else
 						{
-							UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
+                            // Test 
+                            if (Settings.AltitudeControlActivated)
+                            {
+                                UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
+                            }
+                            else
+                            {
+                                UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
+                            }
+
+							
 						}
 					}
 					else
@@ -265,8 +275,15 @@ namespace BTDronection
 							}
 							else
 							{
-								UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
-							}
+                                if (Settings.AltitudeControlActivated)
+                                {
+                                    UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
+                                }
+                                else
+                                {
+                                    UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
+                                }
+                            }
 						}
 					}
 					else
@@ -303,8 +320,15 @@ namespace BTDronection
 							}
 							else
 							{
-								UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
-							}
+                                if (Settings.AltitudeControlActivated)
+                                {
+                                    UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
+                                }
+                                else
+                                {
+                                    UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
+                                }
+                            }
 						}
 					}
 					else
