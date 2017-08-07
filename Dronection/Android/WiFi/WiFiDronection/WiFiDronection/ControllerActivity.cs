@@ -403,7 +403,7 @@ namespace WiFiDronection
             {
                 ControllerView.Settings.AltitudeControlActivated = ControllerSettings.ACTIVE;
                 mBtnAltitudeControl.SetBackgroundColor(Color.ParseColor("#E30034"));
-                if (ControllerView.Settings.AltitudeControlActivated)
+                if (ControllerView.Settings.Inverted)
                 {
                     flight.CV.UpdateOvals(flight.CV.mRightJS.CenterX, flight.CV.mRightJS.CenterY);
                 }
