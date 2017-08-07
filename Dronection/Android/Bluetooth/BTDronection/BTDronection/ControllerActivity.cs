@@ -151,7 +151,6 @@ namespace BTDronection
             mIvMode2.Click += OnMode2Click;
 
             mBtStart.Click += OnStartController;
-
            
 
 			// Get singleton instance of socket connection
@@ -162,7 +161,7 @@ namespace BTDronection
         }
 
         /// <summary>
-        /// Reads the settings file for a specific peer
+        /// Reads the settings file for a specific peer.
         /// </summary>
         /// <returns>Peer with settings</returns>
         private Dictionary<string, ControllerSettings> ReadPeerSettings()
@@ -180,12 +179,12 @@ namespace BTDronection
                     AltitudeControlActivated = false,
                     LoggingActivated = mCbxLoggingActive.Checked,
                     Inverted = false,
-                   // MinYaw = Convert.ToInt32(mEtMinYaw.Text),
-                  //  MaxYaw = Convert.ToInt32(mEtMaxYaw.Text),
-                 //   MinPitch = Convert.ToInt32(mEtMinPitch.Text),
-                 //   MaxPitch = Convert.ToInt32(mEtMaxPitch.Text),
-                 //   MinRoll = Convert.ToInt32(mEtMinRoll.Text),
-                 //   MaxRoll = Convert.ToInt32(mEtMaxRoll.Text),
+                    MinYaw = Convert.ToInt32(mEtMinYaw.Text),
+                    MaxYaw = Convert.ToInt32(mEtMaxYaw.Text),
+                    MinPitch = Convert.ToInt32(mEtMinPitch.Text),
+                    MaxPitch = Convert.ToInt32(mEtMaxPitch.Text),
+                    MinRoll = Convert.ToInt32(mEtMinRoll.Text),
+                    MaxRoll = Convert.ToInt32(mEtMaxRoll.Text),
                     TrimYaw = Convert.ToInt16(trimParts[0]),
                     TrimPitch = Convert.ToInt16(trimParts[1]),
                     TrimRoll = Convert.ToInt16(trimParts[2])
@@ -254,6 +253,8 @@ namespace BTDronection
             mSbTrimBar.Progress = ControllerView.Settings.TrimYaw - mMinTrim;
             mTvTrimValue.Text = ControllerView.Settings.TrimYaw.ToString();
 
+            mBtnAltitudeControl.Click += OnAltitudeControlClick;
+
             mSbTrimBar.ProgressChanged += delegate
             {
                 if (mRbYawTrim.Checked == true)
@@ -270,8 +271,6 @@ namespace BTDronection
                 }
                 mTvTrimValue.Text = (mSbTrimBar.Progress + mMinTrim).ToString();
             };
-
-            mBtnAltitudeControl.Click += OnAltitudeControlClick;
 
             mRbYawTrim.Click += delegate
             {
@@ -316,7 +315,7 @@ namespace BTDronection
 		/// </summary>
 		private void OnAltitudeControlClick(object sender, EventArgs e)
 		{
-            Flight tk = Flight.Instance;
+            Flight flight = Flight.Instance;
             if (ControllerView.Settings.AltitudeControlActivated)
             {
                 ControllerView.Settings.AltitudeControlActivated = ControllerSettings.INACTIVE;
@@ -326,8 +325,8 @@ namespace BTDronection
             {
                 ControllerView.Settings.AltitudeControlActivated = ControllerSettings.ACTIVE;
                 mBtnAltitudeControl.SetBackgroundColor(Color.ParseColor("#E30034"));
-                tk.CV.UpdateOvals(tk.CV.mLeftJS.CenterX, tk.CV.mLeftJS.CenterY);
-                tk.CV.Invalidate();
+                flight.CV.UpdateOvals(flight.CV.mLeftJS.CenterX, flight.CV.mLeftJS.CenterY);
+                flight.CV.Invalidate();
             }
         }
 

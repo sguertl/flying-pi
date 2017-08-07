@@ -8,21 +8,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     <!--
-        Altitude control button
-        -->
-        <Button
-            android:id="@+id/btnAltitudeControl"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:text="ALTITUDE CONTROL"
-            android:textSize="15dp"
-            android:textColor="#ffffff"
-            android:background="#005DA9"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:gravity="center"
-            android:layout_gravity="center_horizontal|center_vertical" />
-    <!--
         Trim seekbar
         -->
         <SeekBar
@@ -44,17 +29,18 @@
             android:layout_height="wrap_content"
             android:text="0"
             android:textSize="14dp"
-            android:gravity="right"
+            android:gravity="left"
             android:layout_gravity="right|center_vertical"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="10dp" />
         <RadioGroup
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="right"
+            android:gravity="left"
+            android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:orientation="horizontal"
-            android:layout_gravity="right|center_vertical">
+            android:layout_gravity="center_vertical">
         <!--
             Yaw trim radio button
             -->
@@ -91,6 +77,22 @@
                 android:height="1dp"
                 android:layout_marginRight="5dp" />
         </RadioGroup>
+    <!--
+        Altitude control button
+        -->
+        <Button
+            android:id="@+id/btnAltitudeControl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ALTITUDE CONTROL"
+            android:textSize="15dp"
+            android:textColor="#ffffff"
+            android:background="#005DA9"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:padding="10dp"
+            android:gravity="center"
+            android:layout_gravity="right|center_vertical" />
     </LinearLayout>
     <BTDronection.ControllerView
         android:layout_width="match_parent"
