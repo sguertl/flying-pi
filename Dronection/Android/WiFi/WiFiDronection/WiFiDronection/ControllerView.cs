@@ -251,43 +251,43 @@ namespace WiFiDronection
                     break;
             }
 
-            if (Settings.Inverted)
-            {
-                if (e.PointerCount == 1 && e.GetX() <= ScreenWidth / 2 && !mRightJS.IsCentered())
-                {
-                    if (Settings.AltitudeControlActivated)
-                    {
-                        UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
-                    }
-                    else
-                    {
-                        UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
-                    }
+            //if (Settings.Inverted)
+            //{
+            //    if (e.PointerCount == 1 && e.GetX() <= ScreenWidth / 2 && !mRightJS.IsCentered())
+            //    {
+            //        if (Settings.AltitudeControlActivated)
+            //        {
+            //            UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
+            //        }
+            //        else
+            //        {
+            //            UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
+            //        }
 
-                }
-                else if (e.PointerCount == 1 && e.GetX() > ScreenWidth / 2 && !mLeftJS.IsCentered())
-                {
-                    UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
-                }
-            }
-            else
-            {
-                if (e.PointerCount == 1 && e.GetX() <= ScreenWidth / 2 && !mRightJS.IsCentered())
-                {
-                    UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
-                }
-                else if (e.PointerCount == 1 && e.GetX() > ScreenWidth / 2 && !mLeftJS.IsCentered())
-                {
-                    if (Settings.AltitudeControlActivated)
-                    {
-                        UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
-                    }
-                    else
-                    {
-                        UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
-                    }
-                }
-            }
+            //    }
+            //    else if (e.PointerCount == 1 && e.GetX() > ScreenWidth / 2 && !mLeftJS.IsCentered())
+            //    {
+            //        UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
+            //    }
+            //}
+            //else
+            //{
+            //    if (e.PointerCount == 1 && e.GetX() <= ScreenWidth / 2 && !mRightJS.IsCentered())
+            //    {
+            //        UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
+            //    }
+            //    else if (e.PointerCount == 1 && e.GetX() > ScreenWidth / 2 && !mLeftJS.IsCentered())
+            //    {
+            //        if (Settings.AltitudeControlActivated)
+            //        {
+            //            UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
+            //        }
+            //        else
+            //        {
+            //            UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
+            //        }
+            //    }
+            //}
 
             Invalidate();
             return true;

@@ -393,7 +393,7 @@ namespace WiFiDronection
         /// </summary>
 		private void OnAltitudeControlClick(object sender, EventArgs e)
 		{
-            Flight tk = Flight.Instance;
+            Flight flight = Flight.Instance;
             if(ControllerView.Settings.AltitudeControlActivated)
             {
                 ControllerView.Settings.AltitudeControlActivated = ControllerSettings.INACTIVE;
@@ -403,8 +403,15 @@ namespace WiFiDronection
             {
                 ControllerView.Settings.AltitudeControlActivated = ControllerSettings.ACTIVE;
                 mBtnAltitudeControl.SetBackgroundColor(Color.ParseColor("#E30034"));
-                tk.CV.UpdateOvals(tk.CV.mLeftJS.CenterX, tk.CV.mLeftJS.CenterY);
-                tk.CV.Invalidate();
+                if (ControllerView.Settings.AltitudeControlActivated)
+                {
+                    flight.CV.UpdateOvals(flight.CV.mRightJS.CenterX, flight.CV.mRightJS.CenterY);
+                }
+                else
+                {
+                    flight.CV.UpdateOvals(flight.CV.mLeftJS.CenterX, flight.CV.mLeftJS.CenterY);
+                }
+                flight.CV.Invalidate();
             }
 		}
 
