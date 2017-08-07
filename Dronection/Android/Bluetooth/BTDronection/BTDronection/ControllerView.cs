@@ -91,8 +91,8 @@ namespace BTDronection
         private void Init()
         {
 
-            Flight tk = Flight.Instance;
-            tk.CV = this;
+            Flight flight = Flight.Instance;
+            flight.CV = this;
             mSocket = SocketConnection.Instance;
 
 			Settings = new ControllerSettings

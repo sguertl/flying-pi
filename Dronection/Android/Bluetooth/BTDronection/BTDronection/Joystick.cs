@@ -321,43 +321,49 @@ namespace BTDronection
 		/// <summary>
 		/// Calculates the rudder (yaw) value of the stick.
 		/// </summary>
-		/// <returns>Rudder value (between -32768 and 32767)</returns>
+		/// <returns>Rudder value</returns>
 		private Int16 GetRudderValue()
 		{
-			int rudderValue = -90;
-			rudderValue = (int)((180 * (mCenterX + DisplacementRadius - mXPosition) / DisplacementDiameter) - 90) * (-1);
-			rudderValue = Math.Max(-90, rudderValue);
-			rudderValue = Math.Min(90, rudderValue);
+            int minValue = ControllerView.Settings.MinYaw;
+            int maxValue = ControllerView.Settings.MaxYaw;
+            int rudderValue = -minValue;
+            rudderValue = (int)(((Math.Abs(minValue) + Math.Abs(maxValue)) * (mCenterX + DisplacementRadius - mXPosition) / DisplacementDiameter) - maxValue) * (-1);
+			rudderValue = Math.Max(minValue, rudderValue);
+			rudderValue = Math.Min(maxValue, rudderValue);
 			mRudder = (Int16)rudderValue;
-			return (Int16)((mRudder * -1) * mMultRudder);
+            return (Int16)(mRudder * -1);
 		}
 
 		/// <summary>
 		/// Calculates the elevator (pitch) value of the stick.
 		/// </summary>
-		/// <returns>Elevator value (between -32768 and 32767)</returns>
+		/// <returns>Elevator value</returns>
 		private Int16 GetElevatorValue()
 		{
-			int elevatorValue = -100;
-			elevatorValue = (int)((200 * (mCenterY + DisplacementRadius - mYPosition) / DisplacementDiameter) - 100) * (-1);
-			elevatorValue = Math.Max(-100, elevatorValue);
-			elevatorValue = Math.Min(100, elevatorValue);
+            int minValue = ControllerView.Settings.MinPitch;
+            int maxValue = ControllerView.Settings.MaxPitch;
+            int elevatorValue = minValue;
+            elevatorValue = (int)(((Math.Abs(minValue) + Math.Abs(maxValue)) * (mCenterY + DisplacementRadius - mYPosition) / DisplacementDiameter) - maxValue) * (-1);
+            elevatorValue = Math.Max(minValue, elevatorValue);
+            elevatorValue = Math.Min(maxValue, elevatorValue);
 			mElevator = (Int16)elevatorValue;
-			return (Int16)((mElevator * 1) * mMult);
+			return (Int16)(mElevator);
 		}
 
 		/// <summary>
 		/// Calculates the aileron (roll) value of the stick.
 		/// </summary>
-		/// <returns>Aileron value (between -32768 and 32767)</returns>
+		/// <returns>Aileron value</returns>
 		private Int16 GetAileronValue()
 		{
-			int aileronValue = -100;
-			aileronValue = (int)((200 * (mCenterX + DisplacementRadius - mXPosition) / DisplacementDiameter) - 100) * (-1);
-			aileronValue = Math.Max(-100, aileronValue);
-			aileronValue = Math.Min(100, aileronValue);
+            int minValue = ControllerView.Settings.MinRoll;
+            int maxValue = ControllerView.Settings.MaxRoll;
+            int aileronValue = minValue;
+            aileronValue = (int)(((Math.Abs(minValue) + Math.Abs(maxValue)) * (mCenterX + DisplacementRadius - mXPosition) / DisplacementDiameter) - maxValue) * (-1);
+            aileronValue = Math.Max(minValue, aileronValue);
+            aileronValue = Math.Min(maxValue, aileronValue);
 			mAileron = (Int16)aileronValue;
-			return (Int16)((mAileron * -1) * mMult);
+			return (Int16)(mAileron * -1);
 		}
 
 		/// <summary>
