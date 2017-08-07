@@ -396,7 +396,16 @@ namespace BTDronection
             {
                 ControllerView.Settings.AltitudeControlActivated = ControllerSettings.ACTIVE;
                 mBtnAltitudeControl.SetBackgroundColor(Color.ParseColor("#E30034"));
-                flight.CV.UpdateOvals(flight.CV.mLeftJS.CenterX, flight.CV.mLeftJS.CenterY);
+
+                if (ControllerView.Settings.AltitudeControlActivated)
+                {
+                    flight.CV.UpdateOvals(flight.CV.mRightJS.CenterX, flight.CV.mRightJS.CenterY);
+                }
+                else
+                {
+                    flight.CV.UpdateOvals(flight.CV.mLeftJS.CenterX, flight.CV.mLeftJS.CenterY);
+                }
+               
                 flight.CV.Invalidate();
             }
         }
