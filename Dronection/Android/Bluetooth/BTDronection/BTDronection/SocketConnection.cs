@@ -262,11 +262,18 @@ namespace BTDronection
         {
             try
             {
+<<<<<<< HEAD
 
                 if (ControllerView.Settings != null)
                 {
                     ControllerView.Settings.AltitudeControlActivated = false;
                 }
+=======
+                if (ControllerView.Settings != null) 
+                {
+					ControllerView.Settings.AltitudeControlActivated = false;
+				}
+>>>>>>> origin/master
 
                 this.mConnectionThread = null;
                 

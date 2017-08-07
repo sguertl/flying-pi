@@ -78,6 +78,13 @@ namespace BTDronection
         // Private members
         private Dictionary<string, ControllerSettings> mPeerSettings;
         private string mSelectedMac;
+        private bool mLoggingActive;
+        private int mMinYaw;
+        private int mMaxYaw;
+        private int mMinPitch;
+        private int mMaxPitch;
+        private int mMinRoll;
+        private int mMaxRoll;
 
 		// Socket members
         private SocketConnection mSocketConnection;
@@ -121,8 +128,8 @@ namespace BTDronection
             mBtBack = FindViewById<Button>(Resource.Id.btnSettingsBack);
        
 
-           // Create font
-           var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
+            // Create font
+            var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
 
             mTvHeader.Typeface = font;
             mRbMode1.Typeface = font;
@@ -152,12 +159,24 @@ namespace BTDronection
 
             mBtStart.Click += OnStartController;
            
+            mCbxLoggingActive.Click += delegate {
+                mLoggingActive = mCbxLoggingActive.Checked;
+            };
 
 			// Get singleton instance of socket connection
-            mSocketConnection = SocketConnection.Instance;
+			mSocketConnection = SocketConnection.Instance;
 
             mSelectedMac = Intent.GetStringExtra("mac");
             mPeerSettings = ReadPeerSettings();
+
+            mCbxLoggingActive.Checked = mLoggingActive;
+
+            mEtMinYaw.Text = mMinYaw.ToString();
+            mEtMaxYaw.Text = mMaxYaw.ToString();
+            mEtMinPitch.Text = mMinPitch.ToString();
+            mEtMaxPitch.Text = mMaxPitch.ToString();
+            mEtMinRoll.Text = mMinRoll.ToString();
+            mEtMaxRoll.Text = mMaxRoll.ToString();
         }
 
         /// <summary>
@@ -174,21 +193,36 @@ namespace BTDronection
             {
                 string[] parts = line.Split(',');
                 string[] trimParts = parts[1].Split(';');
-                peerSettings.Add(parts[0], new ControllerSettings
+                try
+                {
+                    mLoggingActive = trimParts[3].Equals("true");
+                    mMinYaw = Convert.ToInt32(trimParts[4]);
+                    mMaxYaw = Convert.ToInt32(trimParts[5]);
+                    mMinPitch = Convert.ToInt32(trimParts[6]);
+                    mMaxPitch = Convert.ToInt32(trimParts[7]);
+                    mMinRoll = Convert.ToInt32(trimParts[8]);
+                    mMaxRoll = Convert.ToInt32(trimParts[9]);
+                }
+                catch (IndexOutOfRangeException ex)
+                {
+                    Toast.MakeText(this, "Can't load settings", ToastLength.Short).Show();
+                }
+
+				peerSettings.Add(parts[0], new ControllerSettings
                 {
                     AltitudeControlActivated = false,
-                    LoggingActivated = mCbxLoggingActive.Checked,
                     Inverted = false,
-                    MinYaw = Convert.ToInt32(mEtMinYaw.Text),
-                    MaxYaw = Convert.ToInt32(mEtMaxYaw.Text),
-                    MinPitch = Convert.ToInt32(mEtMinPitch.Text),
-                    MaxPitch = Convert.ToInt32(mEtMaxPitch.Text),
-                    MinRoll = Convert.ToInt32(mEtMinRoll.Text),
-                    MaxRoll = Convert.ToInt32(mEtMaxRoll.Text),
                     TrimYaw = Convert.ToInt16(trimParts[0]),
                     TrimPitch = Convert.ToInt16(trimParts[1]),
-                    TrimRoll = Convert.ToInt16(trimParts[2])
-                });
+                    TrimRoll = Convert.ToInt16(trimParts[2]),
+                    LoggingActivated = mLoggingActive,
+					MinYaw = mMinYaw,
+					MaxYaw = mMaxYaw,
+					MinPitch = mMinPitch,
+					MaxPitch = mMaxPitch,
+					MinRoll = mMinRoll,
+					MaxRoll = mMaxRoll				
+				});
             }
             return peerSettings;
         }
@@ -203,15 +237,20 @@ namespace BTDronection
                 DateTime time = DateTime.Now;
                 string logName = string.Format("{0}{1:D2}{2:D2}_{3:D2}{4:D2}{5:D2}", time.Year, time.Month, time.Day, time.Hour, time.Minute, time.Second);
                 var storageDir = new Java.IO.File(MainActivity.ApplicationFolderPath + Java.IO.File.Separator + logName);
-                storageDir.Mkdirs();
                 var writer = new Java.IO.FileWriter(new Java.IO.File(storageDir, "controls.csv"));
-                writer.Write(mSocketConnection.LogData);
+                if(mLoggingActive)
+                {
+                    storageDir.Mkdirs();
+					writer.Write(mSocketConnection.LogData);
+				}
                 mPeerSettings[mSelectedMac] = ControllerView.Settings;
                 string dirName = MainActivity.ApplicationFolderPath + Java.IO.File.Separator + "settings";
                 string settingsString = "";
                 foreach (KeyValuePair<string, ControllerSettings> kvp in mPeerSettings)
                 {
-                    settingsString += kvp.Key + "," + kvp.Value.TrimYaw + ";" + kvp.Value.TrimPitch + ";" + kvp.Value.TrimRoll + "\n";
+                    settingsString += kvp.Key + "," + kvp.Value.TrimYaw + ";" + kvp.Value.TrimPitch + ";" + kvp.Value.TrimRoll + ";" 
+                                         + (mLoggingActive ? "true" : "false")  + ";" + mMinYaw + ";" + mMaxYaw + ";" + mMinPitch + ";" 
+                                         + mMaxPitch + ";" + mMinRoll + ";" + mMaxRoll + "\n";
                 }
                 writer.Close();
                 writer = new Java.IO.FileWriter(new Java.IO.File(dirName, "settings.csv"));
@@ -225,13 +264,30 @@ namespace BTDronection
         /// </summary>
         private void OnStartController(object sender, EventArgs e)
         {
-            SetContentView(Resource.Layout.ControllerLayout);
+            mMinYaw = Convert.ToInt32(mEtMinYaw.Text);
+			mMaxYaw = Convert.ToInt32(mEtMaxYaw.Text);
+
+			mMinPitch = Convert.ToInt32(mEtMinPitch.Text);
+			mMaxPitch = Convert.ToInt32(mEtMaxPitch.Text);
+
+			mMinRoll = Convert.ToInt32(mEtMinRoll.Text);
+			mMaxRoll = Convert.ToInt32(mEtMaxRoll.Text);
+
+
+			SetContentView(Resource.Layout.ControllerLayout);
 
             if (mPeerSettings.Any(kvp => kvp.Key == mSelectedMac) == true)
             {
                 ControllerView.Settings.TrimYaw = mPeerSettings[mSelectedMac].TrimYaw;
                 ControllerView.Settings.TrimPitch = mPeerSettings[mSelectedMac].TrimPitch;
                 ControllerView.Settings.TrimRoll = mPeerSettings[mSelectedMac].TrimRoll;
+                ControllerView.Settings.LoggingActivated = mLoggingActive;
+                ControllerView.Settings.MinYaw = mMinYaw;
+                ControllerView.Settings.MaxYaw = mMaxYaw;
+                ControllerView.Settings.MinPitch = mMinPitch;
+                ControllerView.Settings.MaxPitch = mMaxPitch;
+                ControllerView.Settings.MinRoll = mMinRoll;
+                ControllerView.Settings.MaxRoll = mMaxRoll;
             }
 
             // Initialize widgets
