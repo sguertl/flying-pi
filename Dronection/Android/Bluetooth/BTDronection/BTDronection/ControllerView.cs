@@ -223,137 +223,14 @@ namespace BTDronection
 			switch (e.Action)
 			{
 				case MotionEventActions.Up:
-					if (Settings.Inverted)
-					{
-						if (e.GetX() <= ScreenWidth / 2)
-						{
-							UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
-						}
-						else
-						{
-                            // Test 
-                            if (Settings.AltitudeControlActivated)
-                            {
-                                UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
-                            }
-                            else
-                            {
-                                UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
-                            }
-
-							
-						}
-					}
-					else
-					{
-						if (e.GetX() <= ScreenWidth / 2)
-						{
-                            // Test
-                            if (Settings.AltitudeControlActivated)
-                            {
-                                UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
-                            }
-                            else
-                            {
-                                UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
-                            }
-                        }
-						else
-						{
-							UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
-						}
-					}
+                    ResetJoystickPosition(e.GetX());
 					break;
 				case MotionEventActions.Pointer1Up:
-					if (Settings.Inverted)
-					{
-						for (int i = 0; i < Math.Min(2, e.PointerCount); i++)
-						{
-							if (e.GetX(i) <= ScreenWidth / 2)
-							{
-								UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
-							}
-							else
-							{
-                                if (Settings.AltitudeControlActivated)
-                                {
-                                    UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
-                                }
-                                else
-                                {
-                                    UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
-                                }
-                            }
-						}
-					}
-					else
-					{
-						for (int i = 0; i < Math.Min(2, e.PointerCount); i++)
-						{
-							if (e.GetX(i) <= ScreenWidth / 2)
-							{
-                                // Test
-                                if (Settings.AltitudeControlActivated)
-                                {
-                                    UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
-                                }
-                                else
-                                {
-                                    UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
-                                }
-                            }
-							else
-							{
-								UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
-							}
-						}
-					}
+                        ResetJoystickPosition(e.GetX(0));                    
 					break;
 				case MotionEventActions.Pointer2Up:
-					if (Settings.Inverted)
-					{
-						for (int i = 0; i < Math.Min(2, e.PointerCount); i++)
-						{
-							if (e.GetX(i) <= ScreenWidth / 2)
-							{
-								UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
-							}
-							else
-							{
-                                if (Settings.AltitudeControlActivated)
-                                {
-                                    UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
-                                }
-                                else
-                                {
-                                    UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
-                                }
-                            }
-						}
-					}
-					else
-					{
-						for (int i = 0; i < Math.Min(2, e.PointerCount); i++)
-						{
-							if (e.GetX(i) <= ScreenWidth / 2)
-							{
-                                // Test
-                                if (Settings.AltitudeControlActivated)
-                                {
-                                    UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
-                                }
-                                else
-                                {
-                                    UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
-                                }
-                            }
-							else
-							{
-								UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
-							}
-						}
-					}
-					break;
+                        ResetJoystickPosition(e.GetX(1));
+                    break;
 				default:
 					for (int i = 0; i < Math.Min(2, e.PointerCount); i++)
 					{
@@ -366,7 +243,15 @@ namespace BTDronection
 			{
 				if (e.PointerCount == 1 && e.GetX() <= ScreenWidth / 2 && !mRightJS.IsCentered())
 				{
-					UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
+                    if (Settings.AltitudeControlActivated)
+                    {
+                        UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
+                    }
+                    else
+                    {
+                        UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
+                    }
+					
 				}
 				else if (e.PointerCount == 1 && e.GetX() > ScreenWidth / 2 && !mLeftJS.IsCentered())
 				{
@@ -381,13 +266,65 @@ namespace BTDronection
 				}
 				else if (e.PointerCount == 1 && e.GetX() > ScreenWidth / 2 && !mLeftJS.IsCentered())
 				{
-					UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
+                    if (Settings.AltitudeControlActivated)
+                    {
+                        UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
+                    }
+                    else
+                    {
+                        UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
+                    }
 				}
 			}
 
 			Invalidate();
 			return true;
 		}
+
+        /// <summary>
+        /// Sets the Joystick back to his main position
+        /// </summary>
+        /// <param name="x"></param>
+        public void ResetJoystickPosition(float x)
+        {
+            if (Settings.Inverted)
+            {
+                if (x <= ScreenWidth / 2)
+                {
+                    UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
+                }
+                else
+                {
+                    if (Settings.AltitudeControlActivated)
+                    {
+                        UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
+                    }
+                    else
+                    {
+                        UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
+                    }
+                }
+            }
+            else
+            {
+                if (x <= ScreenWidth / 2)
+                {
+                    if (Settings.AltitudeControlActivated)
+                    {
+                        UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
+                    }
+                    else
+                    {
+                        UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
+                    }
+                }
+                else
+                {
+                    UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
+                }
+            }
+        }
+
 
 		/// <summary>
 		/// Sets new bounds for the joystick oval.
