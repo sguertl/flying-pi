@@ -186,23 +186,31 @@ namespace BTDronection
             var reader = new Java.IO.BufferedReader(new Java.IO.FileReader(fileName));
             Dictionary<string, ControllerSettings> peerSettings = new Dictionary<string, ControllerSettings>();
             string line = "";
+            bool isFirstTouch = true;
+
             while ((line = reader.ReadLine()) != null)
             {
+                isFirstTouch = false;
                 string[] parts = line.Split(',');
                 string[] trimParts = parts[1].Split(';');
                 try
                 {
                     mLoggingActive = trimParts[3].Equals("true");
-                    mMinYaw = Convert.ToInt32(trimParts[4]);
-                    mMaxYaw = Convert.ToInt32(trimParts[5]);
-                    mMinPitch = Convert.ToInt32(trimParts[6]);
-                    mMaxPitch = Convert.ToInt32(trimParts[7]);
-                    mMinRoll = Convert.ToInt32(trimParts[8]);
-                    mMaxRoll = Convert.ToInt32(trimParts[9]);
+                    mMinYaw = Convert.ToInt32(trimParts[4] == "0" ? "-15" : trimParts[4]);
+                    mMaxYaw = Convert.ToInt32(trimParts[5] == "0" ? "15" : trimParts[5]);
+                    mMinPitch = Convert.ToInt32(trimParts[6] == "0" ? "-20" : trimParts[6]);
+                    mMaxPitch = Convert.ToInt32(trimParts[7] == "0" ? "20" : trimParts[7]);
+                    mMinRoll = Convert.ToInt32(trimParts[8] == "0" ? "-20" : trimParts[8]);
+                    mMaxRoll = Convert.ToInt32(trimParts[9] == "0" ? "20" : trimParts[9]);
                 }
                 catch (IndexOutOfRangeException ex)
                 {
-                    Toast.MakeText(this, "Can't load settings", ToastLength.Short).Show();
+                    mMinYaw = -15;
+                    mMaxYaw = 15;
+                    mMinPitch = -20;
+                    mMaxPitch = 20;
+                    mMinRoll = -20;
+                    mMaxRoll = 20;
                 }
 
 				peerSettings.Add(parts[0], new ControllerSettings
@@ -221,6 +229,17 @@ namespace BTDronection
 					MaxRoll = mMaxRoll				
 				});
             }
+
+            if (isFirstTouch == true)
+            {
+                mMinYaw = -15;
+                mMaxYaw = 15;
+                mMinPitch = -20;
+                mMaxPitch = 20;
+                mMinRoll = -20;
+                mMaxRoll = 20;
+            }
+
             return peerSettings;
         }
 
@@ -232,17 +251,20 @@ namespace BTDronection
             if(mSocketConnection.LogData != null)
             {
                 RemoveFolder();
-                DateTime time = DateTime.Now;
-                string logName = string.Format("{0}{1:D2}{2:D2}_{3:D2}{4:D2}{5:D2}", time.Year, time.Month, time.Day, time.Hour, time.Minute, time.Second);
-                var storageDir = new Java.IO.File(MainActivity.ApplicationFolderPath + Java.IO.File.Separator + logName);
-                var writer = new Java.IO.FileWriter(new Java.IO.File(storageDir, "controls.csv"));
-                if(mLoggingActive)
+                string dirName = "";
+                if (mLoggingActive)
                 {
+                    DateTime time = DateTime.Now;
+                    dirName = string.Format("{0}{1:D2}{2:D2}_{3:D2}{4:D2}{5:D2}", time.Year, time.Month, time.Day, time.Hour, time.Minute, time.Second);
+                    var storageDir = new Java.IO.File(MainActivity.ApplicationFolderPath + Java.IO.File.Separator + dirName);
+                    var logWriter = new Java.IO.FileWriter(new Java.IO.File(storageDir, "controls.csv"));
                     storageDir.Mkdirs();
-					writer.Write(mSocketConnection.LogData);
-				}
+                    logWriter.Write(mSocketConnection.LogData);
+                    logWriter.Close();
+                }
+
                 mPeerSettings[mSelectedMac] = ControllerView.Settings;
-                string dirName = MainActivity.ApplicationFolderPath + Java.IO.File.Separator + "settings";
+                dirName = MainActivity.ApplicationFolderPath + Java.IO.File.Separator + "settings";
                 string settingsString = "";
                 foreach (KeyValuePair<string, ControllerSettings> kvp in mPeerSettings)
                 {
@@ -250,10 +272,10 @@ namespace BTDronection
                                          + (mLoggingActive ? "true" : "false")  + ";" + mMinYaw + ";" + mMaxYaw + ";" + mMinPitch + ";" 
                                          + mMaxPitch + ";" + mMinRoll + ";" + mMaxRoll + "\n";
                 }
-                writer.Close();
-                writer = new Java.IO.FileWriter(new Java.IO.File(dirName, "settings.csv"));
-                writer.Write(settingsString);
-                writer.Close();
+
+                var settingsWriter = new Java.IO.FileWriter(new Java.IO.File(dirName, "settings.csv"));
+                settingsWriter.Write(settingsString);
+                settingsWriter.Close();
             }
         }
 
