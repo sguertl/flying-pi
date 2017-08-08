@@ -37,7 +37,7 @@ If you press the __Connect__ button you will be asked to enter the password. The
 
 On most Android devices a popup-dialog will appear while connecting to the Raspberry PI, which will say, "The Internet is unavaiable with "..." (Picture below). This Popup is not created by the Donection application, but by the OS and just shows, that you have no Internet access over the Raspberry Pi, because it is configured as an Access Point between the mobile phone and the XMC-Drone.
 
-<img src="https://github.com/sguertl/Flying_Pi/blob/master/Res/Images/InternetUnavaiableWith.png" alt="The Internet is unavaiable with Raspberry Pi">
+<img src="https://github.com/sguertl/Flying_Pi/blob/master/Res/Images/InternetUnavaiableWith.png" alt="The Internet is unavaiable with Raspberry Pi" width="600">
 
 ##### Choose selection mode
 After connecting to the network, you will be forwarded to `ControllerActivity.cs`. Before using the smartphone as a controller, you have to choose between two selection modes by clicking either on the radio button or the image.
