@@ -44,7 +44,7 @@ namespace WiFiDronection
         // Constants
         private readonly string SERVER_ADDRESS = "172.24.1.1";
         private readonly int SERVER_PORT = 5050;
-        private readonly byte START_BYTE = 10;
+        private readonly byte START_BYTE = 0x00;
         private readonly int PACKET_SIZE = 19;
 
         // Singleton members
@@ -211,66 +211,6 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Connection thread
-        /// </summary>
-       /* public override void Run()
-        {
-            FLAG = true;
-            if (mSocket.IsConnected == false)
-            {
-                try
-                {
-                    // Connect with socket
-                    mSocket = new Socket(SERVER_ADDRESS, SERVER_PORT);
-                }
-                catch (UnknownHostException uhe)
-                {
-                    Log.Debug(TAG, uhe.Message + " if the IP address of the host could not be determined.");
-                }
-                catch (IOException uhe)
-                {
-                    Log.Debug(TAG, uhe.Message + " if an I/O error occurs when creating the socket.");
-                }
-                catch (SecurityException uhe)
-                {
-                    Log.Debug(TAG, uhe.Message + " if a security manager exists and its checkConnect method doesn't allow the operation.");
-                }
-                catch (IllegalAccessException uhe)
-                {
-                    Log.Debug(TAG, uhe.Message + " if the port parameter is outside the specified range of valid port values, which is between 0 and 65535, inclusive.");
-                }
-
-                try
-                {
-                    if (!mSocket.IsConnected)
-                    {
-                        // if first connection attempt fails try again
-                        SocketAddress socketAdr = new InetSocketAddress(SERVER_ADDRESS, SERVER_PORT);
-                        Thread.Sleep(5000);
-                        mSocket.Connect(socketAdr, 2000);
-                    }
-                }
-                catch (Java.Lang.Exception ex)
-                {
-                    FLAG = false;
-                    Log.Debug(TAG, ex.Message);
-                    return;
-                }
-                finally
-                {
-                    if (FLAG)
-                    {
-                        // Create socket reading and writing streams
-                        mDataOutputStream = new DataOutputStream(mSocket.OutputStream);
-                        mDataInputStream = new DataInputStream(mSocket.InputStream);
-                    }
-                   
-                }
-            }
-
-        }*/
-
-        /// <summary>
         /// Writes controller data to smartphone through socket connection
         /// </summary>
         /// <param name="args">Controller parameter (throttle, yaw, pitch, roll)</param>
@@ -283,6 +223,7 @@ namespace WiFiDronection
 
             // Convert int16 controller parameters to byte stream
             byte[] bytes = ConvertToByte(args);
+
             try
             {
                 mDataOutputStream.Write(bytes);

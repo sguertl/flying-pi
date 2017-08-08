@@ -39,6 +39,7 @@ namespace WiFiDronection
 
         // Input stream
         private DataInputStream mDataInputStream;
+        private RaspberryClose mRaspberryCloseEvent;
 
         // Data reader thread
         public Thread mDataReaderThread;
@@ -47,9 +48,10 @@ namespace WiFiDronection
         /// Initializes a new instance of the <see cref="T:WiFiDronection.SocketReader"/> class.
         /// </summary>
         /// <param name="inputStream">Input stream.</param>
-        public SocketReader(DataInputStream inputStream)
+        public SocketReader(DataInputStream inputStream, RaspberryClose rpiClose)
         {
             mDataInputStream = inputStream;
+            mRaspberryCloseEvent = rpiClose;
             //this.mDataReaderThread = new Thread(OnRead);
         }
 
@@ -76,8 +78,13 @@ namespace WiFiDronection
                     Log.Debug(TAG, "No socket connection (" + ex.Message + ")");
                    //  throw new NullReferenceException();
                 }
+                catch(Java.Lang.StringIndexOutOfBoundsException ex)
+                {
+                    Log.Debug(TAG, "Connection was interrupted by RPI");
+                    Close();
+                    mRaspberryCloseEvent();
+                }
             }
-
             return;
         }
 

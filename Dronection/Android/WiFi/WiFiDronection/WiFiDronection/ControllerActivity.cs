@@ -39,6 +39,8 @@ using Android.Graphics;
 
 namespace WiFiDronection
 {
+    public delegate void RaspberryClose();
+
     [Activity(Label = "ControllerActivity",
               Theme = "@android:style/Theme.Holo.Light.NoActionBar.Fullscreen",
               MainLauncher = false,
@@ -78,7 +80,6 @@ namespace WiFiDronection
 		private Button mBtnAltitudeControl;
 
 		// Socket members
-		private bool mIsConnected;
         private SocketConnection mSocketConnection;
         private SocketReader mSocketReader;
         private string mSelectedBssid;
@@ -96,6 +97,12 @@ namespace WiFiDronection
 
         // Public variables
         public static bool Inverted;
+
+        public void CloseOnRPIReset()
+        {
+            mSocketConnection.OnCancel();
+            StartActivity(typeof(MainActivity));
+        }
 
         /// <summary>
         /// Creates activity and initializes widgets.
@@ -333,7 +340,7 @@ namespace WiFiDronection
             // Start reading from Raspberry
             if(mSocketConnection.WifiSocket.IsConnected == true)
             {
-                mSocketReader = new SocketReader(mSocketConnection.InputStream);
+                mSocketReader = new SocketReader(mSocketConnection.InputStream, CloseOnRPIReset);
                 mSocketReader.OnStart();
             }
         }
@@ -352,8 +359,8 @@ namespace WiFiDronection
                     DateTime time = DateTime.Now;
 				    dirName = string.Format("{0}{1:D2}{2:D2}_{3:D2}{4:D2}{5:D2}", time.Year, time.Month, time.Day, time.Hour, time.Minute, time.Second);
 				    var storageDir = new Java.IO.File(MainActivity.ApplicationFolderPath + Java.IO.File.Separator + dirName);
+                    storageDir.Mkdirs();
 				    var logWriter = new Java.IO.FileWriter(new Java.IO.File(storageDir, "controls.csv"));
-					storageDir.Mkdirs();
 					logWriter.Write(mSocketConnection.LogData);
                     logWriter.Close();
                 }
