@@ -35,6 +35,10 @@ If there is no matching network, you can't go on to the Controller.
 ##### Connect to network
 If you press the __Connect__ button you will be asked to enter the password. The default password is 87654321 (or 00000000), but it depends on the hostapd-configuration of the Raspberry Pi. If you are already connected to the network, you can just press the OK button and ignore the dialog and a new socket connection (`SocketConnection.cs`) to `172.24.1.1:5050` will be established.
 
+On most Android devices a popup-dialog will appear while connecting to the Raspberry PI, which will say, "The Internet is unavaiable with "..." (Picture below). This Popup is not created by the Donection application, but by the OS and just shows, that you have no Internet access over the Raspberry Pi, because it is configured as an Access Point between the mobile phone and the XMC-Drone.
+
+<img src="https://github.com/sguertl/Flying_Pi/blob/master/Res/Images/InternetUnavaiableWith.png" alt="The Internet is unavaiable with Raspberry Pi">
+
 ##### Choose selection mode
 After connecting to the network, you will be forwarded to `ControllerActivity.cs`. Before using the smartphone as a controller, you have to choose between two selection modes by clicking either on the radio button or the image.
 
