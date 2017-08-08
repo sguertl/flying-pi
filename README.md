@@ -219,3 +219,9 @@ WantedBy=multi-user.target
 Create a file `fhem` in `/etc/init.d/` and add `sleep 10` as content.
 
 Thanks to [FHEM Wiki](https://wiki.fhem.de/wiki/Raspberry_Pi_3:_GPIO-Port_Module_und_Bluetooth) for this tutorial! 
+
+### Code Documentation
+
+#### main.py
+
+The Python script main.py will be executed as a background process directly after the Raspberry Pi has booted. Its main function  is to run other Python scripts on the Raspberry. At the time only rpi_socket.py functions are called, but it can be easily extented by adding a new Python script to the project folder `/Desktop/FlyingPi/RPI/Wifi/'your script'` and adding at the beginning of main.py `from 'script filename' import 'class name'` and initialize the object by calling `object_name = class_name()`. Of course you can also write you code in the main.py script, but it is highly recommended to use other scripts and import them.
