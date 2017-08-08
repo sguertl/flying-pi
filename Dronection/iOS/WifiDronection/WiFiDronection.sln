@@ -1,0 +1,23 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiFiDronection", "WifiDronection.csproj", "{FD5F97C4-C557-42E8-B4D5-787E6FA44D0C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|iPhoneSimulator = Debug|iPhoneSimulator
+		Release|iPhone = Release|iPhone
+		Release|iPhoneSimulator = Release|iPhoneSimulator
+		Debug|iPhone = Debug|iPhone
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FD5F97C4-C557-42E8-B4D5-787E6FA44D0C}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{FD5F97C4-C557-42E8-B4D5-787E6FA44D0C}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{FD5F97C4-C557-42E8-B4D5-787E6FA44D0C}.Release|iPhone.ActiveCfg = Release|iPhone
+		{FD5F97C4-C557-42E8-B4D5-787E6FA44D0C}.Release|iPhone.Build.0 = Release|iPhone
+		{FD5F97C4-C557-42E8-B4D5-787E6FA44D0C}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{FD5F97C4-C557-42E8-B4D5-787E6FA44D0C}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{FD5F97C4-C557-42E8-B4D5-787E6FA44D0C}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{FD5F97C4-C557-42E8-B4D5-787E6FA44D0C}.Debug|iPhone.Build.0 = Debug|iPhone
+	EndGlobalSection
+EndGlobal

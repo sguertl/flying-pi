@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11134" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11106"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="MainViewController" customModuleProvider="" sceneMemberID="viewController" useStoryboardIdentifierAsRestorationIdentifier="YES" storyboardIdentifier="MainViewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="3" translatesAutoresizingMaskIntoConstraints="NO" image="ifx_logo.png" misplaced="YES">
+                                <rect key="frame" x="63" y="514" width="250" height="100"/>
+                                <constraints>
+                                    <constraint id="41" firstAttribute="width" constant="250"/>
+                                    <constraint id="42" firstAttribute="height" constant="100"/>
+                                    <constraint id="232" firstAttribute="width" constant="250"/>
+                                    <constraint id="233" firstAttribute="height" constant="100"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="41"/>
+                                        <exclude reference="42"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="41"/>
+                                        <include reference="42"/>
+                                    </mask>
+                                </variation>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="© 2017 Infineon Technologies Austria AG" textAlignment="center" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4" translatesAutoresizingMaskIntoConstraints="NO">
+                                <rect key="frame" x="56" y="627" width="264" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                                <size key="shadowOffset" width="0" height="-1"/>
+                                <constraints>
+                                    <constraint id="50" firstAttribute="width" constant="264"/>
+                                    <constraint id="51" firstAttribute="height" constant="24"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="50"/>
+                                        <exclude reference="51"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="50"/>
+                                        <include reference="51"/>
+                                    </mask>
+                                </variation>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WiFi Dronection" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5" translatesAutoresizingMaskIntoConstraints="NO" misplaced="YES">
+                                <rect key="frame" x="273" y="40" width="280" height="48"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Searching WiFi connection ..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6" translatesAutoresizingMaskIntoConstraints="NO" misplaced="YES">
+                                <rect key="frame" x="241" y="120" width="343" height="42"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                                <constraints>
+                                    <constraint id="272" firstAttribute="width" constant="343"/>
+                                    <constraint id="273" firstAttribute="height" constant="42"/>
+                                </constraints>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7" translatesAutoresizingMaskIntoConstraints="NO" misplaced="YES">
+                                <rect key="frame" x="241" y="180" width="343" height="39"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                                <constraints>
+                                    <constraint id="276" firstAttribute="width" constant="343"/>
+                                    <constraint id="277" firstAttribute="height" constant="39"/>
+                                </constraints>
+                            </label>
+                            <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="8" translatesAutoresizingMaskIntoConstraints="NO" buttonType="roundedRect" opaque="NO" enabled="NO">
+                                <rect key="frame" x="308" y="240" width="343" height="50"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <color key="backgroundColor" colorSpace="calibratedRGB" red="0.85098039215686272" green="0" blue="0.15294117647058825" alpha="1"/>
+                                <state key="normal" title="Connecting ...">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" colorSpace="calibratedWhite" white="1" alpha="1"/>
+                                </state>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <color key="backgroundColor" colorSpace="calibratedRGB" red="0.031372549019607843" green="0.27843137254901962" blue="0.596078431372549" alpha="1"/>
+                                    <color key="tintColor" colorSpace="calibratedWhite" white="1" alpha="1"/>
+                                </variation>
+                                <connections>
+                                    <action selector="OnConnect:" destination="BYZ-38-t0r" id="1557" eventType="touchUpInside"/>
+                                    <segue id="4010" destination="411" kind="show" identifier="connectSegue"/>
+                                </connections>
+                                <state key="disabled">
+                                    <color key="titleShadowColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                    <color key="titleColor" colorSpace="calibratedWhite" white="1" alpha="1"/>
+                                </state>
+                                <constraints>
+                                    <constraint id="314" firstAttribute="width" constant="343"/>
+                                    <constraint id="315" firstAttribute="height" constant="50"/>
+                                </constraints>
+                                <variation key="heightClass=compact-widthClass=compact">
+                                    <color key="backgroundColor" colorSpace="calibratedRGB" red="0.031372549019607843" green="0.27843137254901962" blue="0.596078431372549" alpha="1"/>
+                                </variation>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="9" translatesAutoresizingMaskIntoConstraints="NO">
+                                <rect key="frame" x="16" y="310" width="343" height="50"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <state key="normal" title="Log files">
+                                    <color key="titleShadowColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                    <color key="titleColor" colorSpace="calibratedWhite" white="1" alpha="1"/>
+                                </state>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <color key="backgroundColor" colorSpace="calibratedRGB" red="0.031372549019607843" green="0.27843137254901962" blue="0.596078431372549" alpha="1"/>
+                                    <mask key="constraints">
+                                        <include reference="398"/>
+                                        <include reference="399"/>
+                                    </mask>
+                                    <color key="tintColor" colorSpace="calibratedWhite" white="1" alpha="1"/>
+                                </variation>
+                                <connections/>
+                                <constraints>
+                                    <constraint id="398" firstAttribute="width" constant="343"/>
+                                    <constraint id="399" firstAttribute="height" constant="50"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="398"/>
+                                        <exclude reference="399"/>
+                                    </mask>
+                                </variation>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="202" translatesAutoresizingMaskIntoConstraints="NO">
+                                <rect key="frame" x="16" y="380" width="343" height="50"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <state key="normal" title="Help">
+                                    <color key="titleShadowColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                    <color key="titleColor" colorSpace="calibratedWhite" white="1" alpha="1"/>
+                                </state>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <color key="backgroundColor" colorSpace="calibratedRGB" red="0.031372549019607843" green="0.27843137254901962" blue="0.596078431372549" alpha="1"/>
+                                    <mask key="constraints">
+                                        <include reference="402"/>
+                                        <include reference="403"/>
+                                    </mask>
+                                </variation>
+                                <constraints>
+                                    <constraint id="402" firstAttribute="width" constant="343"/>
+                                    <constraint id="403" firstAttribute="height" constant="50"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="402"/>
+                                        <exclude reference="403"/>
+                                    </mask>
+                                </variation>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint id="48" firstItem="4" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX"/>
+                            <constraint id="49" firstItem="8bC-Xf-vdC" firstAttribute="bottom" secondItem="4" secondAttribute="bottom" constant="16"/>
+                            <constraint id="230" firstItem="8bC-Xf-vdC" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" constant="62"/>
+                            <constraint id="231" firstItem="8bC-Xf-vdC" firstAttribute="bottom" secondItem="3" secondAttribute="bottom" constant="53"/>
+                            <constraint id="265" firstItem="5" firstAttribute="centerX" secondItem="3" secondAttribute="centerX"/>
+                            <constraint id="267" firstItem="5" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="40"/>
+                            <constraint id="270" firstItem="8bC-Xf-vdC" firstAttribute="trailing" secondItem="6" secondAttribute="trailing" constant="16"/>
+                            <constraint id="271" firstItem="6" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="120"/>
+                            <constraint id="274" firstItem="8bC-Xf-vdC" firstAttribute="trailing" secondItem="7" secondAttribute="trailing" constant="16"/>
+                            <constraint id="275" firstItem="7" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="180"/>
+                            <constraint id="312" firstItem="8bC-Xf-vdC" firstAttribute="trailing" secondItem="8" secondAttribute="trailing" constant="16"/>
+                            <constraint id="313" firstItem="8" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="240"/>
+                            <constraint id="395" firstItem="9" firstAttribute="centerX" secondItem="8" secondAttribute="centerX"/>
+                            <constraint id="400" firstItem="8bC-Xf-vdC" firstAttribute="trailing" secondItem="202" secondAttribute="trailing" constant="16"/>
+                            <constraint id="4215" firstItem="9" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="308">
+                                <variation key="heightClass=regular-widthClass=compact" constant="310"/>
+                            </constraint>
+                            <constraint id="4216" firstItem="202" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="380">
+                                <variation key="heightClass=regular-widthClass=compact" constant="380"/>
+                            </constraint>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="48"/>
+                                <exclude reference="49"/>
+                                <exclude reference="395"/>
+                                <exclude reference="400"/>
+                                <exclude reference="4215"/>
+                                <exclude reference="4216"/>
+                            </mask>
+                            <mask key="subviews">
+                                <exclude reference="202"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="constraints">
+                                <include reference="48"/>
+                                <include reference="49"/>
+                                <include reference="395"/>
+                                <include reference="400"/>
+                                <include reference="4215"/>
+                                <include reference="4216"/>
+                            </mask>
+                            <mask key="subviews">
+                                <include reference="202"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="lblHeader" destination="5" id="name-outlet-5"/>
+                        <outlet property="lblFooter" destination="4" id="name-outlet-4"/>
+                        <outlet property="imvLogo" destination="3" id="name-outlet-3"/>
+                        <outlet property="btnConnect" destination="8" id="name-outlet-8"/>
+                        <outlet property="btnLogFiles" destination="9" id="name-outlet-9"/>
+                        <outlet property="btnHelp" destination="202" id="name-outlet-202"/>
+                        <outlet property="lblSsid" destination="6" id="name-outlet-6"/>
+                        <outlet property="lblMac" destination="7" id="name-outlet-7"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="0.0" y="0.0"/>
+        </scene>
+        <scene sceneID="410">
+            <objects>
+                <viewController id="411" sceneMemberID="viewController" customClass="SettingsController" storyboardIdentifier="SettingsController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="408"/>
+                        <viewControllerLayoutGuide type="bottom" id="409"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="412">
+                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="424" translatesAutoresizingMaskIntoConstraints="NO">
+                                <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Controller Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="418" translatesAutoresizingMaskIntoConstraints="NO">
+                                        <rect key="frame" x="16" y="15" width="635" height="48"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                        <constraints>
+                                            <constraint id="4101" firstAttribute="width" constant="635"/>
+                                        </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="4101"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="heightClass=compact-widthClass=compact">
+                                            <mask key="constraints">
+                                                <include reference="4101"/>
+                                            </mask>
+                                        </variation>
+                                    </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="450" translatesAutoresizingMaskIntoConstraints="NO">
+                                        <rect key="frame" x="16" y="64" width="243" height="136"/>
+                                        <variation key="heightClass=compact-widthClass=compact" image="mode1.png">
+                                            <mask key="constraints">
+                                                <include reference="4106"/>
+                                                <include reference="4108"/>
+                                            </mask>
+                                        </variation>
+                                        <constraints>
+                                            <constraint id="3721" firstItem="450" firstAttribute="width" constant="246"/>
+                                            <constraint id="3722" firstAttribute="width" secondItem="450" secondAttribute="height" multiplier="123:68"/>
+                                            <constraint id="3723" firstItem="450" firstAttribute="height" constant="136"/>
+                                            <constraint id="4106" firstItem="450" firstAttribute="width" constant="246">
+                                                <variation key="heightClass=compact-widthClass=compact" constant="243"/>
+                                            </constraint>
+                                            <constraint id="4108" firstItem="450" firstAttribute="height" constant="720">
+                                                <variation key="heightClass=compact-widthClass=compact" constant="136"/>
+                                            </constraint>
+                                        </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="3721"/>
+                                                <exclude reference="3722"/>
+                                                <exclude reference="3723"/>
+                                                <exclude reference="4106"/>
+                                                <exclude reference="4108"/>
+                                            </mask>
+                                        </variation>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="451" translatesAutoresizingMaskIntoConstraints="NO">
+                                        <rect key="frame" x="16" y="208" width="243" height="136"/>
+                                        <variation key="heightClass=compact-widthClass=compact" image="mode2.png" highlightedImage="mode2.png">
+                                            <mask key="constraints">
+                                                <include reference="4111"/>
+                                                <include reference="4114"/>
+                                            </mask>
+                                        </variation>
+                                        <constraints>
+                                            <constraint id="4111" firstItem="451" firstAttribute="height" constant="136"/>
+                                            <constraint id="4114" firstItem="451" firstAttribute="width" constant="1280">
+                                                <variation key="heightClass=compact-widthClass=compact" constant="243"/>
+                                            </constraint>
+                                        </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="4111"/>
+                                                <exclude reference="4114"/>
+                                            </mask>
+                                        </variation>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="3665" translatesAutoresizingMaskIntoConstraints="NO">
+                                        <rect key="frame" x="267" y="258" width="188" height="39"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                        <state key="normal" title="Start Mode 1">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleColor" colorSpace="calibratedWhite" white="1" alpha="1"/>
+                                        </state>
+                                        <variation key="heightClass=compact-widthClass=compact">
+                                            <color key="backgroundColor" colorSpace="calibratedRGB" red="0.031372549019607843" green="0.27843137254901962" blue="0.596078431372549" alpha="1"/>
+                                            <mask key="constraints">
+                                                <include reference="4173"/>
+                                                <include reference="4174"/>
+                                            </mask>
+                                        </variation>
+                                        <constraints>
+                                            <constraint id="4173" firstItem="3665" firstAttribute="width" constant="188"/>
+                                            <constraint id="4174" firstItem="3665" firstAttribute="height" constant="39"/>
+                                        </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="4173"/>
+                                                <exclude reference="4174"/>
+                                            </mask>
+                                        </variation>
+                                        <connections>
+                                            <action selector="OnStartMode1:" destination="411" id="4221" eventType="touchUpInside"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="3666" translatesAutoresizingMaskIntoConstraints="NO">
+                                        <rect key="frame" x="464" y="258" width="188" height="39"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                        <state key="normal" title="Start Mode 2">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleColor" colorSpace="calibratedWhite" white="1" alpha="1"/>
+                                        </state>
+                                        <variation key="heightClass=compact-widthClass=compact">
+                                            <color key="backgroundColor" colorSpace="calibratedRGB" red="0.031372549019607843" green="0.27843137254901962" blue="0.596078431372549" alpha="1"/>
+                                            <mask key="constraints">
+                                                <include reference="4171"/>
+                                                <include reference="4172"/>
+                                            </mask>
+                                        </variation>
+                                        <constraints>
+                                            <constraint id="4171" firstItem="3666" firstAttribute="width" constant="188"/>
+                                            <constraint id="4172" firstItem="3666" firstAttribute="height" constant="39"/>
+                                        </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="4171"/>
+                                                <exclude reference="4172"/>
+                                            </mask>
+                                        </variation>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="3667" translatesAutoresizingMaskIntoConstraints="NO">
+                                        <rect key="frame" x="267" y="305" width="384" height="39"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                        <state key="normal" title="Back">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleColor" colorSpace="calibratedWhite" white="1" alpha="1"/>
+                                        </state>
+                                        <variation key="heightClass=compact-widthClass=compact">
+                                            <color key="backgroundColor" colorSpace="calibratedRGB" red="0.031372549019607843" green="0.27843137254901962" blue="0.596078431372549" alpha="1"/>
+                                            <mask key="constraints">
+                                                <include reference="4161"/>
+                                                <include reference="4162"/>
+                                            </mask>
+                                        </variation>
+                                        <connections>
+                                            <segue id="3715" destination="BYZ-38-t0r" kind="show" identifier="backFromSettingsSegue"/>
+                                            <action selector="OnBackFromSettings:" destination="411" id="3717" eventType="touchUpInside"/>
+                                        </connections>
+                                        <constraints>
+                                            <constraint id="4161" firstItem="3667" firstAttribute="width" constant="384"/>
+                                            <constraint id="4162" firstItem="3667" firstAttribute="height" constant="39"/>
+                                        </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="4161"/>
+                                                <exclude reference="4162"/>
+                                            </mask>
+                                        </variation>
+                                    </button>
+                                </subviews>
+                                <variation key="default">
+                                    <mask key="subviews">
+                                        <exclude reference="418"/>
+                                        <exclude reference="450"/>
+                                        <exclude reference="451"/>
+                                        <exclude reference="3665"/>
+                                        <exclude reference="3666"/>
+                                        <exclude reference="3667"/>
+                                    </mask>
+                                    <mask key="constraints">
+                                        <exclude reference="4097"/>
+                                        <exclude reference="4098"/>
+                                        <exclude reference="4099"/>
+                                        <exclude reference="4100"/>
+                                        <exclude reference="4102"/>
+                                        <exclude reference="4109"/>
+                                        <exclude reference="4146"/>
+                                        <exclude reference="4147"/>
+                                        <exclude reference="4150"/>
+                                        <exclude reference="4165"/>
+                                        <exclude reference="4166"/>
+                                        <exclude reference="4167"/>
+                                        <exclude reference="4168"/>
+                                        <exclude reference="4175"/>
+                                        <exclude reference="4176"/>
+                                        <exclude reference="4177"/>
+                                        <exclude reference="4178"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=compact-widthClass=compact">
+                                    <mask key="subviews">
+                                        <include reference="418"/>
+                                        <include reference="450"/>
+                                        <include reference="451"/>
+                                        <include reference="3665"/>
+                                        <include reference="3666"/>
+                                        <include reference="3667"/>
+                                    </mask>
+                                    <mask key="constraints">
+                                        <include reference="4097"/>
+                                        <include reference="4098"/>
+                                        <include reference="4099"/>
+                                        <include reference="4100"/>
+                                        <include reference="4102"/>
+                                        <include reference="4109"/>
+                                        <include reference="4146"/>
+                                        <include reference="4147"/>
+                                        <include reference="4150"/>
+                                        <include reference="4165"/>
+                                        <include reference="4166"/>
+                                        <include reference="4167"/>
+                                        <include reference="4168"/>
+                                        <include reference="4175"/>
+                                        <include reference="4176"/>
+                                        <include reference="4177"/>
+                                        <include reference="4178"/>
+                                    </mask>
+                                </variation>
+                                <constraints>
+                                    <constraint id="4097" firstAttribute="width" constant="667"/>
+                                    <constraint id="4098" firstAttribute="height" constant="375"/>
+                                    <constraint id="4099" firstItem="418" firstAttribute="top" secondItem="424" secondAttribute="top" constant="15"/>
+                                    <constraint id="4100" firstItem="424" firstAttribute="trailing" secondItem="418" secondAttribute="trailing" constant="16"/>
+                                    <constraint id="4102" firstItem="418" firstAttribute="leading" secondItem="424" secondAttribute="leading" constant="16"/>
+                                    <constraint id="4109" firstItem="450" firstAttribute="leading" secondItem="424" secondAttribute="leading" constant="16"/>
+                                    <constraint id="4146" firstItem="451" firstAttribute="leading" secondItem="424" secondAttribute="leading" constant="16"/>
+                                    <constraint id="4147" firstItem="451" firstAttribute="top" secondItem="450" secondAttribute="bottom" constant="8"/>
+                                    <constraint id="4150" firstItem="450" firstAttribute="top" secondItem="418" secondAttribute="bottom" constant="20">
+                                        <variation key="heightClass=compact-widthClass=compact" constant="1"/>
+                                    </constraint>
+                                    <constraint id="4165" firstItem="3667" firstAttribute="leading" secondItem="450" secondAttribute="trailing" constant="8"/>
+                                    <constraint id="4166" firstItem="424" firstAttribute="bottom" secondItem="3667" secondAttribute="bottom" constant="31"/>
+                                    <constraint id="4167" firstItem="424" firstAttribute="trailing" secondItem="3667" secondAttribute="trailing" constant="16"/>
+                                    <constraint id="4168" firstItem="3667" firstAttribute="top" secondItem="418" secondAttribute="bottom" constant="242"/>
+                                    <constraint id="4175" firstItem="3665" firstAttribute="top" secondItem="418" secondAttribute="bottom" constant="195"/>
+                                    <constraint id="4176" firstItem="3666" firstAttribute="top" secondItem="418" secondAttribute="bottom" constant="195"/>
+                                    <constraint id="4177" firstItem="3665" firstAttribute="leading" secondItem="451" secondAttribute="trailing" constant="8"/>
+                                    <constraint id="4178" firstItem="3666" firstAttribute="leading" secondItem="451" secondAttribute="trailing" constant="205"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="424"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="4095"/>
+                                <exclude reference="4096"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=compact-widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="424"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="4095"/>
+                                <include reference="4096"/>
+                            </mask>
+                        </variation>
+                        <constraints>
+                            <constraint id="4095" firstItem="412" firstAttribute="trailing" secondItem="424" secondAttribute="trailing"/>
+                            <constraint id="4096" firstItem="412" firstAttribute="bottom" secondItem="424" secondAttribute="bottom"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="lblControllerSettings" destination="418" id="name-outlet-418"/>
+                        <outlet property="imvMode1" destination="450" id="name-outlet-450"/>
+                        <outlet property="imvMode2" destination="451" id="name-outlet-451"/>
+                        <outlet property="btnStartMode1" destination="3665" id="name-outlet-3665"/>
+                        <outlet property="btnStartMode2" destination="3666" id="name-outlet-3666"/>
+                        <outlet property="btnBackFromSettings" destination="3667" id="name-outlet-3667"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="413" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="807" y="-2"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="ifx_logo.png" width="1500" height="656"/>
+        <image name="mode2.png" width="1280" height="720"/>
+        <image name="mode1.png" width="1280" height="720"/>
+        <image name="bg.png" width="894" height="485"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedScreenMetrics key="destination" type="retina47"/>
+        <simulatedOrientationMetrics key="orientation" orientation="landscapeRight"/>
+    </simulatedMetricsContainer>
+</document>
