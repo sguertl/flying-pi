@@ -94,7 +94,7 @@
             android:gravity="center"
             android:layout_gravity="right|center_vertical" />
     </LinearLayout>
-    <BTDronection.ControllerView
+    <WiFiDronection.ControllerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/JoystickView" />
