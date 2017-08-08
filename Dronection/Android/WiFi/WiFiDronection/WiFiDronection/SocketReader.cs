@@ -50,7 +50,7 @@ namespace WiFiDronection
         public SocketReader(DataInputStream inputStream)
         {
             mDataInputStream = inputStream;
-            this.mDataReaderThread = new Thread(OnRead);
+            //this.mDataReaderThread = new Thread(OnRead);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace WiFiDronection
         {
             int bytes = 0;
             byte[] buffer = new byte[1024];
-            while (true)
+            while (mDataReaderThread != null)
             {
                 try
                 {
@@ -77,6 +77,8 @@ namespace WiFiDronection
                    //  throw new NullReferenceException();
                 }
             }
+
+            return;
         }
 
         /// <summary>
@@ -95,11 +97,15 @@ namespace WiFiDronection
         {
             try
             {
-                this.mDataReaderThread = null;
+                if (mDataReaderThread != null)
+                {
+                    this.mDataReaderThread = null;
+                }
 
                 if (mDataInputStream != null)
                 {
                     mDataInputStream.Close();
+                    mDataInputStream = null;
                 }
                 
             }
