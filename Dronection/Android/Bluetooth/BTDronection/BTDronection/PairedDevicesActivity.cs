@@ -173,10 +173,14 @@ namespace BTDronection
             Toast.MakeText(ApplicationContext, "Connecting...", 0).Show();
 
             // Establish connection
-            mSocketConnection.Init(bluetoothDevice);
-            mSocketConnection.OnStartConnection();
+            try
+            {
+                mSocketConnection.Init(bluetoothDevice);
+                mSocketConnection.OnStartConnection();
+            }catch(Exception ex)
+            {}
 
-            if(mSocketConnection.Socket.IsConnected == true)
+            if(mSocketConnection.Socket != null &&  mSocketConnection.Socket.IsConnected == true)
             {
                 Intent intent = new Intent(BaseContext, typeof(ControllerActivity));
                 intent.PutExtra("mac", bluetoothDevice.Address);

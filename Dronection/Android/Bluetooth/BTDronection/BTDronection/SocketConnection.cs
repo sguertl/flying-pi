@@ -129,15 +129,21 @@ namespace BTDronection
 		/// </summary>
 		public void Init(BluetoothDevice device)
         {
-            Init();
-            BluetoothSocket tmp = null;
-            tmp = device.CreateInsecureRfcommSocketToServiceRecord(device.GetUuids()[0].Uuid);
-            Class helpClass = tmp.RemoteDevice.Class;
-            Class[] paramTypes = new Class[] { Integer.Type };
-            Method m = helpClass.GetMethod("createRfcommSocket", paramTypes);
-            Java.Lang.Object[] param = new Java.Lang.Object[] { Integer.ValueOf(1) };
+            try
+            {
+                Init();
+                BluetoothSocket tmp = null;
+                tmp = device.CreateInsecureRfcommSocketToServiceRecord(device.GetUuids()[0].Uuid);
+                Class helpClass = tmp.RemoteDevice.Class;
+                Class[] paramTypes = new Class[] { Integer.Type };
+                Method m = helpClass.GetMethod("createRfcommSocket", paramTypes);
+                Java.Lang.Object[] param = new Java.Lang.Object[] { Integer.ValueOf(1) };
 
-            mSocket = (BluetoothSocket)m.Invoke(tmp.RemoteDevice, param);
+                mSocket = (BluetoothSocket)m.Invoke(tmp.RemoteDevice, param);
+            }catch(System.Exception ex)
+            {
+                throw new System.Exception();
+            }
         }
 
 		/// <summary>
