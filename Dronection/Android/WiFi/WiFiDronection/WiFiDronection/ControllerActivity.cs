@@ -92,6 +92,7 @@ namespace WiFiDronection
 		private int mMinRoll;
 		private int mMaxRoll;
 
+        // Access to ControllerView
         private Flight mFlight;
 
         // Constants
@@ -100,14 +101,10 @@ namespace WiFiDronection
         // Public variables
         public static bool Inverted;
 
-        public void CloseOnRPIReset()
-        {
-            mSocketConnection.OnCancel();
-            StartActivity(typeof(MainActivity));
-        }
-
         /// <summary>
-        /// Creates activity and initializes widgets.
+        /// Creates activity and initializes, modifies and handles events for
+        /// all widgets. Calls ReadPeerSettings() to read the settings from 
+        /// a file and set them for the flight.
         /// </summary>
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -143,12 +140,14 @@ namespace WiFiDronection
 			mBtStart = FindViewById<Button>(Resource.Id.btStart);
 			mBtBackToMain = FindViewById<Button>(Resource.Id.btnSettingsBack);
 
+            // Set font to widgets
             mTvHeader.Typeface = font;
             mRbMode1.Typeface = font;
             mRbMode2.Typeface = font;
             mBtStart.Typeface = font;
             mBtBackToMain.Typeface = font;
 
+            // Handle events for all widgets
             mRbMode1.Click += OnMode1Click;
             mIvMode1.Click += OnMode1Click;
 
@@ -174,7 +173,8 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Reads the settings file for a specific peer
+        /// Reads the settings file for a specific peer.
+        /// If there is no settings file, default values are used.
         /// </summary>
         /// <returns>Peer with settings</returns>
         private Dictionary<string, ControllerSettings> ReadPeerSettings()
@@ -225,7 +225,6 @@ namespace WiFiDronection
                     MaxRoll = mMaxRoll
                 });
             }
-            
             if (isFirstTouch == true)
             {
                 mMinYaw = -15;
@@ -241,6 +240,7 @@ namespace WiFiDronection
         /// <summary>
         /// Handles OnClick event for Start button.
         /// Creates socket connection and opens ControllerView.
+        /// Initializes, modifies and handles events for all widgets.
         /// Starts socket reader thread.
         /// </summary>
         private void OnStartController(object sender, EventArgs e)
@@ -259,18 +259,18 @@ namespace WiFiDronection
 
             mFlight = Flight.Instance;
 
+            // Read min and max values
             mMinYaw = Convert.ToInt32(mEtMinYaw.Text);
 			mMaxYaw = Convert.ToInt32(mEtMaxYaw.Text);
-
 			mMinPitch = Convert.ToInt32(mEtMinPitch.Text);
 			mMaxPitch = Convert.ToInt32(mEtMaxPitch.Text);
-
 			mMinRoll = Convert.ToInt32(mEtMinRoll.Text);
 			mMaxRoll = Convert.ToInt32(mEtMaxRoll.Text);
 
             // Change to Controller with joysticks
             SetContentView(Resource.Layout.ControllerLayout);
 
+            // Set values for controller settings
             if(mPeerSettings.Any(kvp => kvp.Key == mSelectedBssid) == true)
             {
                 ControllerView.Settings.TrimYaw = mPeerSettings[mSelectedBssid].TrimYaw;
@@ -285,6 +285,7 @@ namespace WiFiDronection
 				ControllerView.Settings.MaxRoll = mMaxRoll;
             }
 
+            // Create font
             var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
 
             // Initialize widgets of ControllerLayout
@@ -295,15 +296,19 @@ namespace WiFiDronection
             mRbPitchTrim = FindViewById<RadioButton>(Resource.Id.rbPitchTrim);
             mRbRollTrim = FindViewById<RadioButton>(Resource.Id.rbRollTrim);
 
+            // Set font to widgets
             mTvTrimValue.Typeface = font;
             mBtnAltitudeControl.Typeface = font;
             mRbYawTrim.Typeface = font;
             mRbPitchTrim.Typeface = font;
             mRbRollTrim.Typeface = font;
 
+			mBtnAltitudeControl.Click += OnAltitudeControlClick;
+
 			mSbTrimBar.Progress = ControllerView.Settings.TrimYaw - mMinTrim;
 			mTvTrimValue.Text = ControllerView.Settings.TrimYaw.ToString();
 
+            // Change value of trim
 			mSbTrimBar.ProgressChanged += delegate
             {
                 if (mRbYawTrim.Checked == true)
@@ -321,20 +326,21 @@ namespace WiFiDronection
                 mTvTrimValue.Text = (mSbTrimBar.Progress + mMinTrim).ToString();
             };
 
-			mBtnAltitudeControl.Click += OnAltitudeControlClick;
-
+            // Change seekbar to yaw trim
 			mRbYawTrim.Click += delegate
             {
                 mTvTrimValue.Text = ControllerView.Settings.TrimYaw.ToString();
                 mSbTrimBar.Progress = ControllerView.Settings.TrimYaw - mMinTrim;
             };
 
+            // Change seekbar to pitch trim
             mRbPitchTrim.Click += delegate
             {
                 mTvTrimValue.Text = ControllerView.Settings.TrimPitch.ToString();
                 mSbTrimBar.Progress = ControllerView.Settings.TrimPitch - mMinTrim;
             };
 
+            // Change seekbar to roll trim
             mRbRollTrim.Click += delegate
             {
                 mTvTrimValue.Text = ControllerView.Settings.TrimRoll.ToString();
@@ -350,7 +356,7 @@ namespace WiFiDronection
         }
 
 		/// <summary>
-		/// Writes log in csv format.
+		/// Writes log in csv format to mobile storage.
 		/// </summary>
 		private void WriteLogData()
 		{
@@ -385,7 +391,7 @@ namespace WiFiDronection
 		}
 
         /// <summary>
-        /// Removes old files.
+        /// Removes old files from application storage.
         /// </summary>
         private void RemoveFolder()
         {
@@ -491,7 +497,6 @@ namespace WiFiDronection
             }
         }
 
-
         /// <summary>
         /// Goes to back to main activity.
         /// </summary>
@@ -499,5 +504,14 @@ namespace WiFiDronection
         {
             this.Finish();
         }
+
+        /// <summary>
+        /// Closes the socket connection and goes back to main activity.
+        /// </summary>
+		public void CloseOnRPIReset()
+		{
+			mSocketConnection.OnCancel();
+			StartActivity(typeof(MainActivity));
+		}
     }
 }
