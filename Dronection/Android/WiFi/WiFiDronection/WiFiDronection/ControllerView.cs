@@ -72,6 +72,7 @@ namespace WiFiDronection
 
         // Timer for sending data and checking WiFi connection
         private System.Timers.Timer mWriteTimer;
+        public System.Timers.Timer WriteTimer { get { return mWriteTimer; } set { mWriteTimer = value; } }
 
         /// <summary>
         /// View constructor.
@@ -129,7 +130,7 @@ namespace WiFiDronection
             this.SetBackgroundResource(Resource.Drawable.bg);
 
             mWriteTimer = new System.Timers.Timer();
-            mWriteTimer.Interval = 50;//10
+            mWriteTimer.Interval = 50;
             mWriteTimer.AutoReset = true;
             mWriteTimer.Elapsed += Write;
             mWriteTimer.Start();
@@ -456,12 +457,14 @@ namespace WiFiDronection
                 // Test
                 if (!Settings.Inverted)
                 {
+
                     //int throttle = Settings.AltitudeControlActivated ? 50 : mLeftJS.Throttle;
                     int throttle = mLeftJS.Throttle;
                     mSocketConnection.Write((Int16)throttle,
                                       (Int16)(mLeftJS.Rudder - Settings.TrimYaw),
                                       (Int16)(mRightJS.Aileron - Settings.TrimRoll),
                                       (Int16)(mRightJS.Elevator - Settings.TrimPitch));
+                    Log.Debug("!!!", mLeftJS.Throttle + " " + mLeftJS.Rudder + " " + mRightJS.Aileron + " " + mRightJS.Elevator);
                 }
                 else
                 {
@@ -471,7 +474,9 @@ namespace WiFiDronection
                                       (Int16)(mLeftJS.Rudder - Settings.TrimYaw),
                                       (Int16)(mLeftJS.Aileron - Settings.TrimRoll),
                                       (Int16)(mRightJS.Elevator - Settings.TrimPitch));
+                    Log.Debug("!!!", mRightJS.Throttle + " " + mLeftJS.Rudder + " " + mLeftJS.Aileron + " " + mRightJS.Elevator);
                 }
+                
             }
         }
     }

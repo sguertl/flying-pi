@@ -313,7 +313,7 @@ namespace WiFiDronection
 			}
 			throttleValue = (int)(90 * (mCenterY + DisplacementRadius - mYPosition) / DisplacementDiameter);
 			throttleValue = Math.Max((Int16)0, throttleValue);
-			throttleValue = Math.Min((Int16)255, throttleValue);
+			throttleValue = Math.Min((Int16)100, throttleValue);
 			Throttle = (Int16)throttleValue;
 			return (Int16)((mThrottle) * mMultThrottle);
 		}

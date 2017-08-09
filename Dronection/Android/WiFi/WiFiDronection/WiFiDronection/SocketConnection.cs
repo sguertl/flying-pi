@@ -55,6 +55,7 @@ namespace WiFiDronection
         private DataOutputStream mDataOutputStream;
         private string mLogData;
         private long mStartMillis;
+        private byte[] mBytes;
 
         // Thread for connecting
         public Thread mConnectionThread;
@@ -222,11 +223,16 @@ namespace WiFiDronection
             mStartMillis += 10;
 
             // Convert int16 controller parameters to byte stream
-            byte[] bytes = ConvertToByte(args);
-
+            mBytes = ConvertToByte(args);
+            /*string line = "";
+            foreach(byte b in bytes)
+            {
+                line += b + " ";
+            }
+            Log.Debug(TAG, line);*/
             try
             {
-                mDataOutputStream.Write(bytes);
+                mDataOutputStream.Write(mBytes);
                 mDataOutputStream.Flush();
             }
             catch(Java.Lang.Exception ex)

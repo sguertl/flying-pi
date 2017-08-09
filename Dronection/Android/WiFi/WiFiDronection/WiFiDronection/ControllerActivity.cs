@@ -92,6 +92,8 @@ namespace WiFiDronection
 		private int mMinRoll;
 		private int mMaxRoll;
 
+        private Flight mFlight;
+
         // Constants
         private readonly int mMinTrim = -20;
 
@@ -255,7 +257,9 @@ namespace WiFiDronection
                 return;
             }
 
-			mMinYaw = Convert.ToInt32(mEtMinYaw.Text);
+            mFlight = Flight.Instance;
+
+            mMinYaw = Convert.ToInt32(mEtMinYaw.Text);
 			mMaxYaw = Convert.ToInt32(mEtMaxYaw.Text);
 
 			mMinPitch = Convert.ToInt32(mEtMinPitch.Text);
@@ -422,7 +426,6 @@ namespace WiFiDronection
         /// </summary>
 		private void OnAltitudeControlClick(object sender, EventArgs e)
 		{
-            Flight flight = Flight.Instance;
             if(ControllerView.Settings.AltitudeControlActivated)
             {
                 ControllerView.Settings.AltitudeControlActivated = ControllerSettings.INACTIVE;
@@ -434,13 +437,13 @@ namespace WiFiDronection
                 mBtnAltitudeControl.SetBackgroundColor(Color.ParseColor("#E30034"));
                 if (ControllerView.Settings.Inverted)
                 {
-                    flight.CV.UpdateOvals(flight.CV.mRightJS.CenterX, flight.CV.mRightJS.CenterY);
+                    mFlight.CV.UpdateOvals(mFlight.CV.mRightJS.CenterX, mFlight.CV.mRightJS.CenterY);
                 }
                 else
                 {
-                    flight.CV.UpdateOvals(flight.CV.mLeftJS.CenterX, flight.CV.mLeftJS.CenterY);
+                    mFlight.CV.UpdateOvals(mFlight.CV.mLeftJS.CenterX, mFlight.CV.mLeftJS.CenterY);
                 }
-                flight.CV.Invalidate();
+                mFlight.CV.Invalidate();
             }
 		}
 
@@ -459,7 +462,12 @@ namespace WiFiDronection
             {
                 mSocketReader.Close();
             }
-		}
+            if (mFlight.CV.WriteTimer != null)
+            {
+                mFlight.CV.WriteTimer.Stop();
+                mFlight.CV.WriteTimer = null;
+            }
+        }
 
 		/// <summary>
 		/// Saves log file and close connection when finished.
@@ -475,6 +483,11 @@ namespace WiFiDronection
             if (mSocketReader != null)
             {
                 mSocketReader.Close();
+            }
+            if (mFlight.CV.WriteTimer != null)
+            {
+                mFlight.CV.WriteTimer.Stop();
+                mFlight.CV.WriteTimer = null;
             }
         }
 
