@@ -1,4 +1,4 @@
-﻿﻿using Foundation;
+﻿﻿﻿using Foundation;
 using System;
 using UIKit;
 using CoreGraphics;
@@ -10,15 +10,20 @@ namespace WiFiDronection
 		private readonly float SCREEN_WIDTH;
 		private readonly float SCREEN_HEIGHT;
 
-		private Joystick m_LeftJS;
-		private Joystick m_RightJS;
+		private Joystick mLeftJS;
+		private Joystick mRightJS;
 
-		private CGRect m_CircleJSLeft;
-		private CGRect m_CircleJSRight;
-		private CGRect m_CircleDPLeft;
-		private CGRect m_CircleDPRight;
+		private CGRect mCircleJSLeft;
+		private CGRect mCircleJSRight;
+		private CGRect mCircleDPLeft;
+		private CGRect mCircleDPRight;
 
-		private bool m_Inverted = false;
+        private SocketConnection mSocket;
+
+        public  ControllerSettings Settings;
+		private bool mInverted = false;
+
+        private System.Timers.Timer mWriteTimer;
 
         public ControllerView()
         {
@@ -27,6 +32,26 @@ namespace WiFiDronection
 
 			UserInteractionEnabled = true;
 			MultipleTouchEnabled = true;
+
+			Settings = ControllerSettings.Instance;
+            Settings.Inverted = false;
+            Settings.LoggingActivated = false;
+            Settings.AltitudeControlActivated = false;
+            Settings.TrimYaw = 0;
+            Settings.TrimPitch = 0;
+            Settings.TrimRoll = 0;
+            Settings.MinYaw = -15;
+            Settings.MaxYaw = 15;
+            Settings.MinPitch = -20;
+            Settings.MaxPitch = 20;
+            Settings.MinRoll = -20;
+            Settings.MaxRoll = 20;
+
+			mWriteTimer = new System.Timers.Timer();
+			mWriteTimer.Interval = 50;//10
+			mWriteTimer.AutoReset = true;
+			mWriteTimer.Elapsed += Write;
+			mWriteTimer.Start();
 
 			InitJoysticks();
         }
@@ -40,6 +65,26 @@ namespace WiFiDronection
 			UserInteractionEnabled = true;
 			MultipleTouchEnabled = true;
 
+            Settings = ControllerSettings.Instance;
+			Settings.Inverted = false;
+			Settings.LoggingActivated = false;
+			Settings.AltitudeControlActivated = false;
+			Settings.TrimYaw = 0;
+			Settings.TrimPitch = 0;
+			Settings.TrimRoll = 0;
+			Settings.MinYaw = -15;
+			Settings.MaxYaw = 15;
+			Settings.MinPitch = -20;
+			Settings.MaxPitch = 20;
+			Settings.MinRoll = -20;
+			Settings.MaxRoll = 20;
+
+			mWriteTimer = new System.Timers.Timer();
+			mWriteTimer.Interval = 50;//10
+			mWriteTimer.AutoReset = true;
+			mWriteTimer.Elapsed += Write;
+			mWriteTimer.Start();
+
 			InitJoysticks();
 		}
 
@@ -47,23 +92,23 @@ namespace WiFiDronection
 		{
             BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("bg.png"));
 
-			m_LeftJS = new Joystick(SCREEN_WIDTH, SCREEN_HEIGHT, true, m_Inverted);
-			m_RightJS = new Joystick(SCREEN_WIDTH, SCREEN_HEIGHT, false, m_Inverted);
+			mLeftJS = new Joystick(SCREEN_WIDTH, SCREEN_HEIGHT, true, mInverted);
+			mRightJS = new Joystick(SCREEN_WIDTH, SCREEN_HEIGHT, false, mInverted);
 
-			m_CircleJSLeft = new CGRect(m_LeftJS.CenterX - Joystick.StickRadius,
-										 m_LeftJS.CenterY - Joystick.StickRadius,
+			mCircleJSLeft = new CGRect(mLeftJS.CenterX - Joystick.StickRadius,
+                                        mLeftJS.CenterY + Joystick.DisplacementRadius - Joystick.StickRadius,
                                         Joystick.StickRadius * 2, Joystick.StickRadius * 2);
 
-			m_CircleJSRight = new CGRect(m_RightJS.CenterX - Joystick.StickRadius,
-										  m_RightJS.CenterY - Joystick.StickRadius,
+			mCircleJSRight = new CGRect(mRightJS.CenterX - Joystick.StickRadius,
+										  mRightJS.CenterY - Joystick.StickRadius,
 										  Joystick.StickRadius * 2, Joystick.StickRadius * 2);
 
-            m_CircleDPLeft = new CGRect(m_LeftJS.CenterX - Joystick.DisplacementRadius,
-										 m_LeftJS.CenterY - Joystick.DisplacementRadius,
+            mCircleDPLeft = new CGRect(mLeftJS.CenterX - Joystick.DisplacementRadius,
+										 mLeftJS.CenterY - Joystick.DisplacementRadius,
 										 Joystick.DisplacementRadius * 2, Joystick.DisplacementRadius * 2);
 
-			m_CircleDPRight = new CGRect(m_RightJS.CenterX - Joystick.DisplacementRadius,
-										  m_RightJS.CenterY - Joystick.DisplacementRadius,
+			mCircleDPRight = new CGRect(mRightJS.CenterX - Joystick.DisplacementRadius,
+										  mRightJS.CenterY - Joystick.DisplacementRadius,
 										  Joystick.DisplacementRadius * 2, Joystick.DisplacementRadius * 2);
 
 			SetNeedsDisplay();
@@ -79,8 +124,8 @@ namespace WiFiDronection
 				var path1 = new CGPath();
 
 				g.SetFillColor(UIColor.LightGray.CGColor);
-				path1.AddEllipseInRect(m_CircleDPLeft);
-				path1.AddEllipseInRect(m_CircleDPRight);
+				path1.AddEllipseInRect(mCircleDPLeft);
+				path1.AddEllipseInRect(mCircleDPRight);
 
 				path1.CloseSubpath();
 				g.AddPath(path1);
@@ -89,14 +134,14 @@ namespace WiFiDronection
 				var path2 = new CGPath();
 
 				g.SetFillColor(UIColor.DarkGray.CGColor);
-				path2.AddEllipseInRect(m_CircleJSLeft);
-				path2.AddEllipseInRect(m_CircleJSRight);
+				path2.AddEllipseInRect(mCircleJSLeft);
+				path2.AddEllipseInRect(mCircleJSRight);
 
 				path2.CloseSubpath();
 				g.AddPath(path2);
 				g.DrawPath(CGPathDrawingMode.FillStroke);
 
-				g.ShowTextAtPoint(m_LeftJS.CenterX, 30, "LEFT JOYSTICK");
+				g.ShowTextAtPoint(mLeftJS.CenterX, 30, "LEFT JOYSTICK");
 			}
 		}
 
@@ -130,13 +175,12 @@ namespace WiFiDronection
 				CGPoint p = touch.LocationInView(this);
 				if ((float)p.X <= SCREEN_WIDTH / 2)
 				{
-					UpdateOvals(m_LeftJS.CenterX, (float)p.Y);
+                    UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
 				}
 				else
 				{
-					UpdateOvals(m_RightJS.CenterX, m_RightJS.CenterY);
+					UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
 				}
-
 			}
 			SetNeedsDisplay();
 		}
@@ -145,30 +189,63 @@ namespace WiFiDronection
 		{
 			if (xPosition <= SCREEN_WIDTH / 2)
 			{
-				m_LeftJS.SetPosition(xPosition, yPosition);
-				if ((m_LeftJS.Abs) <= Joystick.DisplacementRadius)
+				mLeftJS.SetPosition(xPosition, yPosition);
+				if ((mLeftJS.Abs) <= Joystick.DisplacementRadius)
 				{
-                    m_CircleJSLeft.X = m_LeftJS.GetPosition()[0] - Joystick.StickRadius;
-					m_CircleJSLeft.Y = m_LeftJS.GetPosition()[1] - Joystick.StickRadius;
+                    mCircleJSLeft.X = mLeftJS.GetPosition()[0] - Joystick.StickRadius;
+					mCircleJSLeft.Y = mLeftJS.GetPosition()[1] - Joystick.StickRadius;
 				}
 				else
 				{
-					m_CircleJSLeft.X = (int)(Joystick.DisplacementRadius * Math.Cos(m_LeftJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)m_LeftJS.CenterX;
-					m_CircleJSLeft.Y = (int)(Joystick.DisplacementRadius * Math.Sin(m_LeftJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)m_LeftJS.CenterY;
+					mCircleJSLeft.X = (int)(Joystick.DisplacementRadius * Math.Cos(mLeftJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)mLeftJS.CenterX;
+					mCircleJSLeft.Y = (int)(Joystick.DisplacementRadius * Math.Sin(mLeftJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)mLeftJS.CenterY;
 				}
 			}
 			else
 			{
-				m_RightJS.SetPosition(xPosition, yPosition);
-				if ((m_RightJS.Abs) <= Joystick.DisplacementRadius)
+				mRightJS.SetPosition(xPosition, yPosition);
+				if ((mRightJS.Abs) <= Joystick.DisplacementRadius)
 				{
-					m_CircleJSRight.X = m_RightJS.GetPosition()[0] - Joystick.StickRadius;
-					m_CircleJSRight.Y = m_RightJS.GetPosition()[1] - Joystick.StickRadius;
+					mCircleJSRight.X = mRightJS.GetPosition()[0] - Joystick.StickRadius;
+					mCircleJSRight.Y = mRightJS.GetPosition()[1] - Joystick.StickRadius;
 				}
 				else
 				{
-					m_CircleJSRight.X = (int)(Joystick.DisplacementRadius * Math.Cos(m_RightJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)m_RightJS.CenterX;
-					m_CircleJSRight.Y = (int)(Joystick.DisplacementRadius * Math.Sin(m_RightJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)m_RightJS.CenterY;
+					mCircleJSRight.X = (int)(Joystick.DisplacementRadius * Math.Cos(mRightJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)mRightJS.CenterX;
+					mCircleJSRight.Y = (int)(Joystick.DisplacementRadius * Math.Sin(mRightJS.Angle * Math.PI / 180)) - (int)Joystick.StickRadius + (int)mRightJS.CenterY;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Helper method for sending data via bluetooth to the device.
+		/// Throttle = speed
+		/// Rudder = Yaw = rotation
+		/// Elevator = Pitch = north south
+		/// Aileron = Roll = east west
+		/// </summary>
+		public void Write(object sender, System.Timers.ElapsedEventArgs e)
+		{
+            if (mSocket.IsConnected)
+			{
+				// Test
+				if (!Settings.Inverted)
+				{
+					//int throttle = Settings.AltitudeControlActivated ? 50 : mLeftJS.Throttle;
+					int throttle = mLeftJS.Throttle;
+                    mSocket.Write((Int16)throttle,
+									  (Int16)(mLeftJS.Rudder - Settings.TrimYaw),
+									  (Int16)(mRightJS.Aileron - Settings.TrimRoll),
+									  (Int16)(mRightJS.Elevator - Settings.TrimPitch));
+				}
+				else
+				{
+					//int throttle = Settings.AltitudeControlActivated ? 50 : mRightJS.Throttle;
+					int throttle = mRightJS.Throttle;
+                    mSocket.Write((Int16)throttle,
+									  (Int16)(mLeftJS.Rudder - Settings.TrimYaw),
+									  (Int16)(mLeftJS.Aileron - Settings.TrimRoll),
+									  (Int16)(mRightJS.Elevator - Settings.TrimPitch));
 				}
 			}
 		}

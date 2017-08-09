@@ -87,6 +87,12 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
+    <Reference Include="Sockets.Plugin.Abstractions">
+      <HintPath>packages\rda.SocketsForPCL.2.0.2\lib\Xamarin.iOS10\Sockets.Plugin.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Sockets.Plugin">
+      <HintPath>packages\rda.SocketsForPCL.2.0.2\lib\Xamarin.iOS10\Sockets.Plugin.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
@@ -104,6 +110,7 @@
   <ItemGroup>
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -118,6 +125,8 @@
     </Compile>
     <Compile Include="Joystick.cs" />
     <Compile Include="ControllerView.cs" />
+    <Compile Include="ControllerSettings.cs" />
+    <Compile Include="SocketConnection.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="ifx_logo.png" />
