@@ -1,4 +1,4 @@
-﻿/************************************************************************
+﻿﻿﻿/************************************************************************
 *																		*
 *  Copyright (C) 2017 Infineon Technologies Austria AG.					*
 *																		*
@@ -23,8 +23,7 @@
 *             Englert Christoph (IFAT PMM TI COP)                       *
 *																		*
 *  MainActivity is responsible for searching a proper wifi connection   *
-*  and connecting to it using a password which can be entered by a      *
-*  dialog. 											                	*
+*  and connecting to it.		    				                	*
 *																		*
 ************************************************************************/
 
@@ -70,8 +69,9 @@ namespace WiFiDronection
 
 
         /// <summary>
-        /// Entry point for application.
-		/// Initializes all widgets.
+        /// Entry point for application. Initializes all widgets and sets the
+        /// font to them. Turns on wifi it is turned off. 
+        /// Calls CreateApplicationFolder() and RefreshWifiList(). 
         /// </summary>
         protected override void OnCreate(Bundle bundle)
         {
@@ -90,6 +90,7 @@ namespace WiFiDronection
             mBtnShowLogs = FindViewById<Button>(Resource.Id.btnShowLogs);
             mBtnHelp = FindViewById<Button>(Resource.Id.btnHelp);
 
+            // Set font to widgets
             mTvHeader.Typeface = font;
             mTvWifiName.Typeface = font;
             mTvWifiMac.Typeface = font;
@@ -98,15 +99,16 @@ namespace WiFiDronection
             mBtnShowLogs.Typeface = font;
             mBtnHelp.Typeface = font;
 
+            // Disable Connect button while searching for connection
             mBtnConnect.Enabled = false;
+
+            // Add events to buttons
             mBtnConnect.Click += OnConnect;
-
             mBtnShowLogs.Click += OnShowLogFiles;
-
             mBtnHelp.Click += OnHelp;
 
             mLastConnectedPeer = "";
-           // mIsConnected = false;
+            // mIsConnected = false;
 
             // Turn on wifi if it is turned off
             WifiManager wm = GetSystemService(WifiService).JavaCast<WifiManager>();
@@ -116,12 +118,11 @@ namespace WiFiDronection
             }
 
             CreateApplicationFolder();
-
             RefreshWifiList();
         }
 
         /// <summary>
-        /// Scans surroundings for WiFi devices.
+        /// Scans surroundings for suitable wifi devices and wireless networks.
         /// </summary>
         private void RefreshWifiList()
         {
@@ -129,7 +130,7 @@ namespace WiFiDronection
             wifiManager.StartScan();
 
             // Start searching thread
-            ThreadPool.QueueUserWorkItem(lol =>
+            ThreadPool.QueueUserWorkItem(x =>
             {
                 while (true)
                 {
@@ -167,26 +168,29 @@ namespace WiFiDronection
             });
         }
 
-        /// <summary>
-        /// Handles OnClick event of Connect button.
-        /// </summary>
-        private void OnConnect(object sender, EventArgs e)
-        {
-            // Check if there is already a connection to the wifi device
-            if(mLastConnectedPeer != mSelectedSsid)
-            {
-                // Open Password dialog for building a wifi connection
-                OnCreateDialog(0).Show();
-            }
-            else
-            {
-                // Open controller activity
-                Intent intent = new Intent(BaseContext, typeof(ControllerActivity));
-                // intent.PutExtra("isConnected", mIsConnected);
-                intent.PutExtra("mac", mSelectedBssid);
-                StartActivity(intent);
-            }
-        }
+		/// <summary>
+		/// Handles OnClick event of Connect button.
+		/// Calls OnCreateDialog() for entering the password if it is the first
+		/// time the user connects to the network. Otherwise it starts 
+		/// ControllerActivity without asking for the password.
+		/// </summary>
+		private void OnConnect(object sender, EventArgs e)
+		{
+			// Check if there is already a connection to the wifi device
+			if (mLastConnectedPeer != mSelectedSsid)
+			{
+				// Open Password dialog for building a wifi connection
+				OnCreateDialog(0).Show();
+			}
+			else
+			{
+				// Open controller activity
+				Intent intent = new Intent(BaseContext, typeof(ControllerActivity));
+				// intent.PutExtra("isConnected", mIsConnected);
+				intent.PutExtra("mac", mSelectedBssid);
+				StartActivity(intent);
+			}
+		}
 
         /// <summary>
         /// Creates a dialog for entering the password.
@@ -201,17 +205,19 @@ namespace WiFiDronection
             builder.SetView(wifiDialogView);
             builder.SetTitle("Enter WiFi password");
             builder.SetPositiveButton("OK", WpaOkClicked);
-            builder.SetNegativeButton("Cancel", CancelClicked);
+            builder.SetNegativeButton("Cancel", (sender, e) => {});
 
             return builder.Create();
         }
 
         /// <summary>
-        /// Handles OnClick event for Ok button of password dialog
+        /// Handles OnClick event for OK-button of password dialog.
+        /// Tries to connect to the network and start ControllerActivity.
         /// </summary>
         private void WpaOkClicked(object sender, DialogClickEventArgs e)
         {
             var dialog = (AlertDialog)sender;
+
             // Get entered password
             var password = (EditText)dialog.FindViewById(Resource.Id.etDialogPassword);
 
@@ -234,7 +240,7 @@ namespace WiFiDronection
             {
                 mLastConnectedPeer = mSelectedSsid;
                 Intent intent = new Intent(BaseContext, typeof(ControllerActivity));
-              //  intent.PutExtra("isConnected", mIsConnected);
+                // intent.PutExtra("isConnected", mIsConnected);
                 intent.PutExtra("mac", mSelectedBssid);
                 StartActivity(intent);
                 //mIsConnected = true;
@@ -246,28 +252,20 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Handles OnClick event on Cancel button of password dialog
-        /// </summary>
-        private void CancelClicked(object sender, DialogClickEventArgs e)
-        {
-            // Do nothing
-        }
-
-        /// <summary>
-        /// Handles OnClick event on Show Logs button
+        /// Handles OnClick event on Show Logs-button.
+        /// Starts LogActivity.
         /// </summary>
         private void OnShowLogFiles(object sender, EventArgs e)
         {
-            // Opens Log activity
             StartActivity(typeof(LogActivity));
         }
 
         /// <summary>
-        /// Handles OnClick event on Help button
+        /// Handles OnClick event on Help-button.
+        /// Starts HelpActivity.
         /// </summary>
         private void OnHelp(object sender, EventArgs e)
         {
-            // Opens Help activity
             StartActivity(typeof(HelpActivity));
         }
 
@@ -285,7 +283,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Closes socket connection.
+        /// Closes socket connection and application.
         /// </summary>
         protected override void OnDestroy()
         {
@@ -295,7 +293,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Closes socket connection.
+        /// Closes socket connection and application.
         /// </summary>
         protected override void OnStop()
         {
