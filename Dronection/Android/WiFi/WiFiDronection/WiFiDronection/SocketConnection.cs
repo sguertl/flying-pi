@@ -60,7 +60,10 @@ namespace WiFiDronection
         // Thread for connecting
         public Thread mConnectionThread;
 
-        // Boolean to check if connected
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="T:WiFiDronection.SocketConnection"/> is connected.
+        /// </summary>
+        /// <value><c>true</c> if is connected; otherwise, <c>false</c>.</value>
 		public bool IsConnected 
         { 
             get; 
@@ -74,7 +77,9 @@ namespace WiFiDronection
 			get { return mSocket; }
 		}
 
-		// Input stream
+		/// <summary>
+		/// Returns an Inputstream for reading information from the Raspberry.
+		/// </summary>
 		private DataInputStream mDataInputStream;
 		public DataInputStream InputStream
 		{
@@ -82,7 +87,8 @@ namespace WiFiDronection
 		}
 
         /// <summary>
-        /// Saves the flying parameters
+        /// Saves the controller parameters (Throttle, Yaw, Pitch, Roll, Altitude Control)
+        /// as a string for logging purposes.
         /// </summary>
         public string LogData
         {
@@ -91,7 +97,8 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Private Singleton constructor.
+        /// Private singleton constructor.
+        /// Calls Init().
         /// </summary>
         private SocketConnection()
         {
@@ -99,7 +106,8 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Returns instance of SocketConnection.
+        /// Returns an instance of SocketConnection.
+        /// Calls private constructor if no instance is created yet.
         /// </summary>
         /// <value>Instance of SocketConnection</value>
         public static SocketConnection Instance
@@ -123,7 +131,9 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Initizalizes the socket connection.
+        /// Initizalizes the socket connection and connection thread.
+        /// Resets wifi socket, connection thread and output streams.
+        /// Calls OnCancel() first to be on the safe side.
         /// </summary>
         public void Init()
         {
@@ -141,8 +151,8 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Starts the socket connection.
-        /// Starts the socket thread.
+        /// Starts the socket connection and the socket thread.
+        /// Calls Init().
         /// </summary>
         public void OnStartConnection()
         {
@@ -154,7 +164,9 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Tries to connect the socket to a specific SSID and HOST-PORT
+        /// Tries to connect the socket with a specific ip address and port.
+        /// If first connection attempt fails a second one is executed
+        /// socket streams are created for reading and writing.
         /// </summary>
         public void OnConnecting()
         {
@@ -208,11 +220,12 @@ namespace WiFiDronection
 
                 }
             }
-           // return;
         }
 
         /// <summary>
-        /// Writes controller data to smartphone through socket connection
+        /// Writes controller data from the smartphone to the Raspberry
+        /// through the socket connection.
+        /// Closes the socket if writing fails.
         /// </summary>
         /// <param name="args">Controller parameter (throttle, yaw, pitch, roll)</param>
         public void Write(params Int16[] args)
@@ -244,10 +257,10 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Converts int16 controller parameters to byte stream
+        /// Converts int16 controller parameters to byte stream.
         /// </summary>
         /// <param name="args">Controller parameter (throttle, yaw, pitch, roll)</param>
-        /// <returns>Byte stream</returns>
+        /// <returns>Byte stream containing 19 bytes</returns>
         private byte[] ConvertToByte(params Int16[] args)
         {
             byte[] b = new byte[PACKET_SIZE];
@@ -292,7 +305,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Closes connections.
+        /// Closes everything related to the socket connection.
         /// </summary>
         public void OnCancel()
         {
