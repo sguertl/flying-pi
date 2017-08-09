@@ -70,6 +70,11 @@ namespace BTDronection
 
         // Timer for sending data and checking BT connection
         private System.Timers.Timer mWriteTimer;
+        public System.Timers.Timer WriteTimer
+        {
+            get { return mWriteTimer; }
+            set { mWriteTimer = value; }
+        }
 
         public static ControllerSettings Settings { get; set; }
 

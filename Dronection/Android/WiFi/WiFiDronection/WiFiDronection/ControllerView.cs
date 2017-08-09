@@ -464,7 +464,7 @@ namespace WiFiDronection
                                       (Int16)(mLeftJS.Rudder - Settings.TrimYaw),
                                       (Int16)(mRightJS.Aileron - Settings.TrimRoll),
                                       (Int16)(mRightJS.Elevator - Settings.TrimPitch));
-                    Log.Debug("!!!", mLeftJS.Throttle + " " + mLeftJS.Rudder + " " + mRightJS.Aileron + " " + mRightJS.Elevator);
+                    //Log.Debug("!!!", mLeftJS.Throttle + " " + mLeftJS.Rudder + " " + mRightJS.Aileron + " " + mRightJS.Elevator);
                 }
                 else
                 {
@@ -474,7 +474,7 @@ namespace WiFiDronection
                                       (Int16)(mLeftJS.Rudder - Settings.TrimYaw),
                                       (Int16)(mLeftJS.Aileron - Settings.TrimRoll),
                                       (Int16)(mRightJS.Elevator - Settings.TrimPitch));
-                    Log.Debug("!!!", mRightJS.Throttle + " " + mLeftJS.Rudder + " " + mLeftJS.Aileron + " " + mRightJS.Elevator);
+                    //Log.Debug("!!!", mRightJS.Throttle + " " + mLeftJS.Rudder + " " + mLeftJS.Aileron + " " + mRightJS.Elevator);
                 }
                 
             }
