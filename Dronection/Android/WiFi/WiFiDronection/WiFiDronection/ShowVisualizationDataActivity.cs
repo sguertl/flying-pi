@@ -56,7 +56,6 @@ namespace WiFiDronection
         /// <summary>
         /// Creates the activity and displays the line chart.
         /// </summary>
-        /// <param name="savedInstanceState">Saved instance state.</param>
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -81,7 +80,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Adds the points to entries.
+        /// Adds the points to entries and to line data set.
         /// </summary>
         private void AddPointsToEntries()
         {
@@ -94,7 +93,7 @@ namespace WiFiDronection
                 mColors = new List<int>();
                 Color col = new Color(rand.NextInt(255), rand.NextInt(255), rand.NextInt(255));
 
-                foreach (DataPoint dp2 in dp.Value )
+                foreach (DataPoint dp2 in dp.Value)
                 {
                     mEntries.Add(new Entry(dp2.X, dp2.Y));
                     if (mCurVisData.AltControlTime.Any(x => x == dp2.X))

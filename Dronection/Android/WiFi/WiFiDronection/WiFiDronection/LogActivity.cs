@@ -58,6 +58,7 @@ namespace WiFiDronection
 
         /// <summary>
         /// Creates the activity and initializes the widgets.
+        /// Calls FillFilesList().
         /// </summary>
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -68,10 +69,12 @@ namespace WiFiDronection
             mTvHeader = FindViewById<TextView>(Resource.Id.tvHeaderLog);
             mLvFiles = FindViewById<ListView>(Resource.Id.lvFiles);
             mLvFiles.ItemClick += OnShowListItemContextMenu;
+			mTvEmpty = FindViewById<TextView>(Resource.Id.tvEmpty);
+			mBtBack = FindViewById<Button>(Resource.Id.btnBackLog);
+
             // Set context menu on listview
             RegisterForContextMenu(mLvFiles);
-            mTvEmpty = FindViewById<TextView>(Resource.Id.tvEmpty);
-            mBtBack = FindViewById<Button>(Resource.Id.btnBackLog);
+
             mBtBack.Click += OnBackToMain;
 
 			// Create and set font
@@ -84,7 +87,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Displays messsage if list is empty.
+        /// Displays message if list is empty.
         /// </summary>
         public override void OnContentChanged()
         {
@@ -124,7 +127,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Creates a context menu with options.
+        /// Creates a context menu with three options.
         /// </summary>
         public override void OnCreateContextMenu(IContextMenu menu, View v, IContextMenuContextMenuInfo menuInfo)
         {
@@ -138,6 +141,9 @@ namespace WiFiDronection
 
         /// <summary>
         /// Handles OnClick event for context menu.
+        /// Calls ShowRawData() if raw data is selected.
+        /// Calls ShowGraph() if visualize is selcted.
+        /// Calls DeleteFolder() is delete is selected.
         /// </summary>
         public override bool OnContextItemSelected(IMenuItem item)
         {
@@ -173,7 +179,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Deletes selected folder.
+        /// Deletes the selected folder from mobile storage.
         /// </summary>
         private void DeleteFolder()
         {
@@ -191,6 +197,7 @@ namespace WiFiDronection
 
         /// <summary>
         /// Handles OnClick event for Back button.
+        /// Goes back to main activity.
         /// </summary>
         private void OnBackToMain(object sender, EventArgs e)
         {
