@@ -62,13 +62,12 @@ namespace WiFiDronection
 
         /// <summary>
         /// Creates the activity.
+        /// Initializes, modifies and handles events for all widgets.
         /// </summary>
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.Help);
-
-            var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
 
             // Initialize widgets
             mTvHeaderHelp = FindViewById<TextView>(Resource.Id.tvHeaderHelp);
@@ -90,7 +89,10 @@ namespace WiFiDronection
             mTvThirdParty = FindViewById<TextView>(Resource.Id.tvThirdParty);
             mBtnBackHelp = FindViewById<Button>(Resource.Id.btnBackHelp);
 
-            mTvHeaderHelp.Typeface = font;
+            // Create and set font to widgets
+			var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
+
+			mTvHeaderHelp.Typeface = font;
             mTvHelpText.Typeface = font;
             mTvHelpStartScreen.Typeface = font;
             mTvHelpStartScreenText.Typeface = font;
@@ -111,7 +113,7 @@ namespace WiFiDronection
 
             mBtnBackHelp.Click += OnBackToMain;
 
-            // Set help text
+            // Set help texts
             mTvHelpStartScreenText.TextFormatted = Html.FromHtml(
                 "If the user opens the app, a start screen with three buttons appears. The app searches automatically for WiFi hotspots containing the strings <i>Raspberry</i>, <i>RPI</i> or <i>Pi</i>. If the <i>Connect</i> button remains red, the app can’t find a matching WiFi hotspot containing the strings mentioned above. If an appropriate network is found, the <i>Connect</i> button turns blue and the SSID and MAC of the Raspberry Pi are displayed.<br/>" +
                 "<br/><b>Connect</b><br/>Asks the user to enter the password (usually 87654321 or 00000000) and confirm it. After that, the app navigates to <i>Controller Settings.</i><br/>" +

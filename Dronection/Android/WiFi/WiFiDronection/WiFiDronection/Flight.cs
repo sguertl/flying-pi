@@ -29,23 +29,32 @@ namespace WiFiDronection
 	public class Flight
 	{
 
+        // Singleton members
 		private static Flight instance = null;
 		private static readonly object padlock = new object();
 
+        /// <summary>
+        /// Instance of ControllerView.
+        /// </summary>
 		private ControllerView mCV;
-
 		public ControllerView CV
 		{
 			get { return mCV; }
 			set { mCV = value; }
 		}
 
-
+        /// <summary>
+        /// Private singleton constructor
+        /// </summary>
 		private Flight()
 		{
 
 		}
 
+        /// <summary>
+        /// Returns an instance of Flight.
+        /// </summary>
+        /// <value>Instance of Flight</value>
 		public static Flight Instance
 		{
 			get
