@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -11,6 +11,8 @@
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <ReleaseVersion>0.2</ReleaseVersion>
     <SynchReleaseVersion>false</SynchReleaseVersion>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,7 +32,7 @@
     <MtouchArch>i386, x86_64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <PlatformTarget>x86</PlatformTarget>
-<AssemblyName>WiFiDronection</AssemblyName>
+    <AssemblyName>WiFiDronection</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>pdbonly</DebugType>
@@ -59,7 +61,7 @@
     <MtouchArch>i386, x86_64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <PlatformTarget>x86</PlatformTarget>
-<AssemblyName>WiFiDronection</AssemblyName>
+    <AssemblyName>WiFiDronection</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
     <DebugSymbols>true</DebugSymbols>
@@ -83,16 +85,69 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="iOSCharts, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\iOSCharts.3.0.2\lib\xamarinios10\iOSCharts.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
+    <Reference Include="Xamarin.Swift3, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Xamarin.Swift3.3.0.1\lib\xamarinios10\Xamarin.Swift3.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Swift3.Core, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Xamarin.Swift3.Core.3.1.0\lib\xamarinios10\Xamarin.Swift3.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Swift3.CoreAudio, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Xamarin.Swift3.CoreAudio.3.1.0\lib\xamarinios10\Xamarin.Swift3.CoreAudio.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Swift3.CoreData, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Xamarin.Swift3.CoreData.3.1.0\lib\xamarinios10\Xamarin.Swift3.CoreData.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Swift3.CoreGraphics, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Xamarin.Swift3.CoreGraphics.3.1.0\lib\xamarinios10\Xamarin.Swift3.CoreGraphics.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Swift3.CoreImage, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Xamarin.Swift3.CoreImage.3.1.0\lib\xamarinios10\Xamarin.Swift3.CoreImage.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Swift3.CoreMedia, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Xamarin.Swift3.CoreMedia.3.1.0\lib\xamarinios10\Xamarin.Swift3.CoreMedia.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Swift3.Darwin, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Xamarin.Swift3.Darwin.3.1.0\lib\xamarinios10\Xamarin.Swift3.Darwin.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Swift3.Dispatch, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Xamarin.Swift3.Dispatch.3.1.0\lib\xamarinios10\Xamarin.Swift3.Dispatch.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Swift3.Foundation, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Xamarin.Swift3.Foundation.3.1.0\lib\xamarinios10\Xamarin.Swift3.Foundation.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Swift3.ObjectiveC, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Xamarin.Swift3.ObjectiveC.3.1.0\lib\xamarinios10\Xamarin.Swift3.ObjectiveC.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Swift3.OS, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Xamarin.Swift3.OS.3.1.0\lib\xamarinios10\Xamarin.Swift3.OS.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Swift3.QuartzCore, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Xamarin.Swift3.QuartzCore.3.1.0\lib\xamarinios10\Xamarin.Swift3.QuartzCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Swift3.UIKit, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Xamarin.Swift3.UIKit.3.1.0\lib\xamarinios10\Xamarin.Swift3.UIKit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ic_launcher Kopie Kopie2new.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Contents.json">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\Contents.json">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ic_launcher Kopie Kopie2new.png">
+      <InProject>false</InProject>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -104,8 +159,12 @@
   <ItemGroup>
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CurrentVisualizationData.cs" />
+    <Compile Include="DataPoint.cs" />
+    <Compile Include="LogsActivity.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="MainViewController.cs" />
@@ -118,6 +177,7 @@
     </Compile>
     <Compile Include="Joystick.cs" />
     <Compile Include="ControllerView.cs" />
+    <Compile Include="VisualizationActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="ifx_logo.png" />
@@ -127,4 +187,11 @@
     <BundleResource Include="bg.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+  <Import Project="packages\Xamarin.Swift3.3.0.1\build\Xamarin.Swift3.targets" Condition="Exists('packages\Xamarin.Swift3.3.0.1\build\Xamarin.Swift3.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Dieses Projekt verweist auf mindestens ein NuGet-Paket, das auf diesem Computer fehlt. Verwenden Sie die Wiederherstellung von NuGet-Paketen, um die fehlenden Dateien herunterzuladen. Weitere Informationen finden Sie unter "http://go.microsoft.com/fwlink/?LinkID=322105". Die fehlende Datei ist "{0}".</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\Xamarin.Swift3.3.0.1\build\Xamarin.Swift3.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Xamarin.Swift3.3.0.1\build\Xamarin.Swift3.targets'))" />
+  </Target>
 </Project>
