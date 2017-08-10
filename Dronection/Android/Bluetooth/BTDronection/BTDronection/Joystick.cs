@@ -73,45 +73,65 @@ namespace BTDronection
 		// Side of stick
 		private readonly bool mLeftStick;
 		// Control mode
-		private readonly bool mInverted; // Control mode
+		private readonly bool mInverted;
 
-		// Center x of joystick
+		/// <summary>
+        /// Center x of joystick
+        /// </summary>
 		private float mCenterX;
 		public float CenterX { get { return mCenterX; } private set { mCenterX = value; } }
 
-		// Center y of joystick
+		/// <summary>
+        /// Center y of joystick
+        /// </summary>
 		private float mCenterY;
 		public float CenterY { get { return mCenterY; } private set { mCenterY = value; } }
 
-		// Current power (= displacement) of the joystick; maximum is 1 (= 100 %)
-		private int mPower;
+        /// <summary>
+        /// Current power (= displacement) of the joystick; maximum is 1 (= 100 %)
+        /// </summary>
+        private int mPower;
 		public int Power { get { return GetPower(); } private set { mPower = value; } }
 
-		// Current angle of the joystick
+		/// <summary>
+        /// Current angle of the joystick
+        /// </summary>
 		private float mAngle;
 		public float Angle { get { return GetAngle(); } private set { mAngle = value; } }
 
-		// Current direction of the joystick
+		/// <summary>
+        /// Current direction of the joystick
+        /// </summary>
 		private int mDirection;
 		public int Direction { get { return GetDirection(); } private set { mDirection = value; } }
 
-		// Vector length
+		/// <summary>
+        /// Vector length of offset
+        /// </summary>
 		private float mAbs;
 		public float Abs { get { return GetAbs(); } private set { mAbs = value; } }
 
-		// Throttle value of the stick
+		/// <summary>
+        /// Throttle value of the stick
+        /// </summary>
 		private Int16 mThrottle;
 		public Int16 Throttle { get { return GetThrottleValue(); } set { mThrottle = value; } }
 
-		// Rudder value of the stick
+		/// <summary>
+        /// Rudder value of the stick
+        /// </summary>
 		private Int16 mRudder;
 		public Int16 Rudder { get { return GetRudderValue(); } private set { mRudder = value; } }
 
-		// Elevator value of the stick
+		/// <summary>
+        /// Elevator value of the stick
+        /// </summary>
 		private Int16 mElevator;
 		public Int16 Elevator { get { return GetElevatorValue(); } private set { mElevator = value; } }
 
-		// Aileron value of the stick
+		/// <summary>
+        /// Aileron value of the stick
+        /// </summary>
 		private Int16 mAileron;
 		public Int16 Aileron { get { return GetAileronValue(); } private set { mAileron = value; } }
 

@@ -29,9 +29,15 @@ namespace BTDronection
    public class Flight
     {
 
+        /// <summary>
+        /// Singleton members
+        /// </summary>
         private static Flight instance = null;
         private static readonly object padlock = new object();
 
+        /// <summary>
+        /// Instance of ControllerView.
+        /// </summary>
         private ControllerView mCV;
 
         public ControllerView CV
@@ -40,12 +46,17 @@ namespace BTDronection
             set { mCV = value; }
         }
 
-
+        /// <summary>
+        /// Private singleton constructor
+        /// </summary>
         private Flight()
         {
             
         }
 
+        /// <summary>
+        /// Returns an instance of Flight
+        /// </summary>
         public static Flight Instance
         {
             get

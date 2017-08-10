@@ -90,7 +90,8 @@ namespace BTDronection
         }
 
 		/// <summary>
-		/// Returns instance of SocketConnection.
+		/// Returns an instance of SocketConnection.
+        /// Calls private constructor if no instance is created yet.
 		/// </summary>
 		/// <value>Instance of SocketConnection</value>
 		public static SocketConnection Instance
@@ -108,13 +109,18 @@ namespace BTDronection
             }
         }
 
+        /// <summary>
+        /// Private singleton constructor
+        /// Calls Init().
+        /// </summary>
         private SocketConnection()
         {
             Init();
         }
 
 		/// <summary>
-		/// Initizalizes the socket connection.
+		/// Initizalizes the socket connection and connection thread.
+        /// Resets wifi socket, connection thread and output streams.
 		/// </summary>
 		private void Init()
         {
@@ -126,6 +132,7 @@ namespace BTDronection
 
 		/// <summary>
 		/// Initizalizes the socket connection.
+        /// Throws an exception if the device is not available.
 		/// </summary>
 		public void Init(BluetoothDevice device)
         {
@@ -164,6 +171,7 @@ namespace BTDronection
 
         /// <summary>
         /// Establishes a bluetooth connection.
+        /// Socket streams are created for reading and writing
         /// </summary>
         public void BuildConnection()
         {
@@ -193,7 +201,9 @@ namespace BTDronection
         }
 
 		/// <summary>
-		/// Writes controller data to smartphone through socket connection
+		/// Writes controller data from the smartphone to the Raspberry or to the drone
+        /// through the socket connection.
+        /// Closes the socket if writing fails.
 		/// </summary>
 		/// <param name="args">Controller parameter (throttle, yaw, pitch, roll)</param>
 		public void Write(params Int16[] args)
@@ -262,7 +272,7 @@ namespace BTDronection
         }
 
 		/// <summary>
-		/// Closes connections.
+		/// Closes everything related to the socket connection.
 		/// </summary>
 		public void Cancel()
         {

@@ -31,7 +31,9 @@ namespace BTDronection
     public class DataPoint
     {
 
-		// X coordinate
+		/// <summary>
+        /// X coordinate of point
+        /// </summary>
 		private float mX;
 		public float X
 		{
@@ -39,7 +41,9 @@ namespace BTDronection
 			set { mX = value; }
 		}
 
-		// Y coordinate
+		/// <summary>
+        /// Y coordinate of point
+        /// </summary>
 		private float mY;
 		public float Y
 		{

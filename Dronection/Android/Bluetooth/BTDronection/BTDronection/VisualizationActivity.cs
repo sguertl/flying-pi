@@ -77,18 +77,16 @@ namespace BTDronection
 			mLvVisualizationData.Adapter = mAdapter;
 			mLvVisualizationData.DividerHeight = 5;
 			this.mLvVisualizationData.ItemClick += OnListViewItemClick;
-
-			// Create font
-			var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
-
+			
 			this.mTvHeaderVisualization = FindViewById<TextView>(Resource.Id.tvHeaderVisualization);
             this.mBtShowChart = FindViewById<Button>(Resource.Id.btnShowChart);
 
-			mTvHeaderVisualization.Typeface = font;
+            // Create font
+            var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
+            mTvHeaderVisualization.Typeface = font;
 			mBtShowChart.Typeface = font;
 
             this.mBtShowChart.Click += OnShowChart;
-
 
 			this.mCurVisData = CurrentVisualizationData.Instance;
 			this.mCurVisData.Points = new Dictionary<string, List<DataPoint>>();
@@ -123,6 +121,7 @@ namespace BTDronection
 
 		/// <summary>
 		/// Handles OnClick event on a list item.
+        /// Sets the current visualization data.
 		/// </summary>
 		private void OnListViewItemClick(object sender, AdapterView.ItemClickEventArgs e)
 		{

@@ -81,7 +81,7 @@ namespace BTDronection
 		}
 
 		/// <summary>
-		/// Adds the points to entries.
+		/// Adds the points to entries and to line data set
 		/// </summary>
 		private void AddPointsToEntries()
 		{

@@ -64,16 +64,29 @@ namespace BTDronection
 			mFileNames.Remove(element);
 		}
 
+        /// <summary>
+        /// Return the file at the position.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
 		public override string this[int position]
 		{
 			get { return mFileNames[position]; }
 		}
 
+        /// <summary>
+        /// Returns the number of files.
+        /// </summary>
 		public override int Count
 		{
 			get { return mFileNames.Count; }
 		}
 
+        /// <summary>
+        /// Returns the item identifier.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
 		public override long GetItemId(int position)
 		{
 			return position;

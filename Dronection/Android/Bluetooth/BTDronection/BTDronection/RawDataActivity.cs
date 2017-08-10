@@ -53,6 +53,7 @@ namespace BTDronection
 
 		/// <summary>
 		/// Creates the activity and initializes widgets.
+        /// Calls FillRawData().
 		/// </summary>
 		/// <param name="savedInstanceState">Saved instance state.</param>
 		protected override void OnCreate(Bundle savedInstanceState)
@@ -68,6 +69,7 @@ namespace BTDronection
 			mBtBack = FindViewById<Button>(Resource.Id.btnBackRawData);
 			mBtBack.Click += OnBack;
 
+            // Create ans set font
 			Typeface font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
 			mTvHeader.Typeface = font;
 			mBtBack.Typeface = font;

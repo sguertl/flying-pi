@@ -42,8 +42,13 @@ namespace BTDronection
         // Controller Settings
         //ControllerSettings mSettings;
 
-        // Screen metrics in px
+        /// <summary>
+        /// The width of the screen in px
+        /// </summary>
         public float ScreenWidth;
+        /// <summary>
+        /// The height of the screen in px
+        /// </summary>
         public float ScreenHeight;
 
         // Joystick ovals
@@ -62,39 +67,75 @@ namespace BTDronection
         private ShapeDrawable mShapeBorderRadiusLeft;
         private ShapeDrawable mShapeBorderRadiusRight;
 
-        // Joystick controllers
+        /// <summary>
+        /// Left joystick
+        /// </summary>
         public Joystick mLeftJS;
+        /// <summary>
+        /// Right joystick
+        /// </summary>
         public Joystick mRightJS;
 
+        /// <summary>
+        /// Socket to transfer data via wifi
+        /// </summary>
         private SocketConnection mSocket;
 
-        // Timer for sending data and checking BT connection
+        /// <summary>
+        /// Timer for sending data and checking Wifi connection
+        /// </summary>
         private System.Timers.Timer mWriteTimer;
+        public System.Timers.Timer WriteTimer { get { return mWriteTimer; } set { mWriteTimer = value; } }
 
+        /// <summary>
+        /// Instance of ControllerSettings
+        /// </summary>
         public static ControllerSettings Settings { get; set; }
 
+        /// <summary>
+        /// View constructor.
+        /// </summary>
+        /// <param name="context"></param>
         public ControllerView(Context context) : base(context)
         {
             Init();
         }
 
+        /// <summary>
+        /// View constructor.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="attrs"></param>
         public ControllerView(Context context, IAttributeSet attrs) : base(context, attrs)
         {
             Init();
         }
 
+        /// <summary>
+        /// View constructor
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="attrs"></param>
+        /// <param name="defStyle"></param>
         public ControllerView(Context context, IAttributeSet attrs, int defStyle) : base(context, attrs, defStyle)
         {
             Init();
         }
 
+        /// <summary>
+        /// Initalizes members and creates drawable shapes.
+        /// Sets the write timer interval.
+        /// </summary>
         private void Init()
         {
-
+            // Create an instance of Flight
             Flight flight = Flight.Instance;
             flight.CV = this;
+
+            // Create socket connection
             mSocket = SocketConnection.Instance;
 
+            // Initialize ControllerSettings
 			Settings = new ControllerSettings
             {
                 AltitudeControlActivated = false,
@@ -107,6 +148,7 @@ namespace BTDronection
             SetOnTouchListener(this);
             SetBackgroundColor(Color.White);
 
+            // Get screen resolution
             ScreenWidth = Resources.DisplayMetrics.WidthPixels;
             ScreenHeight = Resources.DisplayMetrics.HeightPixels;
 
@@ -116,6 +158,7 @@ namespace BTDronection
 
             this.SetBackgroundResource(Resource.Drawable.bg);
 
+            // Initialize timer
             mWriteTimer = new System.Timers.Timer();
             mWriteTimer.Interval = 50;//10
             mWriteTimer.AutoReset = true;
