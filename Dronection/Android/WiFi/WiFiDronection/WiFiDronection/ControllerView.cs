@@ -80,7 +80,9 @@ namespace WiFiDronection
         /// </summary>
         public Joystick mRightJS;
 
-        // Socket to transfer data via wifi.
+        /// <summary>
+        /// Socket to transfer data via wifi
+        /// </summary>
         private SocketConnection mSocketConnection;
 
 		/// <summary>

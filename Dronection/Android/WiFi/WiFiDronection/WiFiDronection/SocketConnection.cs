@@ -158,8 +158,11 @@ namespace WiFiDronection
         {
             Init();
 
-            mConnectionThread.Start();
-            mConnectionThread.Join();
+            if (mConnectionThread != null)
+            {
+                mConnectionThread.Start();
+                mConnectionThread.Join();
+            }
 
         }
 
