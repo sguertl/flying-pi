@@ -85,6 +85,7 @@ namespace BTDronection
         private int mMaxPitch;
         private int mMinRoll;
         private int mMaxRoll;
+        private Flight mFlight;
 
 		// Socket members
         private SocketConnection mSocketConnection;
@@ -284,6 +285,8 @@ namespace BTDronection
         /// </summary>
         private void OnStartController(object sender, EventArgs e)
         {
+            mFlight = Flight.Instance;
+
             mMinYaw = Convert.ToInt32(mEtMinYaw.Text);
 			mMaxYaw = Convert.ToInt32(mEtMaxYaw.Text);
 
@@ -408,7 +411,6 @@ namespace BTDronection
 		/// </summary>
 		private void OnAltitudeControlClick(object sender, EventArgs e)
 		{
-            Flight flight = Flight.Instance;
             if (ControllerView.Settings.AltitudeControlActivated)
             {
                 ControllerView.Settings.AltitudeControlActivated = ControllerSettings.INACTIVE;
@@ -421,14 +423,14 @@ namespace BTDronection
 
                 if (ControllerView.Settings.Inverted)
                 {
-                    flight.CV.UpdateOvals(flight.CV.mRightJS.CenterX, flight.CV.mRightJS.CenterY);
+                    mFlight.CV.UpdateOvals(mFlight.CV.mRightJS.CenterX, mFlight.CV.mRightJS.CenterY);
                 }
                 else
                 {
-                    flight.CV.UpdateOvals(flight.CV.mLeftJS.CenterX, flight.CV.mLeftJS.CenterY);
+                    mFlight.CV.UpdateOvals(mFlight.CV.mLeftJS.CenterX, mFlight.CV.mLeftJS.CenterY);
                 }
-               
-                flight.CV.Invalidate();
+
+                mFlight.CV.Invalidate();
             }
         }
 
@@ -440,6 +442,12 @@ namespace BTDronection
 			base.OnDestroy();
 			WriteLogData();
 			mSocketConnection.Cancel();
+
+            if(mFlight.CV.WriteTimer != null)
+            {
+                mFlight.CV.WriteTimer.Close();
+                mFlight.CV.WriteTimer = null;
+            }
 		}
 
 		/// <summary>
@@ -450,6 +458,12 @@ namespace BTDronection
 			base.OnStop();
 			WriteLogData();
 			mSocketConnection.Cancel();
-		}
+
+            if (mFlight.CV.WriteTimer != null)
+            {
+                mFlight.CV.WriteTimer.Close();
+                mFlight.CV.WriteTimer = null;
+            }
+        }
     }
 }

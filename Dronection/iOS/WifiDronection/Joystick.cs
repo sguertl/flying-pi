@@ -131,7 +131,7 @@ namespace WiFiDronection
 			StickRadius = StickDiameter / 2;
 			DisplacementRadius = DisplacementDiameter / 2;
 
-            mCenterY = height / 6 + height / 2;
+            mCenterY = height / 8 + height / 2;
 
 			if (!invertedControl)
 			{

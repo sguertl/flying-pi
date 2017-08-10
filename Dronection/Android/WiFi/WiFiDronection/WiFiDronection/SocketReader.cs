@@ -20,7 +20,7 @@
 *  Created on: 2017-07-26			                                	*
 *  Author(s): Klapsch Adrian Vasile (IFAT PMM TI COP)					*
 *																		*
-*  SocketReader reads data which is sent by Raspberry.					*
+*  SocketReader reads data which is sent by the Raspberry.				*
 *																		*
 ************************************************************************/
 
@@ -47,7 +47,8 @@ namespace WiFiDronection
         /// <summary>
         /// Initializes a new instance of the <see cref="T:WiFiDronection.SocketReader"/> class.
         /// </summary>
-        /// <param name="inputStream">Input stream.</param>
+        /// <param name="inputStream">Input stream of socket connection</param>
+        /// <param name="rpiClose">Delegate for closing the socket connection</param>
         public SocketReader(DataInputStream inputStream, RaspberryClose rpiClose)
         {
             mDataInputStream = inputStream;
@@ -76,7 +77,7 @@ namespace WiFiDronection
                 catch (NullReferenceException ex)
                 {
                     Log.Debug(TAG, "No socket connection (" + ex.Message + ")");
-                   //  throw new NullReferenceException();
+                    // throw new NullReferenceException();
                 }
                 catch(Java.Lang.StringIndexOutOfBoundsException ex)
                 {
@@ -98,7 +99,7 @@ namespace WiFiDronection
         }
 
 		/// <summary>
-		/// Closes connection.
+		/// Closes everything related to the socket connection.
 		/// </summary>
 		public void Close()
         {

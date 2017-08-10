@@ -77,13 +77,11 @@ namespace WiFiDronection
             mLvVisualizationData.DividerHeight = 5;
             this.mLvVisualizationData.ItemClick += OnListViewItemClick;
 
-
-			// Create font
-			var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
-
             this.mTvHeaderVisualization = FindViewById<TextView>(Resource.Id.tvHeaderVisualization);
             this.mBtShowChart = FindViewById<Button>(Resource.Id.btnShowChart);
 
+			// Create and set font
+			var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
             mTvHeaderVisualization.Typeface = font;
             mBtShowChart.Typeface = font;
 
@@ -100,7 +98,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Fills the raw data list.
+        /// Fills the raw data list with files.
         /// </summary>
         private void FillRawDataList()
         {
@@ -122,6 +120,7 @@ namespace WiFiDronection
 
         /// <summary>
         /// Handles OnClick event on a list item.
+        /// Sets the current visualization data.
         /// </summary>
         private void OnListViewItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
@@ -132,9 +131,9 @@ namespace WiFiDronection
 
             if (title.Equals("controls"))
             {
-                //throttle, yaw, pitch, roll
                 try
                 {
+                    // Display throttle, yaw, pitch and roll
                     mCurVisData.Points.Add("throttle", new List<DataPoint>());
                     mCurVisData.Points.Add("yaw", new List<DataPoint>());
                     mCurVisData.Points.Add("pitch", new List<DataPoint>());
@@ -161,10 +160,8 @@ namespace WiFiDronection
                     mCurVisData.Points.Remove(title);
                     e.View.SetBackgroundColor(Color.White);
                     return;
-
                 }
             }
-
             while ((line = reader.ReadLine()) != null)
             {
                 String[] p = line.Split(',');
@@ -196,13 +193,10 @@ namespace WiFiDronection
                         mCurVisData.AltControlTime.Add(x);
                     }
                 }
-
             }
             reader.Close();
 
             e.View.SetBackgroundColor(Color.ParseColor("#928285"));
         }
-
-
     }
 }

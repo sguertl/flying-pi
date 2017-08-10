@@ -40,11 +40,19 @@ namespace WiFiDronection
     public class ControllerView : View, View.IOnTouchListener
     {
 
-		// Controller Settings
+		/// <summary>
+        /// Instance of ControllerSettings.
+        /// </summary>
+        /// <value>ControllerSettings.</value>
         public static ControllerSettings Settings { get; set; }
 
-        // Screen metrics in px
+        /// <summary>
+        /// The width of the screen in px
+        /// </summary>
         public float ScreenWidth;
+        /// <summary>
+        /// The height of the screen in px.
+        /// </summary>
         public float ScreenHeight;
 
         // Joystick ovals
@@ -63,15 +71,23 @@ namespace WiFiDronection
         private ShapeDrawable mShapeBorderRadiusLeft;
         private ShapeDrawable mShapeBorderRadiusRight;
 
-        // Joystick controllers
+        /// <summary>
+        /// Left joystick.
+        /// </summary>
         public Joystick mLeftJS;
+        /// <summary>
+        /// Right joystick.
+        /// </summary>
         public Joystick mRightJS;
 
-        // Transfer data via bluetooth
+        // Socket to transfer data via wifi.
         private SocketConnection mSocketConnection;
 
-        // Timer for sending data and checking WiFi connection
-        private System.Timers.Timer mWriteTimer;
+		/// <summary>
+		/// Timer for sending data and checking WiFi connection.
+		/// </summary>
+		private System.Timers.Timer mWriteTimer;
+        public System.Timers.Timer WriteTimer { get { return mWriteTimer; } set { mWriteTimer = value; } }
 
         /// <summary>
         /// View constructor.
@@ -99,14 +115,18 @@ namespace WiFiDronection
 
         /// <summary>
         /// Initializes members and creates drawable shapes.
+        /// Sets the write timer interval.
         /// </summary>
         private void Init()
         {
-            // Test
+            // Create an instance of Flight
             Flight flight = Flight.Instance;
             flight.CV = this;
 
+            // Create socket connection
             mSocketConnection = SocketConnection.Instance;
+
+            // Initialize ControllerSettings
             Settings = new ControllerSettings
             {
                 AltitudeControlActivated = false,
@@ -115,21 +135,22 @@ namespace WiFiDronection
                 TrimPitch = 0,
                 TrimRoll = 0
             };
+
             SetOnTouchListener(this);
             SetBackgroundColor(Color.White);
 
+            // Get screen resolution
             ScreenWidth = Resources.DisplayMetrics.WidthPixels;
             ScreenHeight = Resources.DisplayMetrics.HeightPixels;
-
-            //m_Transfer = new DataTransfer(this);
 
             InitShapes();
             InitJoysticks();
 
             this.SetBackgroundResource(Resource.Drawable.bg);
 
+            // Initialize timer
             mWriteTimer = new System.Timers.Timer();
-            mWriteTimer.Interval = 50;//10
+            mWriteTimer.Interval = 50;
             mWriteTimer.AutoReset = true;
             mWriteTimer.Elapsed += Write;
             mWriteTimer.Start();
@@ -294,7 +315,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Sets the Joystick back to his main position
+        /// Sets the joystick back to its main position
         /// </summary>
         /// <param name="x"></param>
         public void ResetJoystickPosition(float x)
@@ -456,12 +477,14 @@ namespace WiFiDronection
                 // Test
                 if (!Settings.Inverted)
                 {
+
                     //int throttle = Settings.AltitudeControlActivated ? 50 : mLeftJS.Throttle;
                     int throttle = mLeftJS.Throttle;
                     mSocketConnection.Write((Int16)throttle,
                                       (Int16)(mLeftJS.Rudder - Settings.TrimYaw),
                                       (Int16)(mRightJS.Aileron - Settings.TrimRoll),
                                       (Int16)(mRightJS.Elevator - Settings.TrimPitch));
+                    //Log.Debug("!!!", mLeftJS.Throttle + " " + mLeftJS.Rudder + " " + mRightJS.Aileron + " " + mRightJS.Elevator);
                 }
                 else
                 {
@@ -471,7 +494,9 @@ namespace WiFiDronection
                                       (Int16)(mLeftJS.Rudder - Settings.TrimYaw),
                                       (Int16)(mLeftJS.Aileron - Settings.TrimRoll),
                                       (Int16)(mRightJS.Elevator - Settings.TrimPitch));
+                    //Log.Debug("!!!", mRightJS.Throttle + " " + mLeftJS.Rudder + " " + mLeftJS.Aileron + " " + mRightJS.Elevator);
                 }
+                
             }
         }
     }

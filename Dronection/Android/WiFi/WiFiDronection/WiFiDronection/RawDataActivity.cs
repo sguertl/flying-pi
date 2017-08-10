@@ -53,8 +53,8 @@ namespace WiFiDronection
 
         /// <summary>
         /// Creates the activity and initializes widgets.
+        /// Calls FillRawDataList().
         /// </summary>
-        /// <param name="savedInstanceState">Saved instance state.</param>
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -68,6 +68,7 @@ namespace WiFiDronection
             mBtBack = FindViewById<Button>(Resource.Id.btnBackRawData);
             mBtBack.Click += OnBack;
 
+            // Create and set font
             Typeface font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
             mTvHeader.Typeface = font;
             mBtBack.Typeface = font;
@@ -79,7 +80,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Fills list with the control types.
+        /// Fills the list with the control types.
         /// </summary>
         private void FillRawDataList()
         {
@@ -96,7 +97,7 @@ namespace WiFiDronection
 
         /// <summary>
         /// Handles OnClick event for list item.
-        /// Reads the raw data from a .csv file and diplays it on textview.
+        /// Reads the raw data from a .csv file and diplays it on a textview.
         /// </summary>
         private void OnListItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
@@ -115,7 +116,8 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Handles OnClick event for Back button
+        /// Handles OnClick event for Back button.
+        /// Goes back to main activity
         /// </summary>
         private void OnBack(object sender, EventArgs e)
         {

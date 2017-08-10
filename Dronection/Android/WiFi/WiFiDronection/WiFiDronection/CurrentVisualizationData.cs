@@ -48,7 +48,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Singleton pattern
+        /// Singleton members
         /// </summary>
         private static CurrentVisualizationData instance = null;
         private static readonly object padlock = new object();

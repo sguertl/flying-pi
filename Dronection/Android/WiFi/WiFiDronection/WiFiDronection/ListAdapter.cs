@@ -56,7 +56,7 @@ namespace WiFiDronection
         }
 
         /// <summary>
-        /// Deletes element from list.
+        /// Deletes one element from list.
         /// </summary>
         /// <param name="element">Element which should be deleted</param>
         public void DeleteElement(string element)
@@ -64,16 +64,29 @@ namespace WiFiDronection
             mFileNames.Remove(element);
         }
 
+        /// <summary>
+        /// Return the file at the position.
+        /// </summary>
+        /// <param name="position">Position.</param>
         public override string this[int position]
         {
             get { return mFileNames[position]; }
         }
 
+        /// <summary>
+        /// Returns the number of files.
+        /// </summary>
+        /// <value>The count.</value>
         public override int Count
         {
             get { return mFileNames.Count; }
         }
 
+        /// <summary>
+        /// Returns the item identifier.
+        /// </summary>
+        /// <returns>The item identifier.</returns>
+        /// <param name="position">Position.</param>
         public override long GetItemId(int position)
         {
             return position;
