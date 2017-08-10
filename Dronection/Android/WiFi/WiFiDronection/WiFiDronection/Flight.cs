@@ -29,7 +29,9 @@ namespace WiFiDronection
 	public class Flight
 	{
 
-        // Singleton members
+        /// <summary>
+        /// Singleton members
+        /// </summary>
 		private static Flight instance = null;
 		private static readonly object padlock = new object();
 
