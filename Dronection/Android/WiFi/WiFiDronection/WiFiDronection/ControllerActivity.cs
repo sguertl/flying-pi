@@ -36,6 +36,7 @@ using Android.Content;
 using Android.OS;
 using Android.Widget;
 using Android.Graphics;
+using Android.Util;
 
 namespace WiFiDronection
 {
@@ -55,15 +56,25 @@ namespace WiFiDronection
         private RadioButton mRbMode2;
         private ImageView mIvMode1;
         private ImageView mIvMode2;
-		private CheckBox mCbxLoggingActive;
+        private Button mBtLoggingOptions;
+        private LinearLayout mLlLoggingOptions;
+        private CheckBox mCbxBarometer;
+        private CheckBox mCbxRadarData;
+        private CheckBox mCbxCollisionStatus;
+        private CheckBox mCbxControlsMobile;
+        private CheckBox mCbxControlsDrone;
+        private Button mBtExpandTrimOptions;
+        private LinearLayout mLlMinMaxYaw;
 		private TextView mTvMinYaw;
 		private EditText mEtMinYaw;
 		private TextView mTvMaxYaw;
 		private EditText mEtMaxYaw;
+        private LinearLayout mLlMinMaxPitch;
 		private TextView mTvMinPitch;
 		private EditText mEtMinPitch;
 		private TextView mTvMaxPitch;
 		private EditText mEtMaxPitch;
+        private LinearLayout mLlMinMaxRoll;
 		private TextView mTvMinRoll;
 		private EditText mEtMinRoll;
 		private TextView mTvMaxRoll;
@@ -85,6 +96,11 @@ namespace WiFiDronection
         private string mSelectedBssid;
         private Dictionary<string, ControllerSettings> mPeerSettings;
 		private bool mLoggingActive;
+        private bool mLogBarometerActive;
+        private bool mLogRadarActive;
+        private bool mLogCollisionStatusActive;
+        private bool mLogControlsMobileActive;
+        private bool mLogControlsDroneActive;
 		private int mMinYaw;
 		private int mMaxYaw;
 		private int mMinPitch;
@@ -124,15 +140,25 @@ namespace WiFiDronection
             mRbMode2 = FindViewById<RadioButton>(Resource.Id.rbMode2);
             mIvMode1 = FindViewById<ImageView>(Resource.Id.ivMode1);
             mIvMode2 = FindViewById<ImageView>(Resource.Id.ivMode2);
-			mCbxLoggingActive = FindViewById<CheckBox>(Resource.Id.cbxLoggingActive);
+            mBtLoggingOptions = FindViewById<Button>(Resource.Id.btnLoggingOptions);
+            mLlLoggingOptions = FindViewById<LinearLayout>(Resource.Id.layoutLoggingOptions);
+            mCbxBarometer = FindViewById<CheckBox>(Resource.Id.cbxLogBarometer);
+            mCbxRadarData = FindViewById<CheckBox>(Resource.Id.cbxLogRadardata);
+            mCbxCollisionStatus = FindViewById<CheckBox>(Resource.Id.cbxLogCollisionStatus);
+            mCbxControlsMobile = FindViewById<CheckBox>(Resource.Id.cbxLogControlsMobile);
+            mCbxControlsDrone = FindViewById<CheckBox>(Resource.Id.cbxLogControlsDrone);
+            mBtExpandTrimOptions = FindViewById<Button>(Resource.Id.btnExpandTrimOptions);
+            mLlMinMaxYaw = FindViewById<LinearLayout>(Resource.Id.layoutMinMaxYaw);
 			mTvMinYaw = FindViewById<TextView>(Resource.Id.tvMinYaw);
 			mEtMinYaw = FindViewById<EditText>(Resource.Id.etMinYaw);
 			mTvMaxYaw = FindViewById<TextView>(Resource.Id.tvMaxYaw);
 			mEtMaxYaw = FindViewById<EditText>(Resource.Id.etMaxYaw);
+            mLlMinMaxPitch = FindViewById<LinearLayout>(Resource.Id.layoutMinMaxPitch);
 			mTvMinPitch = FindViewById<TextView>(Resource.Id.tvMinPitch);
 			mEtMinPitch = FindViewById<EditText>(Resource.Id.etMinPitch);
 			mTvMaxPitch = FindViewById<TextView>(Resource.Id.tvMaxPitch);
 			mEtMaxPitch = FindViewById<EditText>(Resource.Id.etMaxPitch);
+            mLlMinMaxRoll = FindViewById<LinearLayout>(Resource.Id.layoutMinMaxRoll);
 			mTvMinRoll = FindViewById<TextView>(Resource.Id.tvMinRoll);
 			mEtMinRoll = FindViewById<EditText>(Resource.Id.etMinRoll);
 			mTvMaxRoll = FindViewById<TextView>(Resource.Id.tvMaxRoll);
@@ -144,6 +170,8 @@ namespace WiFiDronection
             mTvHeader.Typeface = font;
             mRbMode1.Typeface = font;
             mRbMode2.Typeface = font;
+            mBtLoggingOptions.Typeface = font;
+            mBtExpandTrimOptions.Typeface = font;
             mBtStart.Typeface = font;
             mBtBackToMain.Typeface = font;
 
@@ -154,15 +182,14 @@ namespace WiFiDronection
             mRbMode2.Click += OnMode2Click;
             mIvMode2.Click += OnMode2Click;
 
+            mBtLoggingOptions.Click += OnShowLoggingOptions;
+            mBtExpandTrimOptions.Click += OnExpandTrimOptions;
+
             mBtStart.Click += OnStartController;
             mBtBackToMain.Click += OnBackToMain;
 
-			mCbxLoggingActive.Click += (sender, e) => mLoggingActive = mCbxLoggingActive.Checked;
-
 			mSelectedBssid = Intent.GetStringExtra("mac");
             mPeerSettings = ReadPeerSettings();
-
-			mCbxLoggingActive.Checked = mLoggingActive;
 
 			mEtMinYaw.Text = mMinYaw.ToString();
 			mEtMaxYaw.Text = mMaxYaw.ToString();
@@ -191,13 +218,18 @@ namespace WiFiDronection
                 string[] trimParts = parts[1].Split(';');
                 try
                 {
-                    mLoggingActive = trimParts[3].Equals("true");
-                    mMinYaw = Convert.ToInt32(trimParts[4] == "0" ? "-15" : trimParts[4]);
-                    mMaxYaw = Convert.ToInt32(trimParts[5] == "0" ? "15" : trimParts[5]);
-                    mMinPitch = Convert.ToInt32(trimParts[6] == "0" ? "-20" : trimParts[6]);
-                    mMaxPitch = Convert.ToInt32(trimParts[7] == "0" ? "20" : trimParts[7]);
-                    mMinRoll = Convert.ToInt32(trimParts[8] == "0" ? "-20" : trimParts[8]);
-                    mMaxRoll = Convert.ToInt32(trimParts[9] == "0" ? "20" : trimParts[9]);
+                    mLoggingActive = trimParts[3] == "True";
+                    mLogBarometerActive = trimParts[4] == "True";
+                    mLogRadarActive = trimParts[5] == "True";
+                    mLogCollisionStatusActive = trimParts[6] == "True";
+                    mLogControlsMobileActive = trimParts[7] == "True";
+                    mLogControlsDroneActive = trimParts[8] == "True";
+                    mMinYaw = Convert.ToInt32(trimParts[9] == "0" ? "-15" : trimParts[9]);
+                    mMaxYaw = Convert.ToInt32(trimParts[10] == "0" ? "15" : trimParts[10]);
+                    mMinPitch = Convert.ToInt32(trimParts[11] == "0" ? "-20" : trimParts[11]);
+                    mMaxPitch = Convert.ToInt32(trimParts[12] == "0" ? "20" : trimParts[12]);
+                    mMinRoll = Convert.ToInt32(trimParts[13] == "0" ? "-20" : trimParts[13]);
+                    mMaxRoll = Convert.ToInt32(trimParts[14] == "0" ? "20" : trimParts[14]);
                 }
                 catch (IndexOutOfRangeException ex)
                 {
@@ -209,6 +241,17 @@ namespace WiFiDronection
                     mMaxRoll = 20;
                 }
 
+                if(mLoggingActive == true)
+                {
+                    mLlLoggingOptions.Visibility = Android.Views.ViewStates.Visible;
+                    mBtLoggingOptions.Text = "Logging turned on";
+                    mCbxBarometer.Checked = mLogBarometerActive;
+                    mCbxRadarData.Checked = mLogRadarActive;
+                    mCbxCollisionStatus.Checked = mLogCollisionStatusActive;
+                    mCbxControlsMobile.Checked = mLogControlsMobileActive;
+                    mCbxControlsDrone.Checked = mLogControlsDroneActive;
+                }
+
                 peerSettings.Add(parts[0], new ControllerSettings
                 {
                     AltitudeControlActivated = false,
@@ -216,7 +259,7 @@ namespace WiFiDronection
                     TrimYaw = Convert.ToInt16(trimParts[0]),
                     TrimPitch = Convert.ToInt16(trimParts[1]),
                     TrimRoll = Convert.ToInt16(trimParts[2]),
-                    LoggingActivated = mLoggingActive,
+                    LoggingActivated = mLogControlsMobileActive,
                     MinYaw = mMinYaw,
                     MaxYaw = mMaxYaw,
                     MinPitch = mMinPitch,
@@ -266,6 +309,13 @@ namespace WiFiDronection
 			mMaxPitch = Convert.ToInt32(mEtMaxPitch.Text);
 			mMinRoll = Convert.ToInt32(mEtMinRoll.Text);
 			mMaxRoll = Convert.ToInt32(mEtMaxRoll.Text);
+
+            // Read log data
+            mLogBarometerActive = mCbxBarometer.Checked;
+            mLogRadarActive = mCbxRadarData.Checked;
+            mLogCollisionStatusActive = mCbxCollisionStatus.Checked;
+            mLogControlsMobileActive = mCbxControlsMobile.Checked;
+            mLogControlsDroneActive = mCbxControlsDrone.Checked;
 
             // Change to Controller with joysticks
             SetContentView(Resource.Layout.ControllerLayout);
@@ -357,6 +407,7 @@ namespace WiFiDronection
 
 		/// <summary>
 		/// Writes log in csv format to mobile storage.
+        /// Saves user options
 		/// </summary>
 		private void WriteLogData()
 		{
@@ -380,8 +431,9 @@ namespace WiFiDronection
 				foreach (KeyValuePair<string, ControllerSettings> kvp in mPeerSettings)
 				{
 					settingsString += kvp.Key + "," + kvp.Value.TrimYaw + ";" + kvp.Value.TrimPitch + ";" + kvp.Value.TrimRoll + ";"
-                                         + (mLoggingActive ? "true" : "false") + ";" + mMinYaw + ";" + mMaxYaw + ";" + mMinPitch + ";"
-                                         + mMaxPitch + ";" + mMinRoll + ";" + mMaxRoll + "\n"; ;
+                                         + mLoggingActive + ";" + mLogBarometerActive + ";" + mLogRadarActive + ";" + mLogCollisionStatusActive + ";"
+                                         + mLogControlsMobileActive + ";" + mLogControlsDroneActive + ";" + mMinYaw + ";" + mMaxYaw + ";"
+                                         + mMinPitch + ";" + mMaxPitch + ";" + mMinRoll + ";" + mMaxRoll + "\n"; ;
 				}
 				
 				var settingsWriter = new Java.IO.FileWriter(new Java.IO.File(dirName, "settings.csv"));
@@ -397,9 +449,10 @@ namespace WiFiDronection
         {
             var root = new Java.IO.File(MainActivity.ApplicationFolderPath);
             List<string> fileNames = root.List().ToList();
+            fileNames.Sort();
             if(fileNames.Count > 16)
             {
-                var delFolder = new Java.IO.File(MainActivity.ApplicationFolderPath + Java.IO.File.Separator + fileNames[fileNames.Count - 2]);
+                var delFolder = new Java.IO.File(MainActivity.ApplicationFolderPath + Java.IO.File.Separator + fileNames[0]);
                 foreach(string delChild in delFolder.List())
                 {
                     new Java.IO.File(delFolder.AbsolutePath, delChild).Delete();
@@ -468,10 +521,13 @@ namespace WiFiDronection
             {
                 mSocketReader.Close();
             }
-            if (mFlight.CV.WriteTimer != null)
+            if(mFlight != null)
             {
-                mFlight.CV.WriteTimer.Stop();
-                mFlight.CV.WriteTimer = null;
+                if (mFlight.CV.WriteTimer != null)
+                {
+                    mFlight.CV.WriteTimer.Stop();
+                    mFlight.CV.WriteTimer = null;
+                }
             }
         }
 
@@ -490,10 +546,13 @@ namespace WiFiDronection
             {
                 mSocketReader.Close();
             }
-            if (mFlight.CV.WriteTimer != null)
+            if(mFlight != null)
             {
-                mFlight.CV.WriteTimer.Stop();
-                mFlight.CV.WriteTimer = null;
+                if (mFlight.CV.WriteTimer != null)
+                {
+                    mFlight.CV.WriteTimer.Stop();
+                    mFlight.CV.WriteTimer = null;
+                }
             }
         }
 
@@ -513,5 +572,39 @@ namespace WiFiDronection
 			mSocketConnection.OnCancel();
 			StartActivity(typeof(MainActivity));
 		}
+
+        private void OnExpandTrimOptions(object sender, EventArgs e)
+        {
+            if(mLlMinMaxPitch.Visibility == Android.Views.ViewStates.Gone)
+            {
+                mLlMinMaxPitch.Visibility = Android.Views.ViewStates.Visible;
+                mLlMinMaxRoll.Visibility = Android.Views.ViewStates.Visible;
+                mLlMinMaxYaw.Visibility = Android.Views.ViewStates.Visible;
+                mBtExpandTrimOptions.Text = "Trim Options v";
+            }
+            else
+            {
+                mLlMinMaxPitch.Visibility = Android.Views.ViewStates.Gone;
+                mLlMinMaxRoll.Visibility = Android.Views.ViewStates.Gone;
+                mLlMinMaxYaw.Visibility = Android.Views.ViewStates.Gone;
+                mBtExpandTrimOptions.Text = "Trim Options >";
+            }
+        }
+
+        private void OnShowLoggingOptions(object sender, EventArgs e)
+        {
+            if(mLlLoggingOptions.Visibility == Android.Views.ViewStates.Gone)
+            {
+                mBtLoggingOptions.Text = "Logging turned on";
+                mLlLoggingOptions.Visibility = Android.Views.ViewStates.Visible;
+                mLoggingActive = true;
+            }
+            else
+            {
+                mBtLoggingOptions.Text = "Logging turned off";
+                mLlLoggingOptions.Visibility = Android.Views.ViewStates.Gone;
+                mLoggingActive = false;
+            }
+        }
     }
 }

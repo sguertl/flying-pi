@@ -95,12 +95,82 @@
     <!--
         Logging active checkbox
         -->
-        <CheckBox
+    <!--<CheckBox
             android:id="@+id/cbxLoggingActive"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Logging active"
-            android:layout_margin="10dp" />
+            android:layout_margin="10dp" />-->
+        <Button
+            android:id="@+id/btnLoggingOptions"
+            android:textSize="20dp"
+            android:text="Logging turned off"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_margin="10dp"
+            android:textColor="#ffffff"
+            android:background="#005DA9" />
+        <LinearLayout
+            android:id="@+id/layoutLoggingOptions"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:weightSum="1">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5">
+                <CheckBox
+                    android:id="@+id/cbxLogBarometer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Barometer"
+                    android:layout_margin="10dp" />
+                <CheckBox
+                    android:id="@+id/cbxLogRadardata"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Radar data"
+                    android:layout_margin="10dp" />
+                <CheckBox
+                    android:id="@+id/cbxLogCollisionStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Collision status"
+                    android:layout_margin="10dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5">
+                <CheckBox
+                    android:id="@+id/cbxLogControlsMobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Controls mobile"
+                    android:layout_margin="10dp" />
+                <CheckBox
+                    android:id="@+id/cbxLogControlsDrone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Controls drone"
+                    android:layout_margin="10dp" />
+            </LinearLayout>
+        </LinearLayout>
+        <Button
+            android:id="@+id/btnExpandTrimOptions"
+            android:textSize="20dp"
+            android:text="Trim Options &gt;"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_margin="10dp"
+            android:textColor="#ffffff"
+            android:background="#005DA9" />
     <!--
         Min Max Yaw
         -->
@@ -108,7 +178,9 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:weightSum="1">
+            android:weightSum="1"
+            android:visibility="gone"
+            android:id="@+id/layoutMinMaxYaw">
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -165,7 +237,9 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:weightSum="1">
+            android:weightSum="1"
+            android:visibility="gone"
+            android:id="@+id/layoutMinMaxPitch">
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -222,7 +296,9 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:weightSum="1">
+            android:weightSum="1"
+            android:visibility="gone"
+            android:id="@+id/layoutMinMaxRoll">
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"

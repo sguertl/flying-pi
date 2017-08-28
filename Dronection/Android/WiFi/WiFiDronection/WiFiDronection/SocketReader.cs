@@ -69,6 +69,7 @@ namespace WiFiDronection
                 {
                     bytes = mDataInputStream.Read(buffer);
                     string msg = new Java.Lang.String(buffer, 0, bytes).ToString();
+                    Log.Debug(TAG, msg);
                 }
                 catch (Java.IO.IOException ex)
                 {

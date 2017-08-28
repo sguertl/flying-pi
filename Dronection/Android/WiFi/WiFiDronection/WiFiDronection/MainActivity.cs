@@ -229,15 +229,11 @@ namespace WiFiDronection
             // Connect network
             int id = wifiManager.AddNetwork(conf);
 
-            IList<WifiConfiguration> myWifi = wifiManager.ConfiguredNetworks;
-
-            wifiManager.Disconnect();
-            wifiManager.EnableNetwork(id, true);
-            wifiManager.Reconnect();
-
-            // Check if password is correct
-            if (wifiManager.IsWifiEnabled)
+            if (id != -1)
             {
+                wifiManager.Disconnect();
+                wifiManager.EnableNetwork(id, true);
+                wifiManager.Reconnect();
                 mLastConnectedPeer = mSelectedSsid;
                 Intent intent = new Intent(BaseContext, typeof(ControllerActivity));
                 // intent.PutExtra("isConnected", mIsConnected);
