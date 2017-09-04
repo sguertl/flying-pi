@@ -67,6 +67,7 @@
     <Compile Include="Joystick.cs" />
     <Compile Include="ListAdapter.cs" />
     <Compile Include="LogActivity.cs" />
+    <Compile Include="LogData.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="RawDataActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />

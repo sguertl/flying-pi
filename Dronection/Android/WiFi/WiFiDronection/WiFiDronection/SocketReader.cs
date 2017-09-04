@@ -25,10 +25,12 @@
 ************************************************************************/
 
 using System;
+using System.Linq;
 
 using Java.Lang;
 using Java.IO;
 using Android.Util;
+using System.Collections.Generic;
 
 namespace WiFiDronection
 {
@@ -40,6 +42,23 @@ namespace WiFiDronection
         // Input stream
         private DataInputStream mDataInputStream;
         private RaspberryClose mRaspberryCloseEvent;
+
+        private string mCurrentMsg;
+
+        public string CurrentMsg
+        {
+            get { return mCurrentMsg; }
+            set { mCurrentMsg = value; }
+        }
+
+        private Dictionary<string, LogData> mDroneLogs;
+
+        public Dictionary<string, LogData> DroneLogs
+        {
+            get { return mDroneLogs; }
+            set { mDroneLogs = value; }
+        }
+
 
         // Data reader thread
         public Thread mDataReaderThread;
@@ -53,6 +72,7 @@ namespace WiFiDronection
         {
             mDataInputStream = inputStream;
             mRaspberryCloseEvent = rpiClose;
+            mDroneLogs = new Dictionary<string, LogData>();
             //this.mDataReaderThread = new Thread(OnRead);
         }
 
@@ -62,14 +82,89 @@ namespace WiFiDronection
         public void OnRead()
         {
             int bytes = 0;
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[41];
+            int count = 0;
             while (mDataReaderThread != null)
             {
                 try
                 {
                     bytes = mDataInputStream.Read(buffer);
-                    string msg = new Java.Lang.String(buffer, 0, bytes).ToString();
-                    Log.Debug(TAG, msg);
+                    string msg = "";
+                    if(buffer[0] != 1)
+                    {
+                        bool isRight = ControlChecksum(buffer);
+                        if(isRight == true)
+                        {
+                            string line = "";
+                            if(mDroneLogs.Keys.Contains("ControlsDrone") == true)
+                            {
+                                byte altitudeControl = buffer[1];
+                                byte speed = buffer[2];
+                                int rawRudder = (buffer[6] & 0xFF) | ((buffer[5] & 0xFF) << 8) | ((buffer[4] & 0xFF) << 16) | ((buffer[3] & 0xFF) << 24);
+                                float rudder = Float.IntBitsToFloat(rawRudder);
+                                int rawAileron = (buffer[10] & 0xFF) | ((buffer[9] & 0xFF) << 8) | ((buffer[8] & 0xFF) << 16) | ((buffer[7] & 0xFF) << 24);
+                                float aileron = Float.IntBitsToFloat(rawAileron);
+                                int rawElevator = (buffer[14] & 0xFF) | ((buffer[13] & 0xFF) << 8) | ((buffer[12] & 0xFF) << 16) | ((buffer[11] & 0xFF) << 24);
+                                float elevator = Float.IntBitsToFloat(rawElevator);
+
+                                line = count + ";" + altitudeControl + ";" + speed + ";" + rudder + ";" + aileron + ";" + elevator;
+                                mDroneLogs["ControlsDrone"].Add(line);
+                            }
+
+                            if(mDroneLogs.Keys.Contains("CollisionStatus") == true)
+                            {
+                                byte collisionStatus = buffer[35];
+                                line = count + ";" + collisionStatus.ToString();
+                                mDroneLogs["CollisionStatus"].Add(line);
+                            }
+
+                            if(mDroneLogs.Keys.Contains("Radar") == true)
+                            {
+                                int rawRadar = (buffer[18] & 0xFF) | ((buffer[17] & 0xFF) << 8) | ((buffer[16] & 0xFF) << 16) | ((buffer[15] & 0xFF) << 24);
+                                float radar = Float.IntBitsToFloat(rawRadar);
+                                line = count + ";" + radar.ToString();
+                                mDroneLogs["Radar"].Add(radar.ToString());
+                            }
+
+                            if(mDroneLogs.Keys.Contains("Debug1") == true)
+                            {
+                                int rawDebug = (buffer[22] & 0xFF) | ((buffer[21] & 0xFF) << 8) | ((buffer[20] & 0xFF) << 16) | ((buffer[19] & 0xFF) << 24);
+                                float debug = Float.IntBitsToFloat(rawDebug);
+                                line = count + ";" + debug.ToString();
+                                mDroneLogs["Debug1"].Add(line);
+                            }
+
+                            if (mDroneLogs.Keys.Contains("Debug2") == true)
+                            {
+                                int rawDebug = (buffer[26] & 0xFF) | ((buffer[25] & 0xFF) << 8) | ((buffer[24] & 0xFF) << 16) | ((buffer[23] & 0xFF) << 24);
+                                float debug = Float.IntBitsToFloat(rawDebug);
+                                line = count + ";" + debug.ToString();
+                                mDroneLogs["Debug2"].Add(line);
+                            }
+
+                            if (mDroneLogs.Keys.Contains("Debug3") == true)
+                            {
+                                int rawDebug = (buffer[30] & 0xFF) | ((buffer[29] & 0xFF) << 8) | ((buffer[28] & 0xFF) << 16) | ((buffer[27] & 0xFF) << 24);
+                                float debug = Float.IntBitsToFloat(rawDebug);
+                                line = count + ";" + debug.ToString();
+                                mDroneLogs["Debug3"].Add(line);
+                            }
+
+                            if (mDroneLogs.Keys.Contains("Debug4") == true)
+                            {
+                                int rawDebug = (buffer[34] & 0xFF) | ((buffer[33] & 0xFF) << 8) | ((buffer[32] & 0xFF) << 16) | ((buffer[31] & 0xFF) << 24);
+                                float debug = Float.IntBitsToFloat(rawDebug);
+                                line = count + ";" + debug.ToString();
+                                mDroneLogs["Debug4"].Add(line);
+                            }
+                        }
+                        count += 10;
+                    }
+                    else
+                    {
+                        msg = buffer[1].ToString();
+                        mCurrentMsg = msg;
+                    }
                 }
                 catch (Java.IO.IOException ex)
                 {
@@ -90,13 +185,29 @@ namespace WiFiDronection
             return;
         }
 
+        private bool ControlChecksum(byte[] buffer)
+        {
+            int calculatedChecksum = buffer[0];
+            calculatedChecksum ^= ((buffer[1] << 8 | buffer[2]) & 0xFFFF);
+            for(int i = 3; i < 35; i += 4)
+            {
+                calculatedChecksum ^= (buffer[i] << 24 | buffer[i + 1] << 16 | buffer[i + 2] << 8 | buffer[i + 3]);
+            }
+
+            calculatedChecksum ^= buffer[35];
+            calculatedChecksum ^= buffer[36];
+
+            int incomingChecksum = (buffer[37] << 24 | buffer[38] << 16 | buffer[39] << 8 | buffer[40]);
+            return calculatedChecksum == incomingChecksum;
+        }
+
         /// <summary>
         /// Creates and starts the thread. 
         /// </summary>
         public void OnStart()
         {
-            this.mDataReaderThread = new Thread(OnRead);
-            this.mDataReaderThread.Start();
+            mDataReaderThread = new Thread(OnRead);
+            mDataReaderThread.Start();
         }
 
 		/// <summary>
@@ -108,7 +219,7 @@ namespace WiFiDronection
             {
                 if (mDataReaderThread != null)
                 {
-                    this.mDataReaderThread = null;
+                    mDataReaderThread = null;
                 }
 
                 if (mDataInputStream != null)

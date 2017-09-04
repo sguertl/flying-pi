@@ -482,7 +482,7 @@ namespace WiFiDronection
 
                     //int throttle = Settings.AltitudeControlActivated ? 50 : mLeftJS.Throttle;
                     int throttle = mLeftJS.Throttle;
-                    mSocketConnection.Write((Int16)throttle,
+                    mSocketConnection.Write(0x00, (Int16)throttle,
                                       (Int16)(mLeftJS.Rudder - Settings.TrimYaw),
                                       (Int16)(mRightJS.Aileron - Settings.TrimRoll),
                                       (Int16)(mRightJS.Elevator - Settings.TrimPitch));
@@ -492,7 +492,7 @@ namespace WiFiDronection
                 {
                     //int throttle = Settings.AltitudeControlActivated ? 50 : mRightJS.Throttle;
                     int throttle = mRightJS.Throttle;
-                    mSocketConnection.Write((Int16)throttle,
+                    mSocketConnection.Write(0x00, (Int16)throttle,
                                       (Int16)(mLeftJS.Rudder - Settings.TrimYaw),
                                       (Int16)(mLeftJS.Aileron - Settings.TrimRoll),
                                       (Int16)(mRightJS.Elevator - Settings.TrimPitch));

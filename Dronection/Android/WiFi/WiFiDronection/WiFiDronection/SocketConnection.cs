@@ -231,21 +231,22 @@ namespace WiFiDronection
         /// Closes the socket if writing fails.
         /// </summary>
         /// <param name="args">Controller parameter (throttle, yaw, pitch, roll)</param>
-        public void Write(params Int16[] args)
+        public void Write(int type = 0x00, params Int16[] args)
         {
-            // Save controls for log file
-            mLogData += mStartMillis + "," + args[0] + "," + args[1] + "," + args[2] + "," + args[3] + "," + (ControllerView.Settings.AltitudeControlActivated ? 1 : 0) + "\n";
-
-            mStartMillis += 10;
-
-            // Convert int16 controller parameters to byte stream
-            mBytes = ConvertToByte(args);
-            /*string line = "";
-            foreach(byte b in bytes)
+            if (type == START_BYTE)
             {
-                line += b + " ";
+                // Save controls for log file
+                mLogData += mStartMillis + "," + args[0] + "," + args[1] + "," + args[2] + "," + args[3] + "," + (ControllerView.Settings.AltitudeControlActivated ? 1 : 0) + "\n";
+
+                mStartMillis += 10;
+
+                mBytes = ConvertToControlByte(args);
             }
-            Log.Debug(TAG, line);*/
+            else
+            {
+                mBytes = ConvertToLogByte(args);
+            }
+
             try
             {
                 mDataOutputStream.Write(mBytes);
@@ -259,12 +260,44 @@ namespace WiFiDronection
             }
         }
 
+        public void WriteBytes(params byte[] bytes)
+        {
+            try
+            {
+                mDataOutputStream.Write(bytes);
+                mDataOutputStream.Flush();
+            }
+            catch (Java.Lang.Exception ex)
+            {
+                Log.Debug(TAG, "Error sending data");
+                mDataOutputStream.Close();
+                mSocket.Close();
+            }
+        }
+
+        private byte[] ConvertToLogByte(params Int16[] args)
+        {
+            byte[] logBytes = new byte[19];
+            logBytes[0] = 0xA;
+            logBytes[1] = (byte)args[0];
+            logBytes[2] = (byte)args[1];
+            logBytes[3] = (byte)args[2];
+            logBytes[4] = (byte)args[3];
+            logBytes[5] = (byte)args[4];
+            logBytes[6] = (byte)args[5];
+            logBytes[7] = (byte)args[6];
+            logBytes[8] = (byte)args[7];
+            logBytes[9] = (byte)args[8];
+
+            return logBytes;
+        }
+
         /// <summary>
         /// Converts int16 controller parameters to byte stream.
         /// </summary>
         /// <param name="args">Controller parameter (throttle, yaw, pitch, roll)</param>
         /// <returns>Byte stream containing 19 bytes</returns>
-        private byte[] ConvertToByte(params Int16[] args)
+        private byte[] ConvertToControlByte(params Int16[] args)
         {
             byte[] b = new byte[PACKET_SIZE];
 

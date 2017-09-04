@@ -93,14 +93,8 @@
                 android:adjustViewBounds="true" />
         </LinearLayout>
     <!--
-        Logging active checkbox
+        Logging options
         -->
-    <!--<CheckBox
-            android:id="@+id/cbxLoggingActive"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Logging active"
-            android:layout_margin="10dp" />-->
         <Button
             android:id="@+id/btnLoggingOptions"
             android:textSize="20dp"
@@ -141,12 +135,6 @@
                     android:layout_height="wrap_content"
                     android:text="Collision status"
                     android:layout_margin="10dp" />
-            </LinearLayout>
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight=".5">
                 <CheckBox
                     android:id="@+id/cbxLogControlsMobile"
                     android:layout_width="match_parent"
@@ -158,6 +146,36 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Controls drone"
+                    android:layout_margin="10dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5">
+                <CheckBox
+                    android:id="@+id/cbxLogDebug1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Debug 1"
+                    android:layout_margin="10dp" />
+                <CheckBox
+                    android:id="@+id/cbxLogDebug2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Debug 2"
+                    android:layout_margin="10dp" />
+                <CheckBox
+                    android:id="@+id/cbxLogDebug3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Debug 3"
+                    android:layout_margin="10dp" />
+                <CheckBox
+                    android:id="@+id/cbxLogDebug4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Debug 4"
                     android:layout_margin="10dp" />
             </LinearLayout>
         </LinearLayout>

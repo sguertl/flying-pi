@@ -63,6 +63,10 @@ namespace WiFiDronection
         private CheckBox mCbxCollisionStatus;
         private CheckBox mCbxControlsMobile;
         private CheckBox mCbxControlsDrone;
+        private CheckBox mCbxDebug1;
+        private CheckBox mCbxDebug2;
+        private CheckBox mCbxDebug3;
+        private CheckBox mCbxDebug4;
         private Button mBtExpandTrimOptions;
         private LinearLayout mLlMinMaxYaw;
 		private TextView mTvMinYaw;
@@ -101,12 +105,17 @@ namespace WiFiDronection
         private bool mLogCollisionStatusActive;
         private bool mLogControlsMobileActive;
         private bool mLogControlsDroneActive;
-		private int mMinYaw;
+        private bool mLogDebug1Active;
+        private bool mLogDebug2Active;
+        private bool mLogDebug3Active;
+        private bool mLogDebug4Active;
+        private int mMinYaw;
 		private int mMaxYaw;
 		private int mMinPitch;
 		private int mMaxPitch;
 		private int mMinRoll;
 		private int mMaxRoll;
+        private int mCommunicationBegin;
 
         // Access to ControllerView
         private Flight mFlight;
@@ -147,6 +156,10 @@ namespace WiFiDronection
             mCbxCollisionStatus = FindViewById<CheckBox>(Resource.Id.cbxLogCollisionStatus);
             mCbxControlsMobile = FindViewById<CheckBox>(Resource.Id.cbxLogControlsMobile);
             mCbxControlsDrone = FindViewById<CheckBox>(Resource.Id.cbxLogControlsDrone);
+            mCbxDebug1 = FindViewById<CheckBox>(Resource.Id.cbxLogDebug1);
+            mCbxDebug2 = FindViewById<CheckBox>(Resource.Id.cbxLogDebug2);
+            mCbxDebug3 = FindViewById<CheckBox>(Resource.Id.cbxLogDebug3);
+            mCbxDebug4 = FindViewById<CheckBox>(Resource.Id.cbxLogDebug4);
             mBtExpandTrimOptions = FindViewById<Button>(Resource.Id.btnExpandTrimOptions);
             mLlMinMaxYaw = FindViewById<LinearLayout>(Resource.Id.layoutMinMaxYaw);
 			mTvMinYaw = FindViewById<TextView>(Resource.Id.tvMinYaw);
@@ -197,6 +210,8 @@ namespace WiFiDronection
 			mEtMaxPitch.Text = mMaxPitch.ToString();
 			mEtMinRoll.Text = mMinRoll.ToString();
 			mEtMaxRoll.Text = mMaxRoll.ToString();
+
+            mCommunicationBegin = 0;
         }
 
         /// <summary>
@@ -224,12 +239,16 @@ namespace WiFiDronection
                     mLogCollisionStatusActive = trimParts[6] == "True";
                     mLogControlsMobileActive = trimParts[7] == "True";
                     mLogControlsDroneActive = trimParts[8] == "True";
-                    mMinYaw = Convert.ToInt32(trimParts[9] == "0" ? "-15" : trimParts[9]);
-                    mMaxYaw = Convert.ToInt32(trimParts[10] == "0" ? "15" : trimParts[10]);
-                    mMinPitch = Convert.ToInt32(trimParts[11] == "0" ? "-20" : trimParts[11]);
-                    mMaxPitch = Convert.ToInt32(trimParts[12] == "0" ? "20" : trimParts[12]);
-                    mMinRoll = Convert.ToInt32(trimParts[13] == "0" ? "-20" : trimParts[13]);
-                    mMaxRoll = Convert.ToInt32(trimParts[14] == "0" ? "20" : trimParts[14]);
+                    mLogDebug1Active = trimParts[9] == "True";
+                    mLogDebug2Active = trimParts[10] == "True";
+                    mLogDebug3Active = trimParts[11] == "True";
+                    mLogDebug4Active = trimParts[12] == "True";
+                    mMinYaw = Convert.ToInt32(trimParts[13] == "0" ? "-15" : trimParts[13]);
+                    mMaxYaw = Convert.ToInt32(trimParts[14] == "0" ? "15" : trimParts[14]);
+                    mMinPitch = Convert.ToInt32(trimParts[15] == "0" ? "-20" : trimParts[15]);
+                    mMaxPitch = Convert.ToInt32(trimParts[16] == "0" ? "20" : trimParts[16]);
+                    mMinRoll = Convert.ToInt32(trimParts[17] == "0" ? "-20" : trimParts[17]);
+                    mMaxRoll = Convert.ToInt32(trimParts[18] == "0" ? "20" : trimParts[18]);
                 }
                 catch (IndexOutOfRangeException ex)
                 {
@@ -250,6 +269,10 @@ namespace WiFiDronection
                     mCbxCollisionStatus.Checked = mLogCollisionStatusActive;
                     mCbxControlsMobile.Checked = mLogControlsMobileActive;
                     mCbxControlsDrone.Checked = mLogControlsDroneActive;
+                    mCbxDebug1.Checked = mLogDebug1Active;
+                    mCbxDebug2.Checked = mLogDebug2Active;
+                    mCbxDebug3.Checked = mLogDebug3Active;
+                    mCbxDebug4.Checked = mLogDebug4Active;
                 }
 
                 peerSettings.Add(parts[0], new ControllerSettings
@@ -300,6 +323,57 @@ namespace WiFiDronection
                 return;
             }
 
+            mSocketConnection.Write
+            (
+                0xA,
+                (Int16)(mLoggingActive == true ? 1 : 0),
+                (Int16)(mLogBarometerActive == true ? 1 : 0),
+                (Int16)(mLogRadarActive == true ? 1 : 0),
+                (Int16)(mLogCollisionStatusActive == true ? 1 : 0),
+                (Int16)(mLogControlsDroneActive == true ? 1 : 0),
+                (Int16)(mLogDebug1Active == true ? 1 : 0),
+                (Int16)(mLogDebug2Active == true ? 1 : 0),
+                (Int16)(mLogDebug3Active == true ? 1 : 0),
+                (Int16)(mLogDebug4Active == true ? 1 : 0)
+            );
+            
+            // Start reading from Raspberry
+            if (mSocketConnection.WifiSocket.IsConnected == true)
+            {
+                mSocketReader = new SocketReader(mSocketConnection.InputStream, CloseOnRPIReset);
+                mSocketReader.OnStart();
+            }
+
+            byte isReady = 0;
+
+            while(isReady == 0)
+            {
+                mCommunicationBegin += 500;
+                if(mSocketReader.CurrentMsg == "0")
+                {
+                    isReady = 1;
+                }
+
+                if(mSocketReader.CurrentMsg == "2")
+                {
+                    isReady = 2;
+                }
+
+                if(mCommunicationBegin > 3000)
+                {
+                    isReady = 3;
+                }
+                System.Threading.Thread.Sleep(500);
+            }
+
+            if(isReady > 1)
+            {
+                mSocketConnection.OnCancel();
+                mSocketReader.Close();
+                StartActivity(typeof(MainActivity));
+                return;
+            }
+
             mFlight = Flight.Instance;
 
             // Read min and max values
@@ -312,10 +386,46 @@ namespace WiFiDronection
 
             // Read log data
             mLogBarometerActive = mCbxBarometer.Checked;
+            if(mLogBarometerActive == true)
+            {
+                mSocketReader.DroneLogs.Add("Barometer", new LogData("Barometer", 1));
+            }
             mLogRadarActive = mCbxRadarData.Checked;
+            if(mLogRadarActive == true)
+            {
+                mSocketReader.DroneLogs.Add("Radar", new LogData("Radar", 1));
+            }
             mLogCollisionStatusActive = mCbxCollisionStatus.Checked;
+            if(mLogCollisionStatusActive == true)
+            {
+                mSocketReader.DroneLogs.Add("CollisionStatus", new LogData("CollisionStatus", 1));
+            }
             mLogControlsMobileActive = mCbxControlsMobile.Checked;
             mLogControlsDroneActive = mCbxControlsDrone.Checked;
+            if (mLogControlsDroneActive == true)
+            {
+                mSocketReader.DroneLogs.Add("ControlsDrone", new LogData("ControlsDrone", 1));
+            }
+            mLogDebug1Active = mCbxDebug1.Checked;
+            if(mLogDebug1Active == true)
+            {
+                mSocketReader.DroneLogs.Add("Debug1", new LogData("Debug1", 1));
+            }
+            mLogDebug2Active = mCbxDebug2.Checked;
+            if (mLogDebug2Active == true)
+            {
+                mSocketReader.DroneLogs.Add("Debug2", new LogData("Debug2", 1));
+            }
+            mLogDebug3Active = mCbxDebug3.Checked;
+            if (mLogDebug3Active == true)
+            {
+                mSocketReader.DroneLogs.Add("Debug3", new LogData("Debug3", 1));
+            }
+            mLogDebug4Active = mCbxDebug4.Checked;
+            if (mLogDebug4Active == true)
+            {
+                mSocketReader.DroneLogs.Add("Debug4", new LogData("Debug4", 1));
+            }
 
             // Change to Controller with joysticks
             SetContentView(Resource.Layout.ControllerLayout);
@@ -396,13 +506,6 @@ namespace WiFiDronection
                 mTvTrimValue.Text = ControllerView.Settings.TrimRoll.ToString();
                 mSbTrimBar.Progress = ControllerView.Settings.TrimRoll - mMinTrim;
             };
-
-            // Start reading from Raspberry
-            if(mSocketConnection.WifiSocket.IsConnected == true)
-            {
-                mSocketReader = new SocketReader(mSocketConnection.InputStream, CloseOnRPIReset);
-                mSocketReader.OnStart();
-            }
         }
 
 		/// <summary>
@@ -424,6 +527,12 @@ namespace WiFiDronection
 				    var logWriter = new Java.IO.FileWriter(new Java.IO.File(storageDir, "controls.csv"));
 					logWriter.Write(mSocketConnection.LogData);
                     logWriter.Close();
+                    foreach(KeyValuePair<string, LogData> kvp in mSocketReader.DroneLogs)
+                    {
+                        var writer = new Java.IO.FileWriter(new Java.IO.File(storageDir, kvp.Key + ".csv"));
+                        writer.Write(kvp.Value.ToString());
+                        writer.Close();
+                    }
                 }
                 mPeerSettings[mSelectedBssid] = ControllerView.Settings;
 				dirName = MainActivity.ApplicationFolderPath + Java.IO.File.Separator + "settings";
@@ -432,7 +541,8 @@ namespace WiFiDronection
 				{
 					settingsString += kvp.Key + "," + kvp.Value.TrimYaw + ";" + kvp.Value.TrimPitch + ";" + kvp.Value.TrimRoll + ";"
                                          + mLoggingActive + ";" + mLogBarometerActive + ";" + mLogRadarActive + ";" + mLogCollisionStatusActive + ";"
-                                         + mLogControlsMobileActive + ";" + mLogControlsDroneActive + ";" + mMinYaw + ";" + mMaxYaw + ";"
+                                         + mLogControlsMobileActive + ";" + mLogControlsDroneActive + ";" + mLogDebug1Active + ";"
+                                         + mLogDebug2Active + ";" + mLogDebug3Active + ";" + mLogDebug4Active + ";" + mMinYaw + ";" + mMaxYaw + ";"
                                          + mMinPitch + ";" + mMaxPitch + ";" + mMinRoll + ";" + mMaxRoll + "\n"; ;
 				}
 				
@@ -512,6 +622,9 @@ namespace WiFiDronection
 		protected override void OnDestroy()
 		{
 			base.OnDestroy();
+
+            mSocketConnection.WriteBytes(99);
+
 			WriteLogData();
             if (mSocketConnection != null)
             {
@@ -537,6 +650,9 @@ namespace WiFiDronection
 		protected override void OnStop()
 		{
 			base.OnStop();
+
+            mSocketConnection.WriteBytes(99);
+
 			WriteLogData();
             if (mSocketConnection != null)
             {
