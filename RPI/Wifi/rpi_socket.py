@@ -2,11 +2,23 @@ import socket
 import sys
 import errno
 import serial
+import array
+
+from threading import Thread
 
 class rpi_connection:
     # Constants
     HOST = ''
     PORT = 5050
+    DEBUG = False
+
+    def init(self):
+        self.init_wifi_socket()
+        self.bind_wifi_socket()
+        self.init_serial_socket()
+        self.writeThread = Thread(target = self.write_drone)
+        self.readThread = Thread(target = self.read_drone)
+        self.writeThread.start()
 
     # Create wifi socket
     def init_wifi_socket(self):
@@ -26,11 +38,11 @@ class rpi_connection:
         try:
             self.serial_socket = serial.Serial('/dev/serial0', 115200, timeout = 3000)
             print('Serial socket is open: ' + str(self.serial_socket.isOpen()))
-        except serial.SerialExcpetion:
+        except serial.serialutil.SerialExcpetion:
             print('Serial connection establishment failed')
         
     # Start listening on socket
-    def listen(self):
+    def write_drone(self):
         self.wifi_socket.listen(1)
         print('Socket now listening')
 
@@ -38,33 +50,47 @@ class rpi_connection:
         while True:
 
             # Wait to accept a connection
-            conn, addr = self.wifi_socket.accept()
+            self.conn, addr = self.wifi_socket.accept()
             print('Connected with ' + addr[0] + ':' + str(addr[1]))
-
+            if self.readThread.is_alive() == False:
+                self.readThread.start()
             # Infinite loop so that function does not terminate
             while True:
                 try:
                     # Receive data from client
-                    data = conn.recv(19)
+                    data = array.array('B', self.conn.recv(19))
                     # Check if connection is alive
                     if not data:
                         print('Connection closed')
                         break
                     self.serial_socket.write(data)
                     self.serial_socket.flush()
-                    # conn.send('Test')
+                    
                 except socket.error as msg:
                     if msg.errno != errno.ECONNRESET:
                         raise
                     print('Connection reset by peer')
                     pass
-                except serial.SerialException:
+                except serial.serialutil.SerialTimeoutException:
                     print('Serial connection error')
                     break
-        close()
+            self.close()
+
+    def read_drone(self):
+        while True:
+            read_byte = self.serial_socket.inWaiting() + 41
+            read_packet = array.array('B', self.serial_socket.read(read_byte))
+            try:
+                self.conn.send(read_packet)
+            except IOError as e:
+                if e.errno == errno.EPIPE:
+                    print('Client disconnected without receiving all data')
+                    self.close()
+        self.close()
 
     # Closes the wifi connection
     def close(self):
-        self.wifi_socket.close()
-        self.serial_socket.close()
+        self.conn.close()
+        count = 0
+        print('end of line')
 #EOF
