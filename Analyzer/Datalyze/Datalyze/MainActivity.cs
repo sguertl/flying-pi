@@ -36,12 +36,17 @@ using Android.Graphics;
 
 namespace Datalyze
 {
+    [Activity(Label = "Datalyze", MainLauncher = true)]
     [Activity(Label = "Datalyze", MainLauncher = true, Icon = "@drawable/icon",
         Theme = "@android:style/Theme.Holo.Light.NoActionBar.Fullscreen", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class MainActivity : Activity
     {
+        protected override void OnCreate(Bundle savedInstanceState)
+        {
+            base.OnCreate(savedInstanceState);
 
-        // Root path for project folder
+            // Set our view from the "main" layout resource
+            // Root path for project folder
         public static string ApplicationFolderPath;
 
         // Widgets
@@ -150,7 +155,7 @@ namespace Datalyze
         /// </summary>
         protected override void OnDestroy()
         {
-            
+
         }
 
         /// <summary>
@@ -158,9 +163,11 @@ namespace Datalyze
         /// </summary>
         protected override void OnStop()
         {
-            
+
         }
 
     }
 }
+
+
 
