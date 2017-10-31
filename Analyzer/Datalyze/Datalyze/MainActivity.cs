@@ -107,12 +107,20 @@ namespace Datalyze
             mBtnBluetooth.Click += delegate
             {
                 //StartActivity(typeof(LogActivity));
+                if (mBtAdapter.IsEnabled)
+                {
+                    StartActivity(typeof(PairedDevicesActivity));
+                }
+                else
+                {
+                    Toast.MakeText(this, "Bluetooth has to be turned on", ToastLength.Short).Show();
+                }
             };
 
             // Handle paired devices button click
             mBtnWifi.Click += delegate
             {
-                //StartActivity(typeof(PairedDevicesActivity));
+
             };
 
             // Create and set font

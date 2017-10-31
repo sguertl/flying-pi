@@ -184,9 +184,10 @@ namespace Datalyze
 
             if (mSocketConnection.Socket != null && mSocketConnection.Socket.IsConnected == true)
             {
-               /* Intent intent = new Intent(BaseContext, typeof(ControllerActivity));
-                intent.PutExtra("mac", bluetoothDevice.Address);
-                StartActivity(intent);*/
+                /* Intent intent = new Intent(BaseContext, typeof(ControllerActivity));
+                 intent.PutExtra("mac", bluetoothDevice.Address);
+                 StartActivity(intent);*/
+                Toast.MakeText(this, "Connected to peer", ToastLength.Short).Show();
             }
             else
             {
