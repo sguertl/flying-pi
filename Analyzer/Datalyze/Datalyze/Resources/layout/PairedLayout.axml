@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/linear2">
+    <TextView
+        android:id="@+id/tvHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Paired devices"
+        android:gravity="center_horizontal"
+        android:textSize="36dp"
+        android:layout_margin="20dp" />
+    <Button
+        android:id="@+id/btSearchDevices"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Search devices"
+        android:textSize="20dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:layout_gravity="bottom"
+        android:layout_margin="10dp"
+        android:textColor="#ffffff"
+        android:background="#005DA9" />
+    <TextView
+        android:id="@+id/tvExplanation"
+        android:textSize="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tap on a device to connect"
+        android:gravity="center_horizontal"/>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:divider="#005DA9"
+        android:dividerHeight="3dp"
+        android:id="@+id/listView" />
+</LinearLayout>
