@@ -17,12 +17,12 @@
 *                                                                       *
 *                                                                       *
 *  File: MainActivity.cs                                                *
-*  Created on: 2017-07-19                                               *
-*  Author(s): Guertl Sebastian Matthias (IFAT PMM TI COP)               *
-*             Klapsch Adrian Vasile (IFAT PMM TI COP)                   *
-*             Englert Christoph (IFAT PMM TI COP)                       *
+*  Created on: 2017-10-17                                               *
+*  Author(s): Guertl Sebastian                                          *
+*             Klapsch Adrian                                            *
+*             Englert Christoph                                         *
 *                                                                       *
-*  MainActivity asks the user to activate bluetooth.                    *
+*  MainActivity provides a choice between Wifi and Bluetooth tests.     *
 *                                                                       *
 ************************************************************************/
 
