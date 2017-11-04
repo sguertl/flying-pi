@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/linear"
+    android:isScrollContainer="true">
+    <TextView
+        android:id="@+id/tvHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Data Analzyer"
+        android:gravity="center_horizontal"
+        android:textSize="44dp"
+        android:fontFamily="Assets/SourceSansPro-Light.ttf"
+        android:layout_margin="20dp" />
+    <Button
+        android:id="@+id/btnWifi"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="WiFi"
+        android:fontFamily="Assets/SourceSansPro-Light.tff"
+        android:textSize="20dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:layout_gravity="bottom"
+        android:layout_margin="10dp"
+        android:textColor="#ffffff"
+        android:background="#005DA9" />
+    <Button
+        android:id="@+id/btnBluetooth"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Bluetooth"
+        android:fontFamily="Assets/SourceSansPro-Light.tff"
+        android:textSize="20dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:layout_gravity="bottom"
+        android:layout_margin="10dp"
+        android:textColor="#ffffff"
+        android:background="#005DA9" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="bottom"
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
+    <!-- 
+        Infineon logo 
+        -->
+        <ImageView
+            android:src="@drawable/ifx_logo"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:scaleType="centerInside"
+            android:adjustViewBounds="true"
+            android:layout_margin="10dp" />
+    <!-- 
+        Footer with copyright
+        -->
+        <TextView
+            android:id="@+id/tvFooter"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="\u00A9 2017 Infineon Technologies Austria AG"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:fontFamily="Assets/SourceSansPro-Light.ttf" />
+    </LinearLayout>
+</LinearLayout>

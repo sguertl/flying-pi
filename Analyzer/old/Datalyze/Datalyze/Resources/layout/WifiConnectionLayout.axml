@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:isScrollContainer="true">
+<!--
+    SSID (wifi name) textview
+    -->
+    <TextView
+        android:id="@+id/tvWifiName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Searching WiFi connection ..."
+        android:gravity="center_horizontal"
+        android:textSize="20dp"
+        android:layout_margin="10dp" />
+<!--
+    MAC address textview
+    -->
+    <TextView
+        android:id="@+id/tvWifiMac"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:gravity="center_horizontal"
+        android:textSize="20dp"
+        android:layout_margin="10dp" />
+<!--
+    Connect button
+    Navigates to controller settings 
+    -->
+    <Button
+        android:id="@+id/btnConnect"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Connecting ..."
+        android:textSize="20dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:layout_gravity="bottom"
+        android:layout_margin="10dp"
+        android:textColor="#ffffff"
+        android:background="#E30034" />
+</LinearLayout>
