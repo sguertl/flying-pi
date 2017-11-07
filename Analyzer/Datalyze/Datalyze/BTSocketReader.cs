@@ -11,22 +11,21 @@ using Android.Views;
 using Android.Widget;
 using Java.IO;
 using Java.Lang;
-using System.IO;
 using Android.Util;
+using System.IO;
 
 namespace Datalyze
 {
-    public class WifiSocketReader
+   public class BTSocketReader
     {
         private DataInputStream mInputStream;
         private Thread mReaderThread;
         private bool isReading;
-        private SaveLastMessage mSaveLastMessage;
+        private Stream inputStream;
 
-        public WifiSocketReader(Stream inputStream, SaveLastMessage saveLastMessage)
+        public BTSocketReader(DataInputStream inputStream)
         {
-            mInputStream = new DataInputStream(inputStream);
-            mSaveLastMessage = saveLastMessage;
+            mInputStream = inputStream;
             mReaderThread = new Thread(Read);
             mReaderThread.Start();
         }
@@ -34,7 +33,7 @@ namespace Datalyze
         private void Read()
         {
             int bytes = 0;
-            byte[] buffer = new byte[32];
+            byte[] buffer = new byte[1024];
             isReading = true;
 
             while (isReading)
@@ -42,12 +41,11 @@ namespace Datalyze
                 try
                 {
                     bytes = mInputStream.Read(buffer);
-                    Java.Lang.String str = new Java.Lang.String(buffer);
-                    mSaveLastMessage(str.ToString());
+                    string str = new Java.Lang.String(buffer).ToString();
                 }
-                catch(Java.Lang.Exception ex)
+                catch (Java.Lang.Exception ex)
                 {
-                    Log.Debug("WifiSocketReader", "Error while reading");
+                    Log.Debug("BtSocketReader", "Error while reading");
                 }
             }
         }
@@ -55,11 +53,12 @@ namespace Datalyze
         public void Close()
         {
             isReading = false;
-            if (mInputStream != null)
+            
+            if(mInputStream != null)
             {
                 mInputStream.Close();
             }
-            if (mReaderThread != null)
+            if(mReaderThread != null)
             {
                 mReaderThread.Join();
             }

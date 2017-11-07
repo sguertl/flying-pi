@@ -1,0 +1,50 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+using Android.App;
+using Android.Content;
+using Android.OS;
+using Android.Runtime;
+using Android.Views;
+using Android.Widget;
+using Java.IO;
+using Android.Util;
+using System.IO;
+
+namespace Datalyze
+{
+   public class BTSocketWriter
+    {
+
+        private DataOutputStream mDataOutputStream;
+        private Stream outputStream;
+
+        public BTSocketWriter(DataOutputStream dataoutputstream)
+        {
+            this.mDataOutputStream = dataoutputstream;
+        }
+
+        public void Write(byte[] bytes)
+        {
+            try
+            {
+                mDataOutputStream.Write(bytes);
+                mDataOutputStream.Flush();
+            }catch(Exception ex)
+            {
+                Log.Debug("BTSocketWriter", "Error while sending data");
+            }
+        }
+
+        public void Close()
+        {
+            if(mDataOutputStream != null)
+            {
+                mDataOutputStream.Close();
+            }
+        }
+
+    }
+}

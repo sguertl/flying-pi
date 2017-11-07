@@ -53,6 +53,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BTAnalyzeActivity.cs" />
+    <Compile Include="BTConnectionActivity.cs" />
+    <Compile Include="BTSocketReader.cs" />
+    <Compile Include="BTSocketWriter.cs" />
+    <Compile Include="HelpClass.cs" />
+    <Compile Include="ListAdapter.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -73,6 +79,12 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\WifiAnalyzeLayout.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\BTConnectionLayout.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\CustomListItem.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
