@@ -99,7 +99,7 @@
         Infineon logo 
         -->
         <ImageView
-            android:src="@drawable/ifx_logo"
+            android:src="@drawable/ifx_logo_medium"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:scaleType="centerInside"
@@ -112,7 +112,7 @@
             android:id="@+id/tvFooter"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="\u00A9 2017 Infineon Technologies Austria AG"
+            android:text="\u00A9 2017-2018 Infineon Technologies Austria AG"
             android:layout_gravity="center_horizontal"
             android:layout_margin="10dp"
             android:fontFamily="Assets/SourceSansPro-Light.ttf" />

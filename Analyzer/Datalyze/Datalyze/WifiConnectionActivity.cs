@@ -20,6 +20,7 @@ namespace Datalyze
         ScreenOrientation = Android.Content.PM.ScreenOrientation.SensorPortrait)]
     public class WifiConnectionActivity : Activity
     {
+        private TextView mTvHeader;
         private TextView mTvWifiName;
         private TextView mTvWifiMac;
         private Button mBtnConnect;
@@ -37,11 +38,13 @@ namespace Datalyze
             var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
 
             // Initialize widgets
+            mTvHeader = FindViewById<TextView>(Resource.Id.tvHeader);
             mTvWifiName = FindViewById<TextView>(Resource.Id.tvWifiName);
             mTvWifiMac = FindViewById<TextView>(Resource.Id.tvWifiMac);
             mBtnConnect = FindViewById<Button>(Resource.Id.btnConnect);
 
             // Set font to widgets
+            mTvHeader.Typeface = font;
             mTvWifiName.Typeface = font;
             mTvWifiMac.Typeface = font;
             mBtnConnect.Typeface = font;

@@ -4,6 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:isScrollContainer="true">
+    <TextView
+        android:id="@+id/tvHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="WiFi Connection"
+        android:gravity="center_horizontal"
+        android:textSize="36dp"
+        android:layout_margin="20dp" />
 <!--
     SSID (wifi name) textview
     -->

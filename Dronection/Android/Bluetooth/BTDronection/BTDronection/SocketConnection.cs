@@ -182,7 +182,7 @@ namespace BTDronection
                     if (mSocket.IsConnected == false)
                     {
                         Thread.Sleep(2000);
-                    // a to the bluetooth device
+                        // a to the bluetooth device
                         mSocket.Connect();
                     }
                 } 
@@ -222,6 +222,7 @@ namespace BTDronection
                 Log.Debug(TAG, "Error while sending data (" + ex.Message + ")");
                 Cancel();
             }
+            System.Console.WriteLine("Socket: " + mSocket.GetHashCode());
         }
 
 		/// <summary>
@@ -284,7 +285,7 @@ namespace BTDronection
                     ControllerView.Settings.AltitudeControlActivated = false;
                 }
 
-                this.mConnectionThread = null;
+                //this.mConnectionThread = null;
                 
                 if (mDataOutputStream != null)
                 {
