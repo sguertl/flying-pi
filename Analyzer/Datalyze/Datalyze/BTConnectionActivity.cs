@@ -37,10 +37,19 @@ namespace Datalyze
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            SetContentView(Resource.Layout.BTConnectionLayout);
 
-
-            Init();
-            // Create your application here
+            BluetoothAdapter btAdapter = BluetoothAdapter.DefaultAdapter;
+            if(btAdapter.IsEnabled == false)
+            {
+                Intent intent = new Intent(BluetoothAdapter.ActionRequestEnable);
+                StartActivityForResult(intent, 1);
+            }
+            
+            if(btAdapter.IsEnabled == true)
+            {
+                Init();
+            }
         }
 
         public void Init()
@@ -49,7 +58,7 @@ namespace Datalyze
             mPeerListView = FindViewById<ListView>(Resource.Id.listView);
             mLinearLayout = FindViewById<LinearLayout>(Resource.Id.linear2);
             mBtAdapter = BluetoothAdapter.DefaultAdapter;
-            mPairedDevices = mBtAdapter.BondedDevices.Where(bd => bd.Name.ToUpper().Contains("RASPBERRY") || bd.Name.ToUpper().Contains("RPI") || bd.Name.ToUpper().Contains("XMC")).ToList();
+            mPairedDevices = mBtAdapter.BondedDevices.ToList();//.Where(bd => bd.Name.ToUpper().Contains("RASPBERRY") || bd.Name.ToUpper().Contains("RPI") || bd.Name.ToUpper().Contains("XMC")).ToList();
             mPeers = new List<String>();
 
             mProgressDialog = new ProgressDialog(this);
@@ -76,6 +85,8 @@ namespace Datalyze
 
             // Add handler when clicking on a ListViewItem
             mPeerListView.ItemClick += (object sender, AdapterView.ItemClickEventArgs e) => { OnItemClick(sender, e); };
+
+            GetPairedDevices();
         }
 
         private void OnItemClick(object sender, AdapterView.ItemClickEventArgs e)
@@ -84,10 +95,8 @@ namespace Datalyze
             string address = view.Text.Split('\n')[1];
             BluetoothDevice bluetoothDevice = BluetoothAdapter.DefaultAdapter.GetRemoteDevice(address);
             // Connection aufbauen
-            HelpClass hc = HelpClass.Instance;
-            hc.BluetoohtDevice = bluetoothDevice;
-
             Intent intent = new Intent(BaseContext ,typeof(BTAnalyzeActivity));
+            intent.PutExtra("device", bluetoothDevice);
             StartActivity(intent);
             // *****
         }
@@ -95,7 +104,9 @@ namespace Datalyze
 
         private void OnSearchDevices(object sender, EventArgs e)
         {
-            
+            Intent bluetoothSettings = new Intent();
+            bluetoothSettings.SetAction(Android.Provider.Settings.ActionBluetoothSettings);
+            StartActivityForResult(bluetoothSettings, 0);
         }
 
         private void GetPairedDevices()

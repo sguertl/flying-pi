@@ -37,8 +37,8 @@ namespace Datalyze
 
             mBtnBluetooth.Click += delegate
             {
-                //StartActivity(typeof(PairedDevicesActivity));
-                Log.Debug("!!!", "Go to BT");
+                StartActivity(typeof(BTConnectionActivity));
+                //Log.Debug("!!!", "Go to BT");
             };
             
             mBtnWifi.Click += delegate

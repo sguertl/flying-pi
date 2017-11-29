@@ -19,7 +19,6 @@ namespace Datalyze
     {
 
         private DataOutputStream mDataOutputStream;
-        private Stream outputStream;
 
         public BTSocketWriter(DataOutputStream dataoutputstream)
         {
@@ -45,6 +44,5 @@ namespace Datalyze
                 mDataOutputStream.Close();
             }
         }
-
     }
 }

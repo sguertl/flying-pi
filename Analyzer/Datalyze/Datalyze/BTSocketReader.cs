@@ -21,11 +21,12 @@ namespace Datalyze
         private DataInputStream mInputStream;
         private Thread mReaderThread;
         private bool isReading;
-        private Stream inputStream;
+        private SaveLastMessage mSaveLastMessage;
 
-        public BTSocketReader(DataInputStream inputStream)
+        public BTSocketReader(DataInputStream inputStream, SaveLastMessage saveLastMessage)
         {
             mInputStream = inputStream;
+            mSaveLastMessage = saveLastMessage;
             mReaderThread = new Thread(Read);
             mReaderThread.Start();
         }
@@ -42,6 +43,7 @@ namespace Datalyze
                 {
                     bytes = mInputStream.Read(buffer);
                     string str = new Java.Lang.String(buffer).ToString();
+                    mSaveLastMessage(str);
                 }
                 catch (Java.Lang.Exception ex)
                 {

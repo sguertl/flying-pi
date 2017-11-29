@@ -17,7 +17,8 @@ using Java.IO;
 
 namespace Datalyze
 {
-    [Activity(Label = "BTAnalyzeActivity")]
+    [Activity(Label = "BTAnalyzeActivity", Theme = "@android:style/Theme.Holo.Light.NoActionBar.Fullscreen",
+        ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class BTAnalyzeActivity : Activity
     {
         private readonly string TAG = "BTAnalyzerActivity";
@@ -29,16 +30,32 @@ namespace Datalyze
         private BTSocketWriter mSocketWriter;
         private BTSocketReader mSocketReader;
         private BluetoothAdapter mAdapter;
-        private BluetoothDevice mPeer;
+        private string mLastMessage;
+
+        public string LastMessage
+        {
+            get { return mLastMessage; }
+            set { mLastMessage = value; }
+        }
+
+        private Button mBtSend;
+        private EditText mEtText;
+        private TextView mTvRead;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            SetContentView(Resource.Layout.BTAnalyzeLayout);
+
+            mBtSend = FindViewById<Button>(Resource.Id.btSend);
+            mBtSend.Click += OnSend;
+            mBtSend.Enabled = false;
+            mEtText = FindViewById<EditText>(Resource.Id.etText);
+            mTvRead = FindViewById<TextView>(Resource.Id.tvRead);
 
             mAdapter = BluetoothAdapter.DefaultAdapter;
-
-            Init(HelpClass.Instance.BluetoohtDevice);
-
+            BluetoothDevice device = (BluetoothDevice)Intent.GetParcelableExtra("device");
+            Init(device);
         }
 
         public void Init(BluetoothDevice device)
@@ -56,6 +73,7 @@ namespace Datalyze
 
                     mSocket = (BluetoothSocket)m.Invoke(tmp.RemoteDevice, param);
                     mConnectionThread = new Thread(OnConnect);
+
                     mConnectionThread.Start();
                 }
                 catch (System.Exception ex)
@@ -63,6 +81,13 @@ namespace Datalyze
                     throw new System.Exception();
                 }
             }
+        }
+
+        private void OnSend(object sender, EventArgs e)
+        {
+            Java.Lang.String text = new Java.Lang.String(mEtText.Text);
+            byte[] bytes = text.GetBytes();
+            mSocketWriter.Write(bytes);
         }
 
         private void OnConnect()
@@ -85,10 +110,23 @@ namespace Datalyze
 
             if (mSocket.IsConnected)
             {
-                mSocketReader = new BTSocketReader(new DataInputStream(mSocket.InputStream));
+                mSocketReader = new BTSocketReader(new DataInputStream(mSocket.InputStream), PrintLastMsg);
                 mSocketWriter = new BTSocketWriter(new DataOutputStream(mSocket.OutputStream));
-
+                RunOnUiThread(() =>
+                {
+                    mBtSend.Text = "Send";
+                    mBtSend.Enabled = true;
+                });
             }
+        }
+
+        private void PrintLastMsg(string msg)
+        {
+            RunOnUiThread(() =>
+            {
+                mLastMessage += msg + "\n";
+                mTvRead.Text = mLastMessage;
+            });
         }
 
         protected override void OnDestroy()
