@@ -70,9 +70,9 @@ namespace Datalyze
 
         private void OnSendData(object sender, EventArgs e)
         {
-            Java.Lang.String text = new Java.Lang.String(mEtText.Text);
+            string text = mEtText.Text;
             int repetitions = 1;
-            int delay = 0;
+            int delay = 100;
             try
             {
                 repetitions = Integer.ParseInt(mEtRepetitions.Text);
@@ -82,11 +82,28 @@ namespace Datalyze
             {
                 Log.Debug("!!!", "Numberformat exception WifiAnalyze");
             }
-            if (text.Length() > 0)
+            if (text.Length > 0)
             {
                 if (repetitions == 0) repetitions = 1;
-                byte[] bytes = text.GetBytes();
-                mSocketWriter.Write(bytes, repetitions, delay);
+                byte[] bytes = new byte[text.Length + 4];
+                int checksum = 0;
+
+                for(int i = 0; i < text.Length; i++)
+                {
+                    checksum ^= (byte)text[i];
+                    bytes[i] = (byte)text[i];
+                }
+
+                bytes[bytes.Length - 4] = (byte)((checksum >> 24) & 0xFF);
+                bytes[bytes.Length - 3] = (byte)((checksum >> 16) & 0xFF);
+                bytes[bytes.Length - 2] = (byte)((checksum >> 8) & 0xFF);
+                bytes[bytes.Length - 1] = (byte)(checksum & 0xFF);
+
+                for (int i = 0; i < repetitions; i++)
+                {
+                    mSocketWriter.Write(bytes);
+                    Thread.Sleep(delay);
+                }
             }
         }
 
