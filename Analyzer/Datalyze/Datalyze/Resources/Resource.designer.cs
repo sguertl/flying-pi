@@ -78,14 +78,20 @@ namespace Datalyze
 			// aapt resource value: 0x7f05000b
 			public const int btnBluetooth = 2131034123;
 			
-			// aapt resource value: 0x7f05000f
-			public const int btnConnect = 2131034127;
+			// aapt resource value: 0x7f050011
+			public const int btnConnect = 2131034129;
 			
 			// aapt resource value: 0x7f05000a
 			public const int btnWifi = 2131034122;
 			
-			// aapt resource value: 0x7f050010
-			public const int etDialogPassword = 2131034128;
+			// aapt resource value: 0x7f05000e
+			public const int etDelay = 2131034126;
+			
+			// aapt resource value: 0x7f050012
+			public const int etDialogPassword = 2131034130;
+			
+			// aapt resource value: 0x7f05000d
+			public const int etRepetitions = 2131034125;
 			
 			// aapt resource value: 0x7f050000
 			public const int etText = 2131034112;
@@ -114,11 +120,11 @@ namespace Datalyze
 			// aapt resource value: 0x7f050002
 			public const int tvRead = 2131034114;
 			
-			// aapt resource value: 0x7f05000e
-			public const int tvWifiMac = 2131034126;
+			// aapt resource value: 0x7f050010
+			public const int tvWifiMac = 2131034128;
 			
-			// aapt resource value: 0x7f05000d
-			public const int tvWifiName = 2131034125;
+			// aapt resource value: 0x7f05000f
+			public const int tvWifiName = 2131034127;
 			
 			static Id()
 			{

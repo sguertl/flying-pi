@@ -30,6 +30,8 @@ namespace Datalyze
         private EditText mEtText;
         private Button mBtSend;
         private TextView mTvRead;
+        private EditText mEtRepetitions;
+        private EditText mEtDelay;
 
         private static Socket mSocket;
         private Thread mConnectionThread;
@@ -51,6 +53,8 @@ namespace Datalyze
             mEtText = FindViewById<EditText>(Resource.Id.etText);
             mBtSend = FindViewById<Button>(Resource.Id.btSend);
             mTvRead = FindViewById<TextView>(Resource.Id.tvRead);
+            mEtRepetitions = FindViewById<EditText>(Resource.Id.etRepetitions);
+            mEtDelay = FindViewById<EditText>(Resource.Id.etDelay);
 
             mBtSend.Enabled = false;
 
@@ -67,8 +71,23 @@ namespace Datalyze
         private void OnSendData(object sender, EventArgs e)
         {
             Java.Lang.String text = new Java.Lang.String(mEtText.Text);
-            byte[] bytes = text.GetBytes();
-            mSocketWriter.Write(bytes);
+            int repetitions = 1;
+            int delay = 0;
+            try
+            {
+                repetitions = Integer.ParseInt(mEtRepetitions.Text);
+                delay = Integer.ParseInt(mEtDelay.Text);
+            }
+            catch(NumberFormatException ex)
+            {
+                Log.Debug("!!!", "Numberformat exception WifiAnalyze");
+            }
+            if (text.Length() > 0)
+            {
+                if (repetitions == 0) repetitions = 1;
+                byte[] bytes = text.GetBytes();
+                mSocketWriter.Write(bytes, repetitions, delay);
+            }
         }
 
         protected override void OnDestroy()

@@ -41,8 +41,9 @@ namespace Datalyze
             {
                 try
                 {
+                    
                     bytes = mInputStream.Read(buffer);
-                    Java.Lang.String str = new Java.Lang.String(buffer);
+                    Java.Lang.String str = new Java.Lang.String(buffer, 0, bytes);
                     mSaveLastMessage(str.ToString());
                 }
                 catch(Java.Lang.Exception ex)

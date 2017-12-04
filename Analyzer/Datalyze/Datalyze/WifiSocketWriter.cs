@@ -12,6 +12,7 @@ using Android.Widget;
 using Java.IO;
 using Android.Util;
 using System.IO;
+using System.Threading;
 
 namespace Datalyze
 {
@@ -32,6 +33,23 @@ namespace Datalyze
                 mOutputStream.Flush();
             }
             catch(Java.Lang.Exception ex)
+            {
+                Log.Debug("WifiSocketWriter", "Error while sending data");
+            }
+        }
+
+        public void Write(byte[] bytes, int repetitions, int delay)
+        {
+            try
+            {
+                for(int i = 0; i < repetitions; i++)
+                {
+                    mOutputStream.Write(bytes);
+                    mOutputStream.Flush();
+                    Thread.Sleep(delay);
+                }
+            }
+            catch (Java.Lang.Exception ex)
             {
                 Log.Debug("WifiSocketWriter", "Error while sending data");
             }
