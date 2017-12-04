@@ -17,6 +17,34 @@
         android:textSize="20dp"
         android:gravity="center_horizontal"
         android:layout_margin="10dp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Repetitions"
+        android:gravity="center_horizontal"
+        android:textSize="20dp"
+        android:layout_margin="10dp" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/etRepetitions"
+        android:textSize="20dp"
+        android:gravity="center_horizontal"
+        android:layout_margin="10dp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Delay"
+        android:gravity="center_horizontal"
+        android:textSize="20dp"
+        android:layout_margin="10dp" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/etDelay"
+        android:textSize="20dp"
+        android:gravity="center_horizontal"
+        android:layout_margin="10dp" />
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

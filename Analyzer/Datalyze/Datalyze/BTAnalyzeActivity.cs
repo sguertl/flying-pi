@@ -40,6 +40,8 @@ namespace Datalyze
 
         private Button mBtSend;
         private EditText mEtText;
+        private EditText mRepText;
+        private EditText mDelayText;
         private TextView mTvRead;
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -51,6 +53,8 @@ namespace Datalyze
             mBtSend.Click += OnSend;
             mBtSend.Enabled = false;
             mEtText = FindViewById<EditText>(Resource.Id.etText);
+            mRepText = FindViewById<EditText>(Resource.Id.etRepetitions);
+            mDelayText = FindViewById<EditText>(Resource.Id.etDelay);
             mTvRead = FindViewById<TextView>(Resource.Id.tvRead);
 
             mAdapter = BluetoothAdapter.DefaultAdapter;
@@ -85,9 +89,48 @@ namespace Datalyze
 
         private void OnSend(object sender, EventArgs e)
         {
-            Java.Lang.String text = new Java.Lang.String(mEtText.Text);
-            byte[] bytes = text.GetBytes();
-            mSocketWriter.Write(bytes);
+            string text = mEtText.Text;
+
+            byte[] bytes = new byte[text.Length + 4];
+            int checksum = 0;
+
+            for (int i = 0; i < text.Length; i++)
+            {
+                checksum ^= (byte)text[i];
+                bytes[i] = (byte)text[i];
+            }
+
+            bytes[bytes.Length - 4] = (byte)((checksum >> 24) & 0xFF);
+            bytes[bytes.Length - 3] = (byte)((checksum >> 16) & 0xFF);
+            bytes[bytes.Length - 2] = (byte)((checksum >> 8 ) &0xFF);
+            bytes[bytes.Length - 1] = (byte)(checksum & 0xFF);
+
+            int repetitions = 1;
+            int delay = 0;
+
+            try
+            {
+                repetitions = Integer.ParseInt(mRepText.Text);
+                delay = Integer.ParseInt(mDelayText.Text);
+            }catch(NumberFormatException ex)
+            {
+                Log.Debug("BTAnalyzeActivity", "Numberformat exception");
+            }
+
+            
+            for (int i = 0; i < repetitions; i++)
+            {
+                try
+                {
+                    mSocketWriter.Write(bytes);
+                    Thread.Sleep(delay);
+                }catch(System.Exception ex)
+                {
+                    Log.Debug("BTAnalyzeActivity", "Fehler beim senden");
+                }
+            }
+         
+
         }
 
         private void OnConnect()

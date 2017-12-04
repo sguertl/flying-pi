@@ -29,8 +29,8 @@ namespace Datalyze
         {
             try
             {
-                mDataOutputStream.Write(bytes);
-                mDataOutputStream.Flush();
+                    mDataOutputStream.Write(bytes);
+                    mDataOutputStream.Flush();             
             }catch(Exception ex)
             {
                 Log.Debug("BTSocketWriter", "Error while sending data");
