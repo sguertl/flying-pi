@@ -25,7 +25,7 @@ namespace Datalyze
             mOutputStream = new DataOutputStream(outputstream);
         }
 
-        public void Write(byte[] bytes)
+        public void Write(params byte[] bytes)
         {
             try
             {

@@ -53,7 +53,7 @@ namespace Datalyze
             mTvFooter.Typeface = font;
             mBtnBluetooth.Typeface = font;
 
-            //CreateApplicationFolder();
+            CreateApplicationFolder();
         }
 
         /// <summary>
@@ -62,11 +62,11 @@ namespace Datalyze
         private void CreateApplicationFolder()
         {
             ApplicationFolderPath = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.ToString(), "airything");
-            ApplicationFolderPath += Java.IO.File.Separator + "bluetooth";
-            var storageDir = new Java.IO.File(ApplicationFolderPath + Java.IO.File.Separator + "settings");
+            ApplicationFolderPath += Java.IO.File.Separator + "datalyze";
+            var storageDir = new Java.IO.File(ApplicationFolderPath + Java.IO.File.Separator + "wifi");
             storageDir.Mkdirs();
-            var settingsFile = new Java.IO.File(ApplicationFolderPath + Java.IO.File.Separator + "settings" + Java.IO.File.Separator + "settings.csv");
-            settingsFile.CreateNewFile();
+            storageDir = new Java.IO.File(ApplicationFolderPath + Java.IO.File.Separator + "bluetooth");
+            storageDir.Mkdirs();
         }
     }
 }
