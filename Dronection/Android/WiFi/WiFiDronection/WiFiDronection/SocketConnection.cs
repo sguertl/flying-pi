@@ -267,11 +267,18 @@ namespace WiFiDronection
                 mDataOutputStream.Write(bytes);
                 mDataOutputStream.Flush();
             }
-            catch (Java.Lang.Exception ex)
+            catch (System.Exception ex)
             {
                 Log.Debug(TAG, "Error sending data");
-                mDataOutputStream.Close();
-                mSocket.Close();
+                if(mDataOutputStream != null)
+                {
+                    mDataOutputStream.Close();
+                }
+
+                if(mSocket != null)
+                {
+                   mSocket.Close();
+                }                
             }
         }
 

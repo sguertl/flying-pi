@@ -5,5 +5,5 @@
 	<uses-permission android:name="android.permission.BLUETOOTH" />
 	<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<application android:label="BTDronection"></application>
+	<application android:label="BTDronection" android:icon="@drawable/bg"></application>
 </manifest>

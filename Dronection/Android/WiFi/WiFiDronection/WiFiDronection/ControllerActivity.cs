@@ -623,7 +623,10 @@ namespace WiFiDronection
 		{
 			base.OnDestroy();
 
-            mSocketConnection.WriteBytes(99);
+            if (mSocketConnection != null)
+            {
+                mSocketConnection.WriteBytes(99);
+            }
 
 			WriteLogData();
             if (mSocketConnection != null)
@@ -651,7 +654,10 @@ namespace WiFiDronection
 		{
 			base.OnStop();
 
-            mSocketConnection.WriteBytes(99);
+            if (mSocketConnection != null)
+            {
+                mSocketConnection.WriteBytes(99);
+            }
 
 			WriteLogData();
             if (mSocketConnection != null)

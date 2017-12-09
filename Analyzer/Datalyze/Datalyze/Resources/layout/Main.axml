@@ -3,68 +3,22 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/linear"
     android:isScrollContainer="true">
-<!--
-    Header
-    -->
     <TextView
         android:id="@+id/tvHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="WiFi Dronection"
+        android:text="Data Analzyer"
         android:gravity="center_horizontal"
         android:textSize="44dp"
         android:fontFamily="Assets/SourceSansPro-Light.ttf"
         android:layout_margin="20dp" />
-<!--
-    SSID (wifi name) textview
-    -->
-    <TextView
-        android:id="@+id/tvWifiName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Searching WiFi connection ..."
-        android:gravity="center_horizontal"
-        android:textSize="20dp"
-        android:fontFamily="Assets/SourceSansPro-Light.ttf"
-        android:layout_margin="10dp" />
-<!--
-    MAC address textview
-    -->
-    <TextView
-        android:id="@+id/tvWifiMac"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:gravity="center_horizontal"
-        android:textSize="20dp"
-        android:fontFamily="Assets/SourceSansPro-Light.ttf"
-        android:layout_margin="10dp" />
-<!--
-    Connect button
-    Navigates to controller settings 
-    -->
     <Button
-        android:id="@+id/btnConnect"
+        android:id="@+id/btnWifi"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Connecting ..."
-        android:fontFamily="Assets/SourceSansPro-Light.tff"
-        android:textSize="20dp"
-        android:gravity="center_horizontal|center_vertical"
-        android:layout_gravity="bottom"
-        android:layout_margin="10dp"
-        android:textColor="#ffffff"
-        android:background="#E30034" />
-<!--
-    Show logs button
-    Navigates to log activity 
-    -->
-    <Button
-        android:id="@+id/btnShowLogs"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Log files"
+        android:text="WiFi"
         android:fontFamily="Assets/SourceSansPro-Light.tff"
         android:textSize="20dp"
         android:gravity="center_horizontal|center_vertical"
@@ -72,18 +26,14 @@
         android:layout_margin="10dp"
         android:textColor="#ffffff"
         android:background="#005DA9" />
-<!-- 
-    Help button
-    Navigates to help activity 
-    -->
     <Button
-        android:id="@+id/btnHelp"
+        android:id="@+id/btnBluetooth"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Help"
-        android:fontFamily="Assets/SourceSansPro-Light.ttf"
+        android:text="Bluetooth"
+        android:fontFamily="Assets/SourceSansPro-Light.tff"
         android:textSize="20dp"
-        android:gravity="center"
+        android:gravity="center_horizontal|center_vertical"
         android:layout_gravity="bottom"
         android:layout_margin="10dp"
         android:textColor="#ffffff"
@@ -112,7 +62,7 @@
             android:id="@+id/tvFooter"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="\u00A9 2017-2018 Infineon Technologies Austria AG"
+            android:text="\u00A9 2017 Infineon Technologies Austria AG"
             android:layout_gravity="center_horizontal"
             android:layout_margin="10dp"
             android:fontFamily="Assets/SourceSansPro-Light.ttf" />

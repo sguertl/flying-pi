@@ -446,7 +446,7 @@ namespace BTDronection
             if(mFlight.CV.WriteTimer != null)
             {
                 mFlight.CV.WriteTimer.Close();
-                mFlight.CV.WriteTimer = null;
+                //mFlight.CV.WriteTimer = null;
             }
 		}
 
@@ -462,7 +462,7 @@ namespace BTDronection
             if (mFlight.CV.WriteTimer != null)
             {
                 mFlight.CV.WriteTimer.Close();
-                mFlight.CV.WriteTimer = null;
+                //mFlight.CV.WriteTimer = null;
             }
         }
     }
