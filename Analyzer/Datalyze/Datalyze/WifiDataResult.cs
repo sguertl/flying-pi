@@ -25,7 +25,6 @@ namespace Datalyze
             get { return mWifiResults; }
         }
 
-
         public WifiDataResult(int bytes, int repetitions, int delay)
         {
             mBytes = bytes;
@@ -57,12 +56,12 @@ namespace Datalyze
         public double GetDataRate()
         {
             float time = mWifiResults.Sum(wd => wd.TimeDif) - mWifiResults[0].TimeDif;
-            return Math.Round((float)((mRepetitions * mBytes) / time), 2);
+            return Math.Round((((mRepetitions * mBytes) * GetCorrectnessPercentage() / 100) / time), 2);
         }
 
         public double GetAverageTimeDif()
         {
-            return Math.Round(mWifiResults.Average(wd => (wd.TimeDif - mDelay)), 2);
+            return Math.Round(mWifiResults.GetRange(0, mWifiResults.Count - 1).Average(wd => Math.Abs(mDelay - wd.TimeDif)), 2);
         }
 
         public void Write()
@@ -79,7 +78,6 @@ namespace Datalyze
                 logWriter.Flush();
             }
             logWriter.Close();
-            MediaScannerConnection.ScanFile(Application.Context, new string[] { MainActivity.ApplicationFolderPath + Java.IO.File.Separator + "wifi", fileName + ".csv" }, null, null);
         }
     }
 

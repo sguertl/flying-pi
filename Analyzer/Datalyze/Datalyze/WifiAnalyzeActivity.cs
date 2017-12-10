@@ -80,13 +80,17 @@ namespace Datalyze
         private void OnSendData(object sender, EventArgs e)
         {
             mLastMsg = "";
-            string text = mEtText.Text;
+            mTvRead.Text = "";
+            
             int repetitions = 1;
             int delay = 100;
+            string text = "aaaaaaaaaa";
             try
             {
+                int anz = Integer.ParseInt(mEtText.Text);
                 repetitions = Integer.ParseInt(mEtRepetitions.Text);
                 delay = Integer.ParseInt(mEtDelay.Text);
+                text = "".PadLeft(anz, 'a');
             }
             catch(NumberFormatException ex)
             {
@@ -161,8 +165,8 @@ namespace Datalyze
                     mCurrentWifiResult.SetWifiResults(mLastMsg.Remove(mLastMsg.Length - 2).Split('\n'));
                     mTvRead.Text += $"Received Packets: {mCurrentWifiResult.GetCorrectnessPercentage()}%\n"
                                   + $"Datarate: {mCurrentWifiResult.GetDataRate()} B/s\n"
-                                  + $"Average time difference: {mCurrentWifiResult.GetAverageTimeDif()} s\n\n"
-                                  + mLastMsg.Remove(mLastMsg.Length - 2);
+                                  + $"Average time difference: {mCurrentWifiResult.GetAverageTimeDif()} ms\n\n"
+                                  + mLastMsg.Remove(mLastMsg.Length - 2).Replace(';', ' ');
                 }
             });
         }
