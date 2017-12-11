@@ -117,20 +117,24 @@ namespace Datalyze
                 Log.Debug("BTAnalyzeActivity", "Numberformat exception");
             }
 
-            
+            string str = "";
             for (int i = 0; i < repetitions; i++)
             {
                 try
                 {
-                    mSocketWriter.Write(bytes);
+                    mSocketWriter.Write(bytes);              
+                    str += "Current Package  = " + (i + 1) + " Time = " + DateTime.Now + "\n";              
                     Thread.Sleep(delay);
                 }catch(System.Exception ex)
                 {
                     Log.Debug("BTAnalyzeActivity", "Fehler beim senden");
                 }
             }
-         
 
+            RunOnUiThread(() =>
+            {
+                mTvRead.Text = str;
+            });
         }
 
         private void OnConnect()
@@ -153,9 +157,10 @@ namespace Datalyze
 
             if (mSocket.IsConnected)
             {
-                mSocketReader = new BTSocketReader(new DataInputStream(mSocket.InputStream), PrintLastMsg);
+                //mSocketReader = new BTSocketReader(new DataInputStream(mSocket.InputStream), PrintLastMsg);
                 mSocketWriter = new BTSocketWriter(new DataOutputStream(mSocket.OutputStream));
-                RunOnUiThread(() =>
+              
+               RunOnUiThread(() =>
                 {
                     mBtSend.Text = "Send";
                     mBtSend.Enabled = true;
@@ -172,10 +177,40 @@ namespace Datalyze
             });
         }
 
+        protected override void OnStop()
+        {
+            base.OnStop();
+            try
+            {
+
+                mConnectionThread = null;
+
+                if (mSocketWriter != null)
+                {
+                    mSocketWriter.Close();
+                }
+                if (mSocketReader != null)
+                {
+                    mSocketReader.Close();
+                }
+                if (mSocket != null)
+                {
+                    mSocket.Close();
+                }
+            }catch(Java.Lang.Exception ex)
+            {
+
+            }
+        }
+
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            if(mSocketWriter != null)
+
+            try { 
+            mConnectionThread = null;
+
+            if (mSocketWriter != null)
             {
                 mSocketWriter.Close();
             }
@@ -186,6 +221,11 @@ namespace Datalyze
             if(mSocket != null)
             {
                 mSocket.Close();
+                }
+            }
+            catch (Java.Lang.Exception ex)
+            {
+
             }
         }
     }

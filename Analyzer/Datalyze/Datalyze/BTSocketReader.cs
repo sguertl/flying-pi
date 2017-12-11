@@ -43,7 +43,7 @@ namespace Datalyze
                 {
                     bytes = mInputStream.Read(buffer);
                     string str = new Java.Lang.String(buffer, 0 , bytes).ToString();
-                    mSaveLastMessage(str);
+                    mSaveLastMessage(str);                  
                 }
                 catch (Java.Lang.Exception ex)
                 {
@@ -54,16 +54,20 @@ namespace Datalyze
 
         public void Close()
         {
-            isReading = false;
-            
-            if(mInputStream != null)
+            try
             {
-                mInputStream.Close();
-            }
-            if(mReaderThread != null)
+                isReading = false;
+
+                mReaderThread = null;
+
+                if (mInputStream != null)
+                {
+                    mInputStream.Close();
+                }
+            }catch(Java.Lang.Exception ex)
             {
-                mReaderThread.Join();
-            }
+
+            }  
         }
     }
 }

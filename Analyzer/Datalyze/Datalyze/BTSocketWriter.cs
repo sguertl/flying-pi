@@ -39,9 +39,15 @@ namespace Datalyze
 
         public void Close()
         {
-            if(mDataOutputStream != null)
+            try
             {
-                mDataOutputStream.Close();
+                if (mDataOutputStream != null)
+                {
+                    mDataOutputStream.Close();
+                }
+            }catch(Exception ex)
+            {
+
             }
         }
     }
