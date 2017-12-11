@@ -1,4 +1,5 @@
 import struct
+import array
 from bluetooth import *
 
 server_sock = BluetoothSocket(RFCOMM)
@@ -18,7 +19,9 @@ while True:
     print('Accepted connection from ', client_info)
 
     while True:
-        data = client_sock.recv(19)
+        data = array.array('c', client_sock.recv(19))
+        print(data[0])
+        client_sock.send(data)
 
     try:
         data = client_sock.recv(19)

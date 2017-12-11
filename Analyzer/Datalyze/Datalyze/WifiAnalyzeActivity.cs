@@ -27,17 +27,20 @@ namespace Datalyze
         private readonly int SERVER_PORT = 5050;
         private readonly string TAG = "WifiAnalyzeActivity";
 
+        private Button mBtAnalyse;
+        private Button mBtGetResult;
+        private Button mBtSaveResult;
         private EditText mEtText;
-        private Button mBtSend;
-        private TextView mTvRead;
         private EditText mEtRepetitions;
         private EditText mEtDelay;
+        private TextView mTvRead;
 
         private static Socket mSocket;
         private Thread mConnectionThread;
         private WifiSocketWriter mSocketWriter;
         private WifiSocketReader mSocketReader;
         private string mLastMsg;
+        private WifiDataResult mCurrentWifiResult;
 
         public string LastMsg
         {
@@ -50,15 +53,21 @@ namespace Datalyze
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.WifiAnalyzeLayout);
 
+            
+            mBtAnalyse = FindViewById<Button>(Resource.Id.btAnalyse);
+            mBtGetResult = FindViewById<Button>(Resource.Id.btGetResult);
+            mBtSaveResult = FindViewById<Button>(Resource.Id.btSaveResult);
             mEtText = FindViewById<EditText>(Resource.Id.etText);
-            mBtSend = FindViewById<Button>(Resource.Id.btSend);
-            mTvRead = FindViewById<TextView>(Resource.Id.tvRead);
             mEtRepetitions = FindViewById<EditText>(Resource.Id.etRepetitions);
             mEtDelay = FindViewById<EditText>(Resource.Id.etDelay);
+            mTvRead = FindViewById<TextView>(Resource.Id.tvRead);
 
-            mBtSend.Enabled = false;
+            mBtAnalyse.Enabled = false;
+            mBtGetResult.Enabled = false;
 
-            mBtSend.Click += OnSendData;
+            mBtAnalyse.Click += OnSendData;
+            mBtGetResult.Click += OnGetResult;
+            mBtSaveResult.Click += OnSaveResult;
 
             if(mSocket == null || mSocket.IsConnected == false)
             {
@@ -70,13 +79,18 @@ namespace Datalyze
 
         private void OnSendData(object sender, EventArgs e)
         {
-            string text = mEtText.Text;
+            mLastMsg = "";
+            mTvRead.Text = "";
+            
             int repetitions = 1;
             int delay = 100;
+            string text = "aaaaaaaaaa";
             try
             {
+                int anz = Integer.ParseInt(mEtText.Text);
                 repetitions = Integer.ParseInt(mEtRepetitions.Text);
                 delay = Integer.ParseInt(mEtDelay.Text);
+                text = "".PadLeft(anz, 'a');
             }
             catch(NumberFormatException ex)
             {
@@ -85,13 +99,15 @@ namespace Datalyze
             if (text.Length > 0)
             {
                 if (repetitions == 0) repetitions = 1;
-                byte[] bytes = new byte[text.Length + 4];
+                byte[] bytes = new byte[text.Length + 5];
+                mCurrentWifiResult = new WifiDataResult(bytes.Length, repetitions, delay);
+                mSocketWriter.Write(1, (byte)bytes.Length);
                 int checksum = 0;
-
-                for(int i = 0; i < text.Length; i++)
+                bytes[0] = 10;
+                for(int i = 1; i < text.Length + 1; i++)
                 {
-                    checksum ^= (byte)text[i];
-                    bytes[i] = (byte)text[i];
+                    checksum ^= (byte)text[i - 1];
+                    bytes[i] = (byte)text[i - 1];
                 }
 
                 bytes[bytes.Length - 4] = (byte)((checksum >> 24) & 0xFF);
@@ -104,7 +120,19 @@ namespace Datalyze
                     mSocketWriter.Write(bytes);
                     Thread.Sleep(delay);
                 }
+                mBtGetResult.Enabled = true;
             }
+        }
+
+        private void OnGetResult(object sender, EventArgs e)
+        {
+            mSocketWriter.Write(11);
+            mBtSaveResult.Visibility = ViewStates.Visible;
+        }
+
+        private void OnSaveResult(object sender, EventArgs e)
+        {
+            mCurrentWifiResult.Write();
         }
 
         protected override void OnDestroy()
@@ -128,10 +156,18 @@ namespace Datalyze
 
         private void PrintLastMsg(string msg)
         {
+
             RunOnUiThread(() =>
             {
-                mLastMsg += msg + "\n";
-                mTvRead.Text = mLastMsg;
+                mLastMsg += msg.Replace('-', '\n');
+                if(mLastMsg.Last() == '#')
+                {
+                    mCurrentWifiResult.SetWifiResults(mLastMsg.Remove(mLastMsg.Length - 2).Split('\n'));
+                    mTvRead.Text += $"Received Packets: {mCurrentWifiResult.GetCorrectnessPercentage()}%\n"
+                                  + $"Datarate: {mCurrentWifiResult.GetDataRate()} B/s\n"
+                                  + $"Average time difference: {mCurrentWifiResult.GetAverageTimeDif()} ms\n\n"
+                                  + mLastMsg.Remove(mLastMsg.Length - 2).Replace(';', ' ');
+                }
             });
         }
 
@@ -179,8 +215,7 @@ namespace Datalyze
                 mSocketReader = new WifiSocketReader(mSocket.InputStream, PrintLastMsg);
                 RunOnUiThread(() =>
                 {
-                    mBtSend.Enabled = true;
-                    mBtSend.Text = "Send";
+                    mBtAnalyse.Enabled = true;
                 });
             }
         }
