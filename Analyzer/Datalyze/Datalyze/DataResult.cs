@@ -13,19 +13,19 @@ using Android.Media;
 
 namespace Datalyze
 {
-    public class WifiDataResult
+    public class DataResult
     {
         private int mBytes;
         private int mRepetitions;
         private int mDelay;
-        private List<WifiData> mWifiResults;
+        private List<Data> mResults;
 
-        public List<WifiData> WifiResults
+        public List<Data> Results
         {
-            get { return mWifiResults; }
+            get { return mResults; }
         }
 
-        public WifiDataResult(int bytes, int repetitions, int delay)
+        public DataResult(int bytes, int repetitions, int delay)
         {
             mBytes = bytes;
             mRepetitions = repetitions;
@@ -34,13 +34,13 @@ namespace Datalyze
 
         public void SetWifiResults(string[] parts)
         {
-            mWifiResults = parts.ToList().ConvertAll(new Converter<string, WifiData>(ConvertToWifiData));
+            mResults = parts.ToList().ConvertAll(new Converter<string, Data>(ConvertToData));
         }
 
-        private WifiData ConvertToWifiData(string str)
+        private Data ConvertToData(string str)
         {
             string[] parts = str.Split(';');
-            return new WifiData
+            return new Data
             {
                 IsCorrect = Convert.ToByte(parts[0]),
                 TimeDif = Convert.ToInt16(parts[1]),
@@ -50,18 +50,18 @@ namespace Datalyze
 
         public int GetCorrectnessPercentage()
         {
-            return mWifiResults.Count(wd => wd.IsCorrect == 1) * 100 / mWifiResults.Count;
+            return mResults.Count(wd => wd.IsCorrect == 1) * 100 / mRepetitions;
         }
 
         public double GetDataRate()
         {
-            float time = mWifiResults.Sum(wd => wd.TimeDif) - mWifiResults[0].TimeDif;
+            float time = mResults.Sum(wd => wd.TimeDif) - mResults[0].TimeDif;
             return Math.Round((((mRepetitions * mBytes) * GetCorrectnessPercentage() / 100) / time), 2);
         }
 
         public double GetAverageTimeDif()
         {
-            return Math.Round(mWifiResults.GetRange(0, mWifiResults.Count - 1).Average(wd => Math.Abs(mDelay - wd.TimeDif)), 2);
+            return Math.Round(mResults.GetRange(0, mResults.Count - 1).Average(wd => Math.Abs(mDelay - wd.TimeDif)), 2);
         }
 
         public void Write()
@@ -72,7 +72,7 @@ namespace Datalyze
             string title = $"Log from {fileName}\nBytes: {mBytes}\nRepetitions: {mRepetitions}\nDelay: {mDelay}\n\n";
             logWriter.Write(title);
             logWriter.Flush();
-            foreach (WifiData wd in mWifiResults)
+            foreach (Data wd in mResults)
             {
                 logWriter.Write(wd.ToString());
                 logWriter.Flush();
@@ -81,7 +81,7 @@ namespace Datalyze
         }
     }
 
-    public class WifiData
+    public class Data
     {
         public byte IsCorrect { get; set; }
         public int TimeDif { get; set; }

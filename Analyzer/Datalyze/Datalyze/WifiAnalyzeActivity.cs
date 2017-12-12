@@ -40,7 +40,7 @@ namespace Datalyze
         private WifiSocketWriter mSocketWriter;
         private WifiSocketReader mSocketReader;
         private string mLastMsg;
-        private WifiDataResult mCurrentWifiResult;
+        private DataResult mCurrentWifiResult;
 
         public string LastMsg
         {
@@ -100,11 +100,11 @@ namespace Datalyze
             {
                 if (repetitions == 0) repetitions = 1;
                 byte[] bytes = new byte[text.Length + 5];
-                mCurrentWifiResult = new WifiDataResult(bytes.Length, repetitions, delay);
+                mCurrentWifiResult = new DataResult(bytes.Length, repetitions, delay);
                 mSocketWriter.Write(1, (byte)bytes.Length);
                 int checksum = 0;
                 bytes[0] = 10;
-                for(int i = 1; i < text.Length + 1; i++)
+                for(int i = 1; i <= text.Length; i++)
                 {
                     checksum ^= (byte)text[i - 1];
                     bytes[i] = (byte)text[i - 1];
