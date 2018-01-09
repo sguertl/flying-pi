@@ -48,7 +48,7 @@ while True:
                 print('Connection closed')
                 break
             if data[0] == 10:
-                print(data)
+                #print(data)
                 currentmillis = getSystemTimeMillis()
                 difmillis = currentmillis - oldmillis
                 oldmillis = currentmillis
@@ -59,7 +59,8 @@ while True:
                     count = count + 1
                 incchecksum = (data[length-4] << 24 | data[length-3] << 16 | data[length-2] << 8 | data[length-1])
                 isRight = calcchecksum == incchecksum
-                bandwidth = round(length / (difmillis / 1000.0), 2)
+                #print(str(calcchecksum) + " " + str(incchecksum))
+                bandwidth = round(length / (difmillis / 1000.5), 2)
                 data_list.append(WifiData(isRight, difmillis, bandwidth))
             elif data[0] == 11:
                 i = len(data_list) - 1
