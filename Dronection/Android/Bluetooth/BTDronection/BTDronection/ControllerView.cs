@@ -79,13 +79,23 @@ namespace BTDronection
         /// <summary>
         /// Socket to transfer data via wifi
         /// </summary>
+        //private SocketConnection mSocket;
         private SocketConnection mSocket;
+
+        public void SetSocket(SocketConnection conn)
+        {
+            mSocket = conn;
+        }
 
         /// <summary>
         /// Timer for sending data and checking Wifi connection
         /// </summary>
         private System.Timers.Timer mWriteTimer;
-        public System.Timers.Timer WriteTimer { get { return mWriteTimer; } set { mWriteTimer = value; } }
+        public System.Timers.Timer WriteTimer
+        {
+            get { return mWriteTimer; }
+            set { mWriteTimer = value; }
+        }
 
         /// <summary>
         /// Instance of ControllerSettings
@@ -128,13 +138,6 @@ namespace BTDronection
         /// </summary>
         private void Init()
         {
-            // Create an instance of Flight
-            Flight flight = Flight.Instance;
-            flight.CV = this;
-
-            // Create socket connection
-            mSocket = SocketConnection.Instance;
-
             // Initialize ControllerSettings
 			Settings = new ControllerSettings
             {
@@ -282,45 +285,45 @@ namespace BTDronection
 					break;
 			}
 
-			//if (Settings.Inverted)
-			//{
-			//	if (e.PointerCount == 1 && e.GetX() <= ScreenWidth / 2 && !mRightJS.IsCentered())
-			//	{
-   //                 if (Settings.AltitudeControlActivated)
-   //                 {
-   //                     UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
-   //                 }
-   //                 else
-   //                 {
-   //                     UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
-   //                 }
-					
-			//	}
-			//	else if (e.PointerCount == 1 && e.GetX() > ScreenWidth / 2 && !mLeftJS.IsCentered())
-			//	{
-			//		UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
-			//	}
-			//}
-			//else
-			//{
-			//	if (e.PointerCount == 1 && e.GetX() <= ScreenWidth / 2 && !mRightJS.IsCentered())
-			//	{
-			//		UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
-			//	}
-			//	else if (e.PointerCount == 1 && e.GetX() > ScreenWidth / 2 && !mLeftJS.IsCentered())
-			//	{
-   //                 if (Settings.AltitudeControlActivated)
-   //                 {
-   //                     UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
-   //                 }
-   //                 else
-   //                 {
-   //                     UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
-   //                 }
-			//	}
-			//}
+            //if (Settings.Inverted)
+            //{
+            //	if (e.PointerCount == 1 && e.GetX() <= ScreenWidth / 2 && !mRightJS.IsCentered())
+            //	{
+            //                 if (Settings.AltitudeControlActivated)
+            //                 {
+            //                     UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
+            //                 }
+            //                 else
+            //                 {
+            //                     UpdateOvals(mRightJS.CenterX, mRightJS.CenterY + Joystick.DisplacementRadius);
+            //                 }
 
-			Invalidate();
+            //	}
+            //	else if (e.PointerCount == 1 && e.GetX() > ScreenWidth / 2 && !mLeftJS.IsCentered())
+            //	{
+            //		UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
+            //	}
+            //}
+            //else
+            //{
+            //	if (e.PointerCount == 1 && e.GetX() <= ScreenWidth / 2 && !mRightJS.IsCentered())
+            //	{
+            //		UpdateOvals(mRightJS.CenterX, mRightJS.CenterY);
+            //	}
+            //	else if (e.PointerCount == 1 && e.GetX() > ScreenWidth / 2 && !mLeftJS.IsCentered())
+            //	{
+            //                 if (Settings.AltitudeControlActivated)
+            //                 {
+            //                     UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY);
+            //                 }
+            //                 else
+            //                 {
+            //                     UpdateOvals(mLeftJS.CenterX, mLeftJS.CenterY + Joystick.DisplacementRadius);
+            //                 }
+            //	}
+            //}
+
+            Invalidate();
 			return true;
 		}
 
@@ -483,26 +486,23 @@ namespace BTDronection
         /// </summary>
         public void Write(object sender, System.Timers.ElapsedEventArgs e)
         {
-            if (mSocket.Socket.IsConnected)
+            if (!Settings.Inverted)
             {
-                if (!Settings.Inverted)
-                {
-                    //int throttle = Settings.AltitudeControlActivated ? 50 : mLeftJS.Throttle;
-                    int throttle = mLeftJS.Throttle;
-					mSocket.Write((Int16)throttle,
-                                  (Int16)(mLeftJS.Rudder - Settings.TrimYaw),
-                                  (Int16)(mRightJS.Aileron - Settings.TrimRoll),
-                                  (Int16)(mRightJS.Elevator - Settings.TrimPitch));
-                }
-                else
-                {
-					//int throttle = Settings.AltitudeControlActivated ? 50 : mRightJS.Throttle;
-                    int throttle = mRightJS.Throttle;
-                    mSocket.Write((Int16)throttle,
-                                  (Int16)(mLeftJS.Rudder - Settings.TrimYaw),
-                                  (Int16)(mLeftJS.Aileron - Settings.TrimRoll),
-                                  (Int16)(mRightJS.Elevator - Settings.TrimPitch));
-                }
+                //int throttle = Settings.AltitudeControlActivated ? 50 : mLeftJS.Throttle;
+                int throttle = mLeftJS.Throttle;
+                mSocket.Write((Int16)throttle,
+                              (Int16)(mLeftJS.Rudder - Settings.TrimYaw),
+                              (Int16)(mRightJS.Aileron - Settings.TrimRoll),
+                              (Int16)(mRightJS.Elevator - Settings.TrimPitch));
+            }
+            else
+            {
+                //int throttle = Settings.AltitudeControlActivated ? 50 : mRightJS.Throttle;
+                int throttle = mRightJS.Throttle;
+                mSocket.Write((Int16)throttle,
+                              (Int16)(mLeftJS.Rudder - Settings.TrimYaw),
+                              (Int16)(mLeftJS.Aileron - Settings.TrimRoll),
+                              (Int16)(mRightJS.Elevator - Settings.TrimPitch));
             }
         }
     }

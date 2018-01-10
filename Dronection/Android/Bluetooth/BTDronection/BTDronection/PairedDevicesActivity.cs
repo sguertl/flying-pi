@@ -58,15 +58,6 @@ namespace BTDronection
 		private List<BluetoothDevice> mPairedDevices;
 		private List<String> mPeers;
 
-        // Socket members
-		private SocketConnection mSocketConnection;
-		private bool mIsConnected;
-		public bool IsConnected
-        {
-            get { return mIsConnected; }
-            set { mIsConnected = value; }
-        }
-
         /// <summary>
         /// Creates activity.
         /// </summary>
@@ -109,9 +100,6 @@ namespace BTDronection
             mBtAdapter = BluetoothAdapter.DefaultAdapter;
             mPairedDevices = mBtAdapter.BondedDevices.Where(bd => bd.Name.ToUpper().Contains("RASPBERRY") || bd.Name.ToUpper().Contains("RPI") || bd.Name.ToUpper().Contains("XMC")).ToList();
             mPeers = new List<String>();
-            mIsConnected = true;
-
-            mSocketConnection = SocketConnection.Instance;
 
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.SetMessage("Connecting with device");
@@ -150,7 +138,9 @@ namespace BTDronection
             TextView view = (TextView)e.View.FindViewById<TextView>(Resource.Id.tvListItem);
             string address = view.Text.Split('\n')[1];
             BluetoothDevice bluetoothDevice = BluetoothAdapter.DefaultAdapter.GetRemoteDevice(address);
-            BuildConnection(bluetoothDevice);
+            Intent intent = new Intent(BaseContext, typeof(ControllerActivity));
+            intent.PutExtra("device", bluetoothDevice);
+            StartActivityForResult(intent, 10);
         }
 
         /// <summary>
@@ -164,36 +154,12 @@ namespace BTDronection
             StartActivityForResult(bluetoothSettings, 0);
         }
 
-        /// <summary>
-        /// Builds a connection to a bluetooth device.
-        /// </summary>
-        /// <param name="bluetoothDevice">Bluetooth device.</param>
-        public void BuildConnection(BluetoothDevice bluetoothDevice)
-        {
-            Toast.MakeText(ApplicationContext, "Connecting...", 0).Show();
-
-            // Establish connection
-            try
-            {
-                mSocketConnection.Init(bluetoothDevice);
-                mSocketConnection.OnStartConnection();
-            }catch(Exception ex)
-            {}
-
-            if(mSocketConnection.Socket != null &&  mSocketConnection.Socket.IsConnected == true)
-            {
-                Intent intent = new Intent(BaseContext, typeof(ControllerActivity));
-                intent.PutExtra("mac", bluetoothDevice.Address);
-                StartActivity(intent);
-            }
-            else
-            {
-                Toast.MakeText(this, "Could not connect to peer", ToastLength.Short).Show();
-            }
-        }
-
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
+            if(requestCode == 10)
+            {
+                Toast.MakeText(ApplicationContext, "Could not connect to device...", ToastLength.Short);
+            }
             mPairedDevices = mBtAdapter.BondedDevices.Where(bd => bd.Name.ToUpper().Contains("RASPBERRY") || bd.Name.ToUpper().Contains("RPI") || bd.Name.ToUpper().Contains("XMC")).ToList();
             GetPairedDevices();
         }

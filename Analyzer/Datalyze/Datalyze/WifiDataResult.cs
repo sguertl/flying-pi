@@ -56,7 +56,7 @@ namespace Datalyze
         public double GetDataRate()
         {
             float time = mWifiResults.Sum(wd => wd.TimeDif) - mWifiResults[0].TimeDif;
-            return Math.Round((((mRepetitions * mBytes) * GetCorrectnessPercentage() / 100) / time), 2);
+            return Math.Round((((mRepetitions * mBytes) * GetCorrectnessPercentage() / 100) / time * 1000), 2);
         }
 
         public double GetAverageTimeDif()

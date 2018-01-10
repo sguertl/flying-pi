@@ -34,6 +34,8 @@ using Android.Widget;
 using Android.Graphics;
 using System.Collections.Generic;
 using System.Linq;
+using Android.Views;
+using Android.Bluetooth;
 
 namespace BTDronection
 {
@@ -85,9 +87,7 @@ namespace BTDronection
         private int mMaxPitch;
         private int mMinRoll;
         private int mMaxRoll;
-        private Flight mFlight;
-
-		// Socket members
+        private ControllerView mControllerView;
         private SocketConnection mSocketConnection;
 
         // Constants
@@ -161,10 +161,14 @@ namespace BTDronection
            
 			mCbxLoggingActive.Click += (sender, e) => mLoggingActive = mCbxLoggingActive.Checked;
 
-			// Get singleton instance of socket connection
-			mSocketConnection = SocketConnection.Instance;
-
-            mSelectedMac = Intent.GetStringExtra("mac");
+            BluetoothDevice device = (BluetoothDevice)Intent.GetParcelableExtra("device");
+            mSocketConnection = new SocketConnection();
+            mSocketConnection.Connect(device);
+            if(mSocketConnection.IsConnected == false)
+            {
+                Finish();
+            }
+            mSelectedMac = device.Address;
             mPeerSettings = ReadPeerSettings();
 
             mCbxLoggingActive.Checked = mLoggingActive;
@@ -285,8 +289,6 @@ namespace BTDronection
         /// </summary>
         private void OnStartController(object sender, EventArgs e)
         {
-            mFlight = Flight.Instance;
-
             mMinYaw = Convert.ToInt32(mEtMinYaw.Text);
 			mMaxYaw = Convert.ToInt32(mEtMaxYaw.Text);
 
@@ -295,8 +297,7 @@ namespace BTDronection
 
 			mMinRoll = Convert.ToInt32(mEtMinRoll.Text);
 			mMaxRoll = Convert.ToInt32(mEtMaxRoll.Text);
-
-			SetContentView(Resource.Layout.ControllerLayout);
+            SetContentView(Resource.Layout.ControllerLayout);
 
             if (mPeerSettings.Any(kvp => kvp.Key == mSelectedMac) == true)
             {
@@ -313,12 +314,15 @@ namespace BTDronection
             }
 
             // Initialize widgets
+            mControllerView = FindViewById<ControllerView>(Resource.Id.JoystickView);
             mSbTrimBar = FindViewById<SeekBar>(Resource.Id.sbTrimbar);
             mTvTrimValue = FindViewById<TextView>(Resource.Id.tvTrimValue);
             mRbYawTrim = FindViewById<RadioButton>(Resource.Id.rbYawTrim);
             mRbPitchTrim = FindViewById<RadioButton>(Resource.Id.rbPitchTrim);
             mRbRollTrim = FindViewById<RadioButton>(Resource.Id.rbRollTrim);
             mBtnAltitudeControl = FindViewById<Button>(Resource.Id.btnAltitudeControl);
+
+            mControllerView.SetSocket(mSocketConnection);
 
             // Create and set font
             var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
@@ -423,14 +427,14 @@ namespace BTDronection
 
                 if (ControllerView.Settings.Inverted)
                 {
-                    mFlight.CV.UpdateOvals(mFlight.CV.mRightJS.CenterX, mFlight.CV.mRightJS.CenterY);
+                    mControllerView.UpdateOvals(mControllerView.mRightJS.CenterX, mControllerView.mRightJS.CenterY);
                 }
                 else
                 {
-                    mFlight.CV.UpdateOvals(mFlight.CV.mLeftJS.CenterX, mFlight.CV.mLeftJS.CenterY);
+                    mControllerView.UpdateOvals(mControllerView.mLeftJS.CenterX, mControllerView.mLeftJS.CenterY);
                 }
 
-                mFlight.CV.Invalidate();
+                mControllerView.Invalidate();
             }
         }
 
@@ -441,13 +445,7 @@ namespace BTDronection
 		{
 			base.OnDestroy();
 			WriteLogData();
-			mSocketConnection.Cancel();
-
-            if(mFlight.CV.WriteTimer != null)
-            {
-                mFlight.CV.WriteTimer.Close();
-                //mFlight.CV.WriteTimer = null;
-            }
+			mSocketConnection.Close();
 		}
 
 		/// <summary>
@@ -457,13 +455,7 @@ namespace BTDronection
 		{
 			base.OnStop();
 			WriteLogData();
-			mSocketConnection.Cancel();
-
-            if (mFlight.CV.WriteTimer != null)
-            {
-                mFlight.CV.WriteTimer.Close();
-                //mFlight.CV.WriteTimer = null;
-            }
+			mSocketConnection.Close();
         }
     }
 }

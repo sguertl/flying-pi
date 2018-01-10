@@ -1,304 +1,86 @@
-﻿/************************************************************************
-*                                                                       *
-*  Copyright (C) 2017 Infineon Technologies Austria AG.                 *
-*                                                                       *
-*  Licensed under the Apache License, Version 2.0 (the "License");      *
-*  you may not use this file except in compliance with the License.     *
-*  You may obtain a copy of the License at                              *
-*                                                                       *
-*    http://www.apache.org/licenses/LICENSE-2.0                         *
-*                                                                       *
-*  Unless required by applicable law or agreed to in writing, software  *
-*  distributed under the License is distributed on an "AS IS" BASIS,    *
-*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or      *
-*  implied.                                                             *
-*  See the License for the specific language governing                  *
-*  permissions and limitations under the License.                       *
-*                                                                       *
-*                                                                       *
-*  File: SocketConnection.cs                                            *
-*  Created on: 2017-07-19                                               *
-*  Author(s): Klapsch Adrian Vasile (IFAT PMM TI COP)                   *
-*             Englert Christoph (IFAT PMM TI COP)                       *
-*                                                                       *
-*  SocketConnection is a Singleton class that establishes a socket      *
-*  connection to the Raspberry.                                         *
-*                                                                       *
-************************************************************************/
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-using System;
-
-using Java.Lang;
+using Android.App;
+using Android.Content;
+using Android.OS;
+using Android.Runtime;
+using Android.Views;
+using Android.Widget;
 using Android.Bluetooth;
-using Java.Lang.Reflect;
-using Android.Util;
 using Java.IO;
-
+using Java.Util;
+using Android.Util;
 
 namespace BTDronection
 {
     public class SocketConnection
     {
+        private BluetoothSocket mSocket;
+        private SocketWriter mSocketWriter;
+        private string mLogData;
+        private int mStartMillis;
 
-		// Debug variable
-		private static readonly string TAG = "SocketConnection";
+        private readonly string BLUETOOTH_UUID_STRING = "00001101-0000-1000-8000-00805F9B34FB";
 
-        // Constants
-        private readonly byte START_BYTE = 0x00;
-        private readonly int PACKET_SIZE = 19;
-
-		// Singleton members
-		private static SocketConnection instance = null;
-		private static readonly object padlock = new object();
-
-		// Thread for connection
-		public Thread mConnectionThread;
-
-
-        // Input and output members
-		private DataInputStream mDataInputStream;
-		public DataInputStream InputStream
-		{
-			get { return mDataInputStream; }
-		}
-
-		private DataOutputStream mDataOutputStream;
-
-		private string mLogData;
-		public string LogData
-		{
-			get { return mLogData; }
-		}
-
-		private long mStartMillis;
-
-
-		// Bluetooth members
-		private BluetoothAdapter mAdapter;
-
-		private BluetoothDevice mPeer;
-		public BluetoothDevice Peer
+        public bool IsConnected
         {
-            get { return mPeer; }
-            set { mPeer = value; }
+            get { return mSocket.IsConnected; }
         }
 
-		private BluetoothSocket mSocket;
-		public BluetoothSocket Socket
+        public string LogData
         {
-            get { return mSocket; }
+            get { return mLogData; }
         }
 
-		/// <summary>
-		/// Returns an instance of SocketConnection.
-        /// Calls private constructor if no instance is created yet.
-		/// </summary>
-		/// <value>Instance of SocketConnection</value>
-		public static SocketConnection Instance
+        public SocketConnection()
         {
-            get
-            {
-                lock (padlock)
-                {
-                    if (instance == null)
-                    {
-                        instance = new SocketConnection();
-                    }
-                    return instance;
-                }
-            }
+            //
         }
 
-        /// <summary>
-        /// Private singleton constructor
-        /// Calls Init().
-        /// </summary>
-        private SocketConnection()
-        {
-            Init();
-        }
-
-		/// <summary>
-		/// Initizalizes the socket connection and connection thread.
-        /// Resets wifi socket, connection thread and output streams.
-		/// </summary>
-		private void Init()
-        {
-            mAdapter = BluetoothAdapter.DefaultAdapter;
-            mStartMillis = 0;
-
-            this.mConnectionThread = new Thread(BuildConnection);
-        }
-
-		/// <summary>
-		/// Initizalizes the socket connection.
-        /// Throws an exception if the device is not available.
-		/// </summary>
-		public void Init(BluetoothDevice device)
+        public void Connect(BluetoothDevice device)
         {
             try
             {
-                Init();
-                BluetoothSocket tmp = null;
-                tmp = device.CreateInsecureRfcommSocketToServiceRecord(device.GetUuids()[0].Uuid);
-                Class helpClass = tmp.RemoteDevice.Class;
-                Class[] paramTypes = new Class[] { Integer.Type };
-                Method m = helpClass.GetMethod("createRfcommSocket", paramTypes);
-                Java.Lang.Object[] param = new Java.Lang.Object[] { Integer.ValueOf(1) };
-
-                mSocket = (BluetoothSocket)m.Invoke(tmp.RemoteDevice, param);
-            }catch(System.Exception ex)
-            {
-                throw new System.Exception();
-            }
-        }
-
-		/// <summary>
-		/// Starts the socket connection.
-		/// Starts the socket thread.
-		/// </summary>
-		public void OnStartConnection()
-        {
-            if (mConnectionThread != null)
-            {
-                // Start the Connection (BuildConnection)
-                mConnectionThread.Start();
-                // Wait until the thread has finished
-                mConnectionThread.Join();
-            }
-
-        }
-
-        /// <summary>
-        /// Establishes a bluetooth connection.
-        /// Socket streams are created for reading and writing
-        /// </summary>
-        public void BuildConnection()
-        {
-                mAdapter.CancelDiscovery();
-
+                BluetoothSocket tempBTSocket = null;
                 try
                 {
-                    if (mSocket.IsConnected == false)
-                    {
-                        Thread.Sleep(2000);
-                        // a to the bluetooth device
-                        mSocket.Connect();
-                    }
-                } 
-                catch (Java.Lang.Exception ex)
-                {
-                    Log.Debug(TAG, "Connection could not be created (" + ex.Message + ")");
-                    Cancel();
+                    tempBTSocket = device.CreateRfcommSocketToServiceRecord(UUID.FromString(BLUETOOTH_UUID_STRING));
+                    tempBTSocket.Connect();
                 }
-
-            if (mSocket.IsConnected)
-            {
-                mDataOutputStream = new DataOutputStream(mSocket.OutputStream);
-                mDataInputStream = new DataInputStream(mSocket.InputStream);
+                catch (IOException ex)
+                {
+                    Log.Debug("SocketConnection", "Connection Error 1");
+                }
+                mSocket = tempBTSocket;
+                mSocketWriter = new SocketWriter(tempBTSocket.OutputStream);
+                byte[] bytes = new byte[10] { 10, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+                mSocketWriter.Write(bytes);
             }
-
+            catch (IOException ex)
+            {
+                Log.Debug("SocketConnection", "Connection Error 2");
+            }
         }
 
-		/// <summary>
-		/// Writes controller data from the smartphone to the Raspberry or to the drone
-        /// through the socket connection.
-        /// Closes the socket if writing fails.
-		/// </summary>
-		/// <param name="args">Controller parameter (throttle, yaw, pitch, roll)</param>
-		public void Write(params Int16[] args)
+        public void Write(params Int16[] args)
         {
-            mLogData += mStartMillis + "," + args[0] + "," + args[1] + "," + args[2] + "," + args[3] + "," + (ControllerView.Settings.AltitudeControlActivated ? 1 : 0) + "\n";
-            Log.Debug(TAG, mLogData);
-            mStartMillis += 10;
-            byte[] bytes = ConvertToByte(args);
-            try
+            if(mSocket.IsConnected == true)
             {
-                mDataOutputStream.Write(bytes, 0, bytes.Length);
-                mDataOutputStream.Flush();
+                mLogData += mStartMillis + "," + args[0] + "," + args[1] + "," + args[2] + "," + args[3] + "," + (ControllerView.Settings.AltitudeControlActivated ? 1 : 0) + "\n";
+                mStartMillis += 10;
+                mSocketWriter.Write(args);
             }
-            catch(Java.Lang.Exception ex)
-            {
-                Log.Debug(TAG, "Error while sending data (" + ex.Message + ")");
-                Cancel();
-            }
-            System.Console.WriteLine("Socket: " + mSocket.GetHashCode());
         }
 
-		/// <summary>
-		/// Converts int16 controller parameters to byte stream
-		/// </summary>
-		/// <param name="args">Controller parameter (throttle, yaw, pitch, roll)</param>
-		/// <returns>Byte stream</returns>
-		private byte[] ConvertToByte(params Int16[] args)
+        public void Close()
         {
-            byte[] b = new byte[PACKET_SIZE];
-            byte speed = (byte)args[0];
-            byte heightcontrol = (byte)(ControllerView.Settings.AltitudeControlActivated == true ? 1 : 0);
-            int azimuth = Java.Lang.Float.FloatToIntBits(args[1]);
-            int pitch = Java.Lang.Float.FloatToIntBits(args[2]);
-            int roll = Java.Lang.Float.FloatToIntBits(args[3]);
-
-            int checksum = START_BYTE;
-            checksum ^= (heightcontrol << 8 | speed) & 0xFFFF;
-            checksum ^= azimuth;
-            checksum ^= pitch;
-            checksum ^= roll;
-
-            b[0] = START_BYTE;
-
-            b[1] = (byte)(heightcontrol & 0xFF);
-            b[2] = (byte)(speed & 0xFF);
-
-            b[3] = (byte)((azimuth >> 24) & 0xFF);
-            b[4] = (byte)((azimuth >> 16) & 0xFF);
-            b[5] = (byte)((azimuth >> 8) & 0xFF);
-            b[6] = (byte)(azimuth & 0xFF);
-
-            b[7] = (byte)((pitch >> 24) & 0xFF);
-            b[8] = (byte)((pitch >> 16) & 0xFF);
-            b[9] = (byte)((pitch >> 8) & 0xFF);
-            b[10] = (byte)(pitch & 0xFF);
-
-            b[11] = (byte)((roll >> 24) & 0xFF);
-            b[12] = (byte)((roll >> 16) & 0xFF);
-            b[13] = (byte)((roll >> 8) & 0xFF);
-            b[14] = (byte)(roll & 0xFF);
-
-            b[15] = (byte)((checksum >> 24) & 0xFF);
-            b[16] = (byte)((checksum >> 16) & 0xFF);
-            b[17] = (byte)((checksum >> 8) & 0xFF);
-            b[18] = (byte)(checksum & 0xFF);
-            return b;
-        }
-
-		/// <summary>
-		/// Closes everything related to the socket connection.
-		/// </summary>
-		public void Cancel()
-        {
-            try
+            if(mSocket != null && mSocket.IsConnected == true)
             {
-
-                if (ControllerView.Settings != null)
-                {
-                    ControllerView.Settings.AltitudeControlActivated = false;
-                }
-
-                //this.mConnectionThread = null;
-                
-                if (mDataOutputStream != null)
-                {
-                    mDataOutputStream.Close();
-                }
-
-                if(mSocket != null)
-                {
-                    mSocket.Close();
-                }
-            }catch(Java.Lang.Exception ex)
-            {
-                Log.Debug(TAG, "Cancel Failed (" + ex.Message + ")");
+                mSocketWriter.Close();
+                mSocket.Close();
             }
         }
     }
