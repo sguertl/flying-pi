@@ -18,7 +18,7 @@
 *                                                                       *
 *  File: CurrentVisualizationData.cs                                    *
 *  Created on: 2017-07-28                                               *
-*  Author(s): Englert Christoph (IFAT PMM TI COP)                       *
+*  Author(s): Christoph Englert                                         *
 *                                                                       *
 *  CurrentVisualizationData is a singleton class to store data from     *
 *  a file that is going to be displayed in a graph.                     *

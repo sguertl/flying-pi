@@ -18,7 +18,7 @@
 *                                                                       *
 *  File: PairedDevicesActivity.cs                                       *
 *  Created on: 2017-07-21                                               *
-*  Author(s): Englert Christoph (IFAT PMM TI COP)                       *
+*  Author(s): Christoph Englert                                         *
 *                                                                       *
 *  PairedDevicesActivity has a list of all paired devices and can       *
 *  search for new bluetooth devices.                                    *

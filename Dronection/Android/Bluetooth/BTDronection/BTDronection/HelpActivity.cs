@@ -18,7 +18,7 @@
 *                                                                       *
 *  File: HelpActivity.cs                                                *
 *  Created on: 2017-07-25                                               *
-*  Author(s): Guertl Sebastian Matthias (IFAT PMM TI COP)               *
+*  Author(s): Sebastian Guertl                                          *
 *                                                                       *
 *  HelpActivity provides general information:                           *
 *  - Description of the structure of the app                            *

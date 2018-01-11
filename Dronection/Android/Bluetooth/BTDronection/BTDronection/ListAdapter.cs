@@ -18,7 +18,7 @@
 *                                                                       *
 *  File: ListAdapter.cs                                                 *
 *  Created on: 2017-07-27                                               *
-*  Author(s): Klapsch Adrian Vasile (IFAT PMM TI COP)                   *
+*  Author(s): Adrian Klapsch                                            *
 *                                                                       *
 *  ListAdapter provides a customized design for listviews.              *
 *                                                                       *

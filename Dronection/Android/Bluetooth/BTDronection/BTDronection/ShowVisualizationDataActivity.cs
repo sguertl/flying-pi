@@ -18,7 +18,7 @@
 *                                                                       *
 *  File: ShowVisualizationDataActivity.cs                               *
 *  Created on: 2017-07-28                                               *
-*  Author(s): Englert Christoph (IFAT PMM TI COP)                       *
+*  Author(s): Christoph Englert                                         *
 *                                                                       *
 *  ShowVisualizationDataActivity shows the previously selected data     *
 *  visualized in a line chart.                                          *

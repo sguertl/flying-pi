@@ -18,7 +18,7 @@
 *                                                                       *
 *  File: VisualizationActivity.cs                                       *
 *  Created on: 2017-07-28                                               *
-*  Author(s): Englert Christoph (IFAT PMM TI COP)                       *
+*  Author(s): Christoph Englert                                         *
 *                                                                       *
 *  VisualizationActivity provides all log files in a listview.          *
 *                                                                       *

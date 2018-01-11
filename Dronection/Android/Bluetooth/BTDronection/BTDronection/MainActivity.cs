@@ -18,11 +18,12 @@
 *                                                                       *
 *  File: MainActivity.cs                                                *
 *  Created on: 2017-07-19                                               *
-*  Author(s): Guertl Sebastian Matthias (IFAT PMM TI COP)               *
-*             Klapsch Adrian Vasile (IFAT PMM TI COP)                   *
-*             Englert Christoph (IFAT PMM TI COP)                       *
+*  Author(s): Sebastian Guertl                                          *
+*             Adrian Klapsch                                            *
+*             Christoph Englert                                         *
 *                                                                       *
-*  MainActivity asks the user to activate bluetooth.                    *
+*  MainActivity asks the user to activate bluetooth and provides        *
+*  several functionalities.                                             *
 *                                                                       *
 ************************************************************************/
 

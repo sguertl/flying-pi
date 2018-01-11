@@ -18,7 +18,7 @@
 *                                                                       *
 *  File: LogActivity.cs                                                 *
 *  Created on: 2017-07-27                                               *
-*  Author(s): Klapsch Adrian Vasile (IFAT PMM TI COP)                   *
+*  Author(s): Adrian Klapsch                                            *
 *                                                                       *
 *  LogActivity displays all log files in a listview. A click on an      *
 *  item shows the options:                                              *

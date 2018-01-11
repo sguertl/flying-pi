@@ -18,7 +18,7 @@
 *                                                                       *
 *  File: Joystick.cs                                                    *
 *  Created on: 2017-07-19                                               *
-*  Author(s): Guertl Sebastian Matthias (IFAT PMM TI COP)               *
+*  Author(s): Sebastian Guertl                                          *
 *                                                                       *
 *  Joystick provides the functionality of a hardware joystick           *
 *  on a RC.                                                             *

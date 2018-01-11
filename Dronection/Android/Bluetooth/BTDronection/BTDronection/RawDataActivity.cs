@@ -18,8 +18,8 @@
 *                                                                       *
 *  File: RawDataActivity.cs                                             *
 *  Created on: 2017-8-1                                                 *
-*  Author(s): Englert Christoph (IFAT PMM TI COP)                       *
-*             Klapsch Adrian Vasile (IFAT PMM TI COP)                   *
+*  Author(s): Christoph Englert                                         *
+*             Adrian Klapsch                                            *
 *                                                                       *
 *  RawDataActivity displays raw data from a log file of a flight.       *
 *                                                                       *

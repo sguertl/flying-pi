@@ -18,8 +18,8 @@
 *                                                                       *
 *  File: ControllerView.cs                                              *
 *  Created on: 2017-07-19                                               *
-*  Author(s): Guertl Sebastian Matthias (IFAT PMM TI COP)               *
-*             Klapsch Adrian Vasile (IFAT PMM TI COP)                   *
+*  Author(s): Sebastian Guertl                                          *
+*             Adrian Klapsch                                            *
 *                                                                       *
 *  ControllerView is mainly responsible for drawing the joysticks       *
 *  and transferring the resulting data to the recipient.                *

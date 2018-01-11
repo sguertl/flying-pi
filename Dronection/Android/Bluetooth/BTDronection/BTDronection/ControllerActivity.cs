@@ -18,8 +18,8 @@
 *                                                                       *
 *  File: ControllerActivity.cs                                          *
 *  Created on: 2017-07-19                                               *
-*  Author(s): Guertl Sebastian Matthias (IFAT PMM TI COP)               *
-*             Klapsch Adrian Vasile (IFAT PMM TI COP)                   *
+*  Author(s): Sebastian Guertl                                          *
+*             Adrian Klapsch                                            *
 *                                                                       *
 *  ControllerActivity has two functionalities:                          *
 *  1) Choose between controller mode before flight.                     *
