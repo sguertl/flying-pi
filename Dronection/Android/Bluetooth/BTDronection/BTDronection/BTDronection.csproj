@@ -121,7 +121,7 @@
     <AndroidResource Include="Resources\drawable\CustomSeekBar.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\ifx_logo.png" />
+    <AndroidResource Include="Resources\drawable\ifxlogo.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\mode1.png" />
