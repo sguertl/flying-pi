@@ -31,6 +31,7 @@ using Java.Lang;
 using Java.IO;
 using Android.Util;
 using System.Collections.Generic;
+using System.IO;
 
 namespace WiFiDronection
 {
@@ -73,25 +74,26 @@ namespace WiFiDronection
             mDataInputStream = inputStream;
             mRaspberryCloseEvent = rpiClose;
             mDroneLogs = new Dictionary<string, LogData>();
-            //this.mDataReaderThread = new Thread(OnRead);
+            mDataReaderThread = new Thread(OnRead);
         }
 
         /// <summary>
         /// Reads data from Raspberry in a thread.
         /// </summary>
-        public void OnRead()
+        private void OnRead()
         {
             int bytes = 0;
             byte[] buffer = new byte[41];
             int count = 0;
-            while (mDataReaderThread != null)
+            while (true)
             {
                 try
                 {
                     bytes = mDataInputStream.Read(buffer);
+                    Log.Debug("???", buffer[1].ToString());
                     string msg = "";
-                    if(buffer[0] != 1)
-                    {
+                    if(buffer[0] != 1 && buffer[0] != 99)
+                    { 
                         bool isRight = ControlChecksum(buffer);
                         if(isRight == true)
                         {
@@ -123,6 +125,7 @@ namespace WiFiDronection
                                 int rawRadar = (buffer[18] & 0xFF) | ((buffer[17] & 0xFF) << 8) | ((buffer[16] & 0xFF) << 16) | ((buffer[15] & 0xFF) << 24);
                                 float radar = Float.IntBitsToFloat(rawRadar);
                                 line = count + ";" + radar.ToString();
+                                Log.Debug("!!!", line);
                                 mDroneLogs["Radar"].Add(radar.ToString());
                             }
 
@@ -164,15 +167,20 @@ namespace WiFiDronection
                     {
                         msg = buffer[1].ToString();
                         mCurrentMsg = msg;
+                        if(msg == "99")
+                        {
+                            break;
+                        }
                     }
                 }
                 catch (Java.IO.IOException ex)
                 {
-                    Log.Debug(TAG, "Error reading (" + ex.Message + ")");
+                    Log.Debug(TAG, "Error reading (" + ex.Message + ")1");
+                    break;
                 }
                 catch (NullReferenceException ex)
                 {
-                    Log.Debug(TAG, "No socket connection (" + ex.Message + ")");
+                    Log.Debug(TAG, "No socket connection (" + ex.Message + ")2");
                     // throw new NullReferenceException();
                 }
                 catch(Java.Lang.StringIndexOutOfBoundsException ex)
@@ -182,6 +190,7 @@ namespace WiFiDronection
                     mRaspberryCloseEvent();
                 }
             }
+            Close();
             return;
         }
 
@@ -204,9 +213,8 @@ namespace WiFiDronection
         /// <summary>
         /// Creates and starts the thread. 
         /// </summary>
-        public void OnStart()
+        public void StartListening()
         {
-            mDataReaderThread = new Thread(OnRead);
             mDataReaderThread.Start();
         }
 
@@ -219,15 +227,14 @@ namespace WiFiDronection
             {
                 if (mDataReaderThread != null)
                 {
+                    mDataReaderThread.Join();
                     mDataReaderThread = null;
                 }
 
                 if (mDataInputStream != null)
                 {
                     mDataInputStream.Close();
-                    mDataInputStream = null;
                 }
-                
             }
 			catch(Java.Lang.Exception ex)
             {

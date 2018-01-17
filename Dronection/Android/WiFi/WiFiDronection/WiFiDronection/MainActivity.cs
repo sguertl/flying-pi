@@ -277,25 +277,5 @@ namespace WiFiDronection
             var settingsFile = new Java.IO.File(ApplicationFolderPath + Java.IO.File.Separator + "settings" + Java.IO.File.Separator + "settings.csv");
             settingsFile.CreateNewFile();
         }
-
-        /// <summary>
-        /// Closes socket connection and application.
-        /// </summary>
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-            SocketConnection sc = SocketConnection.Instance;
-            sc.OnCancel();
-        }
-
-        /// <summary>
-        /// Closes socket connection and application.
-        /// </summary>
-        protected override void OnStop()
-        {
-            base.OnStop();
-            SocketConnection sc = SocketConnection.Instance;
-            sc.OnCancel();
-        }
     }
 }

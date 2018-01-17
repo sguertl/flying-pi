@@ -85,6 +85,11 @@ namespace WiFiDronection
         /// </summary>
         private SocketConnection mSocketConnection;
 
+        public void SetSocketConnection(SocketConnection conn)
+        {
+            mSocketConnection = conn;
+        }
+
 		/// <summary>
 		/// Timer for sending data and checking WiFi connection.
 		/// </summary>
@@ -121,12 +126,6 @@ namespace WiFiDronection
         /// </summary>
         private void Init()
         {
-            // Create an instance of Flight
-            Flight flight = Flight.Instance;
-            flight.CV = this;
-
-            // Create socket connection
-            mSocketConnection = SocketConnection.Instance;
 
             // Initialize ControllerSettings
             Settings = new ControllerSettings
@@ -474,31 +473,26 @@ namespace WiFiDronection
         /// </summary>
         public void Write(object sender, System.Timers.ElapsedEventArgs e)
         {
-            if (mSocketConnection.WifiSocket.IsConnected)
+            if (!Settings.Inverted)
             {
-                // Test
-                if (!Settings.Inverted)
-                {
 
-                    //int throttle = Settings.AltitudeControlActivated ? 50 : mLeftJS.Throttle;
-                    int throttle = mLeftJS.Throttle;
-                    mSocketConnection.Write(0x00, (Int16)throttle,
-                                      (Int16)(mLeftJS.Rudder - Settings.TrimYaw),
-                                      (Int16)(mRightJS.Aileron - Settings.TrimRoll),
-                                      (Int16)(mRightJS.Elevator - Settings.TrimPitch));
-                    //Log.Debug("!!!", mLeftJS.Throttle + " " + mLeftJS.Rudder + " " + mRightJS.Aileron + " " + mRightJS.Elevator);
-                }
-                else
-                {
-                    //int throttle = Settings.AltitudeControlActivated ? 50 : mRightJS.Throttle;
-                    int throttle = mRightJS.Throttle;
-                    mSocketConnection.Write(0x00, (Int16)throttle,
-                                      (Int16)(mLeftJS.Rudder - Settings.TrimYaw),
-                                      (Int16)(mLeftJS.Aileron - Settings.TrimRoll),
-                                      (Int16)(mRightJS.Elevator - Settings.TrimPitch));
-                    //Log.Debug("!!!", mRightJS.Throttle + " " + mLeftJS.Rudder + " " + mLeftJS.Aileron + " " + mRightJS.Elevator);
-                }
-                
+                //int throttle = Settings.AltitudeControlActivated ? 50 : mLeftJS.Throttle;
+                int throttle = mLeftJS.Throttle;
+                mSocketConnection.WriteControl((Int16)throttle,
+                                  (Int16)(mLeftJS.Rudder - Settings.TrimYaw),
+                                  (Int16)(mRightJS.Aileron - Settings.TrimRoll),
+                                  (Int16)(mRightJS.Elevator - Settings.TrimPitch));
+                //Log.Debug("!!!", mLeftJS.Throttle + " " + mLeftJS.Rudder + " " + mRightJS.Aileron + " " + mRightJS.Elevator);
+            }
+            else
+            {
+                //int throttle = Settings.AltitudeControlActivated ? 50 : mRightJS.Throttle;
+                int throttle = mRightJS.Throttle;
+                mSocketConnection.WriteControl((Int16)throttle,
+                                  (Int16)(mLeftJS.Rudder - Settings.TrimYaw),
+                                  (Int16)(mLeftJS.Aileron - Settings.TrimRoll),
+                                  (Int16)(mRightJS.Elevator - Settings.TrimPitch));
+                //Log.Debug("!!!", mRightJS.Throttle + " " + mLeftJS.Rudder + " " + mLeftJS.Aileron + " " + mRightJS.Elevator);
             }
         }
     }
