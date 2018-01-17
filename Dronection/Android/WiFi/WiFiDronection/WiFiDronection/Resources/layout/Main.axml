@@ -99,7 +99,7 @@
         Infineon logo 
         -->
         <ImageView
-            android:src="@drawable/ifx_logo_medium"
+            android:src="@drawable/ifxlogo"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:scaleType="centerInside"

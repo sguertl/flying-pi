@@ -217,7 +217,7 @@
             android:id="@+id/tvThirdParty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="\u00A9 2017 Infineon Technologies Austria AG\nSiemensstraße 2, 9500 Villach"
+            android:text="\u00A9 2017-2018 Infineon Technologies Austria AG\nSiemensstraße 2, 9500 Villach"
             android:gravity="center_horizontal"
             android:textSize="14dp"
             android:layout_marginLeft="10dp"

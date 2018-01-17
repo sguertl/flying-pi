@@ -22,7 +22,7 @@ Author(s): Guertl Sebastian Matthias (IFAT PMM TI COP)
 
 <Summary>
 -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="WiFiDronection.WiFiDronection" android:versionCode="1" android:versionName="1.0.3" android:installLocation="auto">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.WiFiDronection" android:versionCode="1" android:versionName="1.0" android:installLocation="auto">
 	<uses-sdk android:minSdkVersion="16" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -31,5 +31,5 @@ Author(s): Guertl Sebastian Matthias (IFAT PMM TI COP)
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.NFC" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<application android:label="WiFiDronection"></application>
+	<application android:label="WiFiDronection" android:icon="@drawable/icon"></application>
 </manifest>

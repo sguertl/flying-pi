@@ -1,6 +1,6 @@
 ﻿/************************************************************************
 *                                                                       *
-*  Copyright (C) 2017 Infineon Technologies Austria AG.                 *
+*  Copyright (C) 2017-2018 Infineon Technologies Austria AG.            *
 *                                                                       *
 *  Licensed under the Apache License, Version 2.0 (the "License");      *
 *  you may not use this file except in compliance with the License.     *
@@ -18,7 +18,7 @@
 *                                                                       *
 *  File: Joystick.cs                                                    *
 *  Created on: 2017-07-19                                               *
-*  Author(s): Guertl Sebastian Matthias (IFAT PMM TI COP)               *
+*  Author(s): Sebastian Guertl                                          *
 *                                                                       *
 *  Joystick provides the functionality of a hardware joystick           *
 *  on a RC.                                                             *
