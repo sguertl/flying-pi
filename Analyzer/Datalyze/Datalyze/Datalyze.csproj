@@ -57,13 +57,13 @@
     <Compile Include="BTConnectionActivity.cs" />
     <Compile Include="BTSocketReader.cs" />
     <Compile Include="BTSocketWriter.cs" />
+    <Compile Include="DataResult.cs" />
     <Compile Include="ListAdapter.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WifiAnalyzeActivity.cs" />
     <Compile Include="WifiConnectionActivity.cs" />
-    <Compile Include="WifiDataResult.cs" />
     <Compile Include="WifiSocketReader.cs" />
     <Compile Include="WifiSocketWriter.cs" />
   </ItemGroup>
