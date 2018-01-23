@@ -100,8 +100,15 @@ namespace Datalyze
             {
                 if (repetitions == 0) repetitions = 1;
                 byte[] bytes = new byte[text.Length + 5];
-                mCurrentWifiResult = new DataResult(bytes.Length, repetitions, delay);
-                mSocketWriter.Write(1, (byte)bytes.Length);
+                int length = bytes.Length;
+                mCurrentWifiResult = new DataResult(length, repetitions, delay);
+                byte[] lengthBytes = new byte[5];
+                lengthBytes[0] = 0x1;
+                lengthBytes[1] = (byte)((length >> 24) & 0xFF);
+                lengthBytes[2] = (byte)((length >> 16) & 0xFF);
+                lengthBytes[3] = (byte)((length >> 8) & 0xFF);
+                lengthBytes[4] = (byte)(length & 0xFF);
+                mSocketWriter.Write(lengthBytes);
                 int checksum = 0;
                 bytes[0] = 10;
                 for(int i = 1; i <= text.Length; i++)
