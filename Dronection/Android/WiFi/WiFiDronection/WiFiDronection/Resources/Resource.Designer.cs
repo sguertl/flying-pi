@@ -87,8 +87,8 @@ namespace WiFiDronection
 			// aapt resource value: 0x7f050006
 			public const int JoystickView = 2131034118;
 			
-			// aapt resource value: 0x7f050028
-			public const int btStart = 2131034152;
+			// aapt resource value: 0x7f05000d
+			public const int btStart = 2131034125;
 			
 			// aapt resource value: 0x7f050005
 			public const int btnAltitudeControl = 2131034117;
@@ -105,14 +105,14 @@ namespace WiFiDronection
 			// aapt resource value: 0x7f050044
 			public const int btnConnect = 2131034180;
 			
-			// aapt resource value: 0x7f050018
-			public const int btnExpandTrimOptions = 2131034136;
+			// aapt resource value: 0x7f050019
+			public const int btnExpandTrimOptions = 2131034137;
 			
 			// aapt resource value: 0x7f050046
 			public const int btnHelp = 2131034182;
 			
-			// aapt resource value: 0x7f05000d
-			public const int btnLoggingOptions = 2131034125;
+			// aapt resource value: 0x7f05000e
+			public const int btnLoggingOptions = 2131034126;
 			
 			// aapt resource value: 0x7f050029
 			public const int btnSettingsBack = 2131034153;
@@ -123,53 +123,53 @@ namespace WiFiDronection
 			// aapt resource value: 0x7f050045
 			public const int btnShowLogs = 2131034181;
 			
-			// aapt resource value: 0x7f05000f
-			public const int cbxLogBarometer = 2131034127;
-			
-			// aapt resource value: 0x7f050011
-			public const int cbxLogCollisionStatus = 2131034129;
-			
-			// aapt resource value: 0x7f050013
-			public const int cbxLogControlsDrone = 2131034131;
+			// aapt resource value: 0x7f050010
+			public const int cbxLogBarometer = 2131034128;
 			
 			// aapt resource value: 0x7f050012
-			public const int cbxLogControlsMobile = 2131034130;
+			public const int cbxLogCollisionStatus = 2131034130;
 			
 			// aapt resource value: 0x7f050014
-			public const int cbxLogDebug1 = 2131034132;
+			public const int cbxLogControlsDrone = 2131034132;
+			
+			// aapt resource value: 0x7f050013
+			public const int cbxLogControlsMobile = 2131034131;
 			
 			// aapt resource value: 0x7f050015
-			public const int cbxLogDebug2 = 2131034133;
+			public const int cbxLogDebug1 = 2131034133;
 			
 			// aapt resource value: 0x7f050016
-			public const int cbxLogDebug3 = 2131034134;
+			public const int cbxLogDebug2 = 2131034134;
 			
 			// aapt resource value: 0x7f050017
-			public const int cbxLogDebug4 = 2131034135;
+			public const int cbxLogDebug3 = 2131034135;
 			
-			// aapt resource value: 0x7f050010
-			public const int cbxLogRadardata = 2131034128;
+			// aapt resource value: 0x7f050018
+			public const int cbxLogDebug4 = 2131034136;
+			
+			// aapt resource value: 0x7f050011
+			public const int cbxLogRadardata = 2131034129;
 			
 			// aapt resource value: 0x7f050050
 			public const int etDialogPassword = 2131034192;
 			
-			// aapt resource value: 0x7f050022
-			public const int etMaxPitch = 2131034146;
+			// aapt resource value: 0x7f050023
+			public const int etMaxPitch = 2131034147;
 			
-			// aapt resource value: 0x7f050027
-			public const int etMaxRoll = 2131034151;
+			// aapt resource value: 0x7f050028
+			public const int etMaxRoll = 2131034152;
 			
-			// aapt resource value: 0x7f05001d
-			public const int etMaxYaw = 2131034141;
+			// aapt resource value: 0x7f05001e
+			public const int etMaxYaw = 2131034142;
 			
-			// aapt resource value: 0x7f050020
-			public const int etMinPitch = 2131034144;
+			// aapt resource value: 0x7f050021
+			public const int etMinPitch = 2131034145;
 			
-			// aapt resource value: 0x7f050025
-			public const int etMinRoll = 2131034149;
+			// aapt resource value: 0x7f050026
+			public const int etMinRoll = 2131034150;
 			
-			// aapt resource value: 0x7f05001b
-			public const int etMinYaw = 2131034139;
+			// aapt resource value: 0x7f05001c
+			public const int etMinYaw = 2131034140;
 			
 			// aapt resource value: 0x7f05000b
 			public const int ivMode1 = 2131034123;
@@ -177,17 +177,17 @@ namespace WiFiDronection
 			// aapt resource value: 0x7f05000c
 			public const int ivMode2 = 2131034124;
 			
-			// aapt resource value: 0x7f05000e
-			public const int layoutLoggingOptions = 2131034126;
+			// aapt resource value: 0x7f05000f
+			public const int layoutLoggingOptions = 2131034127;
 			
-			// aapt resource value: 0x7f05001e
-			public const int layoutMinMaxPitch = 2131034142;
+			// aapt resource value: 0x7f05001f
+			public const int layoutMinMaxPitch = 2131034143;
 			
-			// aapt resource value: 0x7f050023
-			public const int layoutMinMaxRoll = 2131034147;
+			// aapt resource value: 0x7f050024
+			public const int layoutMinMaxRoll = 2131034148;
 			
-			// aapt resource value: 0x7f050019
-			public const int layoutMinMaxYaw = 2131034137;
+			// aapt resource value: 0x7f05001a
+			public const int layoutMinMaxYaw = 2131034138;
 			
 			// aapt resource value: 0x7f05004c
 			public const int linechart = 2131034188;
@@ -294,23 +294,23 @@ namespace WiFiDronection
 			// aapt resource value: 0x7f05002a
 			public const int tvListItem = 2131034154;
 			
-			// aapt resource value: 0x7f050021
-			public const int tvMaxPitch = 2131034145;
+			// aapt resource value: 0x7f050022
+			public const int tvMaxPitch = 2131034146;
 			
-			// aapt resource value: 0x7f050026
-			public const int tvMaxRoll = 2131034150;
+			// aapt resource value: 0x7f050027
+			public const int tvMaxRoll = 2131034151;
 			
-			// aapt resource value: 0x7f05001c
-			public const int tvMaxYaw = 2131034140;
+			// aapt resource value: 0x7f05001d
+			public const int tvMaxYaw = 2131034141;
 			
-			// aapt resource value: 0x7f05001f
-			public const int tvMinPitch = 2131034143;
+			// aapt resource value: 0x7f050020
+			public const int tvMinPitch = 2131034144;
 			
-			// aapt resource value: 0x7f050024
-			public const int tvMinRoll = 2131034148;
+			// aapt resource value: 0x7f050025
+			public const int tvMinRoll = 2131034149;
 			
-			// aapt resource value: 0x7f05001a
-			public const int tvMinYaw = 2131034138;
+			// aapt resource value: 0x7f05001b
+			public const int tvMinYaw = 2131034139;
 			
 			// aapt resource value: 0x7f05003b
 			public const int tvThirdParty = 2131034171;
