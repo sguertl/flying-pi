@@ -92,6 +92,19 @@
                 android:scaleType="centerInside"
                 android:adjustViewBounds="true" />
         </LinearLayout>
+    <!-- 
+        Start controller button
+        -->
+        <Button
+            android:id="@+id/btStart"
+            android:textSize="20dp"
+            android:text="Start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_margin="10dp"
+            android:textColor="#ffffff"
+            android:background="#005DA9" />
     <!--
         Logging options
         -->
@@ -182,7 +195,7 @@
         <Button
             android:id="@+id/btnExpandTrimOptions"
             android:textSize="20dp"
-            android:text="Trim Options &gt;"
+            android:text="Trim Options"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal|center_vertical"
@@ -366,19 +379,6 @@
                     android:layout_margin="10dp" />
             </LinearLayout>
         </LinearLayout>
-    <!-- 
-        Start controller button
-        -->
-        <Button
-            android:id="@+id/btStart"
-            android:textSize="20dp"
-            android:text="Start"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal|center_vertical"
-            android:layout_margin="10dp"
-            android:textColor="#ffffff"
-            android:background="#005DA9" />
     <!-- 
         Back button
         -->

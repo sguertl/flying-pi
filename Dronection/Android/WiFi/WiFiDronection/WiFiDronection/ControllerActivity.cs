@@ -310,31 +310,32 @@ namespace WiFiDronection
         private void OnStartController(object sender, EventArgs e)
         {
             // Create socket connection
-           
+            while(mSocketConnection.IsConnectingFinished == false)
+            {
+                Java.Lang.Thread.Sleep(100);
+            }
             //Java.Lang.Thread.Sleep(5000);
             if(mSocketConnection.IsConnected == false)
             {
                 StartActivity(typeof(MainActivity));
                 return;
             }
+            byte[] logInit = new byte[19];
+            logInit[0] = INIT_COMMUNICATION;
+            logInit[1] = (byte)(mLoggingActive == true ? 1 : 0);
+            logInit[2] = (byte)(mLogBarometerActive == true ? 1 : 0);
+            logInit[3] = (byte)(mLogRadarActive == true ? 1 : 0);
+            logInit[4] = (byte)(mLogCollisionStatusActive == true ? 1 : 0);
+            logInit[5] = (byte)(mLogControlsDroneActive == true ? 1 : 0);
+            logInit[6] = (byte)(mLogDebug1Active == true ? 1 : 0);
+            logInit[7] = (byte)(mLogDebug2Active == true ? 1 : 0);
+            logInit[8] = (byte)(mLogDebug3Active == true ? 1 : 0);
+            logInit[9] = (byte)(mLogDebug4Active == true ? 1 : 0);
 
-            mSocketConnection.WriteLog
-            (
-                1,
-                INIT_COMMUNICATION,
-                (byte)(mLoggingActive == true ? 1 : 0),
-                (byte)(mLogBarometerActive == true ? 1 : 0),
-                (byte)(mLogRadarActive == true ? 1 : 0),
-                (byte)(mLogCollisionStatusActive == true ? 1 : 0),
-                (byte)(mLogControlsDroneActive == true ? 1 : 0),
-                (byte)(mLogDebug1Active == true ? 1 : 0),
-                (byte)(mLogDebug2Active == true ? 1 : 0),
-                (byte)(mLogDebug3Active == true ? 1 : 0),
-                (byte)(mLogDebug4Active == true ? 1 : 0)
-            );
+            mSocketConnection.WriteLog(logInit);
 
             // Start reading from Raspberry
-            mSocketConnection.StartListening();
+            //mSocketConnection.StartListening(mLoggingActive);
 
             // Read min and max values
             mMinYaw = Convert.ToInt32(mEtMinYaw.Text);
@@ -631,6 +632,7 @@ namespace WiFiDronection
 		public void CloseOnRPIReset()
 		{
 			mSocketConnection.Close();
+            //mSocketConnection.CloseReader();
 			StartActivity(typeof(MainActivity));
 		}
 
@@ -641,14 +643,14 @@ namespace WiFiDronection
                 mLlMinMaxPitch.Visibility = Android.Views.ViewStates.Visible;
                 mLlMinMaxRoll.Visibility = Android.Views.ViewStates.Visible;
                 mLlMinMaxYaw.Visibility = Android.Views.ViewStates.Visible;
-                mBtExpandTrimOptions.Text = "Trim Options v";
+                //mBtExpandTrimOptions.Text = "Trim Options v";
             }
             else
             {
                 mLlMinMaxPitch.Visibility = Android.Views.ViewStates.Gone;
                 mLlMinMaxRoll.Visibility = Android.Views.ViewStates.Gone;
                 mLlMinMaxYaw.Visibility = Android.Views.ViewStates.Gone;
-                mBtExpandTrimOptions.Text = "Trim Options >";
+                //mBtExpandTrimOptions.Text = "Trim Options >";
             }
         }
 

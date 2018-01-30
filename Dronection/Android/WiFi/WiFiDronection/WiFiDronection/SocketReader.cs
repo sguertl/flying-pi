@@ -43,6 +43,7 @@ namespace WiFiDronection
         // Input stream
         private DataInputStream mDataInputStream;
         private RaspberryClose mRaspberryCloseEvent;
+        private bool isReading;
 
         private string mCurrentMsg;
 
@@ -75,6 +76,7 @@ namespace WiFiDronection
             mRaspberryCloseEvent = rpiClose;
             mDroneLogs = new Dictionary<string, LogData>();
             mDataReaderThread = new Thread(OnRead);
+            isReading = false;
         }
 
         /// <summary>
@@ -85,12 +87,13 @@ namespace WiFiDronection
             int bytes = 0;
             byte[] buffer = new byte[41];
             int count = 0;
+            isReading = true;
             while (true)
             {
                 try
                 {
                     bytes = mDataInputStream.Read(buffer);
-                    Log.Debug("???", buffer[1].ToString());
+                    //Log.Debug("???", buffer[1].ToString());
                     string msg = "";
                     if(buffer[0] != 1 && buffer[0] != 99)
                     { 
@@ -182,16 +185,16 @@ namespace WiFiDronection
                 {
                     Log.Debug(TAG, "No socket connection (" + ex.Message + ")2");
                     // throw new NullReferenceException();
+                    break;
                 }
                 catch(Java.Lang.StringIndexOutOfBoundsException ex)
                 {
                     Log.Debug(TAG, "Connection was interrupted by RPI");
-                    Close();
-                    mRaspberryCloseEvent();
+                    break;
                 }
             }
-            Close();
-            return;
+            isReading = false;
+            mRaspberryCloseEvent();
         }
 
         private bool ControlChecksum(byte[] buffer)
@@ -218,18 +221,33 @@ namespace WiFiDronection
             mDataReaderThread.Start();
         }
 
-		/// <summary>
-		/// Closes everything related to the socket connection.
-		/// </summary>
-		public void Close()
+        public void StopListening()
+        {
+            if (mDataReaderThread != null)
+            {
+                if (isReading == true)
+                {
+                    mDataReaderThread.Join();
+                }
+                mDataReaderThread = null;
+            }
+        }
+
+        /// <summary>
+        /// Closes everything related to the socket connection.
+        /// </summary>
+        public void Close()
         {
             try
             {
-                if (mDataReaderThread != null)
+                /*if (mDataReaderThread != null)
                 {
-                    mDataReaderThread.Join();
+                    if(isReading == true)
+                    {
+                        mDataReaderThread.Join();
+                    }
                     mDataReaderThread = null;
-                }
+                }*/
 
                 if (mDataInputStream != null)
                 {
