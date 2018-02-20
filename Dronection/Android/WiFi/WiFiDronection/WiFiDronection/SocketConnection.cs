@@ -166,8 +166,6 @@ namespace WiFiDronection
                     if (mSocket.IsConnected)
                     {
                         // Create socket reading and writing streams
-                        //!!! Socket timeout is on 
-                        // Do not change this
                         mSocketWriter = new SocketWriter(mSocket.OutputStream);
                         mSocketReader = new SocketReader(new DataInputStream(mSocket.InputStream), mRaspberryClose);
                     }
@@ -179,7 +177,7 @@ namespace WiFiDronection
         /// <summary>
         /// Starts listening to the raspberry.
         /// </summary>
-        public void StartListening(bool isLoggingActive)
+        public void StartListening()
         {
             if(mSocket.IsConnected == true)
             {
@@ -206,11 +204,6 @@ namespace WiFiDronection
                         isReady = 3;
                     }
                     System.Threading.Thread.Sleep(500);
-                }
-
-                if(isLoggingActive == true)
-                {
-                    mSocketReader.StopListening();
                 }
 
                 if (isReady > 1)
@@ -257,14 +250,6 @@ namespace WiFiDronection
                 mSocketWriter.Close();
                 mSocketReader.Close();
                 mSocket.Close();
-            }
-        }
-
-        public void CloseReader()
-        {
-            if(mSocket != null && mSocket.IsConnected == true)
-            {
-                mSocketReader.Close();
             }
         }
     }

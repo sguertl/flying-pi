@@ -58,7 +58,7 @@ namespace WiFiDronection
         private ImageView mIvMode2;
         private Button mBtLoggingOptions;
         private LinearLayout mLlLoggingOptions;
-        private CheckBox mCbxBarometer;
+        private CheckBox mCbxBattery;
         private CheckBox mCbxRadarData;
         private CheckBox mCbxCollisionStatus;
         private CheckBox mCbxControlsMobile;
@@ -99,7 +99,7 @@ namespace WiFiDronection
         private string mSelectedBssid;
         private Dictionary<string, ControllerSettings> mPeerSettings;
 		private bool mLoggingActive;
-        private bool mLogBarometerActive;
+        private bool mLogBatteryActive;
         private bool mLogRadarActive;
         private bool mLogCollisionStatusActive;
         private bool mLogControlsMobileActive;
@@ -149,7 +149,7 @@ namespace WiFiDronection
             mIvMode2 = FindViewById<ImageView>(Resource.Id.ivMode2);
             mBtLoggingOptions = FindViewById<Button>(Resource.Id.btnLoggingOptions);
             mLlLoggingOptions = FindViewById<LinearLayout>(Resource.Id.layoutLoggingOptions);
-            mCbxBarometer = FindViewById<CheckBox>(Resource.Id.cbxLogBarometer);
+            mCbxBattery = FindViewById<CheckBox>(Resource.Id.cbxLogBattery);
             mCbxRadarData = FindViewById<CheckBox>(Resource.Id.cbxLogRadardata);
             mCbxCollisionStatus = FindViewById<CheckBox>(Resource.Id.cbxLogCollisionStatus);
             mCbxControlsMobile = FindViewById<CheckBox>(Resource.Id.cbxLogControlsMobile);
@@ -232,7 +232,7 @@ namespace WiFiDronection
                 try
                 {
                     mLoggingActive = trimParts[3] == "True";
-                    mLogBarometerActive = trimParts[4] == "True";
+                    mLogBatteryActive = trimParts[4] == "True";
                     mLogRadarActive = trimParts[5] == "True";
                     mLogCollisionStatusActive = trimParts[6] == "True";
                     mLogControlsMobileActive = trimParts[7] == "True";
@@ -262,7 +262,7 @@ namespace WiFiDronection
                 {
                     mLlLoggingOptions.Visibility = Android.Views.ViewStates.Visible;
                     mBtLoggingOptions.Text = "Logging turned on";
-                    mCbxBarometer.Checked = mLogBarometerActive;
+                    mCbxBattery.Checked = mLogBatteryActive;
                     mCbxRadarData.Checked = mLogRadarActive;
                     mCbxCollisionStatus.Checked = mLogCollisionStatusActive;
                     mCbxControlsMobile.Checked = mLogControlsMobileActive;
@@ -314,7 +314,7 @@ namespace WiFiDronection
             {
                 Java.Lang.Thread.Sleep(100);
             }
-            //Java.Lang.Thread.Sleep(5000);
+
             if(mSocketConnection.IsConnected == false)
             {
                 StartActivity(typeof(MainActivity));
@@ -323,7 +323,7 @@ namespace WiFiDronection
             byte[] logInit = new byte[19];
             logInit[0] = INIT_COMMUNICATION;
             logInit[1] = (byte)(mLoggingActive == true ? 1 : 0);
-            logInit[2] = (byte)(mLogBarometerActive == true ? 1 : 0);
+            logInit[2] = (byte)(mLogBatteryActive == true ? 1 : 0);
             logInit[3] = (byte)(mLogRadarActive == true ? 1 : 0);
             logInit[4] = (byte)(mLogCollisionStatusActive == true ? 1 : 0);
             logInit[5] = (byte)(mLogControlsDroneActive == true ? 1 : 0);
@@ -335,7 +335,7 @@ namespace WiFiDronection
             mSocketConnection.WriteLog(logInit);
 
             // Start reading from Raspberry
-            //mSocketConnection.StartListening(mLoggingActive);
+            mSocketConnection.StartListening();
 
             // Read min and max values
             mMinYaw = Convert.ToInt32(mEtMinYaw.Text);
@@ -346,10 +346,10 @@ namespace WiFiDronection
 			mMaxRoll = Convert.ToInt32(mEtMaxRoll.Text);
 
             // Read log data
-            mLogBarometerActive = mCbxBarometer.Checked;
-            if(mLogBarometerActive == true)
+            mLogBatteryActive = mCbxBattery.Checked;
+            if(mLogBatteryActive == true)
             {
-                mSocketConnection.DroneLogs.Add("Barometer", new LogData("Barometer", 1));
+                mSocketConnection.DroneLogs.Add("Battery", new LogData("Battery", 1));
             }
             mLogRadarActive = mCbxRadarData.Checked;
             if(mLogRadarActive == true)
@@ -504,7 +504,7 @@ namespace WiFiDronection
 				foreach (KeyValuePair<string, ControllerSettings> kvp in mPeerSettings)
 				{
 					settingsString += kvp.Key + "," + kvp.Value.TrimYaw + ";" + kvp.Value.TrimPitch + ";" + kvp.Value.TrimRoll + ";"
-                                         + mLoggingActive + ";" + mLogBarometerActive + ";" + mLogRadarActive + ";" + mLogCollisionStatusActive + ";"
+                                         + mLoggingActive + ";" + mLogBatteryActive + ";" + mLogRadarActive + ";" + mLogCollisionStatusActive + ";"
                                          + mLogControlsMobileActive + ";" + mLogControlsDroneActive + ";" + mLogDebug1Active + ";"
                                          + mLogDebug2Active + ";" + mLogDebug3Active + ";" + mLogDebug4Active + ";" + mMinYaw + ";" + mMaxYaw + ";"
                                          + mMinPitch + ";" + mMaxPitch + ";" + mMinRoll + ";" + mMaxRoll + "\n"; ;
@@ -589,7 +589,10 @@ namespace WiFiDronection
 
             if (mSocketConnection != null)
             {
-                mSocketConnection.WriteLog(1, END_COMMUNICATION);
+                byte[] endframe = new byte[19];
+                endframe[0] = 1;
+                endframe[1] = END_COMMUNICATION;
+                mSocketConnection.WriteLog(endframe);
             }
 
 			WriteLogData();
@@ -608,7 +611,10 @@ namespace WiFiDronection
 
             if (mSocketConnection != null)
             {
-                mSocketConnection.WriteLog(1, END_COMMUNICATION);
+                byte[] endframe = new byte[19];
+                endframe[0] = 1;
+                endframe[1] = END_COMMUNICATION;
+                mSocketConnection.WriteLog(endframe);
             }
 
 			WriteLogData();

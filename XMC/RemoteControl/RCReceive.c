@@ -345,7 +345,7 @@ void GeneralPurpose_Timer_Bluetooth_Keep_Alive_ISR()
 #else
 	FRI_sendRadarData(Radar_Value);
 #endif
-	// do some here !!!
+
 	if(isLogStreamReceived == 1)
 	{
 		WriteBufRPI[0] = 1;
@@ -622,6 +622,7 @@ void Raspberry_RX_ISR(void)
 			if(ReadBufRPI[1] == 1)
 			{
 				isLoggingActive = 1;
+				isLogBatteryActive = ReadBufRPI[2];
 				isLogRadarActive = ReadBufRPI[3];
 				isLogCollisionStatusActive = ReadBufRPI[4];
 				isLogDroneControlActive = ReadBufRPI[5];

@@ -131,10 +131,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight=".5">
                 <CheckBox
-                    android:id="@+id/cbxLogBarometer"
+                    android:id="@+id/cbxLogBattery"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Barometer"
+                    android:text="Battery"
                     android:layout_margin="10dp" />
                 <CheckBox
                     android:id="@+id/cbxLogRadardata"

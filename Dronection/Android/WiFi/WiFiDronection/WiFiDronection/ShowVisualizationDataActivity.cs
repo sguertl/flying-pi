@@ -127,7 +127,7 @@ namespace WiFiDronection
         private void Init()
         {
             this.mColors = new List<int>();
-            this.mLineChart = (LineChart) FindViewById<LineChart>(Resource.Id.linechart);
+            this.mLineChart = FindViewById<LineChart>(Resource.Id.linechart);
             this.mCurVisData = CurrentVisualizationData.Instance;
             this.mDataSet = new ILineDataSet[mCurVisData.Points.Count];
         }

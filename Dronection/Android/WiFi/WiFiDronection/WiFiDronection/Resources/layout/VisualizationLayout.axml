@@ -1,41 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff">
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#ffffff"
-        android:isScrollContainer="true"
-        android:weightSum="1">
-    <!--
-        Header
-        -->
-        <TextView
-            android:textSize="32dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:text="Choose option(s)"
-            android:gravity="center_horizontal"
-            android:id="@+id/tvHeaderVisualization" />
-    <!--
-    Visualization data listview
+    android:background="#ffffff"
+    android:weightSum="1">
+<!--
+    Header
     -->
+    <TextView
+        android:id="@+id/tvHeaderVisualization"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choose option(s)"
+        android:gravity="center_horizontal"
+        android:textSize="36dp"
+        android:fontFamily="Assets/SourceSansPro-Light.ttf"
+        android:layout_margin="20dp"
+        android:background="#ffffff" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".85">
+    <!--
+        Files list view
+        -->
         <ListView
             android:id="@+id/lvData"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:divider="#005DA9"
-            android:dividerHeight="5dp" />
+            android:dividerHeight="3dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:gravity="bottom"
+        android:layout_gravity="bottom"
+        android:layout_weight=".15">
+    <!--
+        Back button
+        -->
         <Button
             android:id="@+id/btnShowChart"
             android:layout_width="fill_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:text="Visualize"
             android:fontFamily="Assets/SourceSansPro-Light.tff"
             android:textSize="20dp"
@@ -45,4 +56,4 @@
             android:textColor="#ffffff"
             android:background="#005DA9" />
     </LinearLayout>
-</ScrollView>
+</LinearLayout>

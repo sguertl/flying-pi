@@ -93,8 +93,6 @@ namespace WiFiDronection
                 try
                 {
                     bytes = mDataInputStream.Read(buffer);
-                    //Log.Debug("???", buffer[1].ToString());
-                    string msg = "";
                     if(buffer[0] != 1 && buffer[0] != 99)
                     { 
                         bool isRight = ControlChecksum(buffer);
@@ -121,6 +119,13 @@ namespace WiFiDronection
                                 byte collisionStatus = buffer[35];
                                 line = count + ";" + collisionStatus.ToString();
                                 mDroneLogs["CollisionStatus"].Add(line);
+                            }
+
+                            if(mDroneLogs.Keys.Contains("Battery") == true)
+                            {
+                                byte battery = buffer[36];
+                                line = count + ";" + battery.ToString();
+                                mDroneLogs["Battery"].Add(line);
                             }
 
                             if(mDroneLogs.Keys.Contains("Radar") == true)
@@ -168,9 +173,8 @@ namespace WiFiDronection
                     }
                     else
                     {
-                        msg = buffer[1].ToString();
-                        mCurrentMsg = msg;
-                        if(msg == "99")
+                        mCurrentMsg = buffer[1].ToString();
+                        if(mCurrentMsg == "99")
                         {
                             break;
                         }
@@ -221,17 +225,17 @@ namespace WiFiDronection
             mDataReaderThread.Start();
         }
 
-        public void StopListening()
-        {
-            if (mDataReaderThread != null)
-            {
-                if (isReading == true)
-                {
-                    mDataReaderThread.Join();
-                }
-                mDataReaderThread = null;
-            }
-        }
+        //public void StopListening()
+        //{
+        //    if (mDataReaderThread != null)
+        //    {
+        //        if (isReading == true)
+        //        {
+        //            mDataReaderThread.Join();
+        //        }
+        //        mDataReaderThread = null;
+        //    }
+        //}
 
         /// <summary>
         /// Closes everything related to the socket connection.

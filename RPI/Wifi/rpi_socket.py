@@ -11,6 +11,8 @@ class rpi_connection:
     HOST = ''
     PORT = 5050
     DEBUG = False
+	CONTROL_BYTES = 19
+	LOG_BYTES = 41
 
     def init(self):
         self.init_wifi_socket()
@@ -58,7 +60,7 @@ class rpi_connection:
             while True:
                 try:
                     # Receive data from client
-                    data = array.array('B', self.conn.recv(19))
+                    data = array.array('B', self.conn.recv(self.CONTROL_BYTES))
                     # Check if connection is alive
                     if not data:
                         print('Connection closed')
@@ -78,8 +80,7 @@ class rpi_connection:
 
     def read_drone(self):
         while True:
-            read_byte = self.serial_socket.inWaiting() + 41
-            read_packet = array.array('B', self.serial_socket.read(read_byte))
+            read_packet = array.array('B', self.serial_socket.read(self.LOG_BYTES))
             try:
                 self.conn.send(read_packet)
             except IOError as e:
