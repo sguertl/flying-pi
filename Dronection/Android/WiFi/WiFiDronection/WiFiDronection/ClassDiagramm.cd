@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="WiFiDronection.ControllerActivity" Collapsed="true">
+    <Position X="11" Y="1.5" Width="1.5" />
+    <AssociationLine Name="ControllerSettings" Type="WiFiDronection.ControllerSettings" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="11.375" Y="1.5" />
+        <Point X="11.375" Y="0.75" />
+        <Point X="11.75" Y="0.75" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>0BUBAhIoYiEIYABBQCADEoM2ZDCAQODkE0QcFEoICuk=</HashCode>
+      <FileName>ControllerActivity.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ControllerView" />
+      <Property Name="ControllerSettings" />
+      <Property Name="SocketConnection" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="WiFiDronection.ControllerSettings" Collapsed="true">
+    <Position X="11.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAABAoBAgEAAAGAAggAAgAAAAAAAAAIBAIAAA=</HashCode>
+      <FileName>ControllerSettings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WiFiDronection.ControllerView" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="13.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAIAIQAAAGAIAAgAQgBFQAAAAARIAQCAgAACAIFABgA=</HashCode>
+      <FileName>ControllerView.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ControllerSettings" />
+      <Property Name="Joystick" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WiFiDronection.CurrentVisualizationData" Collapsed="true">
+    <Position X="1.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgiAAAEAAAAAAIABAAAACQAAAAAAAAAA=</HashCode>
+      <FileName>CurrentVisualizationData.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DataPoint" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="WiFiDronection.DataPoint" Collapsed="true">
+    <Position X="1.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEgAAAAAAAAAAAAAAAABAAAAAAYAA=</HashCode>
+      <FileName>DataPoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WiFiDronection.HelpActivity" Collapsed="true">
+    <Position X="8" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAEAAAJxASEEAACAKAAAAAgAQEAAQBAA=</HashCode>
+      <FileName>HelpActivity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WiFiDronection.Joystick" Collapsed="true">
+    <Position X="16" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>TBAhDSACQDgIIgIYnLBAAGAAAAICC0Blg0AFAFAAIAQ=</HashCode>
+      <FileName>Joystick.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WiFiDronection.ListAdapter" Collapsed="true">
+    <Position X="6.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAACAIAAAQACACQAAAAAAABAAAAAAA=</HashCode>
+      <FileName>ListAdapter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WiFiDronection.LogActivity" Collapsed="true">
+    <Position X="5.25" Y="1.5" Width="1.5" />
+    <AssociationLine Name="VisualizationActivity" Type="WiFiDronection.VisualizationActivity" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.25" Y="2.125" />
+        <Point X="4.625" Y="2.125" />
+        <Point X="4.625" Y="3" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>BIAAkgRAAAAAAEQCAARAEAAAACAAAAAABBAAEAAAAAA=</HashCode>
+      <FileName>LogActivity.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ListAdapter" />
+      <Property Name="RawDataActivity" />
+      <Property Name="VisualizationActivity" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="WiFiDronection.LogData" Collapsed="true">
+    <Position X="15.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAEAAAAAAAAAAAAAgAAAAgIAAAAAAA=</HashCode>
+      <FileName>LogData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WiFiDronection.MainActivity" Collapsed="true">
+    <Position X="8" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QABAAgcAAAAAAAACEAAQAEEAAGAESAgMAAAAAAAAgIA=</HashCode>
+      <FileName>MainActivity.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="LogActivity" />
+      <Property Name="HelpActivity" />
+      <Property Name="ControllerActivity" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="WiFiDronection.RawDataActivity" Collapsed="true">
+    <Position X="1.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAggAAAAAAAAAAAAQAAAAAACAAAAgAAFBAAAAgIAA=</HashCode>
+      <FileName>RawDataActivity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WiFiDronection.ShowVisualizationDataActivity" Collapsed="true">
+    <Position X="4.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAQAAAAAAAAIAAAAAAAAACQQAAAICAACAAgAAAA=</HashCode>
+      <FileName>ShowVisualizationDataActivity.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="CurrentVisualizationData" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="WiFiDronection.SocketConnection" Collapsed="true">
+    <Position X="11.25" Y="3" Width="1.5" />
+    <AssociationLine Name="SocketWriter" Type="WiFiDronection.SocketWriter" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="11.25" Y="3.312" />
+        <Point X="10.5" Y="3.312" />
+        <Point X="10.5" Y="4" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="SocketReader" Type="WiFiDronection.SocketReader" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="12.75" Y="3.25" />
+        <Point X="13.875" Y="3.25" />
+        <Point X="13.875" Y="4" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>QAAAGAICgCAABEDEAEAAAIAAAAAAAIEAAAAAAACAAIA=</HashCode>
+      <FileName>SocketConnection.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="SocketWriter" />
+      <Property Name="SocketReader" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="WiFiDronection.SocketReader" Collapsed="true">
+    <Position X="13" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACEAAACAAAAAAAAIEgAAAQAAAAoCAAAAAAACAAIE=</HashCode>
+      <FileName>SocketReader.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="LogData" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="WiFiDronection.SocketWriter" Collapsed="true">
+    <Position X="9.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAEAAABAAAAAAAAAAAAAAAAAAAAAAAAIAAAAGAAAA=</HashCode>
+      <FileName>SocketWriter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WiFiDronection.VisualizationActivity" Collapsed="true">
+    <Position X="3.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAACBAAAAQAEAAAACRAAAAIAAACAFAgAIA=</HashCode>
+      <FileName>VisualizationActivity.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ListAdapter" />
+      <Property Name="ShowVisualizationDataActivity" />
+      <Property Name="CurrentVisualizationData" />
+    </ShowAsAssociation>
+  </Class>
+  <Delegate Name="WiFiDronection.RaspberryClose" Collapsed="true">
+    <Position X="14.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ControllerActivity.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
