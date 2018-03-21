@@ -171,7 +171,7 @@ namespace Datalyze
                 {
                     mCurrentWifiResult.SetWifiResults(mLastMsg.Remove(mLastMsg.Length - 2).Split('\n'));
                     mTvRead.Text += $"Received Packets: {mCurrentWifiResult.GetCorrectnessPercentage()}%\n"
-                                  + $"Datarate: {mCurrentWifiResult.GetDataRate()} B/s\n"
+                                  + $"Datarate: {mCurrentWifiResult.GetDataRate()} kB/s\n"
                                   + $"Average time difference: {mCurrentWifiResult.GetAverageTimeDif()} ms\n\n"
                                   + mLastMsg.Remove(mLastMsg.Length - 2).Replace(';', ' ');
                 }

@@ -34,7 +34,7 @@ namespace Datalyze
         private void Read()
         {
             int bytes = 0;
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[32];
             isReading = true;
 
             while (isReading)
@@ -54,20 +54,15 @@ namespace Datalyze
 
         public void Close()
         {
-            try
+            isReading = false;
+            if (mInputStream != null)
             {
-                isReading = false;
-
-                mReaderThread = null;
-
-                if (mInputStream != null)
-                {
-                    mInputStream.Close();
-                }
-            }catch(Java.Lang.Exception ex)
+                mInputStream.Close();
+            }
+            if (mReaderThread != null)
             {
-
-            }  
+                mReaderThread.Join();
+            }
         }
     }
 }

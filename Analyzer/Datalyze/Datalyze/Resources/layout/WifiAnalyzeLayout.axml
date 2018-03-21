@@ -89,29 +89,5 @@
             android:layout_margin="10dp"
             android:text="Save Result"
             android:visibility="gone" />
-    <!--<Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnSpeed"
-        android:textSize="20dp"
-        android:gravity="center_horizontal"
-        android:layout_margin="10dp"
-        android:text="Test Speed" />
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnRegularity"
-        android:textSize="20dp"
-        android:gravity="center_horizontal"
-        android:layout_margin="10dp"
-        android:text="Test Regularity" />
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnCorrectness"
-        android:textSize="20dp"
-        android:gravity="center_horizontal"
-        android:layout_margin="10dp"
-        android:text="Test Correctness" />-->
     </LinearLayout>
 </ScrollView>

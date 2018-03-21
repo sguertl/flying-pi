@@ -43,7 +43,7 @@ namespace Datalyze
             return new Data
             {
                 IsCorrect = Convert.ToByte(parts[0]),
-                TimeDif = Convert.ToInt16(parts[1]),
+                TimeDif = (int)Convert.ToSingle(parts[1]),
                 DataRate = Convert.ToSingle(parts[2]) / 100
             };
         }
@@ -55,8 +55,10 @@ namespace Datalyze
 
         public double GetDataRate()
         {
-            float time = mResults.Sum(wd => wd.TimeDif) - mResults[0].TimeDif;
-            return Math.Round((((mRepetitions * mBytes) * GetCorrectnessPercentage() / 100) / time), 2);
+            float time = mResults.Sum(wd => wd.TimeDif) / 1000f;
+            double bytes = (((mRepetitions * mBytes) * GetCorrectnessPercentage() / 100) / time);
+            bytes /= 1000f;
+            return Math.Round(bytes, 2);
         }
 
         public double GetAverageTimeDif()

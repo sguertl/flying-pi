@@ -22,10 +22,10 @@ namespace Datalyze
 
         public BTSocketWriter(DataOutputStream dataoutputstream)
         {
-            this.mDataOutputStream = dataoutputstream;
+            mDataOutputStream = dataoutputstream;
         }
 
-        public void Write(byte[] bytes)
+        public void Write(params byte[] bytes)
         {
             try
             {
@@ -47,7 +47,7 @@ namespace Datalyze
                 }
             }catch(Exception ex)
             {
-
+                System.Console.WriteLine(ex.Message);
             }
         }
     }

@@ -32,8 +32,6 @@ namespace Datalyze
         private List<BluetoothDevice> mPairedDevices;
         private List<String> mPeers;
 
-
-
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -65,17 +63,17 @@ namespace Datalyze
             mProgressDialog.SetMessage("Connecting with device");
             mProgressDialog.SetCancelable(false);
 
-            // var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
+            var font = Typeface.CreateFromAsset(Assets, "SourceSansPro-Light.ttf");
 
             mBtSearchDevices = FindViewById<Button>(Resource.Id.btSearchDevices);
             mBtSearchDevices.Click += OnSearchDevices;
-            //mBtSearchDevices.Typeface = font;
+            mBtSearchDevices.Typeface = font;
 
             mTvExplanation = FindViewById<TextView>(Resource.Id.tvExplanation);
-            // mTvExplanation.Typeface = font;
+            mTvExplanation.Typeface = font;
 
             mTvHeader = FindViewById<TextView>(Resource.Id.tvHeader);
-            //mTvHeader.Typeface = font;
+            mTvHeader.Typeface = font;
 
             // Set activity background
             mLinearLayout.SetBackgroundColor(Color.White);
