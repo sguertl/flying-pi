@@ -27,19 +27,17 @@
         <ListView
             android:id="@+id/lvRawData"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="150dp"
             android:layout_margin="10dp"
             android:divider="#005DA9"
             android:dividerHeight="5dp" />
     <!--
         Raw data textview
         -->
-        <TextView
-            android:id="@+id/tvDisplayRawData"
+      <ListView
+          android:id="@+id/lvDisplayRawData"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="No item selected"
-            android:typeface="monospace"
+            android:layout_height="200dp"
             android:layout_margin="10dp" />
     <!--
         Back button

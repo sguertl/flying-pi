@@ -43,7 +43,7 @@ namespace WiFiDronection
         // Widgets
         private TextView mTvHeader;
         private ListView mLvRawData;
-        private TextView mTvDisplayRawData;
+        private ListView mLvDisplayRawData;
         private Button mBtBack;
 
         // Customized list adapter
@@ -64,7 +64,7 @@ namespace WiFiDronection
             mTvHeader = FindViewById<TextView>(Resource.Id.tvHeaderRawData);
             mLvRawData = FindViewById<ListView>(Resource.Id.lvRawData);
             mLvRawData.ItemClick += OnListItemClick;
-            mTvDisplayRawData = FindViewById<TextView>(Resource.Id.tvDisplayRawData);
+            mLvDisplayRawData = FindViewById<ListView>(Resource.Id.lvDisplayRawData);
             mBtBack = FindViewById<Button>(Resource.Id.btnBackRawData);
             mBtBack.Click += OnBack;
 
@@ -105,13 +105,27 @@ namespace WiFiDronection
             string path = MainActivity.ApplicationFolderPath + Java.IO.File.Separator + mSelectedFile + Java.IO.File.Separator + fileName;
             var reader = new Java.IO.BufferedReader(new Java.IO.FileReader(path));
             string line = "";
-            string finalText = "";
-            while((line = reader.ReadLine()) != null)
+            List<string> rowDataList = new List<string>();
+            String title = fileName.Split('.')[0];
+            String str = "";
+            if (title.Equals("controls"))
             {
-                line = line.Replace(',', ' ');
-                finalText += line + "\n";
+                str = "Time Throttle Yaw Pitch Roll";
+                
             }
-            mTvDisplayRawData.Text = finalText;
+            else
+            {
+                str = "Time " + title;
+            }
+
+                while ((line = reader.ReadLine()) != null)
+                {
+                    line = line.Replace(',', ' ').Replace(';',' ');
+                    rowDataList.Add(line);
+                }
+            rowDataList.Insert(0, str);
+            mAdapter = new ListAdapter(this, rowDataList);
+            mLvDisplayRawData.Adapter = mAdapter;
             reader.Close();
         }
 
