@@ -326,7 +326,9 @@ namespace WiFiDronection
             logInit[2] = (byte)(mLogBatteryActive == true ? 1 : 0);
             logInit[3] = (byte)(mLogRadarActive == true ? 1 : 0);
             logInit[4] = (byte)(mLogCollisionStatusActive == true ? 1 : 0);
+            // For testing
             logInit[5] = (byte)(mLogControlsDroneActive == true ? 1 : 0);
+            //
             logInit[6] = (byte)(mLogDebug1Active == true ? 1 : 0);
             logInit[7] = (byte)(mLogDebug2Active == true ? 1 : 0);
             logInit[8] = (byte)(mLogDebug3Active == true ? 1 : 0);
@@ -362,11 +364,14 @@ namespace WiFiDronection
                 mSocketConnection.DroneLogs.Add("CollisionStatus", new LogData("CollisionStatus", 1));
             }
             mLogControlsMobileActive = mCbxControlsMobile.Checked;
+
+            // For testing
             mLogControlsDroneActive = mCbxControlsDrone.Checked;
             if (mLogControlsDroneActive == true)
             {
                 mSocketConnection.DroneLogs.Add("ControlsDrone", new LogData("ControlsDrone", 1));
             }
+            //
             mLogDebug1Active = mCbxDebug1.Checked;
             if(mLogDebug1Active == true)
             {

@@ -99,6 +99,7 @@ namespace WiFiDronection
                         if(isRight == true)
                         {
                             string line = "";
+                            // For testing
                             if(mDroneLogs.Keys.Contains("ControlsDrone") == true)
                             {
                                 byte altitudeControl = buffer[1];
@@ -113,6 +114,7 @@ namespace WiFiDronection
                                 line = count + ";" + altitudeControl + ";" + speed + ";" + rudder + ";" + aileron + ";" + elevator;
                                 mDroneLogs["ControlsDrone"].Add(line);
                             }
+                            // For testing
 
                             if(mDroneLogs.Keys.Contains("CollisionStatus") == true)
                             {

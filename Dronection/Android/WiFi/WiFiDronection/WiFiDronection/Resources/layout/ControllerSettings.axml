@@ -154,12 +154,12 @@
                     android:layout_height="wrap_content"
                     android:text="Controls mobile"
                     android:layout_margin="10dp" />
-                <CheckBox
+                <!--<CheckBox
                     android:id="@+id/cbxLogControlsDrone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Controls drone"
-                    android:layout_margin="10dp" />
+                    android:layout_margin="10dp" />-->
             </LinearLayout>
             <LinearLayout
                 android:orientation="vertical"
