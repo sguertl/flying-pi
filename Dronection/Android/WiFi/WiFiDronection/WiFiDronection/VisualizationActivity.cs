@@ -164,9 +164,10 @@ namespace WiFiDronection
             }
             while ((line = reader.ReadLine()) != null)
             {
-                String[] p = line.Split(',');
+                
                 if (title.Equals("controls"))
                 {
+                    String[] p = line.Split(',');
                     float x = Convert.ToSingle(p[0]);
                     float t = Convert.ToSingle(p[1]);
                     float y = Convert.ToSingle(p[2]);
@@ -184,14 +185,15 @@ namespace WiFiDronection
                 }
                 else if (!title.Equals("settings"))
                 {
+                    String[] p = line.Split(';');
                     float x = Convert.ToSingle(p[0]);
                     float y = Convert.ToSingle(p[1]);
-                    int h = Convert.ToInt32(p[2]);
+                    //int h = Convert.ToInt32(p[2]);
                     mCurVisData.Points[title].Add(new DataPoint(x, y));
-                    if (h == 1)
-                    {
-                        mCurVisData.AltControlTime.Add(x);
-                    }
+                    //if (h == 1)
+                    //{
+                    //    mCurVisData.AltControlTime.Add(x);
+                    //}
                 }
             }
             reader.Close();
